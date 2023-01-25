@@ -1,0 +1,155 @@
+import 'package:conet/utils/theme.dart';
+import 'package:flutter/material.dart';
+
+class ConetTextTheme {
+  static const TextTheme androidTextTheme = TextTheme(
+    headline1: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Bold',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 34,
+      fontWeight: FontWeight.bold,
+      fontStyle: FontStyle.normal,
+    ),
+    headline2: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Semibold',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 20,
+      fontStyle: FontStyle.normal,
+    ),
+    headline3: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Light',
+      color: AppColor.blackColor,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+      fontSize: 18,
+      letterSpacing: 0.2,
+    ),
+    headline4: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Semibold',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 18,
+    ),
+    headline5: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Semibold',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 15,
+      fontStyle: FontStyle.normal,
+    ),
+    headline6: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Regular',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 13,
+      fontStyle: FontStyle.normal,
+    ),
+    bodyText1: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Regular',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 15,
+      fontStyle: FontStyle.normal,
+    ),
+    bodyText2: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Regular',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontWeight: FontWeight.normal,
+      fontSize: 13,
+    ),
+    caption: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Thin',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 10,
+      fontStyle: FontStyle.normal,
+    ),
+    button: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Medium',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      fontStyle: FontStyle.normal,
+    ),
+  );
+
+  static const TextTheme iosTextTheme = TextTheme(
+    headline1: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Bold',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 34,
+      fontWeight: FontWeight.bold,
+      fontStyle: FontStyle.normal,
+    ),
+    headline2: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Semibold',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 20,
+      fontStyle: FontStyle.normal,
+    ),
+    headline3: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Light',
+      color: AppColor.blackColor,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+      fontSize: 10,
+      letterSpacing: 0.2,
+    ),
+    headline4: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Semibold',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 18,
+    ),
+    headline5: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Semibold',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 15,
+      fontStyle: FontStyle.normal,
+      letterSpacing: 0.4,
+    ),
+    headline6: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Regular',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 13,
+      fontStyle: FontStyle.normal,
+    ),
+    bodyText1: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Regular',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 15,
+      fontStyle: FontStyle.normal,
+    ),
+    bodyText2: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Regular',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontWeight: FontWeight.normal,
+      fontSize: 13,
+    ),
+    caption: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Thin',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 10,
+      fontStyle: FontStyle.normal,
+    ),
+    button: TextStyle(
+      fontFamily: 'Sfpro-Rounded-Medium',
+      inherit: true,
+      color: AppColor.blackColor,
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      fontStyle: FontStyle.normal,
+    ),
+  );
+}

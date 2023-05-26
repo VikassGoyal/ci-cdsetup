@@ -89,10 +89,10 @@ Widget introverifyBody(context) {
         child: Text(
           "Connect with your contacts through our CONET WEB feature and conduct business like never before",
           textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .headline3
-              !.apply(color: AppColor.whiteColor),
+          style: TextStyle(
+            fontSize: 15.0,
+            color: AppColor.whiteColor
+          )
         ),
       )
     ],

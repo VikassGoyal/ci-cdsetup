@@ -1,0 +1,4 @@
+sk/fourq/calllog/BuildConfig.java
+ sk.fourq.calllog.BuildConfig
+sk/fourq/calllog/CallLogPlugin.java
+ sk.fourq.calllog.CallLogPlugin

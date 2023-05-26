@@ -1,0 +1,4 @@
+io/flutter/plugins/GeneratedPluginRegistrant.java
+ io.flutter.plugins.GeneratedPluginRegistrant
+com/shade6/conet/BuildConfig.java
+ com.shade6.conet.BuildConfig

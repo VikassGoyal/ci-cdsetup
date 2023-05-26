@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/vikasgoyal/StudioProjects/conet/build/image_picker_android/intermediates/res/merged/debug/layout-v21/notification_template_custom_big.xml",
+        "source": "/Users/vikasgoyal/.gradle/caches/transforms-2/files-2.1/ce4ceaa359598e8338f579db03e1e0e2/core-1.8.0/res/layout-v21/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/Users/vikasgoyal/StudioProjects/conet/build/image_picker_android/intermediates/res/merged/debug/layout-v21/notification_action_tombstone.xml",
+        "source": "/Users/vikasgoyal/.gradle/caches/transforms-2/files-2.1/ce4ceaa359598e8338f579db03e1e0e2/core-1.8.0/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Users/vikasgoyal/StudioProjects/conet/build/image_picker_android/intermediates/res/merged/debug/layout-v21/notification_action.xml",
+        "source": "/Users/vikasgoyal/.gradle/caches/transforms-2/files-2.1/ce4ceaa359598e8338f579db03e1e0e2/core-1.8.0/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/Users/vikasgoyal/StudioProjects/conet/build/image_picker_android/intermediates/res/merged/debug/layout-v21/notification_template_icon_group.xml",
+        "source": "/Users/vikasgoyal/.gradle/caches/transforms-2/files-2.1/ce4ceaa359598e8338f579db03e1e0e2/core-1.8.0/res/layout-v21/notification_template_icon_group.xml"
+    }
+]

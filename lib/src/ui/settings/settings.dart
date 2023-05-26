@@ -60,22 +60,7 @@ class _SettingsState extends State<Settings> {
           "assets/logo.svg",
           height: 24,
         ),
-        actions: const [
-          // IconButton(
-          //   icon: Icon(
-          //     Icons.notifications,
-          //     color: AppColor.whiteColor,
-          //   ),
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => NotificationScreen(),
-          //       ),
-          //     );
-          //   },
-          // )
-        ],
+
       ),
       body: LoadingOverlay(
         isLoading: _loader,

@@ -23,8 +23,8 @@ class _LoginState extends State<Login> {
   final _mobileEmailController = TextEditingController();
   final _passwordController = TextEditingController();
   //Focus
-  final FocusNode _mobileEmailControllerFocus = FocusNode();
-  final FocusNode _passwordControllerFocus = FocusNode();
+  // final FocusNode _mobileEmailControllerFocus = FocusNode();
+  // final FocusNode _passwordControllerFocus = FocusNode();
   bool _loader = false;
   bool _showPassword = false;
 
@@ -45,7 +45,7 @@ class _LoginState extends State<Login> {
         actionKeyboard: TextInputAction.next,
         functionValidate: commonValidation,
         controller: _mobileEmailController,
-        focusNode: _mobileEmailControllerFocus,
+        //focusNode: _mobileEmailControllerFocus,
         parametersValidate: "Please enter Email / Mobile.",
         onSubmitField: () {},
       );
@@ -65,7 +65,7 @@ class _LoginState extends State<Login> {
           hintText: "Password",
           filled: true,
           fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
-          errorStyle: const TextStyle(color: Colors.red),
+          //errorStyle: const TextStyle(color: Colors.red),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.transparent,
@@ -74,14 +74,14 @@ class _LoginState extends State<Login> {
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Color.fromRGBO(255, 255, 255, 0.20)),
           ),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: AppColor.whiteColor),
-          ),
-          focusedErrorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.transparent,
-            ),
-          ),
+          // errorBorder: const OutlineInputBorder(
+          //   borderSide: BorderSide(color: AppColor.whiteColor),
+          // ),
+          // focusedErrorBorder: const OutlineInputBorder(
+          //   borderSide: BorderSide(
+          //     color: Colors.transparent,
+          //   ),
+          // ),
           suffixIcon: GestureDetector(
             onTap: () {
               setState(() {

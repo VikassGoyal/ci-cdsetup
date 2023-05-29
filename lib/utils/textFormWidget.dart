@@ -49,7 +49,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
           hintText: widget.hintText,
           filled: true,
           fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
-          errorStyle: const TextStyle(color: Colors.red,fontSize: 15.0),
+          //errorStyle: const TextStyle(color: Colors.red,fontSize: 15.0),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.transparent,
@@ -58,14 +58,14 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Color.fromRGBO(255, 255, 255, 0.20)),
           ),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: AppColor.whiteColor),
-          ),
-          focusedErrorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.transparent,
-            ),
-          ),
+          // errorBorder: const OutlineInputBorder(
+          //   borderSide: BorderSide(color: AppColor.whiteColor),
+          // ),
+          // focusedErrorBorder: const OutlineInputBorder(
+          //   borderSide: BorderSide(
+          //     color: Colors.transparent,
+          //   ),
+          // ),
           hintStyle: Theme.of(context)
               .textTheme
               .headline5
@@ -97,8 +97,8 @@ String? requiredValidator(value, messageError) {
   return null;
 }
 
-// void changeFocus(BuildContext context, FocusNode? currentFocus, FocusNode? nextFocus) {
-//   print("awsesds");
-//   currentFocus?.unfocus();
-//   FocusScope.of(context).requestFocus(nextFocus);
-// }
+void changeFocus(BuildContext context, FocusNode? currentFocus, FocusNode? nextFocus) {
+
+  currentFocus?.unfocus();
+  FocusScope.of(context).requestFocus(nextFocus);
+}

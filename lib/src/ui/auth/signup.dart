@@ -6,7 +6,7 @@ import 'package:conet/src/ui/auth/termsofuse.dart';
 import 'package:conet/src/ui/auth/validateMobileNumberVerified.dart';
 import 'package:conet/src/ui/auth/verifyMobileNumber.dart';
 import 'package:conet/utils/theme.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -39,7 +39,7 @@ class _SignUpState extends State<SignUp> {
   final FocusNode _mobileControllerFocus = FocusNode();
   final FocusNode _passwordControllerFocus = FocusNode();
 
-  FirebaseAuth auth = FirebaseAuth.instance;
+  //FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class _SignUpState extends State<SignUp> {
                 decoration: const BoxDecoration(
                   color: Color.fromRGBO(255, 255, 255, 0.15),
                 ),
-                padding: const EdgeInsets.only(left: 21, right: 50),
+                padding: const EdgeInsets.only(left: 21, right:0),
                 child: Center(
                   child: Text(
                     "Name",
@@ -152,7 +152,7 @@ class _SignUpState extends State<SignUp> {
                 decoration: const BoxDecoration(
                   color: Color.fromRGBO(255, 255, 255, 0.15),
                 ),
-                padding: const EdgeInsets.only(left: 21, right: 50),
+                padding: const EdgeInsets.only(left: 21, right:0),
                 child: Center(
                   child: Text(
                     "Email",
@@ -241,7 +241,7 @@ class _SignUpState extends State<SignUp> {
                 decoration: const BoxDecoration(
                   color: Color.fromRGBO(255, 255, 255, 0.15),
                 ),
-                padding: const EdgeInsets.only(left: 21, right: 50),
+                padding: const EdgeInsets.only(left: 21, right: 0),
                 child: Center(
                   child: Text(
                     "Mobile",
@@ -330,7 +330,7 @@ class _SignUpState extends State<SignUp> {
                 decoration: const BoxDecoration(
                   color: Color.fromRGBO(255, 255, 255, 0.15),
                 ),
-                padding: const EdgeInsets.only(left: 21, right: 50),
+                padding: const EdgeInsets.only(left: 21, right: 0),
                 child: Center(
                   child: Text(
                     "Password",
@@ -482,7 +482,7 @@ class _SignUpState extends State<SignUp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Already have a account?  ",
+                "Already have an account?  ",
                 style: Theme.of(context)
                     .textTheme
                     .headline5
@@ -602,7 +602,7 @@ class _SignUpState extends State<SignUp> {
                     Container(
                       padding: const EdgeInsets.only(right: 36),
                       child: Text(
-                        "Create an account so you can orderyour favorite food even faster",
+                        "Create an account so you can order your favorite food even faster",
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'src/app.dart';
 
 class SimpleBlocObserver extends BlocObserver {
@@ -24,7 +25,9 @@ void main() {
 
     // Initializing FlutterFire
     // await Firebase.initializeApp();
-
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     // FirebaseCrashlytics.instance.crash();
 
     // Pass all uncaught errors from the framework to Crashlytics.

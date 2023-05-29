@@ -85,6 +85,9 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
         textInputAction: widget.actionKeyboard,
         controller: widget.controller,
         validator: (value) {
+          if(value!.isEmpty || !RegExp(r'^[^\s]{8,16}$').hasMatch(value)){
+            return "Enter value length is between 8 and 16";
+          }
           return null;
         },
       ),

@@ -6,6 +6,7 @@ import 'package:conet/src/ui/auth/login.dart';
 import 'package:conet/src/ui/auth/signup.dart';
 import 'package:conet/src/ui/introscreen/introSlider.dart';
 import 'package:conet/src/ui/keypadPage.dart';
+import 'package:conet/src/ui/settings/changePassword.dart';
 import 'package:conet/src/ui/settings/myprofile.dart';
 import 'package:conet/src/ui/settings/settings.dart';
 import 'package:conet/utils/textTheme.dart';
@@ -24,10 +25,11 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'CoNet',
       home: Builder(
         builder: (context) {
-          return Settings() ;
+          return SplashScreen() ;
         },
       ),
       theme: ThemeData(

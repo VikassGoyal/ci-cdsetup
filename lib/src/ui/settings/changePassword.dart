@@ -45,7 +45,9 @@ class _ChangePasswordState extends State<ChangePassword> {
         controller: _oldPasswordController,
         textInputType: TextInputType.visiblePassword,
         actionKeyboard: TextInputAction.next,
-        onSubmitField: () {},
+        onSubmitField: () {
+
+        },
         parametersValidate: "Please enter Old Password.",
         // functionValidate: commonValidation(_oldPasswordController.text, ""),
       );

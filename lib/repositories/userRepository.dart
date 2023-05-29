@@ -14,11 +14,10 @@ class UserRepository {
   }
 
   otpVerification(requestBody) async {
-    var response =
-        await _apiBaseHelper.postWithoutToken("loginwithotp", requestBody);
+    var response = await _apiBaseHelper.postWithoutToken("loginwithotp", requestBody);
     return response;
   }
-  
+
   changePassword(requestBody) async {
     var response = await _apiBaseHelper.post("changepassword", requestBody);
     return response;

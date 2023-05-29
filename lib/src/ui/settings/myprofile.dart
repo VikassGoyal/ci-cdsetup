@@ -12,8 +12,8 @@ import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
-import 'package:carousel_pro/carousel_pro.dart';
+import 'package:multiple_images_picker/multiple_images_picker.dart';
+import 'package:another_carousel_pro/another_carousel_pro.dart';
 
 import '../utils.dart';
 
@@ -21,7 +21,7 @@ class MyProfile extends StatefulWidget {
   String? phoneNumber;
 
   MyProfile(this.phoneNumber, {Key? key}) : super(key: key);
-  
+
   @override
   _MyProfileState createState() => _MyProfileState();
 }
@@ -105,8 +105,7 @@ class _MyProfileState extends State<MyProfile> {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.of(context, rootNavigator: true)
-                            .pop('dialog');
+                        Navigator.of(context, rootNavigator: true).pop('dialog');
                       },
                       child: Container(
                         margin: const EdgeInsets.only(right: 20),
@@ -123,7 +122,7 @@ class _MyProfileState extends State<MyProfile> {
                   SizedBox(
                     height: 300.0,
                     width: 350.0,
-                    child: Carousel(
+                    child: AnotherCarousel(
                       boxFit: BoxFit.cover,
                       images: popupImages,
                       autoplay: false,
@@ -184,10 +183,7 @@ class _MyProfileState extends State<MyProfile> {
             Text(
               "Keywords",
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  !.apply(color: const Color.fromRGBO(135, 139, 149, 1)),
+              style: Theme.of(context).textTheme.bodyText2!.apply(color: const Color.fromRGBO(135, 139, 149, 1)),
             ),
             buildChips(),
           ],
@@ -202,8 +198,8 @@ class _MyProfileState extends State<MyProfile> {
           Expanded(
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    personalTab ? AppColor.accentColor : AppColor.whiteColor),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(personalTab ? AppColor.accentColor : AppColor.whiteColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     side: const BorderSide(
@@ -221,10 +217,10 @@ class _MyProfileState extends State<MyProfile> {
               },
               child: Text(
                 'Personal',
-                style: Theme.of(context).textTheme.headline5!.apply(
-                    color: personalTab
-                        ? AppColor.whiteColor
-                        : AppColor.accentColor),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5!
+                    .apply(color: personalTab ? AppColor.whiteColor : AppColor.accentColor),
               ),
             ),
           ),
@@ -232,9 +228,8 @@ class _MyProfileState extends State<MyProfile> {
           Expanded(
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(personalTab
-                    ? AppColor.whiteColor
-                    : AppColor.secondaryColor),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(personalTab ? AppColor.whiteColor : AppColor.secondaryColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     side: const BorderSide(
@@ -255,10 +250,10 @@ class _MyProfileState extends State<MyProfile> {
               },
               child: Text(
                 'Professional',
-                style: Theme.of(context).textTheme.headline5!.apply(
-                    color: personalTab
-                        ? AppColor.secondaryColor
-                        : AppColor.whiteColor),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5!
+                    .apply(color: personalTab ? AppColor.secondaryColor : AppColor.whiteColor),
               ),
             ),
           ),
@@ -450,8 +445,7 @@ class _MyProfileState extends State<MyProfile> {
         margin: const EdgeInsets.only(left: 22, right: 22),
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+            backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
             ),
@@ -472,10 +466,7 @@ class _MyProfileState extends State<MyProfile> {
             child: Text(
               "Next",
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .button
-                  !.apply(color: AppColor.whiteColor),
+              style: Theme.of(context).textTheme.button!.apply(color: AppColor.whiteColor),
             ),
           ),
         ),
@@ -646,10 +637,7 @@ class _MyProfileState extends State<MyProfile> {
                 children: [
                   Text(
                     "Company Profile ${i + 1}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        !.apply(color: AppColor.bottomUnselectItemColor),
+                    style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.bottomUnselectItemColor),
                   ),
                 ],
               ),
@@ -665,10 +653,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 child: TextFormField(
                   enabled: false,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      !.apply(color: AppColor.secondaryColor),
+                  style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.secondaryColor),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Company",
@@ -706,10 +691,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 child: TextFormField(
                   enabled: false,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      !.apply(color: AppColor.secondaryColor),
+                  style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.secondaryColor),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Website",
@@ -746,10 +728,7 @@ class _MyProfileState extends State<MyProfile> {
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: TextFormField(
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      !.apply(color: AppColor.secondaryColor),
+                  style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.secondaryColor),
                   enabled: false,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
@@ -790,47 +769,28 @@ class _MyProfileState extends State<MyProfile> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: (entreprenerurList[i].images!.isNotEmpty
-                                      ? entreprenerurList[i]
-                                          .images![0]
-                                          .isUploaded!
+                                      ? entreprenerurList[i].images![0].isUploaded!
                                       : false)
                                   ? InkWell(
                                       onTap: () {
-                                        List<NetworkImage> listOfImages =
-                                            <NetworkImage>[];
+                                        List<NetworkImage> listOfImages = <NetworkImage>[];
                                         listOfImages = [];
 
-                                        if (entreprenerurList[i]
-                                                .images!.isNotEmpty) {
+                                        if (entreprenerurList[i].images!.isNotEmpty) {
                                           listOfImages.add(
                                             NetworkImage(
-                                                AppConstant.imageBaseUrl +
-                                                    entreprenerurList[i]
-                                                        .images![0]
-                                                        .imageUrl!),
+                                                AppConstant.imageBaseUrl + entreprenerurList[i].images![0].imageUrl!),
                                           );
                                         }
 
-                                        if (entreprenerurList[i]
-                                                .images
-                                                !.length >=
-                                            2) {
+                                        if (entreprenerurList[i].images!.length >= 2) {
                                           listOfImages.add(NetworkImage(
-                                              AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![1]
-                                                      .imageUrl!));
+                                              AppConstant.imageBaseUrl + entreprenerurList[i].images![1].imageUrl!));
                                         }
 
-                                        if (entreprenerurList[i]
-                                                .images!
-                                                .length >=
-                                            3) {
+                                        if (entreprenerurList[i].images!.length >= 3) {
                                           listOfImages.add(NetworkImage(
-                                              AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![2]
-                                                      .imageUrl!));
+                                              AppConstant.imageBaseUrl + entreprenerurList[i].images![2].imageUrl!));
                                         }
 
                                         popupImages = listOfImages;
@@ -838,43 +798,34 @@ class _MyProfileState extends State<MyProfile> {
                                         displayImages();
                                       },
                                       child: CachedNetworkImage(
-                                        imageUrl: entreprenerurList[i]
-                                                    .images!.isNotEmpty
-                                            ? AppConstant.imageBaseUrl +
-                                                entreprenerurList[i]
-                                                    .images![0]
-                                                    .imageUrl!
+                                        imageUrl: entreprenerurList[i].images!.isNotEmpty
+                                            ? AppConstant.imageBaseUrl + entreprenerurList[i].images![0].imageUrl!
                                             : "",
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
+                                        imageBuilder: (context, imageProvider) => Container(
                                           decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover),
+                                            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                           ),
                                         ),
-                                        placeholder: (context, url) =>
-                                            Image.asset(
+                                        placeholder: (context, url) => Image.asset(
                                           "assets/images/placeholderImage.jpg",
                                           fit: BoxFit.fill,
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset(
+                                        errorWidget: (context, url, error) => Image.asset(
                                           "assets/images/placeholderImage.jpg",
                                           fit: BoxFit.fill,
                                         ),
                                       ),
                                     )
-                                  : ( entreprenerurList[i].images!.isNotEmpty ? AssetThumb(
-                                      asset: entreprenerurList[i].images![0].imageAsset,
-                                      width: 114,
-                                      height: 102,
-                                    ) : const SizedBox(
-                                      width: 114,
-                                      height: 102,
-                                    )
-                                  ),
+                                  : (entreprenerurList[i].images!.isNotEmpty
+                                      ? AssetThumb(
+                                          asset: entreprenerurList[i].images![0].imageAsset,
+                                          width: 114,
+                                          height: 102,
+                                        )
+                                      : const SizedBox(
+                                          width: 114,
+                                          height: 102,
+                                        )),
                             ),
                           )
                         ],
@@ -893,47 +844,28 @@ class _MyProfileState extends State<MyProfile> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: (entreprenerurList[i].images!.length >= 2
-                                      ? entreprenerurList[i]
-                                          .images![1]
-                                          .isUploaded!
+                                      ? entreprenerurList[i].images![1].isUploaded!
                                       : false)
                                   ? InkWell(
                                       onTap: () {
-                                        List<NetworkImage> listOfImages =
-                                            <NetworkImage>[];
+                                        List<NetworkImage> listOfImages = <NetworkImage>[];
                                         listOfImages = [];
 
-                                        if (entreprenerurList[i]
-                                                .images!.isNotEmpty) {
+                                        if (entreprenerurList[i].images!.isNotEmpty) {
                                           listOfImages.add(
                                             NetworkImage(
-                                                AppConstant.imageBaseUrl +
-                                                    entreprenerurList[i]
-                                                        .images![0]
-                                                        .imageUrl!),
+                                                AppConstant.imageBaseUrl + entreprenerurList[i].images![0].imageUrl!),
                                           );
                                         }
 
-                                        if (entreprenerurList[i]
-                                                .images!
-                                                .length >=
-                                            2) {
+                                        if (entreprenerurList[i].images!.length >= 2) {
                                           listOfImages.add(NetworkImage(
-                                              AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![1]
-                                                      .imageUrl!));
+                                              AppConstant.imageBaseUrl + entreprenerurList[i].images![1].imageUrl!));
                                         }
 
-                                        if (entreprenerurList[i]
-                                                .images!
-                                                .length >=
-                                            3) {
+                                        if (entreprenerurList[i].images!.length >= 3) {
                                           listOfImages.add(NetworkImage(
-                                              AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![2]
-                                                      .imageUrl!));
+                                              AppConstant.imageBaseUrl + entreprenerurList[i].images![2].imageUrl!));
                                         }
 
                                         popupImages = listOfImages;
@@ -941,41 +873,30 @@ class _MyProfileState extends State<MyProfile> {
                                         displayImages();
                                       },
                                       child: CachedNetworkImage(
-                                        imageUrl: entreprenerurList[i]
-                                                    .images!
-                                                    .length >=
-                                                2
-                                            ? AppConstant.imageBaseUrl +
-                                                entreprenerurList[i]
-                                                    .images![1]
-                                                    .imageUrl!
+                                        imageUrl: entreprenerurList[i].images!.length >= 2
+                                            ? AppConstant.imageBaseUrl + entreprenerurList[i].images![1].imageUrl!
                                             : "",
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
+                                        imageBuilder: (context, imageProvider) => Container(
                                           decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover),
+                                            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                           ),
                                         ),
-                                        placeholder: (context, url) =>
-                                            Image.asset(
+                                        placeholder: (context, url) => Image.asset(
                                           "assets/images/placeholderImage.jpg",
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
+                                        errorWidget: (context, url, error) => const Icon(Icons.error),
                                       ),
                                     )
-                                  : (entreprenerurList[i].images!.length >= 2 ? AssetThumb(
-                                      asset: entreprenerurList[i].images![1].imageAsset,
-                                      width: 114,
-                                      height: 102,
-                                    ) : const SizedBox(
-                                      width: 114,
-                                      height: 102,
-                                    )
-                                  ),
+                                  : (entreprenerurList[i].images!.length >= 2
+                                      ? AssetThumb(
+                                          asset: entreprenerurList[i].images![1].imageAsset,
+                                          width: 114,
+                                          height: 102,
+                                        )
+                                      : const SizedBox(
+                                          width: 114,
+                                          height: 102,
+                                        )),
                             ),
                           ),
                         ],
@@ -994,47 +915,28 @@ class _MyProfileState extends State<MyProfile> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: (entreprenerurList[i].images!.length == 3
-                                      ? entreprenerurList[i]
-                                          .images![2]
-                                          .isUploaded!
+                                      ? entreprenerurList[i].images![2].isUploaded!
                                       : false)
                                   ? InkWell(
                                       onTap: () {
-                                        List<NetworkImage> listOfImages =
-                                            <NetworkImage>[];
+                                        List<NetworkImage> listOfImages = <NetworkImage>[];
                                         listOfImages = [];
 
-                                        if (entreprenerurList[i]
-                                                .images!.isNotEmpty) {
+                                        if (entreprenerurList[i].images!.isNotEmpty) {
                                           listOfImages.add(
                                             NetworkImage(
-                                                AppConstant.imageBaseUrl +
-                                                    entreprenerurList[i]
-                                                        .images![0]
-                                                        .imageUrl!),
+                                                AppConstant.imageBaseUrl + entreprenerurList[i].images![0].imageUrl!),
                                           );
                                         }
 
-                                        if (entreprenerurList[i]
-                                                .images!
-                                                .length >=
-                                            2) {
+                                        if (entreprenerurList[i].images!.length >= 2) {
                                           listOfImages.add(NetworkImage(
-                                              AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![1]
-                                                      .imageUrl!));
+                                              AppConstant.imageBaseUrl + entreprenerurList[i].images![1].imageUrl!));
                                         }
 
-                                        if (entreprenerurList[i]
-                                                .images!
-                                                .length >=
-                                            3) {
+                                        if (entreprenerurList[i].images!.length >= 3) {
                                           listOfImages.add(NetworkImage(
-                                              AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![2]
-                                                      .imageUrl!));
+                                              AppConstant.imageBaseUrl + entreprenerurList[i].images![2].imageUrl!));
                                         }
 
                                         popupImages = listOfImages;
@@ -1042,41 +944,30 @@ class _MyProfileState extends State<MyProfile> {
                                         displayImages();
                                       },
                                       child: CachedNetworkImage(
-                                        imageUrl: entreprenerurList[i]
-                                                    .images!
-                                                    .length ==
-                                                3
-                                            ? AppConstant.imageBaseUrl +
-                                                entreprenerurList[i]
-                                                    .images![2]
-                                                    .imageUrl!
+                                        imageUrl: entreprenerurList[i].images!.length == 3
+                                            ? AppConstant.imageBaseUrl + entreprenerurList[i].images![2].imageUrl!
                                             : "",
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
+                                        imageBuilder: (context, imageProvider) => Container(
                                           decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover),
+                                            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                           ),
                                         ),
-                                        placeholder: (context, url) =>
-                                            Image.asset(
+                                        placeholder: (context, url) => Image.asset(
                                           "assets/images/placeholderImage.jpg",
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
+                                        errorWidget: (context, url, error) => const Icon(Icons.error),
                                       ),
                                     )
-                                  : (entreprenerurList[i].images!.length == 3 ? AssetThumb(
-                                      asset: entreprenerurList[i].images![2].imageAsset,
-                                      width: 114,
-                                      height: 102,
-                                    ) : const SizedBox(
-                                      width: 114,
-                                      height: 102,
-                                    )
-                                  ),
+                                  : (entreprenerurList[i].images!.length == 3
+                                      ? AssetThumb(
+                                          asset: entreprenerurList[i].images![2].imageAsset,
+                                          width: 114,
+                                          height: 102,
+                                        )
+                                      : const SizedBox(
+                                          width: 114,
+                                          height: 102,
+                                        )),
                             ),
                           ),
                         ],
@@ -1098,12 +989,8 @@ class _MyProfileState extends State<MyProfile> {
             ? [
                 const SizedBox(height: 26),
                 _buildMobileNumber(),
-                _personalSecondaryNumber.text != ""
-                    ? const SizedBox(height: 16)
-                    : Container(),
-                _personalSecondaryNumber.text != ""
-                    ? _buildSecondaryPhoneNumber()
-                    : Container(),
+                _personalSecondaryNumber.text != "" ? const SizedBox(height: 16) : Container(),
+                _personalSecondaryNumber.text != "" ? _buildSecondaryPhoneNumber() : Container(),
                 const SizedBox(height: 16),
                 _buildEmailId(),
                 const SizedBox(height: 16),
@@ -1195,8 +1082,7 @@ class _MyProfileState extends State<MyProfile> {
                       physics: const NeverScrollableScrollPhysics(),
                       addAutomaticKeepAlives: true,
                       itemCount: entreprenerurList.length,
-                      itemBuilder: (BuildContext ctxt, int i) =>
-                          entreprenerurItemNew(i),
+                      itemBuilder: (BuildContext ctxt, int i) => entreprenerurItemNew(i),
                     ),
                   ),
                 ),
@@ -1209,9 +1095,7 @@ class _MyProfileState extends State<MyProfile> {
       return Column(
         children: [
           const SizedBox(height: 80),
-          Text(
-              _personalName.text ?? "Unknown Number",
-              style: Theme.of(context).textTheme.headline2),
+          Text(_personalName.text ?? "Unknown Number", style: Theme.of(context).textTheme.headline2),
           const SizedBox(height: 22),
           Visibility(
             visible: _values.isNotEmpty,
@@ -1249,9 +1133,7 @@ class _MyProfileState extends State<MyProfile> {
                     borderRadius: BorderRadius.circular(100.0),
                     child: FadeInImage.assetNetwork(
                       placeholder: "assets/images/profile.png",
-                      image: userImage != null
-                          ? AppConstant.profileImageBaseUrl + userImage
-                          : "",
+                      image: userImage != null ? AppConstant.profileImageBaseUrl + userImage : "",
                       fit: BoxFit.cover,
                       imageErrorBuilder: (context, error, stackTrace) {
                         return Image.asset(
@@ -1288,10 +1170,7 @@ class _MyProfileState extends State<MyProfile> {
               ),
               Text(
                 "Back",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    !.apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.whiteColor),
               )
             ],
           ),
@@ -1299,10 +1178,7 @@ class _MyProfileState extends State<MyProfile> {
         centerTitle: true,
         title: Text(
           "Contact",
-          style: Theme.of(context)
-              .textTheme
-              .headline4
-              !.apply(color: AppColor.whiteColor),
+          style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.whiteColor),
         ),
         actions: [
           ElevatedButton(
@@ -1322,10 +1198,7 @@ class _MyProfileState extends State<MyProfile> {
             },
             child: Text(
               "Edit",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  !.apply(color: AppColor.whiteColor),
+              style: Theme.of(context).textTheme.bodyText1!.apply(color: AppColor.whiteColor),
             ),
           ),
         ],
@@ -1335,8 +1208,7 @@ class _MyProfileState extends State<MyProfile> {
               isLoading: _loaderoverflow,
               opacity: 0.3,
               progressIndicator: const CircularProgressIndicator(
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
+                valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
               child: SizedBox(
                 height: double.infinity,
@@ -1347,8 +1219,7 @@ class _MyProfileState extends State<MyProfile> {
             )
           : const Center(
               child: CircularProgressIndicator(
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
+                valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
             ),
     );
@@ -1372,9 +1243,8 @@ class _MyProfileState extends State<MyProfile> {
         _personalEmail.text = contactDetail?.personal?.email ?? "";
         _personalDob.text = contactDetail?.personal?.dOB ?? "";
         _personalAddress.text = contactDetail?.personal?.address1 ?? "";
-        _personalLandline.text = contactDetail?.personal?.landline == null
-            ? ''
-            : contactDetail?.personal?.landline.toString() ?? "";
+        _personalLandline.text =
+            contactDetail?.personal?.landline == null ? '' : contactDetail?.personal?.landline.toString() ?? "";
 
         _personalCity.text = contactDetail?.personal?.city ?? "";
         _personalState.text = contactDetail?.personal?.state ?? "";
@@ -1382,21 +1252,16 @@ class _MyProfileState extends State<MyProfile> {
         _personalPincode.text = contactDetail?.personal?.pincode ?? "";
         // _personalKeyword.text = contactDetail.personal.keyword;
 
-        _values = contactDetail?.personal?.keyword != null
-            ? contactDetail!.personal!.keyword!.split(',')
-            : [];
+        _values = contactDetail?.personal?.keyword != null ? contactDetail!.personal!.keyword!.split(',') : [];
 
         if (contactDetail?.professional != null) {
           _occupationValue = contactDetail?.professional?.occupation ?? "";
           _professionalOccupation.text = contactDetail?.professional?.occupation ?? "";
           _professionalCompany.text = contactDetail?.professional?.company ?? "";
-          _professionalCompanyWebsite.text =
-              contactDetail?.professional?.companyWebsite ?? "";
-          _professionalSchool.text =
-              contactDetail?.professional?.schoolUniversity ?? "";
+          _professionalCompanyWebsite.text = contactDetail?.professional?.companyWebsite ?? "";
+          _professionalSchool.text = contactDetail?.professional?.schoolUniversity ?? "";
           _professionalWorkNature.text = contactDetail?.professional?.workNature ?? "";
-          _professionalDesignation.text =
-              contactDetail?.professional?.designation ?? "";
+          _professionalDesignation.text = contactDetail?.professional?.designation ?? "";
           _professionalGrade.text = contactDetail?.professional?.grade ?? "";
 
           entreprenerurListJson = contactDetail?.professionalList ?? [];

@@ -19,7 +19,7 @@ class ApiBaseHelper {
       var uri = Uri.http('conet.shadesix.in', "api/$url");
       final response = await http.post(uri, body: body);
       responseJson = _returnResponse(response);
-    } catch(error) {
+    } catch (error) {
       print('FetchDataException : $error');
       throw FetchDataException('No Internet connection');
     }
@@ -41,7 +41,7 @@ class ApiBaseHelper {
         'Authorization': 'Bearer $token',
       });
       responseJson = await _returnResponse(response);
-    } catch(e) {
+    } catch (e) {
       print('No net : $e');
       throw FetchDataException('No Internet connection');
     }
@@ -65,8 +65,8 @@ class ApiBaseHelper {
       };
 
       var uri = Uri.http('conet.shadesix.in', "api/$url");
-      final response = await http.post(uri,
-          body: jsonEncode(body), headers: headers);
+      final response =
+          await http.post(uri, body: jsonEncode(body), headers: headers);
       print(response);
 
       responseJson = _returnResponse(response);

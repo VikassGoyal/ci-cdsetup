@@ -46,10 +46,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 child: Center(
                   child: Text(
                     "Email",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.apply(color: const Color.fromRGBO(255, 255, 255, 0.75)),
+                    style: Theme.of(context).textTheme.headline5?.apply(
+                        color: const Color.fromRGBO(255, 255, 255, 0.75)),
                   ),
                 ),
               ),
@@ -162,7 +160,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               //     ),
               //   );
               // }
-
             } catch (e) {
               Navigator.of(context).pop();
               print(e);

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_pro/carousel_pro.dart';
+import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
@@ -16,7 +16,7 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../utils.dart';
 
@@ -144,7 +144,7 @@ class _ContactProfileState extends State<ContactProfile> {
                   SizedBox(
                     height: 300.0,
                     width: 350.0,
-                    child: Carousel(
+                    child: AnotherCarousel(
                       boxFit: BoxFit.cover,
                       images: popupImages,
                       autoplay: false,
@@ -653,7 +653,8 @@ class _ContactProfileState extends State<ContactProfile> {
     entreprenerurItemNew(int i) {
       return Padding(
         // padding: EdgeInsets.all(16),
-        padding: const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
+        padding:
+            const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
         child: Material(
           color: AppColor.whiteColor,
           clipBehavior: Clip.antiAlias,
@@ -689,7 +690,8 @@ class _ContactProfileState extends State<ContactProfile> {
                       .bodyText2
                       ?.apply(color: AppColor.secondaryColor),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding:
+                        const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Company",
                     labelStyle: Theme.of(context).textTheme.headline6?.apply(
                           color: const Color.fromRGBO(135, 139, 149, 1),
@@ -730,7 +732,8 @@ class _ContactProfileState extends State<ContactProfile> {
                       .bodyText2
                       ?.apply(color: AppColor.secondaryColor),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding:
+                        const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Website",
                     labelStyle: Theme.of(context).textTheme.headline6?.apply(
                           color: const Color.fromRGBO(135, 139, 149, 1),
@@ -771,7 +774,8 @@ class _ContactProfileState extends State<ContactProfile> {
                       .bodyText2
                       ?.apply(color: AppColor.secondaryColor),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding:
+                        const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: 'Work Nature',
                     labelStyle: Theme.of(context).textTheme.headline6?.apply(
                           color: const Color.fromRGBO(135, 139, 149, 1),
@@ -813,7 +817,8 @@ class _ContactProfileState extends State<ContactProfile> {
               Row(
                 children: [
                   Visibility(
-                    visible: entreprenerurList[i].images!.asMap().containsKey(0),
+                    visible:
+                        entreprenerurList[i].images!.asMap().containsKey(0),
                     child: Flexible(
                       child: Stack(
                         children: [
@@ -835,7 +840,8 @@ class _ContactProfileState extends State<ContactProfile> {
                                         listOfImages = [];
 
                                         if (entreprenerurList[i]
-                                                .images!.isNotEmpty) {
+                                            .images!
+                                            .isNotEmpty) {
                                           listOfImages.add(
                                             NetworkImage(
                                                 AppConstant.imageBaseUrl +
@@ -873,7 +879,8 @@ class _ContactProfileState extends State<ContactProfile> {
                                       },
                                       child: CachedNetworkImage(
                                         imageUrl: entreprenerurList[i]
-                                                    .images!.isNotEmpty
+                                                .images!
+                                                .isNotEmpty
                                             ? AppConstant.imageBaseUrl +
                                                 entreprenerurList[i]
                                                     .images![0]
@@ -900,15 +907,18 @@ class _ContactProfileState extends State<ContactProfile> {
                                         ),
                                       ),
                                     )
-                                  : (entreprenerurList[i].images!.isNotEmpty ? AssetThumb(
-                                      asset: entreprenerurList[i].images![0].imageAsset,
-                                      width: 114,
-                                      height: 102,
-                                    ) : const SizedBox(
-                                      width: 114,
-                                      height: 102,
-                                    )
-                                  ),
+                                  : (entreprenerurList[i].images!.isNotEmpty
+                                      ? AssetThumb(
+                                          asset: entreprenerurList[i]
+                                              .images![0]
+                                              .imageAsset,
+                                          width: 114,
+                                          height: 102,
+                                        )
+                                      : const SizedBox(
+                                          width: 114,
+                                          height: 102,
+                                        )),
                             ),
                           )
                         ],
@@ -916,7 +926,8 @@ class _ContactProfileState extends State<ContactProfile> {
                     ),
                   ),
                   Visibility(
-                    visible: entreprenerurList[i].images!.asMap().containsKey(1),
+                    visible:
+                        entreprenerurList[i].images!.asMap().containsKey(1),
                     child: Flexible(
                       child: Stack(
                         children: [
@@ -925,99 +936,103 @@ class _ContactProfileState extends State<ContactProfile> {
                             width: 114,
                             height: 102,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: (entreprenerurList[i].images!.length >= 2
-                                      ? entreprenerurList[i]
-                                          .images![1]
-                                          .isUploaded!
-                                      : false)
-                                  ? InkWell(
-                                      onTap: () {
-                                        List<NetworkImage> listOfImages =
-                                            <NetworkImage>[];
-                                        listOfImages = [];
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: (entreprenerurList[i].images!.length >= 2
+                                        ? entreprenerurList[i]
+                                            .images![1]
+                                            .isUploaded!
+                                        : false)
+                                    ? InkWell(
+                                        onTap: () {
+                                          List<NetworkImage> listOfImages =
+                                              <NetworkImage>[];
+                                          listOfImages = [];
 
-                                        if (entreprenerurList[i]
-                                                .images!.isNotEmpty) {
-                                          listOfImages.add(
-                                            NetworkImage(
+                                          if (entreprenerurList[i]
+                                              .images!
+                                              .isNotEmpty) {
+                                            listOfImages.add(
+                                              NetworkImage(
+                                                  AppConstant.imageBaseUrl +
+                                                      entreprenerurList[i]
+                                                          .images![0]
+                                                          .imageUrl!),
+                                            );
+                                          }
+
+                                          if (entreprenerurList[i]
+                                                  .images!
+                                                  .length >=
+                                              2) {
+                                            listOfImages.add(NetworkImage(
                                                 AppConstant.imageBaseUrl +
                                                     entreprenerurList[i]
-                                                        .images![0]
-                                                        .imageUrl!),
-                                          );
-                                        }
+                                                        .images![1]
+                                                        .imageUrl!));
+                                          }
 
-                                        if (entreprenerurList[i]
-                                                .images!
-                                                .length >=
-                                            2) {
-                                          listOfImages.add(NetworkImage(
-                                              AppConstant.imageBaseUrl +
+                                          if (entreprenerurList[i]
+                                                  .images!
+                                                  .length >=
+                                              3) {
+                                            listOfImages.add(NetworkImage(
+                                                AppConstant.imageBaseUrl +
+                                                    entreprenerurList[i]
+                                                        .images![2]
+                                                        .imageUrl!));
+                                          }
+
+                                          popupImages = listOfImages;
+
+                                          displayImages();
+                                        },
+                                        child: CachedNetworkImage(
+                                          imageUrl: entreprenerurList[i]
+                                                      .images!
+                                                      .length >=
+                                                  2
+                                              ? AppConstant.imageBaseUrl +
                                                   entreprenerurList[i]
                                                       .images![1]
-                                                      .imageUrl!));
-                                        }
-
-                                        if (entreprenerurList[i]
-                                                .images!
-                                                .length >=
-                                            3) {
-                                          listOfImages.add(NetworkImage(
-                                              AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![2]
-                                                      .imageUrl!));
-                                        }
-
-                                        popupImages = listOfImages;
-
-                                        displayImages();
-                                      },
-                                      child: CachedNetworkImage(
-                                        imageUrl: entreprenerurList[i]
-                                                    .images!
-                                                    .length >=
-                                                2
-                                            ? AppConstant.imageBaseUrl +
-                                                entreprenerurList[i]
-                                                    .images![1]
-                                                    .imageUrl!
-                                            : "",
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover),
+                                                      .imageUrl!
+                                              : "",
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover),
+                                            ),
                                           ),
+                                          placeholder: (context, url) =>
+                                              Image.asset(
+                                            "assets/images/placeholderImage.jpg",
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
                                         ),
-                                        placeholder: (context, url) =>
-                                            Image.asset(
-                                          "assets/images/placeholderImage.jpg",
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
-                                      ),
-                                    )
-                                  : (entreprenerurList[i].images!.length >= 2 ? AssetThumb(
-                                      asset: entreprenerurList[i].images![1].imageAsset,
-                                      width: 114,
-                                      height: 102,
-                                    ) : const SizedBox(
-                                      width: 114,
-                                      height: 102,
-                                    )
-                                  )
-                            ),
+                                      )
+                                    : (entreprenerurList[i].images!.length >= 2
+                                        ? AssetThumb(
+                                            asset: entreprenerurList[i]
+                                                .images![1]
+                                                .imageAsset,
+                                            width: 114,
+                                            height: 102,
+                                          )
+                                        : const SizedBox(
+                                            width: 114,
+                                            height: 102,
+                                          ))),
                           ),
                         ],
                       ),
                     ),
                   ),
                   Visibility(
-                    visible: entreprenerurList[i].images!.asMap().containsKey(2),
+                    visible:
+                        entreprenerurList[i].images!.asMap().containsKey(2),
                     child: Flexible(
                       child: Stack(
                         children: [
@@ -1026,92 +1041,95 @@ class _ContactProfileState extends State<ContactProfile> {
                             width: 114,
                             height: 102,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: (entreprenerurList[i].images!.length == 3
-                                      ? entreprenerurList[i]
-                                          .images![2]
-                                          .isUploaded!
-                                      : false)
-                                  ? InkWell(
-                                      onTap: () {
-                                        List<NetworkImage> listOfImages =
-                                            <NetworkImage>[];
-                                        listOfImages = [];
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: (entreprenerurList[i].images!.length == 3
+                                        ? entreprenerurList[i]
+                                            .images![2]
+                                            .isUploaded!
+                                        : false)
+                                    ? InkWell(
+                                        onTap: () {
+                                          List<NetworkImage> listOfImages =
+                                              <NetworkImage>[];
+                                          listOfImages = [];
 
-                                        if (entreprenerurList[i]
-                                                .images!.isNotEmpty) {
-                                          listOfImages.add(
-                                            NetworkImage(
+                                          if (entreprenerurList[i]
+                                              .images!
+                                              .isNotEmpty) {
+                                            listOfImages.add(
+                                              NetworkImage(
+                                                  AppConstant.imageBaseUrl +
+                                                      entreprenerurList[i]
+                                                          .images![0]
+                                                          .imageUrl!),
+                                            );
+                                          }
+
+                                          if (entreprenerurList[i]
+                                                  .images!
+                                                  .length >=
+                                              2) {
+                                            listOfImages.add(NetworkImage(
                                                 AppConstant.imageBaseUrl +
                                                     entreprenerurList[i]
-                                                        .images![0]
-                                                        .imageUrl!),
-                                          );
-                                        }
+                                                        .images![1]
+                                                        .imageUrl!));
+                                          }
 
-                                        if (entreprenerurList[i]
-                                                .images!
-                                                .length >=
-                                            2) {
-                                          listOfImages.add(NetworkImage(
-                                              AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![1]
-                                                      .imageUrl!));
-                                        }
+                                          if (entreprenerurList[i]
+                                                  .images!
+                                                  .length >=
+                                              3) {
+                                            listOfImages.add(NetworkImage(
+                                                AppConstant.imageBaseUrl +
+                                                    entreprenerurList[i]
+                                                        .images![2]
+                                                        .imageUrl!));
+                                          }
 
-                                        if (entreprenerurList[i]
-                                                .images!
-                                                .length >=
-                                            3) {
-                                          listOfImages.add(NetworkImage(
-                                              AppConstant.imageBaseUrl +
+                                          popupImages = listOfImages;
+
+                                          displayImages();
+                                        },
+                                        child: CachedNetworkImage(
+                                          imageUrl: entreprenerurList[i]
+                                                      .images!
+                                                      .length ==
+                                                  3
+                                              ? AppConstant.imageBaseUrl +
                                                   entreprenerurList[i]
                                                       .images![2]
-                                                      .imageUrl!));
-                                        }
-
-                                        popupImages = listOfImages;
-
-                                        displayImages();
-                                      },
-                                      child: CachedNetworkImage(
-                                        imageUrl: entreprenerurList[i]
-                                                    .images!
-                                                    .length ==
-                                                3
-                                            ? AppConstant.imageBaseUrl +
-                                                entreprenerurList[i]
-                                                    .images![2]
-                                                    .imageUrl!
-                                            : "",
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover),
+                                                      .imageUrl!
+                                              : "",
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover),
+                                            ),
                                           ),
+                                          placeholder: (context, url) =>
+                                              Image.asset(
+                                            "assets/images/placeholderImage.jpg",
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
                                         ),
-                                        placeholder: (context, url) =>
-                                            Image.asset(
-                                          "assets/images/placeholderImage.jpg",
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
-                                      ),
-                                    )
-                                  : ( entreprenerurList[i].images!.length == 3? AssetThumb(
-                                      asset: entreprenerurList[i].images![2].imageAsset,
-                                      width: 114,
-                                      height: 102,
-                                    ) : const SizedBox(
-                                      width: 114,
-                                      height: 102,
-                                    )
-                                  )
-                            ),
+                                      )
+                                    : (entreprenerurList[i].images!.length == 3
+                                        ? AssetThumb(
+                                            asset: entreprenerurList[i]
+                                                .images![2]
+                                                .imageAsset,
+                                            width: 114,
+                                            height: 102,
+                                          )
+                                        : const SizedBox(
+                                            width: 114,
+                                            height: 102,
+                                          ))),
                           ),
                         ],
                       ),
@@ -1221,7 +1239,9 @@ class _ContactProfileState extends State<ContactProfile> {
                     : Container(),
                 const SizedBox(height: 16),
                 _buildEmailId(),
-                _personalDob.text != "" ? const SizedBox(height: 16) : Container(),
+                _personalDob.text != ""
+                    ? const SizedBox(height: 16)
+                    : Container(),
                 _personalDob.text != "" ? _buildDob() : Container(),
                 widget.fromContactMetaType == "personal"
                     ? _addressContainer()
@@ -1321,8 +1341,7 @@ class _ContactProfileState extends State<ContactProfile> {
       return Column(
         children: [
           const SizedBox(height: 80),
-          Text(
-              _personalName.text ?? "Unknown Number",
+          Text(_personalName.text ?? "Unknown Number",
               style: Theme.of(context).textTheme.headline2),
           const SizedBox(height: 22),
           Visibility(
@@ -1573,13 +1592,16 @@ class _ContactProfileState extends State<ContactProfile> {
 
         if (contactDetail?.professional != null) {
           _occupationValue = contactDetail?.professional?.occupation ?? "";
-          _professionalOccupation.text = contactDetail?.professional?.occupation ?? "";
-          _professionalCompany.text = contactDetail?.professional?.company ?? "";
+          _professionalOccupation.text =
+              contactDetail?.professional?.occupation ?? "";
+          _professionalCompany.text =
+              contactDetail?.professional?.company ?? "";
           _professionalCompanyWebsite.text =
               contactDetail?.professional?.companyWebsite ?? "";
           _professionalSchool.text =
               contactDetail?.professional?.schoolUniversity ?? "";
-          _professionalWorkNature.text = contactDetail?.professional?.workNature ?? "";
+          _professionalWorkNature.text =
+              contactDetail?.professional?.workNature ?? "";
           _professionalDesignation.text =
               contactDetail?.professional?.designation ?? "";
           _professionalGrade.text = contactDetail?.professional?.grade ?? "";

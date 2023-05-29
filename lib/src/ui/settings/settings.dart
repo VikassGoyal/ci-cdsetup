@@ -88,7 +88,8 @@ class _SettingsState extends State<Settings> {
             children: [
               ListTile(
                 onTap: () async {
-                  SharedPreferences preferences = await SharedPreferences.getInstance();
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
 
                   Navigator.push(
                     context,
@@ -107,14 +108,14 @@ class _SettingsState extends State<Settings> {
                           text: "Business, ",
                           style: Theme.of(context)
                               .textTheme
-                              .headline3
-                              !.apply(color: AppColor.accentColor)),
+                              .headline3!
+                              .apply(color: AppColor.accentColor)),
                       TextSpan(
                         text: "Personal",
                         style: Theme.of(context)
                             .textTheme
-                            .headline3
-                            !.apply(color: AppColor.primaryColor),
+                            .headline3!
+                            .apply(color: AppColor.primaryColor),
                       ),
                     ],
                   ),
@@ -272,8 +273,8 @@ class _SettingsState extends State<Settings> {
                               "Cancel",
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline5
-                                  !.apply(color: AppColor.primaryColor),
+                                  .headline5!
+                                  .apply(color: AppColor.primaryColor),
                             ),
                             onPressed: () {
                               Navigator.pop(context);
@@ -283,8 +284,8 @@ class _SettingsState extends State<Settings> {
                             child: Text("Yes",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline5
-                                    !.apply(color: AppColor.primaryColor)),
+                                    .headline5!
+                                    .apply(color: AppColor.primaryColor)),
                             onPressed: () {
                               Navigator.of(context).pop();
                               logoutFun();
@@ -319,8 +320,8 @@ class _SettingsState extends State<Settings> {
               Text("$totalUsers users Worldwide",
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1
-                      !.copyWith(color: AppColor.secondaryColor)),
+                      .bodyText1!
+                      .copyWith(color: AppColor.secondaryColor)),
               const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.only(left: 30, right: 30),
@@ -329,8 +330,8 @@ class _SettingsState extends State<Settings> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
-                        !.copyWith(color: AppColor.accentColor)),
+                        .bodyText2!
+                        .copyWith(color: AppColor.accentColor)),
               ),
               const SizedBox(height: 20),
             ],
@@ -370,7 +371,6 @@ class _SettingsState extends State<Settings> {
   }
 
   scanQrCode() async {
-    
     Navigator.of(context)
         .push(MaterialPageRoute(
       builder: (context) => const QRScreen(),
@@ -437,14 +437,14 @@ class _SettingsState extends State<Settings> {
             style: Theme.of(context).textTheme.headline3,
           ),
           actions: <Widget>[
-             TextButton(
+            TextButton(
               onPressed: () => Navigator.pop(context, false),
               child: Text(
                 'No',
                 style: Theme.of(context)
                     .textTheme
-                    .headline5
-                    !.apply(color: AppColor.primaryColor),
+                    .headline5!
+                    .apply(color: AppColor.primaryColor),
               ),
             ),
             TextButton(
@@ -452,8 +452,8 @@ class _SettingsState extends State<Settings> {
               child: Text('Yes',
                   style: Theme.of(context)
                       .textTheme
-                      .headline5
-                      !.apply(color: AppColor.primaryColor)),
+                      .headline5!
+                      .apply(color: AppColor.primaryColor)),
             ),
           ],
         );
@@ -491,9 +491,9 @@ class _SettingsState extends State<Settings> {
         await ContactsService.getContacts(withThumbnails: false);
 
     for (var item in contacts) {
-      if (item.phones.toList().isNotEmpty) {
-        DeviceContactData data = DeviceContactData(
-            item.displayName, item.phones.toList()[0].value);
+      if (item.phones!.toList().isNotEmpty) {
+        DeviceContactData data =
+            DeviceContactData(item.displayName, item.phones!.toList()[0].value);
         _importportcontacts.add(data);
       }
     }

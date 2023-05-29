@@ -17,8 +17,7 @@ class ContactPageRepository {
     await databaseHelper.trancateAllContacts();
     var response = await _apiBaseHelper.get("getallcontact");
 
-    allContacts = List<AllContacts>.from(
-        response['data'].map((item) => AllContacts.fromJson(item)));
+    allContacts = List<AllContacts>.from(response['data'].map((item) => AllContacts.fromJson(item)));
 
     allContacts.forEach((element) async {
       await databaseHelper.insertallContact(element);
@@ -26,8 +25,7 @@ class ContactPageRepository {
   }
 
   getLocalData() async {
-    List<AllContacts> getAllcontacts =
-        await databaseHelper.getAllcontactsList();
+    List<AllContacts> getAllcontacts = await databaseHelper.getAllcontactsList();
 
     return getAllcontacts;
   }
@@ -43,8 +41,7 @@ class ContactPageRepository {
   }
 
   contactRequestResponse(requestBody) async {
-    var response =
-        await _apiBaseHelper.post("requestedcontactresponse", requestBody);
+    var response = await _apiBaseHelper.post("requestedcontactresponse", requestBody);
     return response;
   }
 
@@ -115,8 +112,7 @@ class ContactPageRepository {
   }
 
   getMostDailedCalls() async {
-    List<RecentCalls> getMostDailedCalls =
-        await databaseHelper.getMostDailedCalls();
+    List<RecentCalls> getMostDailedCalls = await databaseHelper.getMostDailedCalls();
 
     return getMostDailedCalls;
   }

@@ -39,7 +39,8 @@ class ContactResponse {
   String? get type => _type;
   set type(String? type) => _type = type;
   String? get connectionType => _connectionType;
-  set connectionType(String? connectionType) => _connectionType = connectionType;
+  set connectionType(String? connectionType) =>
+      _connectionType = connectionType;
   String? get status => _status;
   set status(String? status) => _status = status;
   String? get createdAt => _createdAt;

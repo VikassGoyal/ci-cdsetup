@@ -25,7 +25,8 @@ class ContactPageLoaded extends BottomNavigationState {
   var contactObject;
   var mostDailedContacts;
 
-  ContactPageLoaded({@required this.contactObject, @required this.mostDailedContacts});
+  ContactPageLoaded(
+      {@required this.contactObject, @required this.mostDailedContacts});
 }
 
 class RecentPageLoaded extends BottomNavigationState {

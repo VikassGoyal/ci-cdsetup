@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../utils.dart';
 
@@ -36,7 +36,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
   @override
   void initState() {
     super.initState();
-    _personalName.text = widget.name!;  
+    _personalName.text = widget.name!;
     _personalNumber.text = widget.phoneNumber!;
     _personalEmail.text = widget.email!;
   }
@@ -76,17 +76,12 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
           children: [
             const SizedBox(height: 10),
             Visibility(
-              visible:
-                  _personalNumber.text == ''
-                      ? false
-                      : true,
+              visible: _personalNumber.text == '' ? false : true,
               child: _buildMobileNumber(),
             ),
             const SizedBox(height: 16),
             Visibility(
-              visible: _personalEmail.text == ''
-                  ? false
-                  : true,
+              visible: _personalEmail.text == '' ? false : true,
               child: _buildEmailId(),
             ),
             SizedBox(height: MediaQuery.of(context).size.height / 2.5),
@@ -129,8 +124,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
       return Column(
         children: [
           const SizedBox(height: 110),
-          Text(
-              _personalName.text ?? "Unknown Number",
+          Text(_personalName.text ?? "Unknown Number",
               style: Theme.of(context).textTheme.headline2),
           const SizedBox(height: 22),
           Padding(

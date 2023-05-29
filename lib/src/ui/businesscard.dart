@@ -13,11 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BussinessCard extends StatefulWidget {
-
   @override
   _BussinessCardState createState() => _BussinessCardState();
 }
@@ -60,8 +59,8 @@ class _BussinessCardState extends State<BussinessCard> {
     _renderContent(context) {
       return Card(
         elevation: 0.0,
-        margin:
-            const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0, bottom: 0.0),
+        margin: const EdgeInsets.only(
+            left: 16.0, right: 16.0, top: 20.0, bottom: 0.0),
         color: const Color(0x00000000),
         child: FlipCard(
           direction: FlipDirection.HORIZONTAL,
@@ -138,7 +137,8 @@ class _BussinessCardState extends State<BussinessCard> {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
                   ),
-                  margin: const EdgeInsets.only(left: 15.0, top: 25.0, right: 15.0),
+                  margin:
+                      const EdgeInsets.only(left: 15.0, top: 25.0, right: 15.0),
                   padding: const EdgeInsets.all(10),
                   child: _showQr
                       ? const CircularProgressIndicator(
@@ -393,7 +393,7 @@ class _BussinessCardState extends State<BussinessCard> {
     String error = 'No Error Dectected';
 
     try {
-      resultList = await MultiImagePicker.pickImages(
+      resultList = await MultipleImagesPicker.pickImages(
         maxImages: 1,
         enableCamera: true,
         selectedAssets: businesslogo,

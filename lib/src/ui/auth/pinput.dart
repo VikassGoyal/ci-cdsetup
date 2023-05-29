@@ -75,7 +75,8 @@ class _PinputExampleState extends State<PinputExample> {
             child: Pinput(
               controller: pinController,
               focusNode: focusNode,
-              androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
+              androidSmsAutofillMethod:
+                  AndroidSmsAutofillMethod.smsUserConsentApi,
               listenForMultipleSmsOnAndroid: true,
               defaultPinTheme: defaultPinTheme,
               validator: (value) {

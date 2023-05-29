@@ -39,7 +39,8 @@ class ContactBloc {
   //GetProfileDetails
   getProfileDetails(requestBody) async {
     try {
-      var response = await contactPageRepository?.getProfileDetails(requestBody);
+      var response =
+          await contactPageRepository?.getProfileDetails(requestBody);
       return response;
     } catch (e) {
       print(e);

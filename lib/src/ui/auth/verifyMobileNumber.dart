@@ -14,7 +14,8 @@ class VerifyMobileNumber extends StatefulWidget {
   final String? phone;
   final String? password;
 
-  const VerifyMobileNumber({this.username, this.email, this.phone, this.password});
+  const VerifyMobileNumber(
+      {this.username, this.email, this.phone, this.password});
 
   @override
   _VerifyMobileNumberState createState() => _VerifyMobileNumberState();

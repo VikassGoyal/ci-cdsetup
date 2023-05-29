@@ -123,9 +123,8 @@ class ContactDetail {
     _transanctionId = json['transanction_id'];
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
-    _personal = json['personal'] != null
-        ? Personal.fromJson(json['personal'])
-        : null;
+    _personal =
+        json['personal'] != null ? Personal.fromJson(json['personal']) : null;
     _professional = json['professional'] != null
         ? Professional.fromJson(json['professional'])
         : null;
@@ -135,8 +134,7 @@ class ContactDetail {
         _professionalList?.add(ProfessionalList.fromJson(v));
       });
     }
-    _social =
-        json['social'] != null ? Social.fromJson(json['social']) : null;
+    _social = json['social'] != null ? Social.fromJson(json['social']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -234,7 +232,8 @@ class Personal {
   String? get number => _number;
   set number(String? number) => _number = number;
   String? get secondaryPhone => _secondaryPhone;
-  set secondaryPhone(String? secondaryPhone) => _secondaryPhone = secondaryPhone;
+  set secondaryPhone(String? secondaryPhone) =>
+      _secondaryPhone = secondaryPhone;
   String? get email => _email;
   set email(String? email) => _email = email;
   String? get dOB => _dOB;
@@ -359,7 +358,8 @@ class Professional {
   String? get company => _company;
   set company(String? company) => _company = company;
   String? get companyWebsite => _companyWebsite;
-  set companyWebsite(String? companyWebsite) => _companyWebsite = companyWebsite;
+  set companyWebsite(String? companyWebsite) =>
+      _companyWebsite = companyWebsite;
   String? get schoolUniversity => _schoolUniversity;
   set schoolUniversity(String? schoolUniversity) =>
       _schoolUniversity = schoolUniversity;
@@ -462,7 +462,8 @@ class ProfessionalList {
   String? get company => _company;
   set company(String? company) => _company = company;
   String? get companyWebsite => _companyWebsite;
-  set companyWebsite(String? companyWebsite) => _companyWebsite = companyWebsite;
+  set companyWebsite(String? companyWebsite) =>
+      _companyWebsite = companyWebsite;
   String? get schoolUniversity => _schoolUniversity;
   set schoolUniversity(String? schoolUniversity) =>
       _schoolUniversity = schoolUniversity;
@@ -515,8 +516,7 @@ class ProfessionalList {
     data['designation'] = _designation;
     data['created_at'] = _createdAt;
     data['updated_at'] = _updatedAt;
-    data['business_images'] =
-        _businessImages?.map((v) => v.toJson()).toList();
+    data['business_images'] = _businessImages?.map((v) => v.toJson()).toList();
     return data;
   }
 }

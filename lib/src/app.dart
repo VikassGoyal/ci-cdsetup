@@ -24,9 +24,7 @@ class _AppState extends State<App> {
       ),
       theme: ThemeData(
         primaryColor: AppColor.whiteColor,
-        textTheme: Platform.isAndroid
-            ? ConetTextTheme.androidTextTheme
-            : ConetTextTheme.iosTextTheme,
+        textTheme: Platform.isAndroid ? ConetTextTheme.androidTextTheme : ConetTextTheme.iosTextTheme,
         colorScheme: ColorScheme.fromSwatch().copyWith(
           brightness: Brightness.dark,
         ),

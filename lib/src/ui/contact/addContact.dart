@@ -15,7 +15,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -88,7 +88,7 @@ class _AddContactState extends State<AddContact> {
     super.initState();
     initcheckPermission();
 
-    if(widget.phoneNumber != null) {
+    if (widget.phoneNumber != null) {
       _personalNumber.text = widget.phoneNumber!;
     }
   }
@@ -687,7 +687,8 @@ class _AddContactState extends State<AddContact> {
     entreprenerurItemNew(int i) {
       return Padding(
         // padding: EdgeInsets.all(16),
-        padding: const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
+        padding:
+            const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
         child: Material(
           color: AppColor.whiteColor,
           clipBehavior: Clip.antiAlias,
@@ -723,7 +724,8 @@ class _AddContactState extends State<AddContact> {
                       .bodyText2
                       ?.apply(color: AppColor.secondaryColor),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding:
+                        const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Company",
                     labelStyle: Theme.of(context).textTheme.headline6?.apply(
                           color: const Color.fromRGBO(135, 139, 149, 1),
@@ -764,7 +766,8 @@ class _AddContactState extends State<AddContact> {
                       .bodyText2
                       ?.apply(color: AppColor.secondaryColor),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding:
+                        const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Website",
                     labelStyle: Theme.of(context).textTheme.headline6?.apply(
                           color: const Color.fromRGBO(135, 139, 149, 1),
@@ -805,7 +808,8 @@ class _AddContactState extends State<AddContact> {
                       .bodyText2
                       ?.apply(color: AppColor.secondaryColor),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding:
+                        const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: 'Work Nature',
                     labelStyle: Theme.of(context).textTheme.headline6?.apply(
                           color: const Color.fromRGBO(135, 139, 149, 1),
@@ -833,7 +837,8 @@ class _AddContactState extends State<AddContact> {
               Row(
                 children: [
                   Visibility(
-                    visible: entreprenerurList[i].images!.asMap().containsKey(0),
+                    visible:
+                        entreprenerurList[i].images!.asMap().containsKey(0),
                     child: Flexible(
                       child: Stack(
                         children: [
@@ -842,57 +847,61 @@ class _AddContactState extends State<AddContact> {
                             width: 114,
                             height: 102,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: (entreprenerurList[i].images!.isNotEmpty
-                                      ? entreprenerurList[i]
-                                          .images![0]
-                                          .isUploaded!
-                                      : false)
-                                  ? CachedNetworkImage(
-                                      imageUrl:
-                                          entreprenerurList[i].images!.isNotEmpty
-                                              ? AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![0]
-                                                      .imageUrl!
-                                              : "",
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: (entreprenerurList[i].images!.isNotEmpty
+                                        ? entreprenerurList[i]
+                                            .images![0]
+                                            .isUploaded!
+                                        : false)
+                                    ? CachedNetworkImage(
+                                        imageUrl: entreprenerurList[i]
+                                                .images!
+                                                .isNotEmpty
+                                            ? AppConstant.imageBaseUrl +
+                                                entreprenerurList[i]
+                                                    .images![0]
+                                                    .imageUrl!
+                                            : "",
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.cover),
+                                          ),
                                         ),
-                                      ),
-                                      placeholder: (context, url) =>
-                                          Image.asset(
-                                        "assets/images/placeholderImage.jpg",
-                                        fit: BoxFit.fill,
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          Image.asset(
-                                        "assets/images/placeholderImage.jpg",
-                                        fit: BoxFit.fill,
-                                      ),
-                                    )
-                                  : (entreprenerurList[i].images!.isNotEmpty ? AssetThumb(
-                                      asset: entreprenerurList[i]
-                                              .images![0]
-                                              .imageAsset,
-                                      width: 114,
-                                      height: 102,
-                                    ) : const SizedBox(
-                                      width: 114,
-                                      height: 102,
-                                    ))
-                            ),
+                                        placeholder: (context, url) =>
+                                            Image.asset(
+                                          "assets/images/placeholderImage.jpg",
+                                          fit: BoxFit.fill,
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Image.asset(
+                                          "assets/images/placeholderImage.jpg",
+                                          fit: BoxFit.fill,
+                                        ),
+                                      )
+                                    : (entreprenerurList[i].images!.isNotEmpty
+                                        ? AssetThumb(
+                                            asset: entreprenerurList[i]
+                                                .images![0]
+                                                .imageAsset,
+                                            width: 114,
+                                            height: 102,
+                                          )
+                                        : const SizedBox(
+                                            width: 114,
+                                            height: 102,
+                                          ))),
                           )
                         ],
                       ),
                     ),
                   ),
                   Visibility(
-                    visible: entreprenerurList[i].images!.asMap().containsKey(1),
+                    visible:
+                        entreprenerurList[i].images!.asMap().containsKey(1),
                     child: Flexible(
                       child: Stack(
                         children: [
@@ -901,54 +910,58 @@ class _AddContactState extends State<AddContact> {
                             width: 114,
                             height: 102,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: (entreprenerurList[i].images!.length >= 2
-                                      ? entreprenerurList[i]
-                                          .images![1]
-                                          .isUploaded!
-                                      : false)
-                                  ? CachedNetworkImage(
-                                      imageUrl:
-                                          entreprenerurList[i].images!.length >=
-                                                  2
-                                              ? AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![1]
-                                                      .imageUrl!
-                                              : "",
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: (entreprenerurList[i].images!.length >= 2
+                                        ? entreprenerurList[i]
+                                            .images![1]
+                                            .isUploaded!
+                                        : false)
+                                    ? CachedNetworkImage(
+                                        imageUrl: entreprenerurList[i]
+                                                    .images!
+                                                    .length >=
+                                                2
+                                            ? AppConstant.imageBaseUrl +
+                                                entreprenerurList[i]
+                                                    .images![1]
+                                                    .imageUrl!
+                                            : "",
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.cover),
+                                          ),
                                         ),
-                                      ),
-                                      placeholder: (context, url) =>
-                                          Image.asset(
-                                        "assets/images/placeholderImage.jpg",
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
-                                    )
-                                  : (entreprenerurList[i].images!.length >= 2 ? AssetThumb(
-                                      asset: entreprenerurList[i]
-                                                  .images![1]
-                                                  .imageAsset,
-                                      width: 114,
-                                      height: 102,
-                                    ) : const SizedBox(
-                                      width: 114,
-                                      height: 102,
-                                    ))
-                            ),
+                                        placeholder: (context, url) =>
+                                            Image.asset(
+                                          "assets/images/placeholderImage.jpg",
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      )
+                                    : (entreprenerurList[i].images!.length >= 2
+                                        ? AssetThumb(
+                                            asset: entreprenerurList[i]
+                                                .images![1]
+                                                .imageAsset,
+                                            width: 114,
+                                            height: 102,
+                                          )
+                                        : const SizedBox(
+                                            width: 114,
+                                            height: 102,
+                                          ))),
                           ),
                         ],
                       ),
                     ),
                   ),
                   Visibility(
-                    visible: entreprenerurList[i].images!.asMap().containsKey(2),
+                    visible:
+                        entreprenerurList[i].images!.asMap().containsKey(2),
                     child: Flexible(
                       child: Stack(
                         children: [
@@ -989,8 +1002,8 @@ class _AddContactState extends State<AddContact> {
                                     )
                                   : AssetThumb(
                                       asset: (entreprenerurList[i]
-                                              .images![2]
-                                              .imageAsset),
+                                          .images![2]
+                                          .imageAsset),
                                       width: 114,
                                       height: 102,
                                     ),
@@ -1310,7 +1323,8 @@ class _AddContactState extends State<AddContact> {
             _occupationValue = contactDetail.professional?.occupation ?? "";
             _professionalOccupation.text =
                 contactDetail.professional?.occupation ?? "";
-            _professionalCompany.text = contactDetail.professional?.company ?? "";
+            _professionalCompany.text =
+                contactDetail.professional?.company ?? "";
             _professionalCompanyWebsite.text =
                 contactDetail.professional?.companyWebsite ?? "";
             _professionalSchool.text =

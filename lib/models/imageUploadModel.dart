@@ -1,4 +1,4 @@
-import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:multiple_images_picker/multiple_images_picker.dart';
 
 class ImageUploadModel {
   int? _id;

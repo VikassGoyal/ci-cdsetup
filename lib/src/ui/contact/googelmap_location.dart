@@ -49,8 +49,8 @@ class _GoogleMapForLocationState extends State<GoogleMapForLocation> {
                 "Back",
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2
-                    !.apply(color: AppColor.whiteColor),
+                    .bodyText2!
+                    .apply(color: AppColor.whiteColor),
               )
             ],
           ),
@@ -60,8 +60,8 @@ class _GoogleMapForLocationState extends State<GoogleMapForLocation> {
           "Edit Profile",
           style: Theme.of(context)
               .textTheme
-              .headline4
-              !.apply(color: AppColor.whiteColor),
+              .headline4!
+              .apply(color: AppColor.whiteColor),
         ),
       ),
       body: SizedBox(

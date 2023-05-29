@@ -1,25 +1,58 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bloc/bloc.dart';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/recentCalls.dart';
 import 'package:conet/repositories/repositories.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'bottomNavigationEvent.dart';
 part 'bottomNavigationState.dart';
 
-class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationState> {
+class BottomNavigationBloc
+    extends Bloc<BottomNavigationEvent, BottomNavigationState> {
   BottomNavigationBloc(
       {required this.contactPageRepository,
       required this.recentPageRepository,
       required this.keypadPageRepository,
       required this.conetWebPageRepository,
       required this.settingsPageRepository})
-      : super(PageLoading());
-      
+      : super(PageLoading()) {
+    on<AppStarted>((event, emit) {
+      add(PageTapped(index: currentIndex));
+    });
+
+    on<PageTapped>((event, emit) async {
+      currentIndex = event.index;
+      emit(CurrentIndexChanged(currentIndex: currentIndex));
+      emit(PageLoading());
+
+      if (currentIndex == 0) {
+        var data = await _getContactPageData();
+        var mostDailedContactData = await getMostDailedContacts();
+        emit(ContactPageLoaded(
+            contactObject: data, mostDailedContacts: mostDailedContactData));
+      }
+      if (currentIndex == 1) {
+        var data = await _getRecentPageData();
+        emit(RecentPageLoaded(callLog: data));
+      }
+      if (currentIndex == 2) {
+        var data = await _getKeypadPageData();
+        emit(KeypadPageLoaded(contactObject: data));
+      }
+      if (currentIndex == 3) {
+        var data = await _getContactPageData();
+        emit(CoNetWebPageLoaded(conetContactObject: data));
+      }
+      if (currentIndex == 4) {
+        var data = await _getSettingsPageData();
+        emit(SettingsPageLoaded(totalcountData: data));
+      }
+    });
+  }
 
   final ContactPageRepository contactPageRepository;
   final RecentPageRepository recentPageRepository;
@@ -28,41 +61,13 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
   final SettingsPageRepository settingsPageRepository;
   int currentIndex = 0;
 
-  @override
-  Stream<BottomNavigationState> mapEventToState(BottomNavigationEvent event) async* {
-    if (event is AppStarted) {
-      add(PageTapped(index: currentIndex));
-    }
+  // @override
+  // Stream<BottomNavigationState> mapEventToState(
+  //     BottomNavigationEvent event) async* {
+  //   // if (event is AppStarted) {}
 
-    if (event is PageTapped) {
-      currentIndex = event.index;
-      yield CurrentIndexChanged(currentIndex: currentIndex);
-      yield PageLoading();
-
-      if (currentIndex == 0) {
-        var data = await _getContactPageData();
-        var mostDailedContactData = await getMostDailedContacts();
-        yield ContactPageLoaded(
-            contactObject: data, mostDailedContacts: mostDailedContactData);
-      }
-      if (currentIndex == 1) {
-        var data = await _getRecentPageData();
-        yield RecentPageLoaded(callLog: data);
-      }
-      if (currentIndex == 2) {
-        var data = await _getKeypadPageData();
-        yield KeypadPageLoaded(contactObject: data);
-      }
-      if (currentIndex == 3) {
-        var data = await _getContactPageData();
-        yield CoNetWebPageLoaded(conetContactObject: data);
-      }
-      if (currentIndex == 4) {
-        var data = await _getSettingsPageData();
-        yield SettingsPageLoaded(totalcountData: data);
-      }
-    }
-  }
+  //   // if (event is PageTapped) {}
+  // }
 
   Future _getContactPageData() async {
     var data = await contactPageRepository.getData();

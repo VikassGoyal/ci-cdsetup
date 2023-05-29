@@ -7,7 +7,7 @@ import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dtmf/dtmf.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 class DialPadCustom extends StatefulWidget {
   final ValueSetter<String>? makeCall;
@@ -44,26 +44,11 @@ class _DialPadCustomState extends State<DialPadCustom> {
 
   var _value = "";
   var mainTitle = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "＃"];
-  var subTitle = [
-    "",
-    "ABC",
-    "DEF",
-    "GHI",
-    "JKL",
-    "MNO",
-    "PQRS",
-    "TUV",
-    "WXYZ",
-    null,
-    "+",
-    null
-  ];
+  var subTitle = ["", "ABC", "DEF", "GHI", "JKL", "MNO", "PQRS", "TUV", "WXYZ", null, "+", null];
 
   @override
   void initState() {
-    textEditingController = MaskedTextController(
-        mask:
-            widget.outputMask ?? '000 0000 0000 00');
+    textEditingController = MaskedTextController(mask: widget.outputMask ?? '000 0000 0000 00');
     _loadedcontacts = widget.contactList;
     super.initState();
 
@@ -93,8 +78,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
 
     for (var i = 0; i < mainTitle.length; i++) {
       if (i % 3 == 0 && i > 0) {
-        rows.add(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
+        rows.add(Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
         rows.add(const SizedBox(
           height: 12,
         ));
@@ -112,8 +96,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
       );
     }
     //To Do: Fix this workaround for last row
-    rows.add(
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
+    rows.add(Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
     rows.add(
       const SizedBox(
         height: 12,
@@ -194,9 +177,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
                     child: Icon(
                       Icons.person_add,
                       size: sizeFactor / 2,
-                      color: _value.isNotEmpty
-                          ? (widget.backspaceButtonIconColor ?? Colors.white24)
-                          : Colors.white24,
+                      color: _value.isNotEmpty ? (widget.backspaceButtonIconColor ?? Colors.white24) : Colors.white24,
                     ),
                   ),
                 ),
@@ -214,8 +195,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
               ),
               Expanded(
                 child: Padding(
-                  padding:
-                      EdgeInsets.only(right: screenSize.height * 0.0685504),
+                  padding: EdgeInsets.only(right: screenSize.height * 0.0685504),
                   child: GestureDetector(
                     onTap: _value.isEmpty
                         ? null
@@ -223,8 +203,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
                             if (_value.isNotEmpty) {
                               setState(
                                 () {
-                                  _value =
-                                      _value.substring(0, _value.length - 1);
+                                  _value = _value.substring(0, _value.length - 1);
                                   textEditingController!.text = _value;
                                 },
                               );
@@ -250,9 +229,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
                     child: Icon(
                       Icons.backspace,
                       size: sizeFactor / 2,
-                      color: _value.isNotEmpty
-                          ? (widget.backspaceButtonIconColor ?? Colors.white24)
-                          : Colors.white24,
+                      color: _value.isNotEmpty ? (widget.backspaceButtonIconColor ?? Colors.white24) : Colors.white24,
                     ),
                   ),
                 ),
@@ -282,9 +259,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
     setState(() {
       // if (_value.length == 10) {
       try {
-        List<AllContacts> data = _loadedcontacts
-            !.where((element) => element.phone == _value)
-            .toList();
+        List<AllContacts> data = _loadedcontacts!.where((element) => element.phone == _value).toList();
         print(data);
         // print(data[0].name);
         _contactNameVisible = true;
@@ -314,7 +289,7 @@ class DialButton extends StatefulWidget {
   final Color? iconColor;
   final ValueSetter<String?>? onTap;
   final bool? shouldAnimate;
-   const DialButton(
+  const DialButton(
       {this.key,
       this.title,
       this.subtitle,
@@ -329,20 +304,15 @@ class DialButton extends StatefulWidget {
   _DialButtonState createState() => _DialButtonState();
 }
 
-class _DialButtonState extends State<DialButton>
-    with SingleTickerProviderStateMixin {
+class _DialButtonState extends State<DialButton> with SingleTickerProviderStateMixin {
   AnimationController? _animationController;
   Animation? _colorTween;
   Timer? _timer;
 
   @override
   void initState() {
-    _animationController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
-    _colorTween = ColorTween(
-            begin: widget.color ?? Colors.white24,
-            end: Colors.white)
-        .animate(_animationController!);
+    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
+    _colorTween = ColorTween(begin: widget.color ?? Colors.white24, end: Colors.white).animate(_animationController!);
 
     super.initState();
   }
@@ -360,13 +330,12 @@ class _DialButtonState extends State<DialButton>
 
     return GestureDetector(
       onTap: () {
-
         // if(widget.title != null) {
         //   widget.onTap(widget.title!);
         // }
-        
+
         widget.onTap!(widget.title);
-        
+
         if (widget.shouldAnimate!) {
           if (_animationController!.status == AnimationStatus.completed) {
             _animationController?.reverse();
@@ -419,10 +388,9 @@ class _DialButtonState extends State<DialButton>
                             style: TextStyle(
                               fontFamily: 'Sfpro-Rounded-Medium',
                               inherit: true,
-                              fontSize:
-                                  widget.title == "*" && widget.subtitle == null
-                                      ? screenSize.height * 0.0862069
-                                      : sizeFactor / 2,
+                              fontSize: widget.title == "*" && widget.subtitle == null
+                                  ? screenSize.height * 0.0862069
+                                  : sizeFactor / 2,
                               color: widget.textColor ?? Colors.white,
                             ),
                           ),

@@ -111,10 +111,10 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   Widget build(BuildContext context) {
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
-        MediaQuery.of(context).size.height < 400)
-    ? 180.0
-    : 300.0;
-    
+            MediaQuery.of(context).size.height < 400)
+        ? 180.0
+        : 300.0;
+
     Widget contactListItem(int index) {
       return Container(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -462,20 +462,22 @@ class _ContactsPageState extends State<ContactsPage> {
                         style: Theme.of(context).textTheme.headline3,
                         textInputAction: TextInputAction.search,
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(vertical: -5),
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: -5),
                           isDense: true,
                           hintText: "Search",
                           fillColor: Colors.white,
                           filled: true,
                           hintStyle: Theme.of(context)
                               .textTheme
-                              .headline3
-                              !.apply(color: AppColor.gray30Color),
+                              .headline3!
+                              .apply(color: AppColor.gray30Color),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             borderSide: BorderSide.none,
                           ),
-                          prefixIconConstraints: const BoxConstraints(maxHeight: 20),
+                          prefixIconConstraints:
+                              const BoxConstraints(maxHeight: 20),
                           prefixIcon: const Padding(
                             padding: EdgeInsets.only(left: 11, right: 11),
                             child: Icon(
@@ -569,7 +571,8 @@ class _ContactsPageState extends State<ContactsPage> {
               visible: recentCalls.isNotEmpty,
               child: Container(
                 width: MediaQuery.of(context).size.width * 1.0,
-                constraints: const BoxConstraints(maxHeight: 110, minHeight: 110.0),
+                constraints:
+                    const BoxConstraints(maxHeight: 110, minHeight: 110.0),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20.0),
@@ -620,7 +623,8 @@ class _ContactsPageState extends State<ContactsPage> {
                               ),
                               const SizedBox(height: 3),
                               Text(
-                                (recentCalls[i].name == "" || recentCalls[i].name == "null")
+                                (recentCalls[i].name == "" ||
+                                        recentCalls[i].name == "null")
                                     ? "Unknown"
                                     : recentCalls[i].name!,
                                 overflow: TextOverflow.ellipsis,
@@ -654,8 +658,8 @@ class _ContactsPageState extends State<ContactsPage> {
                             "No Data",
                             style: Theme.of(context)
                                 .textTheme
-                                .headline4
-                                !.apply(color: AppColor.blackColor),
+                                .headline4!
+                                .apply(color: AppColor.blackColor),
                           )
                         ],
                       ),
@@ -726,14 +730,14 @@ class _ContactsPageState extends State<ContactsPage> {
             style: Theme.of(context).textTheme.headline3,
           ),
           actions: <Widget>[
-           ElevatedButton(
+            ElevatedButton(
               onPressed: () => Navigator.pop(context, false),
               child: Text(
                 'No',
                 style: Theme.of(context)
                     .textTheme
-                    .headline5
-                    !.apply(color: AppColor.primaryColor),
+                    .headline5!
+                    .apply(color: AppColor.primaryColor),
               ),
             ),
             ElevatedButton(
@@ -742,8 +746,8 @@ class _ContactsPageState extends State<ContactsPage> {
                 'Yes',
                 style: Theme.of(context)
                     .textTheme
-                    .headline5
-                    !.apply(color: AppColor.primaryColor),
+                    .headline5!
+                    .apply(color: AppColor.primaryColor),
               ),
             ),
           ],
@@ -782,9 +786,9 @@ class _ContactsPageState extends State<ContactsPage> {
         await ContactsService.getContacts(withThumbnails: false);
 
     for (var item in contacts) {
-      if (item.phones.toList().isNotEmpty) {
-        DeviceContactData data = DeviceContactData(
-            item.displayName, item.phones.toList()[0].value);
+      if (item.phones!.toList().isNotEmpty) {
+        DeviceContactData data =
+            DeviceContactData(item.displayName, item.phones!.toList()[0].value);
         _importportcontacts.add(data);
       }
     }
@@ -861,10 +865,12 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   scanQrCode() async {
-    Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context)
+        .push(MaterialPageRoute(
       builder: (context) => const QRScreen(),
-    )).then((value) {
-      if(value != null) {
+    ))
+        .then((value) {
+      if (value != null) {
         setState(() {
           _outputController!.clear();
           _outputController!.text = value!;
@@ -874,7 +880,7 @@ class _ContactsPageState extends State<ContactsPage> {
             _loader = true;
           });
           _sendQrApi();
-        }     
+        }
       }
     });
 

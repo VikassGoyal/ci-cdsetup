@@ -18,7 +18,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils.dart';
@@ -909,7 +909,8 @@ class _EditProfileState extends State<EditProfile> {
                 Container(
                   height: 48,
                   padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-                  margin: const EdgeInsets.only(top: 20, left: 22.0, right: 22.0),
+                  margin:
+                      const EdgeInsets.only(top: 20, left: 22.0, right: 22.0),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: const Color.fromRGBO(232, 232, 232, 1),
@@ -923,7 +924,8 @@ class _EditProfileState extends State<EditProfile> {
                         ?.apply(color: AppColor.secondaryColor),
                     controller: _textEditingController,
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                      contentPadding:
+                          const EdgeInsets.only(top: 6.0, bottom: 3.0),
                       labelText: "Keyword",
                       labelStyle: Theme.of(context).textTheme.headline6?.apply(
                             color: const Color.fromRGBO(135, 139, 149, 1),
@@ -1203,13 +1205,16 @@ class _EditProfileState extends State<EditProfile> {
 
         if (contactDetail?.professional != null) {
           _occupationValue = contactDetail?.professional?.occupation ?? "";
-          _professionalOccupation.text = contactDetail?.professional?.occupation ?? "";
-          _professionalCompany.text = contactDetail?.professional?.company ?? "";
+          _professionalOccupation.text =
+              contactDetail?.professional?.occupation ?? "";
+          _professionalCompany.text =
+              contactDetail?.professional?.company ?? "";
           _professionalCompanyWebsite.text =
               contactDetail?.professional?.companyWebsite ?? "";
           _professionalSchool.text =
               contactDetail?.professional?.schoolUniversity ?? "";
-          _professionalWorkNature.text = contactDetail?.professional?.workNature ?? "";
+          _professionalWorkNature.text =
+              contactDetail?.professional?.workNature ?? "";
           _professionalDesignation.text =
               contactDetail?.professional?.designation ?? "";
           _professionalGrade.text = contactDetail?.professional?.grade ?? "";
@@ -1274,7 +1279,8 @@ class _EditProfileState extends State<EditProfile> {
   entreprenerurItemNew(int i) {
     return Padding(
       // padding: EdgeInsets.all(16),
-      padding: const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
+      padding:
+          const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
       child: Material(
         color: AppColor.whiteColor,
         clipBehavior: Clip.antiAlias,
@@ -1462,7 +1468,8 @@ class _EditProfileState extends State<EditProfile> {
                     child: Container(
                       height: 88,
                       width: 100,
-                      margin: const EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                      margin:
+                          const EdgeInsets.only(top: 10, bottom: 10, right: 10),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: AppColor.secondaryColor,
@@ -1491,7 +1498,9 @@ class _EditProfileState extends State<EditProfile> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
                             child: (entreprenerurList[i].images!.isNotEmpty
-                                    ? entreprenerurList[i].images![0].isUploaded!
+                                    ? entreprenerurList[i]
+                                        .images![0]
+                                        .isUploaded!
                                     : false)
                                 ? CachedNetworkImage(
                                     imageUrl:
@@ -1519,15 +1528,18 @@ class _EditProfileState extends State<EditProfile> {
                                       fit: BoxFit.fill,
                                     ),
                                   )
-                                : (entreprenerurList[i].images!.isNotEmpty ? AssetThumb(
-                                      asset: entreprenerurList[i].images![0].imageAsset,
-                                      width: 114,
-                                      height: 102,
-                                    ) : const SizedBox(
-                                      width: 114,
-                                      height: 102,
-                                    )
-                                  ),
+                                : (entreprenerurList[i].images!.isNotEmpty
+                                    ? AssetThumb(
+                                        asset: entreprenerurList[i]
+                                            .images![0]
+                                            .imageAsset,
+                                        width: 114,
+                                        height: 102,
+                                      )
+                                    : const SizedBox(
+                                        width: 114,
+                                        height: 102,
+                                      )),
                           ),
                         ),
                         Positioned(
@@ -1558,42 +1570,48 @@ class _EditProfileState extends State<EditProfile> {
                           width: 114,
                           height: 102,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: (entreprenerurList[i].images!.length >= 2
-                                    ? entreprenerurList[i].images![1].isUploaded!
-                                    : false)
-                                ? CachedNetworkImage(
-                                    imageUrl:
-                                        entreprenerurList[i].images!.length >= 2
-                                            ? AppConstant.imageBaseUrl +
-                                                entreprenerurList[i]
-                                                    .images![1]
-                                                    .imageUrl!
-                                            : "",
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover),
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: (entreprenerurList[i].images!.length >= 2
+                                      ? entreprenerurList[i]
+                                          .images![1]
+                                          .isUploaded!
+                                      : false)
+                                  ? CachedNetworkImage(
+                                      imageUrl:
+                                          entreprenerurList[i].images!.length >=
+                                                  2
+                                              ? AppConstant.imageBaseUrl +
+                                                  entreprenerurList[i]
+                                                      .images![1]
+                                                      .imageUrl!
+                                              : "",
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover),
+                                        ),
                                       ),
-                                    ),
-                                    placeholder: (context, url) => Image.asset(
-                                      "assets/images/placeholderImage.jpg",
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
-                                  )
-                                :  (entreprenerurList[i].images!.length >= 2? AssetThumb(
-                                      asset: entreprenerurList[i].images![1].imageAsset,
-                                      width: 114,
-                                      height: 102,
-                                    ) : const SizedBox(
-                                      width: 114,
-                                      height: 102,
+                                      placeholder: (context, url) =>
+                                          Image.asset(
+                                        "assets/images/placeholderImage.jpg",
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
                                     )
-                                  )
-                          ),
+                                  : (entreprenerurList[i].images!.length >= 2
+                                      ? AssetThumb(
+                                          asset: entreprenerurList[i]
+                                              .images![1]
+                                              .imageAsset,
+                                          width: 114,
+                                          height: 102,
+                                        )
+                                      : const SizedBox(
+                                          width: 114,
+                                          height: 102,
+                                        ))),
                         ),
                         Positioned(
                           right: -14,
@@ -1623,42 +1641,48 @@ class _EditProfileState extends State<EditProfile> {
                           width: 114,
                           height: 102,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: (entreprenerurList[i].images!.length == 3
-                                    ? entreprenerurList[i].images![2].isUploaded!
-                                    : false)
-                                ? CachedNetworkImage(
-                                    imageUrl:
-                                        entreprenerurList[i].images!.length == 3
-                                            ? AppConstant.imageBaseUrl +
-                                                entreprenerurList[i]
-                                                    .images![2]
-                                                    .imageUrl!
-                                            : "",
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover),
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: (entreprenerurList[i].images!.length == 3
+                                      ? entreprenerurList[i]
+                                          .images![2]
+                                          .isUploaded!
+                                      : false)
+                                  ? CachedNetworkImage(
+                                      imageUrl:
+                                          entreprenerurList[i].images!.length ==
+                                                  3
+                                              ? AppConstant.imageBaseUrl +
+                                                  entreprenerurList[i]
+                                                      .images![2]
+                                                      .imageUrl!
+                                              : "",
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover),
+                                        ),
                                       ),
-                                    ),
-                                    placeholder: (context, url) => Image.asset(
-                                      "assets/images/placeholderImage.jpg",
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
-                                  )
-                                : (entreprenerurList[i].images!.length == 3 ? AssetThumb(
-                                      asset: entreprenerurList[i].images![2].imageAsset,
-                                      width: 114,
-                                      height: 102,
-                                    ) : const SizedBox(
-                                      width: 114,
-                                      height: 102,
+                                      placeholder: (context, url) =>
+                                          Image.asset(
+                                        "assets/images/placeholderImage.jpg",
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
                                     )
-                                  )
-                          ),
+                                  : (entreprenerurList[i].images!.length == 3
+                                      ? AssetThumb(
+                                          asset: entreprenerurList[i]
+                                              .images![2]
+                                              .imageAsset,
+                                          width: 114,
+                                          height: 102,
+                                        )
+                                      : const SizedBox(
+                                          width: 114,
+                                          height: 102,
+                                        ))),
                         ),
                         Positioned(
                           right: -14,
@@ -1923,8 +1947,7 @@ class _EditProfileState extends State<EditProfile> {
     entreprenerurListResquest = [];
 
     for (var val in entreprenerurList) {
-      EntrepreneurDataRequest entreprenerurResquest =
-          EntrepreneurDataRequest();
+      EntrepreneurDataRequest entreprenerurResquest = EntrepreneurDataRequest();
 
       entreprenerurResquest.id = val.id;
       entreprenerurResquest.company = val.company;
@@ -2000,7 +2023,7 @@ class _EditProfileState extends State<EditProfile> {
     String error = 'No Error Dectected';
 
     try {
-      resultList = await MultiImagePicker.pickImages(
+      resultList = await MultipleImagesPicker.pickImages(
         maxImages: 3,
         enableCamera: true,
         selectedAssets: images,
@@ -2041,7 +2064,7 @@ class _EditProfileState extends State<EditProfile> {
     String error = 'No Error Dectected';
 
     try {
-      resultList = await MultiImagePicker.pickImages(
+      resultList = await MultipleImagesPicker.pickImages(
         maxImages: 1,
         enableCamera: true,
         selectedAssets: profileImage,

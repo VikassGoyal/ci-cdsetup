@@ -67,10 +67,8 @@ class _SignUpState extends State<SignUp> {
                 child: Center(
                   child: Text(
                     "Name",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.apply(color: const Color.fromRGBO(255, 255, 255, 0.75)),
+                    style: Theme.of(context).textTheme.headline5?.apply(
+                        color: const Color.fromRGBO(255, 255, 255, 0.75)),
                   ),
                 ),
               ),
@@ -158,10 +156,8 @@ class _SignUpState extends State<SignUp> {
                 child: Center(
                   child: Text(
                     "Email",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.apply(color: const Color.fromRGBO(255, 255, 255, 0.75)),
+                    style: Theme.of(context).textTheme.headline5?.apply(
+                        color: const Color.fromRGBO(255, 255, 255, 0.75)),
                   ),
                 ),
               ),
@@ -249,10 +245,8 @@ class _SignUpState extends State<SignUp> {
                 child: Center(
                   child: Text(
                     "Mobile",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.apply(color: const Color.fromRGBO(255, 255, 255, 0.75)),
+                    style: Theme.of(context).textTheme.headline5?.apply(
+                        color: const Color.fromRGBO(255, 255, 255, 0.75)),
                   ),
                 ),
               ),
@@ -340,10 +334,8 @@ class _SignUpState extends State<SignUp> {
                 child: Center(
                   child: Text(
                     "Password",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.apply(color: const Color.fromRGBO(255, 255, 255, 0.75)),
+                    style: Theme.of(context).textTheme.headline5?.apply(
+                        color: const Color.fromRGBO(255, 255, 255, 0.75)),
                   ),
                 ),
               ),
@@ -389,7 +381,8 @@ class _SignUpState extends State<SignUp> {
                       });
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 2, right: 10),
+                      padding:
+                          const EdgeInsets.only(top: 10, bottom: 2, right: 10),
                       child: Text(
                         "Show",
                         textAlign: TextAlign.center,

@@ -11,8 +11,7 @@ class KeypadPageRepository {
   }
 
   getLocalData() async {
-    List<AllContacts> getAllcontacts =
-        await databaseHelper.getAllcontactsList();
+    List<AllContacts> getAllcontacts = await databaseHelper.getAllcontactsList();
 
     print("getLocalData: $getAllcontacts");
     return getAllcontacts;

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/ui/introscreen/introSlider.dart';
 import 'package:conet/utils/theme.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,20 +17,20 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    initializeFlutterFire();
+    // initializeFlutterFire();
     super.initState();
     startTimer();
   }
 
   // FlutterFire Initialization
-  void initializeFlutterFire() async {
-    try {
-      await Firebase.initializeApp();
-      print("FlutterFire Initialization successfully");
-    } catch (e) {
-      print("FlutterFire Initialization error");
-    }
-  }
+  // void initializeFlutterFire() async {
+  //   try {
+  //     await Firebase.initializeApp();
+  //     print("FlutterFire Initialization successfully");
+  //   } catch (e) {
+  //     print("FlutterFire Initialization error");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

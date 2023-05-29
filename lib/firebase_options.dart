@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '968842320717',
     projectId: 'conet-26772',
     storageBucket: 'conet-26772.appspot.com',
-    androidClientId: '968842320717-vg913b4aqvp1cd7rc12q7g6c921brqme.apps.googleusercontent.com',
+    androidClientId: '968842320717-b8hq11ve9afqjnv6hq539ocajn4agv6f.apps.googleusercontent.com',
     iosClientId: '968842320717-ra62330lsg2joa0siv05k61sie3ugarn.apps.googleusercontent.com',
     iosBundleId: 'com.shade6.conet',
   );

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,20 +19,26 @@ class SimpleBlocObserver extends BlocObserver {
 
 void main() {
   runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     Bloc.observer = SimpleBlocObserver();
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
-    WidgetsFlutterBinding.ensureInitialized();
-
     // Initializing FlutterFire
-    // await Firebase.initializeApp();
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    // FirebaseCrashlytics.instance.crash();
 
-    // Pass all uncaught errors from the framework to Crashlytics.
-    // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+    // Catch uncaught errors from Flutter framework.
+    FlutterError.onError = (FlutterErrorDetails errorDetails) {
+      // Dump errors to console in debug mode, else to crashlytics.
+      if (kDebugMode) {
+        FlutterError.dumpErrorToConsole(errorDetails);
+      } else {
+        FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
+      }
+    };
 
     runApp(const App());
   }, (error, stack) {

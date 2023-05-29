@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "968842320717-b8hq11ve9afqjnv6hq539ocajn4agv6f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shade6.conet",
+            "certificate_hash": "1a37a11358de88c0f50eeb7c40290e7ab1653292"
+          }
+        },
+        {
           "client_id": "968842320717-vg913b4aqvp1cd7rc12q7g6c921brqme.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

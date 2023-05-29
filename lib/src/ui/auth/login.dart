@@ -39,6 +39,7 @@ class _LoginState extends State<Login> {
     Widget _buildMobile() {
       return TextFormFieldWidget(
         hintText: "Email / Mobile",
+
         padding: 0.0,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -52,16 +53,19 @@ class _LoginState extends State<Login> {
 
     Widget _buildPassword() {
       return TextFormField(
+
         controller: _passwordController,
+
         style: Theme.of(context)
             .textTheme
             .headline5
             ?.apply(color: AppColor.whiteColor),
         decoration: InputDecoration(
+
           hintText: "Password",
           filled: true,
           fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
-          errorStyle: const TextStyle(color: Colors.white),
+          errorStyle: const TextStyle(color: Colors.red),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.transparent,
@@ -121,7 +125,7 @@ class _LoginState extends State<Login> {
           print("clicked");
           var validate = _loginFormKey.currentState!.validate();
           if (validate) {
-            Utils.hideKeyboard(context);
+           // Utils.hideKeyboard(context);
 
             setState(() {
               _loader = true;
@@ -147,7 +151,7 @@ class _LoginState extends State<Login> {
                 Utils.displayToast(response["message"]);
               }
             } catch (e) {
-              Utils.displayToast("Something went wrong!");
+              Utils.displayToastBottomError("Something went wrong!");
               print(e);
             }
           }
@@ -191,7 +195,7 @@ class _LoginState extends State<Login> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Already an have account?  ",
+                "Don't have an account?  ",
                 style: Theme.of(context)
                     .textTheme
                     .headline5
@@ -212,6 +216,7 @@ class _LoginState extends State<Login> {
 
     return Scaffold(
       backgroundColor: AppColor.primaryColor,
+
       body: LoadingOverlay(
         isLoading: _loader,
         opacity: 0.2,

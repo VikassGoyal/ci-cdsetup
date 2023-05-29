@@ -39,10 +39,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               },
               child: Container(
                 height: 58,
-                decoration: const BoxDecoration(
+                decoration:  BoxDecoration(
                   color: Color.fromRGBO(255, 255, 255, 0.15),
+
                 ),
-                padding: const EdgeInsets.only(left: 21, right: 50),
+                padding: const EdgeInsets.only(left: 21, right: 0),
                 child: Center(
                   child: Text(
                     "Email",
@@ -53,7 +54,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
             ),
             Expanded(
-              child: TextFormField(
+                child: TextFormField(
                 focusNode: _emailControllerFocus,
                 controller: _emailController,
                 style: Theme.of(context)
@@ -188,25 +189,59 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         appBar: AppBar(
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => Login()),
-              );
-            },
-            icon: const Icon(
-              Icons.arrow_back_sharp,
-              color: AppColor.whiteColor,
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          leading: Padding(
+            padding: const EdgeInsets.only(left:2.0),
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: (){
+                      Navigator.pushReplacement(
+                                 context,
+                              MaterialPageRoute(builder: (context) => Login()),
+                           );
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_sharp,
+                      color: AppColor.whiteColor,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 2,
+                  ),
+                  Text(
+                    "Back",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                    !.apply(color: AppColor.whiteColor),
+                  )
+                ],
+              //   children: [
+              //     IconButton(
+              //        icon: const Icon(
+              //          Icons.arrow_back_sharp,
+              //          color: AppColor.whiteColor,
+              //          ),
+              //       onPressed: () {
+              //       Navigator.pushReplacement(
+              //       context,
+              //    MaterialPageRoute(builder: (context) => Login()),
+              // );
+              //  },
+              //     ),
+              //     SizedBox(width: 2), // Add spacing between back arrow and text
+              //     Text("Back",  style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),),
+              //   ],
+              ),
             ),
           ),
-          title: Text(
-            "Back",
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1
-                ?.apply(color: AppColor.whiteColor),
-          ),
+
         ),
         body: LoadingOverlay(
           isLoading: _loader,
@@ -241,7 +276,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     Container(
                       padding: const EdgeInsets.only(right: 60),
                       child: Text(
-                        "Enter your email address below and we'll send you an email with instruction how to change your password",
+                        "Enter your email address below and we'll send you an email with instruction how to change your password.",
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1

@@ -13,7 +13,16 @@ class Utils {
       fontSize: 14.0,
     );
   }
-
+  static Future<bool?> displayToastBottomError(String message) {
+    return Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: AppColor.redColor,
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
+  }
   static Future<bool?> displayToastTopError(String message) {
     return Fluttertoast.showToast(
       msg: message,

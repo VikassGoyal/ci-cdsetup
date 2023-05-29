@@ -22,7 +22,9 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
     super.initState();
 
     slides.add(
-      const ContentConfig(
+
+       ContentConfig(
+
           title: "Welcome to the CONET App",
           description:
               "View, Manage, Download your Contacts on any device from anywhere at anytime hassle-free",
@@ -30,6 +32,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
     );
     slides.add(
       const ContentConfig(
+
           title: "Welcome to the CONET App",
           description:
               "Secure yourself with the updated information of your Contacts and their businesses in real-time",
@@ -37,6 +40,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
     );
     slides.add(
       const ContentConfig(
+
           title: "Welcome to the CONET App",
           description:
               "End - to - End Encryption. Privacy and Security is guaranteed.",
@@ -162,10 +166,10 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                           child: Text(
                             "${currentSlide.description}",
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline3
-                                !.apply(color: AppColor.whiteColor),
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              color: AppColor.whiteColor
+                            ),
                           ),
                         ),
                       ),
@@ -239,11 +243,17 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                           ),
                           child: Text(
                             "${currentSlide.description}",
+
+
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline3
-                                !.apply(color: AppColor.whiteColor),
+
+                            style: TextStyle(
+                                fontSize: 15.0,
+                                color: AppColor.whiteColor
+                            ),
+
+
+
                           ),
                         ),
                       ),

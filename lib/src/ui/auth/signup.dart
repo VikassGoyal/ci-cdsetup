@@ -6,7 +6,7 @@ import 'package:conet/src/ui/auth/termsofuse.dart';
 import 'package:conet/src/ui/auth/validateMobileNumberVerified.dart';
 import 'package:conet/src/ui/auth/verifyMobileNumber.dart';
 import 'package:conet/utils/theme.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -39,7 +39,7 @@ class _SignUpState extends State<SignUp> {
   final FocusNode _mobileControllerFocus = FocusNode();
   final FocusNode _passwordControllerFocus = FocusNode();
 
-  //FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class _SignUpState extends State<SignUp> {
               color: _nameError ? AppColor.whiteColor : Colors.transparent),
           borderRadius: BorderRadius.circular(7),
         ),
-        height: 58,
+
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -65,11 +65,25 @@ class _SignUpState extends State<SignUp> {
                 ),
                 padding: const EdgeInsets.only(left: 21, right:0),
                 child: Center(
-                  child: Text(
-                    "Name",
-                    style: Theme.of(context).textTheme.headline5?.apply(
-                        color: const Color.fromRGBO(255, 255, 255, 0.75)),
-                  ),
+                    child: RichText(text: TextSpan(
+                        text: "Name",
+                        style:TextStyle(
+                            color: Color.fromRGBO(255, 255, 255, 0.75),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600
+
+                        ),
+                        children: [
+                          TextSpan(
+                              text: ' *',
+                              style: TextStyle(
+                                color: Colors.red,
+                              )
+                          )
+                        ]
+                    )
+
+                    )
                 ),
               ),
             ),
@@ -139,7 +153,7 @@ class _SignUpState extends State<SignUp> {
               color: _emailError ? AppColor.whiteColor : Colors.transparent),
           borderRadius: BorderRadius.circular(7),
         ),
-        height: 58,
+
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -154,11 +168,25 @@ class _SignUpState extends State<SignUp> {
                 ),
                 padding: const EdgeInsets.only(left: 21, right:0),
                 child: Center(
-                  child: Text(
-                    "Email",
-                    style: Theme.of(context).textTheme.headline5?.apply(
-                        color: const Color.fromRGBO(255, 255, 255, 0.75)),
-                  ),
+                  child: RichText(text: TextSpan(
+                    text: "Email",
+                    style:TextStyle(
+                      color: Color.fromRGBO(255, 255, 255, 0.75),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600
+
+                    ),
+                      children: [
+                      TextSpan(
+                      text: ' *',
+                      style: TextStyle(
+                        color: Colors.red,
+                      )
+                  )
+                      ]
+                  )
+
+                  )
                 ),
               ),
             ),
@@ -228,7 +256,7 @@ class _SignUpState extends State<SignUp> {
               color: _mobileError ? AppColor.whiteColor : Colors.transparent),
           borderRadius: BorderRadius.circular(7),
         ),
-        height: 58,
+
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -243,11 +271,25 @@ class _SignUpState extends State<SignUp> {
                 ),
                 padding: const EdgeInsets.only(left: 21, right: 0),
                 child: Center(
-                  child: Text(
-                    "Mobile",
-                    style: Theme.of(context).textTheme.headline5?.apply(
-                        color: const Color.fromRGBO(255, 255, 255, 0.75)),
-                  ),
+                    child: RichText(text: TextSpan(
+                        text: "Mobile",
+                        style:TextStyle(
+                            color: Color.fromRGBO(255, 255, 255, 0.75),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600
+
+                        ),
+                        children: [
+                          TextSpan(
+                              text: ' *',
+                              style: TextStyle(
+                                color: Colors.red,
+                              )
+                          )
+                        ]
+                    )
+
+                    )
                 ),
               ),
             ),
@@ -332,11 +374,25 @@ class _SignUpState extends State<SignUp> {
                 ),
                 padding: const EdgeInsets.only(left: 21, right: 0),
                 child: Center(
-                  child: Text(
-                    "Password",
-                    style: Theme.of(context).textTheme.headline5?.apply(
-                        color: const Color.fromRGBO(255, 255, 255, 0.75)),
-                  ),
+                    child: RichText(text: TextSpan(
+                        text: "Password",
+                        style:TextStyle(
+                            color: Color.fromRGBO(255, 255, 255, 0.75),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600
+
+                        ),
+                        children: [
+                          TextSpan(
+                              text: ' *',
+                              style: TextStyle(
+                                color: Colors.red,
+                              )
+                          )
+                        ]
+                    )
+
+                    )
                 ),
               ),
             ),
@@ -430,6 +486,10 @@ class _SignUpState extends State<SignUp> {
         ),
         onPressed: () async {
           print("clicked");
+          print( _nameController.text);
+          print(_emailController.text);
+          print( _mobileController.text);
+          print(_passwordController.text);
           var validate = _signupFormKey.currentState!.validate();
           if (validate) {
             Utils.hideKeyboard(context);

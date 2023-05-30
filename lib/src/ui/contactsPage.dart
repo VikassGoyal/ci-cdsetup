@@ -34,7 +34,7 @@ class ContactsPage extends StatefulWidget {
   var contactsData;
   var mostDailedContacts;
 
-  ContactsPage({this.contactsData, this.mostDailedContacts}) : super();
+  ContactsPage({ this.contactsData,  this.mostDailedContacts}) : super();
 
   @override
   _ContactsPageState createState() => _ContactsPageState();
@@ -45,6 +45,8 @@ class _ContactsPageState extends State<ContactsPage> {
   List<RecentCalls> recentCalls = [];
   List<AllContacts> _contacts = [];
   List<AllContacts> _searchResult = [];
+  List<AllContacts> _blanklistcontacts=[];
+  List<RecentCalls> _blanklistrecentCalls=[];
   final List<DeviceContactData> _importportcontacts = [];
   TextEditingController? _outputController;
   ContactPageRepository? contactPageRepository;
@@ -60,14 +62,14 @@ class _ContactsPageState extends State<ContactsPage> {
   void initState() {
     super.initState();
     contactPageRepository = ContactPageRepository();
-    var responseData = widget.contactsData;
+    var responseData = widget.contactsData==null ? _blanklistcontacts :widget.contactsData;
 
     _contacts = [];
     recentCalls = [];
     _loadedcontacts = [];
     _contacts = responseData;
     _loadedcontacts = _contacts;
-    recentCalls = widget.mostDailedContacts;
+    recentCalls = widget.mostDailedContacts==null ? _blanklistrecentCalls : widget.mostDailedContacts;
 
     SchedulerBinding.instance.addPostFrameCallback((_) => _checkShowDialog());
     _outputController = TextEditingController();
@@ -82,7 +84,7 @@ class _ContactsPageState extends State<ContactsPage> {
     if (Platform.isAndroid) {
       controller!.pauseCamera();
     }
-    controller!.resumeCamera();
+    //controller!.resumeCamera();
   }
 
   void _handleList(List<AllContacts> list) {

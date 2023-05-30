@@ -96,7 +96,9 @@ class _DialPadCustomState extends State<DialPadCustom> {
       );
     }
     //To Do: Fix this workaround for last row
-    rows.add(Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
+    rows.add(
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: items));
     rows.add(
       const SizedBox(
         height: 12,
@@ -333,6 +335,8 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
         // if(widget.title != null) {
         //   widget.onTap(widget.title!);
         // }
+        print("dd");
+        print(widget.title);
 
         widget.onTap!(widget.title);
 
@@ -360,6 +364,8 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
               child: widget.icon == null
                   ? widget.subtitle != null
                       ? Column(
+
+
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.only(top: 16),
@@ -382,14 +388,14 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
                           ],
                         )
                       : Padding(
-                          padding: const EdgeInsets.only(top: 8),
+                          padding: EdgeInsets.only(top: widget.title== "*" ? 9 : 0),
                           child: Text(
                             "${widget.title}",
                             style: TextStyle(
                               fontFamily: 'Sfpro-Rounded-Medium',
                               inherit: true,
-                              fontSize: widget.title == "*" && widget.subtitle == null
-                                  ? screenSize.height * 0.0862069
+                              fontSize: widget.title == "*" ||   widget.title == "#" && widget.subtitle == null
+                                  ? screenSize.height * 0.0762069
                                   : sizeFactor / 2,
                               color: widget.textColor ?? Colors.white,
                             ),

@@ -80,8 +80,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as PhoneScreenArguments;
+   // final args = ModalRoute.of(context)!.settings.arguments as PhoneScreenArguments;
 
     Widget _buildVerifyMobileNumberButton() {
       return ElevatedButton(
@@ -94,6 +93,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
         ),
         onPressed: () async {
           if (otpNumber!.length != 6) {
+            print(otpNumber!.length);
             return;
           }
           setState(() {
@@ -101,6 +101,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           });
 
           try {
+            print("calling");
             await FirebaseAuth.instance
                 .signInWithCredential(PhoneAuthProvider.credential(
                     verificationId: _verificationCode!, smsCode: otpNumber!))
@@ -182,7 +183,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
             style: Theme.of(context)
                 .textTheme
                 .button
-                ?.apply(color: AppColor.whiteColor),
+                ?.apply(color: AppColor.redColor),
           ),
         ),
       );
@@ -376,6 +377,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
       return InkWell(
         onTap: () {
           print("signin");
+
         },
         child: Center(
           child: Text(
@@ -386,8 +388,8 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
       );
     }
 
-    const defaultPinTheme = PinTheme(
-      width: 40,
+    final defaultPinTheme = PinTheme(
+      width: 50,
       height: 55,
       textStyle: TextStyle(fontSize: 25.0, color: Colors.white),
     );
@@ -418,58 +420,66 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Directionality(
-            // Specify direction if desired
-            textDirection: TextDirection.ltr,
-            child: Pinput(
-              length: 6,
-              focusNode: _pinPutFocusNode,
-              controller: _pinPutController,
-              pinAnimationType: PinAnimationType.fade,
-              defaultPinTheme: defaultPinTheme,
-              submittedPinTheme:
-                  defaultPinTheme.copyWith(decoration: pinPutDecoration),
-              focusedPinTheme:
-                  defaultPinTheme.copyWith(decoration: selectdpinPutDecoration),
-              onCompleted: (pin) {
-                debugPrint('onCompleted: $pin');
-                setState(() {
-                  otpNumber = pin;
-                });
-                Utils.hideKeyboard(context);
-                print(otpNumber!.length);
+          padding: const EdgeInsets.all(0.0),
+          child: Column(
+            children: [
+              Directionality(
+                // Specify direction if desired
+                textDirection: TextDirection.ltr,
+                child: Pinput(
+                  length: 6,
+                  focusNode: _pinPutFocusNode,
+                  controller: _pinPutController,
+                  pinAnimationType: PinAnimationType.fade,
+                  defaultPinTheme: defaultPinTheme,
+                  submittedPinTheme:
+                      defaultPinTheme.copyWith(decoration: pinPutDecoration),
+                  focusedPinTheme:
+                      defaultPinTheme.copyWith(decoration: selectdpinPutDecoration),
+                  onCompleted: (pin) {
+                    debugPrint('onCompleted: $pin');
+                    setState(() {
+                      otpNumber = pin;
+                    });
+                    Utils.hideKeyboard(context);
+                    print(otpNumber!.length);
 
-                try {
-                  print("pin : $pin");
-                } catch (e) {
-                  FocusScope.of(context).unfocus();
-                  // _scaffoldkey.currentState.showSnackBar(
-                  //     SnackBar(content: Text('invalid OTP')));
-                }
-              },
-              // fieldsCount: 6,
-              // submittedFieldDecoration: pinPutDecoration,
-              // selectedFieldDecoration: selectdpinPutDecoration,
-              // followingFieldDecoration: pinPutDecoration,
-              // eachFieldWidth: 40.0,
-              // eachFieldHeight: 55.0,
-              // onSubmit: (pin) async {
-              //   setState(() {
-              //     otpNumber = pin;
-              //   });
-              //   Utils.hideKeyboard(context);
-              //   print(otpNumber.length);
+                    try {
+                      _buildVerifyMobileNumberButton();
+                      print("pin : $pin");
+                    } catch (e) {
+                      FocusScope.of(context).unfocus();
+                      // _scaffoldkey.currentState.showSnackBar(
+                      //     SnackBar(content: Text('invalid OTP')));
+                    }
+                  },
+                  // fieldsCount: 6,
+                  // submittedFieldDecoration: pinPutDecoration,
+                  // selectedFieldDecoration: selectdpinPutDecoration,
+                  // followingFieldDecoration: pinPutDecoration,
+                  // eachFieldWidth: 40.0,
+                  // eachFieldHeight: 55.0,
+                  // onSubmit: (pin) async {
+                  //   setState(() {
+                  //     otpNumber = pin;
+                  //   });
+                  //   Utils.hideKeyboard(context);
+                  //   print(otpNumber.length);
 
-              //   try {
-              //     print("pin : $pin");
-              //   } catch (e) {
-              //     FocusScope.of(context).unfocus();
-              //     // _scaffoldkey.currentState.showSnackBar(
-              //     //     SnackBar(content: Text('invalid OTP')));
-              //   }
-              // },
-            ),
+                  //   try {
+                  //     print("pin : $pin");
+                  //   } catch (e) {
+                  //     FocusScope.of(context).unfocus();
+                  //     // _scaffoldkey.currentState.showSnackBar(
+                  //     //     SnackBar(content: Text('invalid OTP')));
+                  //   }
+                  // },
+                ),
+              ),
+              _buildResend(),
+          _buildVerifyMobileNumberButton()
+
+            ],
           ),
         ));
   }

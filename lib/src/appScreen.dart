@@ -68,9 +68,13 @@ class AppScreen extends StatelessWidget {
               backgroundColor: AppColor.bottomNavBgColor,
               currentIndex: context
                   .select((BottomNavigationBloc bloc) => bloc.currentIndex),
-              onTap: (index) => context.read<BottomNavigationBloc>().add(
-                    PageTapped(index: index),
-                  ),
+              onTap: (index) {
+                print(index);
+                context.read<BottomNavigationBloc>().add(
+                  PageTapped(index: index),
+                );
+
+              },
               items: [
                 BottomNavigationBarItem(
                   icon: context.select((BottomNavigationBloc bloc) =>

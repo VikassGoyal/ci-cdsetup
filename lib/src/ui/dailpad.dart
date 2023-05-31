@@ -37,7 +37,10 @@ class DialPadCustom extends StatefulWidget {
 }
 
 class _DialPadCustomState extends State<DialPadCustom> {
-  MaskedTextController? textEditingController;
+  final RegExp _regex = RegExp(r'^[0-9*#]+$');
+
+
+  TextEditingController? textEditingController;
   List<AllContacts>? _loadedcontacts = [];
   bool _contactNameVisible = false;
   var _contactName = "";
@@ -48,7 +51,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
 
   @override
   void initState() {
-    textEditingController = MaskedTextController(mask: widget.outputMask ?? '000 0000 0000 00');
+    textEditingController = TextEditingController();
     _loadedcontacts = widget.contactList;
     super.initState();
 
@@ -56,17 +59,21 @@ class _DialPadCustomState extends State<DialPadCustom> {
   }
 
   _setText(String? value) async {
+
     if (widget.enableDtmf!) {
       Dtmf.playTone(digits: value!);
     }
-
+print(textEditingController!.text.length);
     if (textEditingController!.text.length == 17) {
       return;
     }
 
     setState(() {
       _value += value!;
+
       textEditingController!.text = _value;
+
+      print(textEditingController!.text);
     });
 
     getContactName();
@@ -124,9 +131,11 @@ class _DialPadCustomState extends State<DialPadCustom> {
               style: TextStyle(
                 fontFamily: 'Sfpro-Rounded-Semibold',
                 inherit: true,
-                color: AppColor.secondaryColor,
+                color: AppColor.redColor,
                 fontSize: sizeFactor / 2,
+
               ),
+              keyboardType: TextInputType.phone,
               textAlign: TextAlign.center,
               decoration: const InputDecoration(border: InputBorder.none),
               controller: textEditingController,
@@ -190,6 +199,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
                     icon: Icons.phone,
                     color: AppColor.secondaryColor,
                     onTap: (value) {
+
                       widget.makeCall!(_value);
                     },
                   ),
@@ -343,6 +353,7 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
         if (widget.shouldAnimate!) {
           if (_animationController!.status == AnimationStatus.completed) {
             _animationController?.reverse();
+
           } else {
             _animationController?.forward();
             _timer = Timer(const Duration(milliseconds: 200), () {

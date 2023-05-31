@@ -156,11 +156,13 @@ class _AddContactState extends State<AddContact> {
                 hintText: "Enter the Mobile Number",
                 padding: 14.0,
                 margin: 22.0,
-                // maxLength: 10,
+                 maxLength: 10,
                 textInputType: TextInputType.number,
                 actionKeyboard: TextInputAction.done,
                 parametersValidate: "Please enter Mobile number.",
                 controller: _personalNumber,
+                regexexp: RegExp(r'[0-9]')
+
               ),
               const SizedBox(height: 20),
               contactSearchButton()

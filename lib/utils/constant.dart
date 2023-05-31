@@ -33,7 +33,8 @@ getTrimedNumber(number) {
   // var contactNumber = number
   //     .replaceAll(' ', '')
   //     .substring(number.replaceAll(' ', '').length - 10);
-  
+      if(number==null)
+        return null ;
     var numberspace = number.replaceAll(' ', '');
     var contactNumber = numberspace.substring(numberspace.length - 10);
 

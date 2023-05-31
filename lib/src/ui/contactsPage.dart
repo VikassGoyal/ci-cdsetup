@@ -853,11 +853,14 @@ class _ContactsPageState extends State<ContactsPage> {
 
 //QRscanner Start
   _checkQRPermission() async {
+    print("coming");
     var status = await Permission.camera.status;
+    print(status);
     if (status.isGranted) {
       scanQrCode();
     } else {
       var reqStatus = await Permission.camera.request();
+      print(reqStatus);
       if (reqStatus.isGranted) {
         scanQrCode();
       } else if (reqStatus.isDenied) {

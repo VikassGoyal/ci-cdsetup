@@ -1,5 +1,6 @@
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextFormFieldWidget extends StatefulWidget {
   final TextInputType? textInputType;
@@ -15,6 +16,7 @@ class TextFormFieldWidget extends StatefulWidget {
   final TextInputAction actionKeyboard;
   final Function? onSubmitField;
   final Function? onFieldTap;
+  final RegExp? regexp;
 
   const TextFormFieldWidget(
       {required this.hintText,
@@ -29,7 +31,9 @@ class TextFormFieldWidget extends StatefulWidget {
       this.actionKeyboard = TextInputAction.next,
       this.onSubmitField,
       this.onFieldTap,
-      this.prefixIcon});
+      this.prefixIcon,
+        this.regexp
+      });
 
   @override
   _TextFormFieldWidgetState createState() => _TextFormFieldWidgetState();
@@ -45,6 +49,12 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
             .textTheme
             .headline5
             ?.apply(color: AppColor.whiteColor),
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(widget.regexp==null ? RegExp('.*' ) : widget.regexp!),
+          FilteringTextInputFormatter.deny(RegExp(r'\s')),
+
+
+        ],
         decoration: InputDecoration(
           hintText: widget.hintText,
           filled: true,
@@ -55,6 +65,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
               color: Colors.transparent,
             ),
           ),
+
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Color.fromRGBO(255, 255, 255, 0.20)),
           ),

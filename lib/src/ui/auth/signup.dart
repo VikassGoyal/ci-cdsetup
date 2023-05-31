@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/services.dart';
 
 import 'package:conet/blocs/userBloc.dart';
 import 'package:conet/src/ui/auth/privacyPolicy.dart';
@@ -331,6 +332,9 @@ class _SignUpState extends State<SignUp> {
                 cursorColor: AppColor.whiteColor,
                 enableSuggestions: false,
                 keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                ],
                 textInputAction: TextInputAction.next,
                 validator: (value) {
                   if (value!.isEmpty) {

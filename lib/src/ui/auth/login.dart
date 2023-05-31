@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter/services.dart';
 
 import '../utils.dart';
 
@@ -40,14 +41,17 @@ class _LoginState extends State<Login> {
       return TextFormFieldWidget(
         hintText: "Email / Mobile",
 
+
         padding: 0.0,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         functionValidate: commonValidation,
         controller: _mobileEmailController,
+
         //focusNode: _mobileEmailControllerFocus,
         parametersValidate: "Please enter Email / Mobile.",
         onSubmitField: () {},
+
       );
     }
 
@@ -60,6 +64,10 @@ class _LoginState extends State<Login> {
             .textTheme
             .headline5
             ?.apply(color: AppColor.whiteColor),
+        inputFormatters: [
+          FilteringTextInputFormatter.deny(RegExp(r'\s')),
+
+        ],
         decoration: InputDecoration(
 
           hintText: "Password",

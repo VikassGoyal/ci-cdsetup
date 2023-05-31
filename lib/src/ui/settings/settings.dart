@@ -2,6 +2,7 @@ import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/login.dart';
+import 'package:conet/src/ui/conetWebPage.dart';
 import 'package:conet/src/ui/notification.dart';
 import 'package:conet/src/ui/qrScreen.dart';
 import 'package:conet/src/ui/settings/changePassword.dart';
@@ -223,7 +224,14 @@ class _SettingsState extends State<Settings> {
               ),
               Divider(height: 1, color: Colors.grey.shade200),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ConetWebPage(),
+                    ),
+                  );
+                },
                 title: Text(
                   "Invite to CONET app",
                   style: Theme.of(context).textTheme.headline3,

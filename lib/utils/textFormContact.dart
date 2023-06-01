@@ -1,5 +1,6 @@
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextFormFieldContact extends StatefulWidget {
   final TextInputType? textInputType;
@@ -19,6 +20,7 @@ class TextFormFieldContact extends StatefulWidget {
   final Function? onSubmitField;
   final Function? onFieldTap;
   final int? maxLength;
+  final RegExp? regexexp;
 
   const TextFormFieldContact(
       {required this.hintText,
@@ -37,60 +39,72 @@ class TextFormFieldContact extends StatefulWidget {
       this.onSubmitField,
       this.onFieldTap,
       this.prefixIcon,
-      this.maxLength});
+      this.maxLength,
+        this.regexexp
+      });
 
   @override
   _TextFormFieldContactState createState() => _TextFormFieldContactState();
 }
 
 class _TextFormFieldContactState extends State<TextFormFieldContact> {
+  String message="";
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 48,
-      padding: EdgeInsets.only(left: widget.padding!, right: widget.padding!),
-      margin: EdgeInsets.only(
-        left: widget.margin ?? 0,
-        right: widget.margin ?? 0,
-      ),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: const Color(0xFFE8E8E8),
-        ),
-        borderRadius: BorderRadius.circular(7),
-      ),
-      child: TextFormField(
-        readOnly: widget.readonly!,
-        style: Theme.of(context)
-            .textTheme
-            .bodyText2
-            ?.apply(color: AppColor.secondaryColor),
-        maxLength: widget.maxLength,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
-          labelText: widget.hintText,
-          labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                color: const Color.fromRGBO(135, 139, 149, 1),
-              ),
-          filled: true,
-          fillColor: AppColor.whiteColor,
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.transparent),
+    return Column(
+      children: [
+        Container(
+          height: 48,
+          padding: EdgeInsets.only(left: widget.padding!, right: widget.padding!),
+          margin: EdgeInsets.only(
+            left: widget.margin ?? 0,
+            right: widget.margin ?? 0,
           ),
-          focusedBorder: InputBorder.none,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color(0xFFE8E8E8),
+            ),
+            borderRadius: BorderRadius.circular(7),
+          ),
+          child: TextFormField(
+            readOnly: widget.readonly!,
+
+
+            style: Theme.of(context)
+                .textTheme
+                .bodyText2
+                ?.apply(color: AppColor.secondaryColor),
+            maxLength: widget.maxLength,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(widget.regexexp==null ? '.*' : widget.regexexp!),
+            ],
+              decoration: InputDecoration(
+              contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+              labelText: widget.hintText,
+              counterText:"",
+              labelStyle: Theme.of(context).textTheme.headline6?.apply(
+                    color: const Color.fromRGBO(135, 139, 149, 1),
+                  ),
+              filled: true,
+              fillColor: AppColor.whiteColor,
+              errorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+              ),
+              focusedBorder: InputBorder.none,
+            ),
+            enabled: widget.enable,
+            cursorColor: AppColor.secondaryColor,
+            keyboardType: widget.textInputType,
+            textInputAction: widget.actionKeyboard,
+            controller: widget.controller,
+
+
+
+          ),
         ),
-        enabled: widget.enable,
-        cursorColor: AppColor.secondaryColor,
-        keyboardType: widget.textInputType,
-        textInputAction: widget.actionKeyboard,
-        controller: widget.controller,
-        validator: (value) {
-          if(value!.isEmpty || !RegExp(r'^[^\s]{8,16}$').hasMatch(value)){
-            return "Enter value length is between 8 and 16";
-          }
-          return null;
-        },
-      ),
+       message.isNotEmpty? Text('$message'): SizedBox()
+
+      ],
     );
   }
 }
@@ -98,7 +112,7 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
 commonValidation(String? value, String? messageError) {
   var required = requiredValidator(value, messageError);
   return required;
-  return null;
+
 }
 
 String? requiredValidator(value, messageError) {

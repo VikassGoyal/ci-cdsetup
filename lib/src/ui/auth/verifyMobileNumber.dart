@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:conet/blocs/userBloc.dart';
 import 'package:conet/src/ui/auth/phoneScreenArguments.dart';
 import 'package:conet/src/ui/auth/signup.dart';
@@ -37,23 +39,26 @@ class VerifyMobileNumber extends StatefulWidget {
 
 class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
   final _otpVerifyFormKey = GlobalKey<FormState>();
+  int start= 60;
 
   String? _verificationCode;
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   final FocusNode _pinPutFocusNode = FocusNode();
   final TextEditingController _pinPutController = TextEditingController();
   final BoxDecoration pinPutDecoration = BoxDecoration(
-    color: Colors.transparent,
-    borderRadius: BorderRadius.circular(4.0),
-    border: Border.all(
-      color: Colors.white38,
+   // color: Colors.white,
+    //borderRadius: BorderRadius.circular(4.0),
+    border: Border(
+
+      bottom: BorderSide(width: 3.0, color: Colors.white),
     ),
   );
   final BoxDecoration selectdpinPutDecoration = BoxDecoration(
-    color: Colors.transparent,
-    borderRadius: BorderRadius.circular(4.0),
-    border: Border.all(
-      color: Colors.white,
+   // color: Colors.white,
+    //borderRadius: BorderRadius.circular(4.0),
+    border: Border(
+
+      bottom: BorderSide(width: 3.0, color: Colors.white),
     ),
   );
 
@@ -70,18 +75,19 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  String? otpNumber;
+  String?  otpNumber= "1";
+  bool wait =false;
 
   @override
   void initState() {
     super.initState();
     _verifyPhone();
+    startTimer();
   }
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as PhoneScreenArguments;
+   // final args = ModalRoute.of(context)!.settings.arguments as PhoneScreenArguments;
 
     Widget _buildVerifyMobileNumberButton() {
       return ElevatedButton(
@@ -93,7 +99,9 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           ),
         ),
         onPressed: () async {
-          if (otpNumber!.length != 6) {
+          //print(otpNumber!.length);
+          if ( otpNumber!.length != 6) {
+           Utils.displayToastBottomError("Please Enter Valid  OTP");
             return;
           }
           setState(() {
@@ -101,16 +109,20 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           });
 
           try {
+            print("calling");
             await FirebaseAuth.instance
                 .signInWithCredential(PhoneAuthProvider.credential(
                     verificationId: _verificationCode!, smsCode: otpNumber!))
                 .then((value) async {
+              print(value.user!);
               if (value.user != null) {
+               print("value");
                 signupFunction();
                 print("verifynow : Sign up successfully...!");
               }
             });
           } catch (e) {
+            print(e);
             Utils.displayToast("Invalid OTP");
             setState(() {
               _loader = false;
@@ -375,21 +387,39 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
     Widget _buildResend() {
       return InkWell(
         onTap: () {
-          print("signin");
+          if(wait){
+            _verifyPhone();
+            start=60;
+            startTimer();
+
+
+          }
+        else{
+          }
+
         },
         child: Center(
           child: Text(
-            "Re-Send code ",
-            style: Theme.of(context).textTheme.bodyText1,
+            "Re-Send code 00:$start",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18
+            ),
           ),
         ),
       );
     }
 
-    const defaultPinTheme = PinTheme(
-      width: 40,
+    final defaultPinTheme = PinTheme(
+      width: 50,
       height: 55,
       textStyle: TextStyle(fontSize: 25.0, color: Colors.white),
+      decoration: BoxDecoration(
+        border: Border(
+
+          bottom: BorderSide(width: 3.0, color: Colors.white),
+        ),
+    ),
     );
 
     return Scaffold(
@@ -397,79 +427,148 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
         appBar: AppBar(
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => SignUp()),
-              );
+          centerTitle: false,
+          leadingWidth: 150,
+          leading: InkWell(
+            onTap: (){
+              Navigator.pop(context);
             },
-            icon: const Icon(
-              Icons.arrow_back_sharp,
-              color: AppColor.whiteColor,
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left:10,right:3),
+                child: Icon(Icons.arrow_back,color:Colors.white),
+
+
+                ),
+
+                Text(
+                  'Back',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color:Colors.white
+                  ),
+                ),
+              ],
             ),
           ),
-          title: Text(
-            "Back",
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1
-                ?.apply(color: AppColor.whiteColor),
-          ),
+
         ),
         body: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Directionality(
-            // Specify direction if desired
-            textDirection: TextDirection.ltr,
-            child: Pinput(
-              length: 6,
-              focusNode: _pinPutFocusNode,
-              controller: _pinPutController,
-              pinAnimationType: PinAnimationType.fade,
-              defaultPinTheme: defaultPinTheme,
-              submittedPinTheme:
-                  defaultPinTheme.copyWith(decoration: pinPutDecoration),
-              focusedPinTheme:
-                  defaultPinTheme.copyWith(decoration: selectdpinPutDecoration),
-              onCompleted: (pin) {
-                debugPrint('onCompleted: $pin');
-                setState(() {
-                  otpNumber = pin;
-                });
-                Utils.hideKeyboard(context);
-                print(otpNumber!.length);
+          padding: const EdgeInsets.only(left:16.0, right: 22.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+             Container(
+               height: 83,
+               child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
 
-                try {
-                  print("pin : $pin");
-                } catch (e) {
-                  FocusScope.of(context).unfocus();
-                  // _scaffoldkey.currentState.showSnackBar(
-                  //     SnackBar(content: Text('invalid OTP')));
-                }
-              },
-              // fieldsCount: 6,
-              // submittedFieldDecoration: pinPutDecoration,
-              // selectedFieldDecoration: selectdpinPutDecoration,
-              // followingFieldDecoration: pinPutDecoration,
-              // eachFieldWidth: 40.0,
-              // eachFieldHeight: 55.0,
-              // onSubmit: (pin) async {
-              //   setState(() {
-              //     otpNumber = pin;
-              //   });
-              //   Utils.hideKeyboard(context);
-              //   print(otpNumber.length);
+                 children: [
+                   Text(
+                     "Verify OTP Received",
+                     style: Theme.of(context)
+                         .textTheme
+                         .headline1
+                         ?.apply(color: AppColor.whiteColor),
+                   ),
+                   Text(
+                     "in Your Email",
+                     style: Theme.of(context)
+                         .textTheme
+                         .headline1
+                         ?.apply(color: AppColor.whiteColor),
+                   ),
+                 ],
+               ),
+             ),
+              const SizedBox(height: 16),
+              Text("We have sent code to " + widget.email! ,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.apply(color: AppColor.whiteColor),
+              ),
+              Text(
+                "Enter the code below.",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.apply(color: AppColor.whiteColor),
+              ),
+              const SizedBox(height: 60),
+              Directionality(
+                // Specify direction if desired
+                textDirection: TextDirection.ltr,
+                child: Pinput(
+                  length: 6,
+                  focusNode: _pinPutFocusNode,
+                  controller: _pinPutController,
+                  pinAnimationType: PinAnimationType.fade,
+                  defaultPinTheme: defaultPinTheme,
+                  submittedPinTheme:
+                      defaultPinTheme.copyWith(decoration: pinPutDecoration),
+                  focusedPinTheme:
+                      defaultPinTheme.copyWith(decoration: selectdpinPutDecoration),
+                  onChanged: (pin){
+                    debugPrint('onCompleted: $pin');
+                    setState(() {
+                      otpNumber = pin;
+                    });
+                  },
+                  onCompleted: (pin) {
+                    debugPrint('onCompleted: $pin');
+                    setState(() {
+                      otpNumber = pin;
+                    });
+                    Utils.hideKeyboard(context);
+                    print(otpNumber!.length);
 
-              //   try {
-              //     print("pin : $pin");
-              //   } catch (e) {
-              //     FocusScope.of(context).unfocus();
-              //     // _scaffoldkey.currentState.showSnackBar(
-              //     //     SnackBar(content: Text('invalid OTP')));
-              //   }
-              // },
-            ),
+                    try {
+                      _buildVerifyMobileNumberButton();
+                      print("pin : $pin");
+                    } catch (e) {
+                      FocusScope.of(context).unfocus();
+                      // _scaffoldkey.currentState.showSnackBar(
+                      //     SnackBar(content: Text('invalid OTP')));
+                    }
+                  },
+                  // fieldsCount: 6,
+                  // submittedFieldDecoration: pinPutDecoration,
+                  // selectedFieldDecoration: selectdpinPutDecoration,
+                  // followingFieldDecoration: pinPutDecoration,
+                  // eachFieldWidth: 40.0,
+                  // eachFieldHeight: 55.0,
+                  // onSubmit: (pin) async {
+                  //   setState(() {
+                  //     otpNumber = pin;
+                  //   });
+                  //   Utils.hideKeyboard(context);
+                  //   print(otpNumber.length);
+
+                  //   try {
+                  //     print("pin : $pin");
+                  //   } catch (e) {
+                  //     FocusScope.of(context).unfocus();
+                  //     // _scaffoldkey.currentState.showSnackBar(
+                  //     //     SnackBar(content: Text('invalid OTP')));
+                  //   }
+                  // },
+                ),
+              ),
+              SizedBox(
+                height: 40,
+                width: 20,
+              ),
+          _buildVerifyMobileNumberButton(),
+              SizedBox(
+                height: 60,
+                width: 20,
+              ),
+              _buildResend(),
+
+            ],
           ),
         ));
   }
@@ -552,5 +651,26 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
       });
       print(e);
     }
+  }
+  void startTimer(){
+  const onsec= Duration(seconds:1);
+  Timer timer= Timer.periodic(onsec, (timer) {
+    if(start==0) {
+      setState(() {
+        wait = true;
+        timer.cancel();
+      });
+    }
+      else{
+        setState(() {
+          wait=false;
+          start--;
+        });
+    }
+
+
+  });
+    
+
   }
 }

@@ -2,6 +2,7 @@ import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/login.dart';
+import 'package:conet/src/ui/conetWebPage.dart';
 import 'package:conet/src/ui/notification.dart';
 import 'package:conet/src/ui/qrScreen.dart';
 import 'package:conet/src/ui/settings/changePassword.dart';
@@ -60,7 +61,6 @@ class _SettingsState extends State<Settings> {
           "assets/logo.svg",
           height: 24,
         ),
-
       ),
       body: LoadingOverlay(
         isLoading: _loader,
@@ -223,7 +223,14 @@ class _SettingsState extends State<Settings> {
               ),
               Divider(height: 1, color: Colors.grey.shade200),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ConetWebPage(),
+                    ),
+                  );
+                },
                 title: Text(
                   "Invite to CONET app",
                   style: Theme.of(context).textTheme.headline3,
@@ -293,7 +300,10 @@ class _SettingsState extends State<Settings> {
               Center(
                 child: Text(
                   "v.$version",
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .copyWith(fontSize: 14),
                 ),
               ),
               const SizedBox(height: 10),
@@ -303,20 +313,26 @@ class _SettingsState extends State<Settings> {
               ),
               const SizedBox(height: 10),
               Text("$totalUsers users Worldwide",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(color: AppColor.secondaryColor)),
+                  style: const TextStyle(
+                    color: AppColor.secondaryColor,
+                    fontFamily: 'Sfpro-Rounded-Medium',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    fontStyle: FontStyle.normal,
+                  )),
               const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.only(left: 30, right: 30),
                 child: Text(
                     "With your $totalContact contacts, you have $totalConnection connections",
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2!
-                        .copyWith(color: AppColor.accentColor)),
+                    style: const TextStyle(
+                      color: AppColor.accentColor,
+                      fontFamily: 'Sfpro-Rounded-Semibold',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                      fontStyle: FontStyle.normal,
+                    )),
               ),
               const SizedBox(height: 20),
             ],

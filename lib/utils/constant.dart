@@ -33,10 +33,9 @@ getTrimedNumber(number) {
   // var contactNumber = number
   //     .replaceAll(' ', '')
   //     .substring(number.replaceAll(' ', '').length - 10);
-      if(number==null)
-        return null ;
-    var numberspace = number.replaceAll(' ', '');
-    var contactNumber = numberspace.substring(numberspace.length - 10);
+  if (number == null) return null;
+  var numberspace = number.replaceAll(' ', '');
+  var contactNumber = numberspace.substring(numberspace.length - 10);
 
   return contactNumber;
 }
@@ -61,5 +60,17 @@ getDateFormat(date) {
   } catch (e) {
     print(e);
     return formattedDate;
+  }
+}
+
+extension Validator on String {
+  bool isValidEmail() {
+    return RegExp(
+            r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+        .hasMatch(this);
+  }
+
+  bool isValidMobile() {
+    return RegExp(r"^[0-9]{10}$").hasMatch(this);
   }
 }

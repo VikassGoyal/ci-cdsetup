@@ -110,8 +110,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                       Navigator.of(context).pop();
                     },
                     child: Container(
-                      constraints:
-                          const BoxConstraints(minHeight: 40.0, maxWidth: 100.0),
+                      constraints: const BoxConstraints(
+                          minHeight: 40.0, maxWidth: 100.0),
                       alignment: Alignment.center,
                       child: Text(
                         "Got it",
@@ -185,7 +185,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                     "${_contacts[index].name}",
+                      "${_contacts[index].name}",
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.headline3?.copyWith(
                           color: AppColor.blackColor,
@@ -375,8 +375,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         ),
                         onPressed: () {},
                         child: Container(
-                          constraints:
-                              const BoxConstraints(minHeight: 28.0, maxWidth: 84.0),
+                          constraints: const BoxConstraints(
+                              minHeight: 28.0, maxWidth: 84.0),
                           alignment: Alignment.center,
                           child: Text(
                             "Accepted",
@@ -407,8 +407,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         ),
                         onPressed: () {},
                         child: Container(
-                          constraints:
-                              const BoxConstraints(minHeight: 28.0, maxWidth: 100.0),
+                          constraints: const BoxConstraints(
+                              minHeight: 28.0, maxWidth: 100.0),
                           alignment: Alignment.center,
                           child: Text(
                             "Requested",
@@ -448,8 +448,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           }
                         },
                         child: Container(
-                          constraints:
-                              const BoxConstraints(minHeight: 28.0, maxWidth: 70.0),
+                          constraints: const BoxConstraints(
+                              minHeight: 28.0, maxWidth: 70.0),
                           alignment: Alignment.center,
                           child: Text(
                             "Connect",
@@ -541,7 +541,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                   const SizedBox(width: 14),
                                   Expanded(
                                     child: Container(
-                                      padding: const EdgeInsets.only(right: 8.0),
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -549,7 +550,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                           Text(
                                             _searchResult[index]
                                                     .mutualList![mutindex]
-                                                    .name ?? "",
+                                                    .name ??
+                                                "",
                                             overflow: TextOverflow.ellipsis,
                                             style: Theme.of(context)
                                                 .textTheme
@@ -560,8 +562,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                           ),
                                           const SizedBox(height: 2),
                                           Text(
-                                            _searchResult[index]
-                                                        .mutualList![mutindex] ==
+                                            _searchResult[index].mutualList![
+                                                        mutindex] ==
                                                     null
                                                 ? ""
                                                 : _searchResult[index]
@@ -834,8 +836,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
           ],
         ),
         body: SingleChildScrollView(
-          physics:
-              const ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
+          physics: const ClampingScrollPhysics(
+              parent: NeverScrollableScrollPhysics()),
           child: Column(
             children: [
               Container(color: AppColor.primaryColor, height: 20),
@@ -888,19 +890,21 @@ class _ConetWebPageState extends State<ConetWebPage> {
                               hintText: "Search",
                               fillColor: Colors.white,
                               filled: true,
-                              hintStyle: Theme.of(context)
-                                  .textTheme
-                                  .headline3
-                                  ?.copyWith(
-                                      color: AppColor.gray30Color,
-                                      fontWeight: FontWeight.w400),
+                              hintStyle: const TextStyle(
+                                fontFamily: 'Sfpro-Rounded-Regular',
+                                color: AppColor.placeholder,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 19,
+                                letterSpacing: 0.2,
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                                 borderSide: BorderSide.none,
                               ),
-                              prefixIcon: const Icon(
+                              prefixIcon: Icon(
                                 Icons.search,
-                                color: AppColor.gray30Color,
+                                color: AppColor.placeholder.withOpacity(0.5),
                                 size: 18,
                               ),
                             ),

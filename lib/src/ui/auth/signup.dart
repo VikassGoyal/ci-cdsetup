@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:conet/utils/constant.dart';
 import 'package:flutter/services.dart';
 
 import 'package:conet/blocs/userBloc.dart';
@@ -26,6 +27,7 @@ class _SignUpState extends State<SignUp> {
   bool _nameError = false;
   bool _emailError = false;
   bool _mobileError = false;
+  bool _passwordError = false;
   bool _showPassword = false;
   bool redirected = true;
 
@@ -51,7 +53,6 @@ class _SignUpState extends State<SignUp> {
               color: _nameError ? AppColor.whiteColor : Colors.transparent),
           borderRadius: BorderRadius.circular(7),
         ),
-
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -64,28 +65,22 @@ class _SignUpState extends State<SignUp> {
                 decoration: const BoxDecoration(
                   color: Color.fromRGBO(255, 255, 255, 0.15),
                 ),
-                padding: const EdgeInsets.only(left: 21, right:0),
+                padding: const EdgeInsets.only(left: 21, right: 0),
                 child: Center(
-                    child: RichText(text: TextSpan(
-                        text: "Name",
-                        style:TextStyle(
-                            color: Color.fromRGBO(255, 255, 255, 0.75),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600
-
-                        ),
-                        children: [
-                          TextSpan(
-                              text: ' *',
-                              style: TextStyle(
-                                color: Colors.red,
-                              )
-                          )
-                        ]
-                    )
-
-                    )
-                ),
+                    child: RichText(
+                        text: TextSpan(
+                            text: "Name",
+                            style: TextStyle(
+                                color: Color.fromRGBO(255, 255, 255, 0.75),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600),
+                            children: [
+                      TextSpan(
+                          text: ' *',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ))
+                    ]))),
               ),
             ),
             Expanded(
@@ -154,7 +149,6 @@ class _SignUpState extends State<SignUp> {
               color: _emailError ? AppColor.whiteColor : Colors.transparent),
           borderRadius: BorderRadius.circular(7),
         ),
-
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -167,28 +161,22 @@ class _SignUpState extends State<SignUp> {
                 decoration: const BoxDecoration(
                   color: Color.fromRGBO(255, 255, 255, 0.15),
                 ),
-                padding: const EdgeInsets.only(left: 21, right:0),
+                padding: const EdgeInsets.only(left: 21, right: 0),
                 child: Center(
-                  child: RichText(text: TextSpan(
-                    text: "Email",
-                    style:TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, 0.75),
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600
-
-                    ),
-                      children: [
+                    child: RichText(
+                        text: TextSpan(
+                            text: "Email",
+                            style: TextStyle(
+                                color: Color.fromRGBO(255, 255, 255, 0.75),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600),
+                            children: [
                       TextSpan(
-                      text: ' *',
-                      style: TextStyle(
-                        color: Colors.red,
-                      )
-                  )
-                      ]
-                  )
-
-                  )
-                ),
+                          text: ' *',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ))
+                    ]))),
               ),
             ),
             Expanded(
@@ -231,10 +219,17 @@ class _SignUpState extends State<SignUp> {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  // if (value!.isEmpty) {
+                  //   setState(() {
+                  //     _emailError = true;
+                  //   });
+                  //   return '';
+                  // } else
+                  if (!value!.isValidEmail()) {
                     setState(() {
                       _emailError = true;
                     });
+                    // return 'Invalid Email';
                     return '';
                   } else {
                     setState(() {
@@ -257,7 +252,6 @@ class _SignUpState extends State<SignUp> {
               color: _mobileError ? AppColor.whiteColor : Colors.transparent),
           borderRadius: BorderRadius.circular(7),
         ),
-
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -272,26 +266,20 @@ class _SignUpState extends State<SignUp> {
                 ),
                 padding: const EdgeInsets.only(left: 21, right: 0),
                 child: Center(
-                    child: RichText(text: TextSpan(
-                        text: "Mobile",
-                        style:TextStyle(
-                            color: Color.fromRGBO(255, 255, 255, 0.75),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600
-
-                        ),
-                        children: [
-                          TextSpan(
-                              text: ' *',
-                              style: TextStyle(
-                                color: Colors.red,
-                              )
-                          )
-                        ]
-                    )
-
-                    )
-                ),
+                    child: RichText(
+                        text: TextSpan(
+                            text: "Mobile",
+                            style: TextStyle(
+                                color: Color.fromRGBO(255, 255, 255, 0.75),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600),
+                            children: [
+                      TextSpan(
+                          text: ' *',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ))
+                    ]))),
               ),
             ),
             Expanded(
@@ -342,6 +330,12 @@ class _SignUpState extends State<SignUp> {
                       _mobileError = true;
                     });
                     return '';
+                  } else if (!value.isValidMobile()) {
+                    setState(() {
+                      _mobileError = true;
+                    });
+                    // return 'Must have exactly 10 digits';
+                    return '';
                   } else {
                     setState(() {
                       _mobileError = false;
@@ -360,7 +354,7 @@ class _SignUpState extends State<SignUp> {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(
-              color: _mobileError ? AppColor.whiteColor : Colors.transparent),
+              color: _passwordError ? AppColor.whiteColor : Colors.transparent),
           borderRadius: BorderRadius.circular(7),
         ),
         height: 58,
@@ -378,26 +372,20 @@ class _SignUpState extends State<SignUp> {
                 ),
                 padding: const EdgeInsets.only(left: 21, right: 0),
                 child: Center(
-                    child: RichText(text: TextSpan(
-                        text: "Password",
-                        style:TextStyle(
-                            color: Color.fromRGBO(255, 255, 255, 0.75),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600
-
-                        ),
-                        children: [
-                          TextSpan(
-                              text: ' *',
-                              style: TextStyle(
-                                color: Colors.red,
-                              )
-                          )
-                        ]
-                    )
-
-                    )
-                ),
+                    child: RichText(
+                        text: TextSpan(
+                            text: "Password",
+                            style: TextStyle(
+                                color: Color.fromRGBO(255, 255, 255, 0.75),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600),
+                            children: [
+                      TextSpan(
+                          text: ' *',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ))
+                    ]))),
               ),
             ),
             Expanded(
@@ -462,12 +450,12 @@ class _SignUpState extends State<SignUp> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     setState(() {
-                      _mobileError = true;
+                      _passwordError = true;
                     });
                     return '';
                   } else {
                     setState(() {
-                      _mobileError = false;
+                      _passwordError = false;
                     });
                   }
                   return null;
@@ -490,9 +478,9 @@ class _SignUpState extends State<SignUp> {
         ),
         onPressed: () async {
           print("clicked");
-          print( _nameController.text);
+          print(_nameController.text);
           print(_emailController.text);
-          print( _mobileController.text);
+          print(_mobileController.text);
           print(_passwordController.text);
           var validate = _signupFormKey.currentState!.validate();
           if (validate) {

@@ -17,39 +17,27 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // initializeFlutterFire();
     super.initState();
     startTimer();
   }
 
-  // FlutterFire Initialization
-  // void initializeFlutterFire() async {
-  //   try {
-  //     await Firebase.initializeApp();
-  //     print("FlutterFire Initialization successfully");
-  //   } catch (e) {
-  //     print("FlutterFire Initialization error");
-  //   }
-  // }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(const AssetImage('assets/ios_splash.png'), context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: AppColor.primaryColor,
-      body: Stack(
-        children: [
-          Positioned(
-            width: MediaQuery.of(context).size.width,
-            top: MediaQuery.of(context).size.width * 0.85,
-            child: SvgPicture.asset("assets/logo.svg"),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Image.asset("assets/images/splashbottompng.png"),
-          )
-        ],
+      extendBody: true,
+      body: Container(
+        alignment: Alignment.center,
+        height: double.infinity,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(image: AssetImage("assets/ios_splash.png"), fit: BoxFit.cover),
+        ),
       ),
     );
   }

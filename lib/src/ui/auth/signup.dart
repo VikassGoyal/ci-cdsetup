@@ -489,6 +489,15 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
             );
+          } else {
+            //if there is any error in validations then show some common Error msg
+            ScaffoldMessenger.of(context).showSnackBar(
+              Utils.displaySnackBar(
+                'Please enter valid data in the fields',
+                duration: const Duration(seconds: 2),
+                backgroundColor: AppColor.redColor,
+              ),
+            );
           }
         },
         child: Container(

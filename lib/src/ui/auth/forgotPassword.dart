@@ -1,3 +1,4 @@
+import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -39,9 +40,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               },
               child: Container(
                 height: 58,
-                decoration:  BoxDecoration(
+                decoration: BoxDecoration(
                   color: Color.fromRGBO(255, 255, 255, 0.15),
-
                 ),
                 padding: const EdgeInsets.only(left: 21, right: 0),
                 child: Center(
@@ -54,7 +54,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
             ),
             Expanded(
-                child: TextFormField(
+              child: TextFormField(
                 focusNode: _emailControllerFocus,
                 controller: _emailController,
                 style: Theme.of(context)
@@ -93,10 +93,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (!value!.isValidEmail()) {
                     setState(() {
                       _emailError = true;
                     });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      Utils.displaySnackBar(
+                        'Enter a Valid Email',
+                        duration: const Duration(seconds: 1),
+                        backgroundColor: AppColor.redColor,
+                      ),
+                    );
                     return '';
                   } else {
                     setState(() {
@@ -192,7 +199,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           centerTitle: true,
           automaticallyImplyLeading: false,
           leading: Padding(
-            padding: const EdgeInsets.only(left:2.0),
+            padding: const EdgeInsets.only(left: 2.0),
             child: InkWell(
               onTap: () {
                 Navigator.of(context).pop();
@@ -200,11 +207,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               child: Row(
                 children: [
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       Navigator.pushReplacement(
-                                 context,
-                              MaterialPageRoute(builder: (context) => Login()),
-                           );
+                        context,
+                        MaterialPageRoute(builder: (context) => Login()),
+                      );
                     },
                     child: const Icon(
                       Icons.arrow_back_sharp,
@@ -218,30 +225,29 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     "Back",
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
-                    !.apply(color: AppColor.whiteColor),
+                        .bodyText2!
+                        .apply(color: AppColor.whiteColor),
                   )
                 ],
-              //   children: [
-              //     IconButton(
-              //        icon: const Icon(
-              //          Icons.arrow_back_sharp,
-              //          color: AppColor.whiteColor,
-              //          ),
-              //       onPressed: () {
-              //       Navigator.pushReplacement(
-              //       context,
-              //    MaterialPageRoute(builder: (context) => Login()),
-              // );
-              //  },
-              //     ),
-              //     SizedBox(width: 2), // Add spacing between back arrow and text
-              //     Text("Back",  style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),),
-              //   ],
+                //   children: [
+                //     IconButton(
+                //        icon: const Icon(
+                //          Icons.arrow_back_sharp,
+                //          color: AppColor.whiteColor,
+                //          ),
+                //       onPressed: () {
+                //       Navigator.pushReplacement(
+                //       context,
+                //    MaterialPageRoute(builder: (context) => Login()),
+                // );
+                //  },
+                //     ),
+                //     SizedBox(width: 2), // Add spacing between back arrow and text
+                //     Text("Back",  style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),),
+                //   ],
               ),
             ),
           ),
-
         ),
         body: LoadingOverlay(
           isLoading: _loader,

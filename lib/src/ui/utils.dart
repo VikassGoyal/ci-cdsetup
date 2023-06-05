@@ -13,6 +13,7 @@ class Utils {
       fontSize: 14.0,
     );
   }
+
   static Future<bool?> displayToastBottomError(String message) {
     return Fluttertoast.showToast(
       msg: message,
@@ -23,6 +24,7 @@ class Utils {
       fontSize: 14.0,
     );
   }
+
   static Future<bool?> displayToastTopError(String message) {
     return Fluttertoast.showToast(
       msg: message,
@@ -55,7 +57,10 @@ class Utils {
   }
 
   static SnackBar displaySnackBar(String message,
-      {String? actionMessage, VoidCallback? onClick}) {
+      {String? actionMessage,
+      VoidCallback? onClick,
+      Color? backgroundColor,
+      Duration? duration}) {
     return SnackBar(
       content: Text(
         message,
@@ -70,8 +75,8 @@ class Utils {
               },
             )
           : null,
-      duration: const Duration(seconds: 2),
-      backgroundColor: AppColor.accentColor,
+      duration: duration ?? const Duration(seconds: 2),
+      backgroundColor: backgroundColor ?? AppColor.accentColor,
     );
   }
 

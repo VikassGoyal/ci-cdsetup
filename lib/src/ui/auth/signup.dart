@@ -219,12 +219,6 @@ class _SignUpState extends State<SignUp> {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
-                  // if (value!.isEmpty) {
-                  //   setState(() {
-                  //     _emailError = true;
-                  //   });
-                  //   return '';
-                  // } else
                   if (!value!.isValidEmail()) {
                     setState(() {
                       _emailError = true;
@@ -325,12 +319,7 @@ class _SignUpState extends State<SignUp> {
                 ],
                 textInputAction: TextInputAction.next,
                 validator: (value) {
-                  if (value!.isEmpty) {
-                    setState(() {
-                      _mobileError = true;
-                    });
-                    return '';
-                  } else if (!value.isValidMobile()) {
+                  if (!value!.isValidMobile()) {
                     setState(() {
                       _mobileError = true;
                     });
@@ -445,13 +434,14 @@ class _SignUpState extends State<SignUp> {
                 obscureText: !_showPassword,
                 cursorColor: AppColor.whiteColor,
                 enableSuggestions: false,
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.visiblePassword,
                 textInputAction: TextInputAction.done,
                 validator: (value) {
-                  if (value!.isEmpty) {
+                  if (!value!.isValidPassword()) {
                     setState(() {
                       _passwordError = true;
                     });
+                    // return 'Must have exactly 10 digits';
                     return '';
                   } else {
                     setState(() {
@@ -669,6 +659,18 @@ class _SignUpState extends State<SignUp> {
                     _buildMobile(),
                     const SizedBox(height: 20),
                     _buildPassword(),
+                    const SizedBox(height: 10),
+                    const Text(
+                      "Your password must be 8 to 16 characters long & contains mix of upper & lower case letters, numbers & symbols.",
+                      style: TextStyle(
+                        fontFamily: 'Sfpro-Rounded-Light',
+                        color: AppColor.whiteColor,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.normal,
+                        fontSize: 15,
+                        letterSpacing: -0.2,
+                      ),
+                    ),
                     const SizedBox(height: 50),
                     buildSignUpButton(),
                     const SizedBox(height: 20),

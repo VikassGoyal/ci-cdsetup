@@ -73,4 +73,10 @@ extension Validator on String {
   bool isValidMobile() {
     return RegExp(r"^[0-9]{10}$").hasMatch(this);
   }
+
+  bool isValidPassword() {
+    return RegExp(
+            r"^(?!.* )(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,16}$")
+        .hasMatch(this);
+  }
 }

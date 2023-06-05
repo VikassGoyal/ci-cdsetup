@@ -34,19 +34,20 @@ class ContactsPage extends StatefulWidget {
   var contactsData;
   var mostDailedContacts;
 
-  ContactsPage({ this.contactsData,  this.mostDailedContacts}) : super();
+  ContactsPage({this.contactsData, this.mostDailedContacts}) : super();
 
   @override
   _ContactsPageState createState() => _ContactsPageState();
 }
 
 class _ContactsPageState extends State<ContactsPage> {
+  TextEditingController _textEditingController = TextEditingController();
   List<AllContacts> _loadedcontacts = [];
   List<RecentCalls> recentCalls = [];
   List<AllContacts> _contacts = [];
   List<AllContacts> _searchResult = [];
-  List<AllContacts> _blanklistcontacts=[];
-  List<RecentCalls> _blanklistrecentCalls=[];
+  List<AllContacts> _blanklistcontacts = [];
+  List<RecentCalls> _blanklistrecentCalls = [];
   final List<DeviceContactData> _importportcontacts = [];
   TextEditingController? _outputController;
   ContactPageRepository? contactPageRepository;
@@ -56,20 +57,21 @@ class _ContactsPageState extends State<ContactsPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   bool _loader = false;
+  bool _showCancelIcon = false;
   double susItemHeight = 40;
 
   @override
   void initState() {
     super.initState();
     contactPageRepository = ContactPageRepository();
-    var responseData = widget.contactsData==null ? _blanklistcontacts :widget.contactsData;
+    var responseData = widget.contactsData ?? _blanklistcontacts;
 
     _contacts = [];
     recentCalls = [];
     _loadedcontacts = [];
     _contacts = responseData;
     _loadedcontacts = _contacts;
-    recentCalls = widget.mostDailedContacts==null ? _blanklistrecentCalls : widget.mostDailedContacts;
+    recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
 
     SchedulerBinding.instance.addPostFrameCallback((_) => _checkShowDialog());
     _outputController = TextEditingController();
@@ -108,6 +110,20 @@ class _ContactsPageState extends State<ContactsPage> {
       borderRadius: BorderRadius.circular(20.0),
       border: Border.all(color: Colors.grey[300]!, width: .5),
     );
+  }
+
+  void _clearText() {
+    _textEditingController.clear();
+    FocusScope.of(context).requestFocus(FocusNode());
+    setState(() {
+      _showCancelIcon = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _textEditingController.dispose();
   }
 
   @override
@@ -455,8 +471,16 @@ class _ContactsPageState extends State<ContactsPage> {
                       height: 36,
                       color: AppColor.primaryColor,
                       child: TextField(
+                        controller: _textEditingController,
                         onChanged: (value) {
                           filterSearchResults(value);
+
+                          setState(() {
+                            // _showCancelIcon = true;
+                            value.length > 1
+                                ? _showCancelIcon = true
+                                : _showCancelIcon = false;
+                          });
                         },
                         maxLines: 1,
                         minLines: 1,
@@ -480,12 +504,20 @@ class _ContactsPageState extends State<ContactsPage> {
                           ),
                           prefixIconConstraints:
                               const BoxConstraints(maxHeight: 20),
-                          prefixIcon: const Padding(
-                            padding: EdgeInsets.only(left: 11, right: 11),
-                            child: Icon(
-                              Icons.search,
-                              color: AppColor.gray30Color,
-                              size: 18,
+                          prefixIcon: InkWell(
+                            onTap: () {
+                              if (_showCancelIcon == true) {
+                                _clearText();
+                              }
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 11, right: 11),
+                              child: Icon(
+                                _showCancelIcon ? Icons.close : Icons.search,
+                                color: AppColor.gray30Color,
+                                size: 18,
+                              ),
                             ),
                           ),
                           suffixIcon: IconButton(

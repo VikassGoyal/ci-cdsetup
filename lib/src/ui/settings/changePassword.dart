@@ -41,13 +41,12 @@ class _ChangePasswordState extends State<ChangePassword> {
     Widget buildOldPassword() {
       return TextFormFieldContact(
         hintText: "Old Password",
+        obscureText: true,
         padding: 14.0,
         controller: _oldPasswordController,
         textInputType: TextInputType.visiblePassword,
         actionKeyboard: TextInputAction.next,
-        onSubmitField: () {
-
-        },
+        onSubmitField: () {},
         parametersValidate: "Please enter Old Password.",
         // functionValidate: commonValidation(_oldPasswordController.text, ""),
       );
@@ -56,6 +55,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     Widget buildNewPassword() {
       return TextFormFieldContact(
         hintText: "New Password",
+        obscureText: true,
         padding: 14.0,
         controller: _newPasswordController,
         textInputType: TextInputType.visiblePassword,
@@ -68,6 +68,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     Widget buildConfirmPassword() {
       return TextFormFieldContact(
         hintText: "Confirm Password",
+        obscureText: true,
         padding: 14.0,
         controller: _confirmPasswordController,
         textInputType: TextInputType.visiblePassword,

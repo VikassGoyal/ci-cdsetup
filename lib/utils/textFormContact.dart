@@ -10,7 +10,7 @@ class TextFormFieldContact extends StatefulWidget {
   final double? padding;
   final double? margin;
   final FocusNode? focusNode;
-  final bool? obscureText;
+  final bool obscureText;
   final bool? readonly;
   final bool? enable;
   final TextEditingController? controller;
@@ -40,15 +40,13 @@ class TextFormFieldContact extends StatefulWidget {
       this.onFieldTap,
       this.prefixIcon,
       this.maxLength,
-        this.regexexp
-      });
+      this.regexexp});
 
   @override
   _TextFormFieldContactState createState() => _TextFormFieldContactState();
 }
 
 class _TextFormFieldContactState extends State<TextFormFieldContact> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,13 +75,15 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
             .bodyText2
             ?.apply(color: AppColor.secondaryColor),
         maxLength: widget.maxLength,
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(widget.regexexp==null ? '.*' : widget.regexexp!),
-        ],
+        inputFormatters: widget.regexexp != null
+            ? [
+                FilteringTextInputFormatter.allow(widget.regexexp!),
+              ]
+            : null,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
           labelText: widget.hintText,
-          counterText:"",
+          counterText: "",
           labelStyle: Theme.of(context).textTheme.headline6?.apply(
                 color: const Color.fromRGBO(135, 139, 149, 1),
               ),
@@ -99,8 +99,7 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
         keyboardType: widget.textInputType,
         textInputAction: widget.actionKeyboard,
         controller: widget.controller,
-
-
+        obscureText: widget.obscureText,
       ),
     );
   }
@@ -109,7 +108,6 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
 commonValidation(String? value, String? messageError) {
   var required = requiredValidator(value, messageError);
   return required;
-
 }
 
 String? requiredValidator(value, messageError) {

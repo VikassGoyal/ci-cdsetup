@@ -49,61 +49,62 @@ class TextFormFieldContact extends StatefulWidget {
 }
 
 class _TextFormFieldContactState extends State<TextFormFieldContact> {
+  String message = "";
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 48,
-      padding: EdgeInsets.only(left: widget.padding!, right: widget.padding!),
-      margin: EdgeInsets.only(
-        left: widget.margin ?? 0,
-        right: widget.margin ?? 0,
-      ),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: const Color(0xFFE8E8E8),
-        ),
-        borderRadius: BorderRadius.circular(7),
-      ),
-      child: TextFormField(
-        readOnly: widget.readonly!,
-        validator: widget.validator,
-        // validator: (text) {
-        //   if (text == null || text.isEmpty || !RegExp('[0-9]').hasMatch(text)) {
-        //     return 'Text is empty or invalid';
-        //   }
-        //   return null;
-        // },
-        style: Theme.of(context)
-            .textTheme
-            .bodyText2
-            ?.apply(color: AppColor.secondaryColor),
-        maxLength: widget.maxLength,
-        inputFormatters: widget.regexexp != null
-            ? [
-                FilteringTextInputFormatter.allow(widget.regexexp!),
-              ]
-            : null,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
-          labelText: widget.hintText,
-          counterText: "",
-          labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                color: const Color.fromRGBO(135, 139, 149, 1),
-              ),
-          filled: true,
-          fillColor: AppColor.whiteColor,
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.transparent),
+    return Column(
+      children: [
+        Container(
+          height: 48,
+          padding:
+              EdgeInsets.only(left: widget.padding!, right: widget.padding!),
+          margin: EdgeInsets.only(
+            left: widget.margin ?? 0,
+            right: widget.margin ?? 0,
           ),
-          focusedBorder: InputBorder.none,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color(0xFFE8E8E8),
+            ),
+            borderRadius: BorderRadius.circular(7),
+          ),
+          child: TextFormField(
+            readOnly: widget.readonly!,
+            validator: widget.validator,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText2
+                ?.apply(color: AppColor.secondaryColor),
+            maxLength: widget.maxLength,
+            inputFormatters: widget.regexexp != null
+                ? [
+                    FilteringTextInputFormatter.allow(widget.regexexp!),
+                  ]
+                : null,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+              labelText: widget.hintText,
+              counterText: "",
+              labelStyle: Theme.of(context).textTheme.headline6?.apply(
+                    color: const Color.fromRGBO(135, 139, 149, 1),
+                  ),
+              filled: true,
+              fillColor: AppColor.whiteColor,
+              errorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+              ),
+              focusedBorder: InputBorder.none,
+            ),
+            enabled: widget.enable,
+            cursorColor: AppColor.secondaryColor,
+            keyboardType: widget.textInputType,
+            textInputAction: widget.actionKeyboard,
+            controller: widget.controller,
+            obscureText: widget.obscureText,
+          ),
         ),
-        enabled: widget.enable,
-        cursorColor: AppColor.secondaryColor,
-        keyboardType: widget.textInputType,
-        textInputAction: widget.actionKeyboard,
-        controller: widget.controller,
-        obscureText: widget.obscureText,
-      ),
+        message.isNotEmpty ? Text('$message') : SizedBox()
+      ],
     );
   }
 }

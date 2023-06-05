@@ -95,6 +95,7 @@ class _AddContactState extends State<AddContact> {
 
   @override
   Widget build(BuildContext context) {
+
     Widget contactSearchButton() {
       return Container(
         margin: const EdgeInsets.only(left: 22, right: 22),
@@ -108,10 +109,11 @@ class _AddContactState extends State<AddContact> {
           ),
           onPressed: () async {
             print("clicked");
-            // if (_personalNumber.text.length != 10) {
-            //   Utils.displayToast("Please enter valid Mobile number.");
-            //   return;
-            // }
+            if (_personalNumber.text.length != 10) {
+              Utils.displayToastBottomError("Please enter valid Mobile number.");
+              return;
+            }
+
             Utils.hideKeyboard(context);
 
             SharedPreferences preferences =
@@ -162,6 +164,7 @@ class _AddContactState extends State<AddContact> {
                 parametersValidate: "Please enter Mobile number.",
                 controller: _personalNumber,
                 regexexp: RegExp(r'[0-9]')
+
 
               ),
               const SizedBox(height: 20),

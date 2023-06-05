@@ -607,25 +607,37 @@ class _SignUpState extends State<SignUp> {
         appBar: AppBar(
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
-          leading: IconButton(
-            onPressed: () {
+          leadingWidth: 150,
+          leading: InkWell(
+            onTap: (){
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => Login()),
               );
             },
-            icon: const Icon(
-              Icons.arrow_back_sharp,
-              color: AppColor.whiteColor,
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left:20,right:3),
+                  child: Icon(Icons.arrow_back,color:Colors.white),
+
+
+                ),
+
+                Text(
+                  'Back',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color:Colors.white
+                  ),
+                ),
+              ],
             ),
           ),
-          title: Text(
-            "Back",
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1
-                ?.apply(color: AppColor.whiteColor),
-          ),
+
+
+
         ),
         body: LoadingOverlay(
           isLoading: _loader,

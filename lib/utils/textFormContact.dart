@@ -21,6 +21,7 @@ class TextFormFieldContact extends StatefulWidget {
   final Function? onFieldTap;
   final int? maxLength;
   final RegExp? regexexp;
+  final String? Function(String?)? validator;
 
   const TextFormFieldContact(
       {required this.hintText,
@@ -40,7 +41,8 @@ class TextFormFieldContact extends StatefulWidget {
       this.onFieldTap,
       this.prefixIcon,
       this.maxLength,
-      this.regexexp});
+      this.regexexp,
+      this.validator});
 
   @override
   _TextFormFieldContactState createState() => _TextFormFieldContactState();
@@ -64,6 +66,7 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
       ),
       child: TextFormField(
         readOnly: widget.readonly!,
+        validator: widget.validator,
         // validator: (text) {
         //   if (text == null || text.isEmpty || !RegExp('[0-9]').hasMatch(text)) {
         //     return 'Text is empty or invalid';

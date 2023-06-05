@@ -154,6 +154,9 @@ class _ChangePasswordState extends State<ChangePassword> {
     } else if (_newPasswordController.text != _confirmPasswordController.text) {
       Utils.displayToastTopError("Password is Mismatch.");
       return;
+    } else if (_oldPasswordController.text == _confirmPasswordController.text) {
+      Utils.displayToastTopError("Enter different Password");
+      return;
     }
 
     setState(() {

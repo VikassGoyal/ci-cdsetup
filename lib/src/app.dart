@@ -36,12 +36,14 @@ class _AppState extends State<App> {
       title: 'CoNet',
       home: Builder(
         builder: (context) {
-          return ContactsPage();
+          return const SplashScreen();
         },
       ),
       theme: ThemeData(
         primaryColor: AppColor.whiteColor,
-        textTheme: Platform.isAndroid ? ConetTextTheme.androidTextTheme : ConetTextTheme.iosTextTheme,
+        textTheme: Platform.isAndroid
+            ? ConetTextTheme.androidTextTheme
+            : ConetTextTheme.iosTextTheme,
         colorScheme: ColorScheme.fromSwatch().copyWith(
           brightness: Brightness.dark,
         ),

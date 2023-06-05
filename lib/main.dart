@@ -24,6 +24,7 @@ void main() {
     Bloc.observer = SimpleBlocObserver();
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     // Initializing FlutterFire
     await Firebase.initializeApp(

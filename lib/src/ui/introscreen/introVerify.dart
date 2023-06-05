@@ -4,6 +4,8 @@ import 'package:conet/src/ui/auth/login.dart';
 import 'package:flutter/material.dart';
 
 class IntroVerify extends StatefulWidget {
+  const IntroVerify({super.key});
+
   @override
   _IntroVerifyState createState() => _IntroVerifyState();
 }
@@ -15,7 +17,7 @@ class _IntroVerifyState extends State<IntroVerify> {
       backgroundColor: AppColor.primaryColor,
       body: Column(
         children: [
-          const SizedBox(height: 130),
+          const Spacer(),
           Center(
             child: GestureDetector(
               child: Image.asset(
@@ -25,11 +27,11 @@ class _IntroVerifyState extends State<IntroVerify> {
               ),
             ),
           ),
-          Expanded(child: Container()),
+          const Spacer(),
           introverifyBody(context),
-          const SizedBox(height: 50),
+          SizedBox(height: MediaQuery.of(context).padding.bottom + 20),
           verifyBtn(context),
-          const SizedBox(height: 40)
+          SizedBox(height: MediaQuery.of(context).padding.bottom + 20),
         ],
       ),
     );
@@ -63,8 +65,8 @@ Widget verifyBtn(BuildContext context) {
           textAlign: TextAlign.center,
           style: Theme.of(context)
               .textTheme
-              .button
-              !.apply(color: AppColor.whiteColor),
+              .button!
+              .apply(color: AppColor.whiteColor),
         ),
       ),
     ),
@@ -79,21 +81,17 @@ Widget introverifyBody(context) {
           "Welcome to the CONET App",
           style: Theme.of(context)
               .textTheme
-              .headline2
-              !.apply(color: AppColor.whiteColor),
+              .headline2!
+              .apply(color: AppColor.whiteColor),
         ),
       ),
       const SizedBox(height: 16),
       SizedBox(
         width: displayWidth(context) * 0.8,
-        child: Text(
-          "Connect with your contacts through our CONET WEB feature and conduct business like never before",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 15.0,
-            color: AppColor.whiteColor
-          )
-        ),
+        child: const Text(
+            "Connect with your contacts through our CONET WEB feature and conduct business like never before",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 15.0, color: AppColor.whiteColor)),
       )
     ],
   );

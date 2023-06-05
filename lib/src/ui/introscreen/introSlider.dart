@@ -22,9 +22,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
     super.initState();
 
     slides.add(
-
-       ContentConfig(
-
+      const ContentConfig(
           title: "Welcome to the CONET App",
           description:
               "View, Manage, Download your Contacts on any device from anywhere at anytime hassle-free",
@@ -32,7 +30,6 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
     );
     slides.add(
       const ContentConfig(
-
           title: "Welcome to the CONET App",
           description:
               "Secure yourself with the updated information of your Contacts and their businesses in real-time",
@@ -40,7 +37,6 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
     );
     slides.add(
       const ContentConfig(
-
           title: "Welcome to the CONET App",
           description:
               "End - to - End Encryption. Privacy and Security is guaranteed.",
@@ -58,24 +54,16 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
   void onTabChangeCompleted(index) {}
 
   Widget? renderNextBtn() {
-    return const Icon(
-      Icons.navigate_next,
-      size: 25,
-      color: AppColor.whiteColor);
+    return const Icon(Icons.navigate_next,
+        size: 25, color: AppColor.whiteColor);
   }
 
   Widget renderDoneBtn() {
-     return const Icon(
-      Icons.done,
-      size: 25,
-      color: AppColor.whiteColor);
+    return const Icon(Icons.done, size: 25, color: AppColor.whiteColor);
   }
 
   Widget renderSkipBtn() {
-    return const Icon(
-      Icons.skip_next,
-      size: 25,
-      color: AppColor.whiteColor);
+    return const Icon(Icons.skip_next, size: 25, color: AppColor.whiteColor);
   }
 
   List<Widget> renderListCustomTabs() {
@@ -119,61 +107,52 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                             child: Text("Skip",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
-                                    !.apply(color: AppColor.whiteColor)),
+                                    .bodyText1!
+                                    .apply(color: AppColor.whiteColor)),
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
-                      width: MediaQuery.of(context).size.width * 1.0,
-                      top: MediaQuery.of(context).size.width * 0.4,
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: GestureDetector(
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GestureDetector(
                           child: Image.asset(
                             currentSlide.pathImage!,
                             fit: BoxFit.cover,
                             width: widthImage,
                           ),
                         ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: MediaQuery.of(context).size.width * 0.5,
-                      child: Center(
-                        child: Text(
-                          "${currentSlide.title}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline2
-                              !.apply(color: AppColor.whiteColor),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: MediaQuery.of(context).size.width * 0.3,
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 40,
-                            right: 40,
-                          ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.05),
+                        Center(
                           child: Text(
-                            "${currentSlide.description}",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              color: AppColor.whiteColor
+                            "${currentSlide.title}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline2!
+                                .apply(color: AppColor.whiteColor),
+                          ),
+                        ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.03),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 40,
+                              right: 40,
+                            ),
+                            child: Text(
+                              "${currentSlide.description}",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  fontSize: 15.0, color: AppColor.whiteColor),
                             ),
                           ),
                         ),
-                      ),
-                    )
+                      ],
+                    ),
                   ],
                 )
               : Stack(
@@ -198,8 +177,8 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                             child: Text("Skip",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
-                                    !.apply(color: AppColor.whiteColor)),
+                                    .bodyText1!
+                                    .apply(color: AppColor.whiteColor)),
                           ),
                         ),
                       ),
@@ -226,8 +205,8 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                           "${currentSlide.title}",
                           style: Theme.of(context)
                               .textTheme
-                              .headline2
-                              !.apply(color: AppColor.whiteColor),
+                              .headline2!
+                              .apply(color: AppColor.whiteColor),
                         ),
                       ),
                     ),
@@ -243,17 +222,9 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                           ),
                           child: Text(
                             "${currentSlide.description}",
-
-
                             textAlign: TextAlign.center,
-
-                            style: TextStyle(
-                                fontSize: 15.0,
-                                color: AppColor.whiteColor
-                            ),
-
-
-
+                            style: const TextStyle(
+                                fontSize: 15.0, color: AppColor.whiteColor),
                           ),
                         ),
                       ),
@@ -265,9 +236,11 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
     }
     return tabs;
   }
+
   void onNextPress() {
     print("onNextPress caught");
   }
+
   ButtonStyle myButtonStyle() {
     return ButtonStyle(
       shape: MaterialStateProperty.all<OutlinedBorder>(const StadiumBorder()),
@@ -275,6 +248,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
       backgroundColor: MaterialStateProperty.all<Color>(Colors.white30),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);

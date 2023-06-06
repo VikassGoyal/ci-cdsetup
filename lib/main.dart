@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:conet/src/localdb/database_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,9 +28,10 @@ void main() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     // Initializing FlutterFire
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+    // Initialise SQLite database.
+    await DatabaseHelper.instance.initialize();
 
     // Catch uncaught errors from Flutter framework.
     FlutterError.onError = (FlutterErrorDetails errorDetails) {

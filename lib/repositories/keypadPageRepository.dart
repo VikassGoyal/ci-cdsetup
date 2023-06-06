@@ -2,7 +2,7 @@ import 'package:conet/models/allContacts.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 
 class KeypadPageRepository {
-  DatabaseHelper databaseHelper = DatabaseHelper();
+  DatabaseHelper databaseHelper = DatabaseHelper.instance;
   String? _data;
 
   Future<void> fetchData() async {

@@ -3,13 +3,11 @@ import 'dart:io';
 
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/recentCalls.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static DatabaseHelper? _databaseHelper;
-  static Database? _database;
-
   //Contact Table
   String allContactTable = 'allContacts_table';
   String colId = 'id';
@@ -33,28 +31,68 @@ class DatabaseHelper {
   String colcallType = 'callType';
   String coltimestamp = 'timestamp';
 
-  DatabaseHelper._createInstance();
+  DatabaseHelper._();
 
-  factory DatabaseHelper() {
-    _databaseHelper ??= DatabaseHelper._createInstance();
-    return _databaseHelper!;
+  static DatabaseHelper get instance => _singleton;
+  static final DatabaseHelper _singleton = DatabaseHelper._();
+
+  // If schema changes need to be done without the breaking changes with previous app version,
+  // increment the db version and write the corresponding migration in onUpdate callback.
+  static const String _databaseName = '__conet.db';
+  static const int _databaseVersion = 1;
+
+  bool get isInitialized => _isInitialized;
+  bool _isInitialized = false;
+
+  late final Database _db;
+  Database get database => _db;
+
+  ///
+  /// Initialise the SQLite database.
+  ///
+  Future<void> initialize() async {
+    try {
+      print('$runtimeType: Initializing the database...');
+
+      if (_isInitialized) {
+        print('$runtimeType: Database already initialized.');
+        return;
+      }
+
+      late final String dbPath;
+      if (Platform.isAndroid) {
+        dbPath = join(await getDatabasesPath(), _databaseName);
+      } else {
+        dbPath = join((await getApplicationDocumentsDirectory()).path, _databaseName);
+      }
+
+      print('$runtimeType: Database path: $dbPath');
+
+      _db = await openDatabase(
+        dbPath,
+        version: _databaseVersion,
+        onCreate: _onCreate,
+        onUpgrade: _onUpgrade,
+        onDowngrade: _onDowngrade,
+        onOpen: (db) async {
+          await db.execute('PRAGMA foreign_keys = ON');
+        },
+      );
+
+      _isInitialized = true;
+      print('$runtimeType: Database initialized.');
+    } catch (err, stackTrace) {
+      print('Error while initializing the database: $err');
+      print(stackTrace);
+      rethrow;
+    }
   }
 
-  Future<Database> get database async {
-    _database ??= await initializeDatabase();
-    return _database!;
-  }
-
-  Future<Database> initializeDatabase() async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    String path = '${directory.path}allContact.db';
-    // await deleteDatabase(path);
-    var allContactsDatabase =
-        await openDatabase(path, version: 1, onCreate: _createDb);
-    return allContactsDatabase;
-  }
-
-  void _createDb(Database db, int newVersion) async {
+  ///
+  /// OnCreate callback. This is called only once when the database is created for the first time.
+  ///
+  FutureOr<void> _onCreate(Database db, int version) async {
+    print('$runtimeType: Creating the database schema...');
     await db.execute(
         'CREATE TABLE $allContactTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colUserId INTEGER, $colName TEXT, $colUserName TEXT, $colPhone TEXT, $colEmail TEXT, $colProfileImage TEXT, $colcompany TEXT, $contactMetaId INTEGER, $contactMetaType TEXT, $fromContactMetaType TEXT, $personalAccess INTEGER)');
 
@@ -62,48 +100,61 @@ class DatabaseHelper {
         'CREATE TABLE $recentCallsTable($colRecentId INTEGER PRIMARY KEY AUTOINCREMENT,  $colname TEXT,  $colnumber TEXT,  $colcallType TEXT,  $coltimestamp INTEGER)');
   }
 
+  ///
+  /// OnUpgrade callback. This is called when the database version is incremented.
+  /// Do schema changes here to avoid breaking changes in future app versions.
+  ///
+  FutureOr<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    print('$runtimeType: Upgrading the database schema from $oldVersion to $newVersion...');
+    if (oldVersion == 1 && newVersion == 2) {
+      // Write migration code here.
+    }
+  }
+
+  ///
+  /// OnDowngrade callback. This is called when the database version is decremented. Write rollback migrations here.
+  ///
+  FutureOr<void> _onDowngrade(Database db, int oldVersion, int newVersion) async {
+    print('$runtimeType: Downgrading the database schema from $oldVersion to $newVersion...');
+    if (oldVersion == 2 && newVersion == 1) {
+      // Write rollback migration code here.
+    }
+  }
+
   ////////////////////////////////// CONTACTS //////////////////////////////////
   Future<List<Map<String, dynamic>>> getallContactMapList() async {
-    Database db = await database;
 //		var result = await db.rawQuery('SELECT * FROM $allContactTable order by $colTitle ASC');
-    var result = await db.query(allContactTable, orderBy: '$colName ASC');
+    var result = await database.query(allContactTable, orderBy: '$colName ASC');
     return result;
   }
 
   // Insert Operation: Insert a allContact object to database
   Future<int> insertallContact(AllContacts allContact) async {
-    Database db = await database;
-    var result = await db.insert(allContactTable, allContact.toJson());
+    var result = await database.insert(allContactTable, allContact.toJson());
     return result;
   }
 
   // Update Operation: Update a allContact object and save it to database
   Future<int> updateAllContacts(AllContacts allContacts) async {
-    var db = await database;
-    var result = await db.update(allContactTable, allContacts.toJson(),
-        where: '$colId = ?', whereArgs: [allContacts]);
+    var result =
+        await database.update(allContactTable, allContacts.toJson(), where: '$colId = ?', whereArgs: [allContacts]);
     return result;
   }
 
   // Delete Operation: Delete a allContact object from database
   Future<int> deleteAllContacts(int id) async {
-    var db = await database;
-    int result =
-        await db.rawDelete('DELETE FROM $allContactTable WHERE $id = $id');
+    int result = await database.rawDelete('DELETE FROM $allContactTable WHERE $id = $id');
     return result;
   }
 
   // Delete Operation: Delete a allContact object from database
   Future<int> trancateAllContacts() async {
-    var db = await database;
-    int result = await db.rawDelete('DELETE FROM $allContactTable');
+    int result = await database.rawDelete('DELETE FROM $allContactTable');
     return result;
   }
 
   Future<int?> getCount() async {
-    Database db = await database;
-    List<Map<String, dynamic>> x =
-        await db.rawQuery('SELECT COUNT (*) from $allContactTable');
+    List<Map<String, dynamic>> x = await database.rawQuery('SELECT COUNT (*) from $allContactTable');
     int? result = Sqflite.firstIntValue(x);
     return result;
   }
@@ -125,22 +176,18 @@ class DatabaseHelper {
   ////////////////////////////////// RECENT CONTACT //////////////////////////////////
 
   Future<int> trancateRecentContacts() async {
-    var db = await database;
-    int result = await db.rawDelete('DELETE FROM $recentCallsTable');
+    int result = await database.rawDelete('DELETE FROM $recentCallsTable');
     return result;
   }
 
   // Insert Operation: Insert a allContact object to database
   Future<int> insertRecentContact(RecentCalls recentCalls) async {
-    Database db = await database;
-    var result = await db.insert(recentCallsTable, recentCalls.toJson());
+    var result = await database.insert(recentCallsTable, recentCalls.toJson());
     return result;
   }
 
   Future<List<Map<String, dynamic>>> getRecentCallsMapList() async {
-    Database db = await database;
-    var result = await db.query(recentCallsTable,
-        orderBy: '$coltimestamp DESC', limit: 1500);
+    var result = await database.query(recentCallsTable, orderBy: '$coltimestamp DESC', limit: 1500);
     return result;
   }
 
@@ -155,8 +202,7 @@ class DatabaseHelper {
   }
 
   Future<List<RecentCalls>> getMostDailedCalls() async {
-    Database db = await database;
-    var recentCallsMapList = await db.rawQuery(
+    var recentCallsMapList = await database.rawQuery(
         "SELECT * FROM $recentCallsTable where $colcallType = 'CallType.outgoing' GROUP BY $colnumber ORDER BY COUNT($colnumber) DESC LIMIT 5");
     int count = recentCallsMapList.length;
     List<RecentCalls> recentCalls = <RecentCalls>[];

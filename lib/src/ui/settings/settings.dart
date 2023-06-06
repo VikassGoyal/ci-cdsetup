@@ -31,7 +31,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  DatabaseHelper databaseHelper = DatabaseHelper();
+  DatabaseHelper databaseHelper = DatabaseHelper.instance;
   TextEditingController? _outputController;
   final List<DeviceContactData> _importportcontacts = [];
   bool _loader = false;
@@ -73,34 +73,25 @@ class _SettingsState extends State<Settings> {
             children: [
               ListTile(
                 onTap: () async {
-                  SharedPreferences preferences =
-                      await SharedPreferences.getInstance();
+                  SharedPreferences preferences = await SharedPreferences.getInstance();
 
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          MyProfile(preferences.getString("phone")),
+                      builder: (BuildContext context) => MyProfile(preferences.getString("phone")),
                     ),
                   );
                 },
-                title: Text("My Profile",
-                    style: Theme.of(context).textTheme.headline3),
+                title: Text("My Profile", style: Theme.of(context).textTheme.headline3),
                 subtitle: RichText(
                   text: TextSpan(
                     children: <TextSpan>[
                       TextSpan(
                           text: "Business, ",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline3!
-                              .apply(color: AppColor.accentColor)),
+                          style: Theme.of(context).textTheme.headline3!.apply(color: AppColor.accentColor)),
                       TextSpan(
                         text: "Personal",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline3!
-                            .apply(color: AppColor.primaryColor),
+                        style: Theme.of(context).textTheme.headline3!.apply(color: AppColor.primaryColor),
                       ),
                     ],
                   ),
@@ -149,8 +140,7 @@ class _SettingsState extends State<Settings> {
                 onTap: () {
                   _showDialog();
                 },
-                title: Text("Import Contacts",
-                    style: Theme.of(context).textTheme.headline3),
+                title: Text("Import Contacts", style: Theme.of(context).textTheme.headline3),
                 leading: SvgPicture.asset(
                   "assets/icons/ic_settings_contactlist.svg",
                   height: 40,
@@ -162,8 +152,7 @@ class _SettingsState extends State<Settings> {
                 onTap: () {
                   _checkPermission();
                 },
-                title: Text("QR Code Scanner",
-                    style: Theme.of(context).textTheme.headline3),
+                title: Text("QR Code Scanner", style: Theme.of(context).textTheme.headline3),
                 leading: SvgPicture.asset(
                   "assets/icons/ic_settings_qrscan.svg",
                   height: 40,
@@ -179,8 +168,7 @@ class _SettingsState extends State<Settings> {
                     ),
                   );
                 },
-                title: Text("Social Connect",
-                    style: Theme.of(context).textTheme.headline3),
+                title: Text("Social Connect", style: Theme.of(context).textTheme.headline3),
                 leading: SvgPicture.asset(
                   "assets/icons/ic_settings_socialconnect.svg",
                   height: 40,
@@ -189,14 +177,11 @@ class _SettingsState extends State<Settings> {
               Divider(height: 1, color: Colors.grey.shade200),
               ListTile(
                 onTap: () {
-                  Uri emailLaunchUri = Uri(
-                      scheme: 'mailto',
-                      path: "theconetapp@gmail.com",
-                      queryParameters: {'subject': null});
+                  Uri emailLaunchUri =
+                      Uri(scheme: 'mailto', path: "theconetapp@gmail.com", queryParameters: {'subject': null});
                   launch(emailLaunchUri.toString());
                 },
-                title: Text("Contact us",
-                    style: Theme.of(context).textTheme.headline3),
+                title: Text("Contact us", style: Theme.of(context).textTheme.headline3),
                 leading: SvgPicture.asset(
                   "assets/icons/ic_settings_contactus.svg",
                   height: 40,
@@ -247,9 +232,7 @@ class _SettingsState extends State<Settings> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(14.0))),
+                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
                         backgroundColor: Colors.white,
                         title: Text(
                           "Logout",
@@ -263,10 +246,7 @@ class _SettingsState extends State<Settings> {
                           TextButton(
                             child: Text(
                               "Cancel",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5!
-                                  .apply(color: AppColor.primaryColor),
+                              style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
                             ),
                             onPressed: () {
                               Navigator.pop(context);
@@ -274,10 +254,7 @@ class _SettingsState extends State<Settings> {
                           ),
                           TextButton(
                             child: Text("Yes",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline5!
-                                    .apply(color: AppColor.primaryColor)),
+                                style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor)),
                             onPressed: () {
                               Navigator.of(context).pop();
                               logoutFun();
@@ -288,8 +265,7 @@ class _SettingsState extends State<Settings> {
                     },
                   );
                 },
-                title: Text("Logout",
-                    style: Theme.of(context).textTheme.headline3),
+                title: Text("Logout", style: Theme.of(context).textTheme.headline3),
                 leading: SvgPicture.asset(
                   "assets/icons/ic_settings_logout.svg",
                   height: 40,
@@ -300,10 +276,7 @@ class _SettingsState extends State<Settings> {
               Center(
                 child: Text(
                   "v.$version",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6!
-                      .copyWith(fontSize: 14),
+                  style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 14),
                 ),
               ),
               const SizedBox(height: 10),
@@ -323,8 +296,7 @@ class _SettingsState extends State<Settings> {
               const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.only(left: 30, right: 30),
-                child: Text(
-                    "With your $totalContact contacts, you have $totalConnection connections",
+                child: Text("With your $totalContact contacts, you have $totalConnection connections",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: AppColor.accentColor,
@@ -442,19 +414,12 @@ class _SettingsState extends State<Settings> {
               onPressed: () => Navigator.pop(context, false),
               child: Text(
                 'No',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .apply(color: AppColor.primaryColor),
+                style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
               ),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: Text('Yes',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5!
-                      .apply(color: AppColor.primaryColor)),
+              child: Text('Yes', style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor)),
             ),
           ],
         );
@@ -464,8 +429,7 @@ class _SettingsState extends State<Settings> {
 
       if (value) {
         print(value);
-        SchedulerBinding.instance
-            .addPostFrameCallback((_) => _checkContactPermission());
+        SchedulerBinding.instance.addPostFrameCallback((_) => _checkContactPermission());
       } else {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setBool('imported', true);
@@ -488,13 +452,11 @@ class _SettingsState extends State<Settings> {
   }
 
   _importContacts() async {
-    Iterable<Contact> contacts =
-        await ContactsService.getContacts(withThumbnails: false);
+    Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
 
     for (var item in contacts) {
       if (item.phones!.toList().isNotEmpty) {
-        DeviceContactData data =
-            DeviceContactData(item.displayName, item.phones!.toList()[0].value);
+        DeviceContactData data = DeviceContactData(item.displayName, item.phones!.toList()[0].value);
         _importportcontacts.add(data);
       }
     }

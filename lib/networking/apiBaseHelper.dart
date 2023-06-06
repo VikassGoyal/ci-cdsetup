@@ -10,13 +10,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiBaseHelper {
   // String _baseUrl = AppConstant.baseUrl;
   final String baseUrl = AppConstant.baseUrl;
-  String? serverHost = 'http://conet.shadesix.in/';
+  String? serverHost = 'http://conet.shade6.in/';
 
   Future postWithoutToken(String url, Map<String, dynamic> body) async {
     print('Api Post, url $url');
     var responseJson;
     try {
-      var uri = Uri.http('conet.shadesix.in', "api/$url");
+      var uri = Uri.http('conet.shade6.in', "api/$url");
       final response = await http.post(uri, body: body);
       responseJson = _returnResponse(response);
     } catch (error) {
@@ -34,7 +34,7 @@ class ApiBaseHelper {
 
     var responseJson;
     try {
-      var uri = Uri.http('conet.shadesix.in', "api/$url");
+      var uri = Uri.http('conet.shade6.in', "api/$url");
       final response = await http.get(uri, headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -64,9 +64,8 @@ class ApiBaseHelper {
         'Accept': 'application/json',
       };
 
-      var uri = Uri.http('conet.shadesix.in', "api/$url");
-      final response =
-          await http.post(uri, body: jsonEncode(body), headers: headers);
+      var uri = Uri.http('conet.shade6.in', "api/$url");
+      final response = await http.post(uri, body: jsonEncode(body), headers: headers);
       print(response);
 
       responseJson = _returnResponse(response);
@@ -82,7 +81,7 @@ class ApiBaseHelper {
     print('Api Put, url $url');
     var responseJson;
     try {
-      var uri = Uri.http('conet.shadesix.in', "api/$url");
+      var uri = Uri.http('conet.shade6.in', "api/$url");
       final response = await http.put(uri, body: body);
       responseJson = _returnResponse(response);
     } on SocketException {
@@ -98,7 +97,7 @@ class ApiBaseHelper {
     print('Api delete, url $url');
     var apiResponse;
     try {
-      var uri = Uri.http('conet.shadesix.in', "api/$url");
+      var uri = Uri.http('conet.shade6.in', "api/$url");
       final response = await http.delete(uri);
       apiResponse = _returnResponse(response);
     } on SocketException {

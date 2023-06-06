@@ -40,10 +40,7 @@ class _QRScannerState extends State<QRScanner> {
               ),
               Text(
                 "Back",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2!
-                    .apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.whiteColor),
               )
             ],
           ),
@@ -51,10 +48,7 @@ class _QRScannerState extends State<QRScanner> {
         centerTitle: true,
         title: Text(
           "QR Scanner",
-          style: Theme.of(context)
-              .textTheme
-              .headline4!
-              .apply(color: AppColor.whiteColor),
+          style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.whiteColor),
         ),
       ),
       body: SingleChildScrollView(
@@ -65,10 +59,7 @@ class _QRScannerState extends State<QRScanner> {
               alignment: Alignment.center,
               child: Text(
                 "Scan QR Code",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.whiteColor),
               ),
             ),
             const SizedBox(height: 20),
@@ -88,8 +79,7 @@ class _QRScannerState extends State<QRScanner> {
               padding: const EdgeInsets.all(15.0),
               child: _showQr
                   ? const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          AppColor.primaryColor),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
                     )
                   : _qrImage == ''
                       ? const Center(
@@ -129,7 +119,7 @@ class _QRScannerState extends State<QRScanner> {
     SharedPreferences? preferences = await SharedPreferences.getInstance();
     String? qrimage = preferences.getString('image');
     setState(() {
-      _qrImage = "http://conet.shadesix.in/$qrimage";
+      _qrImage = "http://conet.shade6.in/$qrimage";
       _showQr = false;
     });
   }

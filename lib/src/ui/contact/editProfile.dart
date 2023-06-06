@@ -654,7 +654,6 @@ class _EditProfileState extends State<EditProfile> {
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
         controller: _professionalCompanyWebsite,
-        regexexp: RegExp(r'^[a-zA-Z0-9\s.,]+$'),
         parametersValidate: "Please enter Company Website.",
       );
     }
@@ -668,6 +667,7 @@ class _EditProfileState extends State<EditProfile> {
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
         controller: _professionalSchool,
+        regexexp: RegExp(r'^[a-zA-Z0-9\s.,]+$'),
         parametersValidate: "Please enter School / University.",
       );
     }

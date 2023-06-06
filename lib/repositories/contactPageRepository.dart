@@ -5,7 +5,7 @@ import 'package:conet/src/localdb/database_helper.dart';
 
 class ContactPageRepository {
   ApiBaseHelper _apiBaseHelper = ApiBaseHelper();
-  DatabaseHelper databaseHelper = DatabaseHelper();
+  DatabaseHelper databaseHelper = DatabaseHelper.instance;
 
   // var _allContacts;
   // List<AllContacts> _allContacts = [];

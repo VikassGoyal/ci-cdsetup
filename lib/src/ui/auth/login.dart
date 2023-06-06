@@ -8,7 +8,6 @@ import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:flutter/services.dart';
 
 import '../utils.dart';
@@ -19,7 +18,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  DatabaseHelper databaseHelper = DatabaseHelper();
   final _loginFormKey = GlobalKey<FormState>();
   final _mobileEmailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -41,7 +39,6 @@ class _LoginState extends State<Login> {
       return TextFormFieldWidget(
         hintText: "Email / Mobile",
 
-
         padding: 0.0,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -51,25 +48,17 @@ class _LoginState extends State<Login> {
         //focusNode: _mobileEmailControllerFocus,
         parametersValidate: "Please enter Email / Mobile.",
         onSubmitField: () {},
-
       );
     }
 
     Widget _buildPassword() {
       return TextFormField(
-
         controller: _passwordController,
-
-        style: Theme.of(context)
-            .textTheme
-            .headline5
-            ?.apply(color: AppColor.whiteColor),
+        style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
         inputFormatters: [
           FilteringTextInputFormatter.deny(RegExp(r'\s')),
-
         ],
         decoration: InputDecoration(
-
           hintText: "Password",
           filled: true,
           fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
@@ -101,10 +90,7 @@ class _LoginState extends State<Login> {
               color: Colors.white54,
             ),
           ),
-          hintStyle: Theme.of(context)
-              .textTheme
-              .headline5
-              ?.apply(color: Colors.white54),
+          hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
         ),
         obscureText: !_showPassword,
         cursorColor: AppColor.whiteColor,
@@ -123,8 +109,7 @@ class _LoginState extends State<Login> {
     Widget _buildSignInButton() {
       return ElevatedButton(
         style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+          backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
           ),
@@ -133,7 +118,7 @@ class _LoginState extends State<Login> {
           print("clicked");
           var validate = _loginFormKey.currentState!.validate();
           if (validate) {
-           // Utils.hideKeyboard(context);
+            // Utils.hideKeyboard(context);
 
             setState(() {
               _loader = true;
@@ -172,10 +157,7 @@ class _LoginState extends State<Login> {
           child: Text(
             "Sign in",
             textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .button
-                ?.apply(color: AppColor.whiteColor),
+            style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
           ),
         ),
       );
@@ -204,17 +186,11 @@ class _LoginState extends State<Login> {
             children: [
               Text(
                 "Don't have an account?  ",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: AppColor.whiteColor.withOpacity(0.7)),
+                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor.withOpacity(0.7)),
               ),
               Text(
                 "Sign Up",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
               ),
             ],
           ),
@@ -224,7 +200,6 @@ class _LoginState extends State<Login> {
 
     return Scaffold(
       backgroundColor: AppColor.primaryColor,
-
       body: LoadingOverlay(
         isLoading: _loader,
         opacity: 0.2,
@@ -255,16 +230,12 @@ class _LoginState extends State<Login> {
                       child: GestureDetector(
                         child: Text(
                           "Forgot password?",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5
-                              ?.apply(color: AppColor.whiteColor),
+                          style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
                         ),
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => ForgotPassword()),
+                            MaterialPageRoute(builder: (context) => ForgotPassword()),
                           );
                         },
                       ),
@@ -284,7 +255,7 @@ class _LoginState extends State<Login> {
   }
 
   initlocaldb() async {
-    final Database dbFuture = await databaseHelper.initializeDatabase();
+    await DatabaseHelper.instance.initialize();
   }
 }
 

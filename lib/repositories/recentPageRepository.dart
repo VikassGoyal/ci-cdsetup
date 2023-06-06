@@ -6,7 +6,7 @@ import 'package:conet/src/localdb/database_helper.dart';
 
 class RecentPageRepository {
   List<RecentCalls>? _data;
-  DatabaseHelper databaseHelper = DatabaseHelper();
+  DatabaseHelper databaseHelper = DatabaseHelper.instance;
   List<CallLogEntry> allContacts = [];
 
   fetchData() async {

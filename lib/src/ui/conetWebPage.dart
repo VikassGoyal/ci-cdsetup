@@ -37,6 +37,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
   bool? _searchvisible;
   bool _searchEnabled = false;
   bool _loader = false;
+  bool _showCancelIcon = false;
 
   @override
   void initState() {
@@ -49,6 +50,13 @@ class _ConetWebPageState extends State<ConetWebPage> {
     _outputController = TextEditingController();
     _searchvisible = false;
     _popupSettings();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController!.dispose();
+    _outputController!.dispose();
   }
 
   @override
@@ -762,6 +770,10 @@ class _ConetWebPageState extends State<ConetWebPage> {
                             controller: _searchController,
                             onChanged: (value) {
                               // filterSearchResults(value);
+                             setState(() {
+                                value.length > 1 ? _showCancelIcon =true:
+                              _showCancelIcon =false;
+                             });
                             },
                             onSubmitted: (value) {
                               print(value);
@@ -786,12 +798,19 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                 borderRadius: BorderRadius.circular(8.0),
                                 borderSide: BorderSide.none,
                               ),
-                              prefixIcon: const Padding(
-                                padding: EdgeInsets.only(left: 11, right: 11),
-                                child: Icon(
-                                  Icons.search,
-                                  color: AppColor.gray30Color,
-                                  size: 18,
+                              prefixIcon:  InkWell(
+                                onTap: () {
+                              if (_showCancelIcon == true) {
+                                _clearText();
+                              }
+                            },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 11, right: 11),
+                                  child: Icon(
+                                   _showCancelIcon ? Icons.close : Icons.search,
+                                    color: AppColor.gray30Color,
+                                    size: 18,
+                                  ),
                                 ),
                               ),
                               suffixIcon: IconButton(
@@ -1028,5 +1047,13 @@ class _ConetWebPageState extends State<ConetWebPage> {
     var outputFormat = DateFormat('hh:mm a');
     var outputDate = outputFormat.format(date);
     return outputDate;
+  }
+  
+   void _clearText() {
+    _searchController!.clear();
+    FocusScope.of(context).requestFocus(FocusNode());
+    setState(() {
+      _showCancelIcon = false;
+    });
   }
 }

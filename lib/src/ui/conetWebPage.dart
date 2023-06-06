@@ -5,11 +5,14 @@ import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/src/ui/newInConet.dart';
 import 'package:conet/src/ui/notification.dart';
+import 'package:conet/src/ui/qrScreen.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils.dart';
@@ -33,6 +36,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
   TextEditingController? _outputController;
   bool? _searchvisible;
   bool _searchEnabled = false;
+  bool _loader = false;
 
   @override
   void initState() {
@@ -90,19 +94,14 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     "Business Designer,  Graphic Designer, Interior Designer,  MSME, Textiles, Event Planners,  Digital marketing....",
                     overflow: TextOverflow.clip,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.apply(color: AppColor.placeholder),
+                    style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.placeholder),
                   ),
                   const SizedBox(height: 30),
                   ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          AppColor.secondaryColor),
+                      backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7)),
+                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                       ),
                     ),
                     onPressed: () {
@@ -110,16 +109,12 @@ class _ConetWebPageState extends State<ConetWebPage> {
                       Navigator.of(context).pop();
                     },
                     child: Container(
-                      constraints: const BoxConstraints(
-                          minHeight: 40.0, maxWidth: 100.0),
+                      constraints: const BoxConstraints(minHeight: 40.0, maxWidth: 100.0),
                       alignment: Alignment.center,
                       child: Text(
                         "Got it",
                         textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .button
-                            ?.apply(color: AppColor.whiteColor),
+                        style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
                       ),
                     ),
                   )
@@ -148,8 +143,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     child: FadeInImage.assetNetwork(
                       placeholder: "assets/images/profile.png",
                       image: _contacts[index].profileImage != null
-                          ? AppConstant.profileImageBaseUrl +
-                              _contacts[index].profileImage!
+                          ? AppConstant.profileImageBaseUrl + _contacts[index].profileImage!
                           : "",
                       fit: BoxFit.cover,
                       imageErrorBuilder: (context, error, stackTrace) {
@@ -187,17 +181,19 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     Text(
                       "${_contacts[index].name}",
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline3?.copyWith(
-                          color: AppColor.blackColor,
-                          fontWeight: FontWeight.w400),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3
+                          ?.copyWith(color: AppColor.blackColor, fontWeight: FontWeight.w400),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       "${_contacts[index].name}",
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline6?.copyWith(
-                          color: AppColor.gray30Color,
-                          fontWeight: FontWeight.w400),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
                     )
                   ],
                 ),
@@ -275,8 +271,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
               onTap: () {
                 setState(() {
                   if (_searchResult[index].mutualList!.length > 1) {
-                    _searchResult[index].visible =
-                        !_searchResult[index].visible!;
+                    _searchResult[index].visible = !_searchResult[index].visible!;
                   }
                 });
               },
@@ -293,8 +288,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           child: FadeInImage.assetNetwork(
                             placeholder: "assets/images/profile.png",
                             image: _searchResult[index].profileImage != null
-                                ? AppConstant.profileImageBaseUrl +
-                                    _searchResult[index].profileImage!
+                                ? AppConstant.profileImageBaseUrl + _searchResult[index].profileImage!
                                 : "",
                             fit: BoxFit.cover,
                             imageErrorBuilder: (context, error, stackTrace) {
@@ -317,10 +311,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           Text(
                             _searchResult[index].name ?? "",
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline3
-                                ?.copyWith(fontWeight: FontWeight.w400),
+                            style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w400),
                           ),
                           const SizedBox(height: 2),
                           Row(
@@ -336,9 +327,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6
-                                    ?.copyWith(
-                                        color: AppColor.secondaryColor,
-                                        fontWeight: FontWeight.w400),
+                                    ?.copyWith(color: AppColor.secondaryColor, fontWeight: FontWeight.w400),
                               ),
                               Text(
                                 (_searchResult[index].mutualList?.length == 1
@@ -348,9 +337,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6
-                                    ?.copyWith(
-                                        color: AppColor.secondaryColor,
-                                        fontWeight: FontWeight.w400),
+                                    ?.copyWith(color: AppColor.secondaryColor, fontWeight: FontWeight.w400),
                               )
                             ],
                           ),
@@ -365,26 +352,19 @@ class _ConetWebPageState extends State<ConetWebPage> {
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              AppColor.accentColor),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                          backgroundColor: MaterialStateProperty.all<Color>(AppColor.accentColor),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           ),
                         ),
                         onPressed: () {},
                         child: Container(
-                          constraints: const BoxConstraints(
-                              minHeight: 28.0, maxWidth: 84.0),
+                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 84.0),
                           alignment: Alignment.center,
                           child: Text(
                             "Accepted",
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .button
-                                ?.apply(color: AppColor.whiteColor),
+                            style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
                           ),
                         ),
                       ),
@@ -397,26 +377,19 @@ class _ConetWebPageState extends State<ConetWebPage> {
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              AppColor.primaryColor),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                          backgroundColor: MaterialStateProperty.all<Color>(AppColor.primaryColor),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           ),
                         ),
                         onPressed: () {},
                         child: Container(
-                          constraints: const BoxConstraints(
-                              minHeight: 28.0, maxWidth: 100.0),
+                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 100.0),
                           alignment: Alignment.center,
                           child: Text(
                             "Requested",
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .button
-                                ?.apply(color: AppColor.whiteColor),
+                            style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
                           ),
                         ),
                       ),
@@ -429,35 +402,27 @@ class _ConetWebPageState extends State<ConetWebPage> {
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              AppColor.accentColor),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                          backgroundColor: MaterialStateProperty.all<Color>(AppColor.accentColor),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           ),
                         ),
                         onPressed: () {
                           setState(() {
                             _outputController?.clear();
-                            _outputController?.text =
-                                _searchResult[index].qrValue!;
+                            _outputController?.text = _searchResult[index].qrValue!;
                           });
                           if (_outputController?.text != '') {
                             _sentRequest(index, 0, "parent");
                           }
                         },
                         child: Container(
-                          constraints: const BoxConstraints(
-                              minHeight: 28.0, maxWidth: 70.0),
+                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 70.0),
                           alignment: Alignment.center,
                           child: Text(
                             "Connect",
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .button
-                                ?.apply(color: AppColor.accentColor),
+                            style: Theme.of(context).textTheme.button?.apply(color: AppColor.accentColor),
                           ),
                         ),
                       ),
@@ -500,8 +465,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     itemBuilder: (context, mutindex) {
                       return mutindex != 0
                           ? Container(
-                              padding: const EdgeInsets.only(
-                                  left: 0, right: 0, top: 10, bottom: 10),
+                              padding: const EdgeInsets.only(left: 0, right: 0, top: 10, bottom: 10),
                               child: Row(
                                 children: [
                                   const SizedBox(width: 16),
@@ -511,24 +475,15 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                         width: 40,
                                         height: 40,
                                         child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(100.0),
+                                          borderRadius: BorderRadius.circular(100.0),
                                           child: FadeInImage.assetNetwork(
-                                            placeholder:
-                                                "assets/images/profile.png",
-                                            image: _searchResult[index]
-                                                        .mutualList![mutindex]
-                                                        .profileImage !=
-                                                    null
-                                                ? AppConstant
-                                                        .profileImageBaseUrl +
-                                                    _searchResult[index]
-                                                        .mutualList![mutindex]
-                                                        .profileImage!
+                                            placeholder: "assets/images/profile.png",
+                                            image: _searchResult[index].mutualList![mutindex].profileImage != null
+                                                ? AppConstant.profileImageBaseUrl +
+                                                    _searchResult[index].mutualList![mutindex].profileImage!
                                                 : "",
                                             fit: BoxFit.cover,
-                                            imageErrorBuilder:
-                                                (context, error, stackTrace) {
+                                            imageErrorBuilder: (context, error, stackTrace) {
                                               return Image.asset(
                                                 "assets/images/profile.png",
                                               );
@@ -541,169 +496,115 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                   const SizedBox(width: 14),
                                   Expanded(
                                     child: Container(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
+                                      padding: const EdgeInsets.only(right: 8.0),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            _searchResult[index]
-                                                    .mutualList![mutindex]
-                                                    .name ??
-                                                "",
+                                            _searchResult[index].mutualList![mutindex].name ?? "",
                                             overflow: TextOverflow.ellipsis,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline3
-                                                ?.copyWith(
-                                                    fontWeight:
-                                                        FontWeight.w400),
+                                                ?.copyWith(fontWeight: FontWeight.w400),
                                           ),
                                           const SizedBox(height: 2),
                                           Text(
-                                            _searchResult[index].mutualList![
-                                                        mutindex] ==
-                                                    null
+                                            _searchResult[index].mutualList![mutindex] == null
                                                 ? ""
-                                                : _searchResult[index]
-                                                    .mutualList![mutindex]
-                                                    .via!,
+                                                : _searchResult[index].mutualList![mutindex].via!,
                                             overflow: TextOverflow.ellipsis,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline6
-                                                ?.copyWith(
-                                                    color: AppColor.gray30Color,
-                                                    fontWeight:
-                                                        FontWeight.w400),
+                                                ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
                                           )
                                         ],
                                       ),
                                     ),
                                   ),
                                   Visibility(
-                                    visible: (_searchResult[index]
-                                            .mutualList![mutindex]
-                                            .status ==
-                                        'accepted'),
+                                    visible: (_searchResult[index].mutualList![mutindex].status == 'accepted'),
                                     child: Container(
                                       height: 30,
                                       alignment: Alignment.center,
                                       child: ElevatedButton(
                                         style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  AppColor.accentColor),
-                                          shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
+                                          backgroundColor: MaterialStateProperty.all<Color>(AppColor.accentColor),
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                           ),
                                         ),
                                         onPressed: () {},
                                         child: Container(
-                                          constraints: const BoxConstraints(
-                                              minHeight: 28.0, maxWidth: 84.0),
+                                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 84.0),
                                           alignment: Alignment.center,
                                           child: Text(
                                             "Accepted",
                                             textAlign: TextAlign.center,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .button
-                                                ?.apply(
-                                                    color: AppColor.whiteColor),
+                                            style:
+                                                Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
                                   Visibility(
-                                    visible: (_searchResult[index]
-                                            .mutualList![mutindex]
-                                            .status ==
-                                        'requested'),
+                                    visible: (_searchResult[index].mutualList![mutindex].status == 'requested'),
                                     child: Container(
                                       height: 30,
                                       alignment: Alignment.center,
                                       child: ElevatedButton(
                                         style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  AppColor.primaryColor),
-                                          shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
+                                          backgroundColor: MaterialStateProperty.all<Color>(AppColor.primaryColor),
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                           ),
                                         ),
                                         onPressed: () {},
                                         child: Container(
-                                          constraints: const BoxConstraints(
-                                              minHeight: 28.0, maxWidth: 100.0),
+                                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 100.0),
                                           alignment: Alignment.center,
                                           child: Text(
                                             "Requested",
                                             textAlign: TextAlign.center,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .button
-                                                ?.apply(
-                                                    color: AppColor.whiteColor),
+                                            style:
+                                                Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
                                   Visibility(
-                                    visible: (_searchResult[index]
-                                            .mutualList![mutindex]
-                                            .status ==
-                                        null),
+                                    visible: (_searchResult[index].mutualList![mutindex].status == null),
                                     child: Container(
                                       height: 30,
                                       alignment: Alignment.center,
                                       child: ElevatedButton(
                                         style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  AppColor.accentColor),
-                                          shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
+                                          backgroundColor: MaterialStateProperty.all<Color>(AppColor.accentColor),
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                           ),
                                         ),
                                         onPressed: () {
                                           setState(() {
                                             _outputController?.clear();
                                             _outputController?.text =
-                                                _searchResult[index]
-                                                    .mutualList![mutindex]
-                                                    .qrValue!;
+                                                _searchResult[index].mutualList![mutindex].qrValue!;
                                           });
                                           if (_outputController?.text != '') {
-                                            _sentRequest(
-                                                index, mutindex, "child");
+                                            _sentRequest(index, mutindex, "child");
                                           }
                                         },
                                         child: Container(
-                                          constraints: const BoxConstraints(
-                                              minHeight: 28.0, maxWidth: 70.0),
+                                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 70.0),
                                           alignment: Alignment.center,
                                           child: Text(
                                             "Connect",
                                             textAlign: TextAlign.center,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .button
-                                                ?.apply(
-                                                    color:
-                                                        AppColor.accentColor),
+                                            style:
+                                                Theme.of(context).textTheme.button?.apply(color: AppColor.accentColor),
                                           ),
                                         ),
                                       ),
@@ -763,10 +664,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
               "CONET Web Search",
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  ?.apply(color: AppColor.placeholder),
+              style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.placeholder),
             ),
           ],
         ),
@@ -787,9 +685,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
           );
         },
         itemBuilder: (context, index) {
-          return _searchvisible!
-              ? contactSearchListItem(index)
-              : contactListItem(index);
+          return _searchvisible! ? contactSearchListItem(index) : contactListItem(index);
         },
       );
     }
@@ -836,8 +732,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
           ],
         ),
         body: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(
-              parent: NeverScrollableScrollPhysics()),
+          physics: const ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
           child: Column(
             children: [
               Container(color: AppColor.primaryColor, height: 20),
@@ -852,15 +747,13 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         child: GestureDetector(
                           onTap: () async {
                             print("success");
-                            SharedPreferences sharedPreferences =
-                                await SharedPreferences.getInstance();
+                            SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
                             setState(() {
                               _searchEnabled = true;
                             });
 
-                            if (sharedPreferences.getBool("conetwebpopup") ==
-                                null) {
+                            if (sharedPreferences.getBool("conetwebpopup") == null) {
                               _showPopup();
                               sharedPreferences.setBool("conetwebpopup", true);
                             }
@@ -880,32 +773,36 @@ class _ConetWebPageState extends State<ConetWebPage> {
                             textAlign: TextAlign.left,
                             // enabled: false,
                             enabled: _searchEnabled,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline3
-                                ?.copyWith(fontWeight: FontWeight.w400),
+                            style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w400),
                             textInputAction: TextInputAction.search,
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(0),
+                              contentPadding: const EdgeInsets.symmetric(vertical: -5),
                               hintText: "Search",
                               fillColor: Colors.white,
                               filled: true,
-                              hintStyle: const TextStyle(
-                                fontFamily: 'Sfpro-Rounded-Regular',
-                                color: AppColor.placeholder,
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 19,
-                                letterSpacing: 0.2,
-                              ),
+                              isDense: true,
+                              hintStyle: Theme.of(context).textTheme.headline3?.apply(color: AppColor.gray30Color),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                                 borderSide: BorderSide.none,
                               ),
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: AppColor.placeholder.withOpacity(0.5),
-                                size: 18,
+                              prefixIcon: const Padding(
+                                padding: EdgeInsets.only(left: 11, right: 11),
+                                child: Icon(
+                                  Icons.search,
+                                  color: AppColor.gray30Color,
+                                  size: 18,
+                                ),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: const Icon(
+                                  Icons.qr_code,
+                                  color: AppColor.gray30Color,
+                                  size: 18,
+                                ),
+                                onPressed: () {
+                                  _checkQRPermission();
+                                },
                               ),
                             ),
                           ),
@@ -1001,8 +898,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
       if (response['status'] == true) {
         if (response['msg'] == 'yes') {
           setState(() {
-            _searchResult = List<SearchContacts>.from(
-                responseData.map((item) => SearchContacts.fromJson(item)));
+            _searchResult = List<SearchContacts>.from(responseData.map((item) => SearchContacts.fromJson(item)));
             _searchvisible = true;
           });
         } else {
@@ -1024,8 +920,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
     var requestBody = {
       "value": _outputController?.text,
       "qrcode": false,
-      "content":
-          "${preferences.getString("name")} request to ${_searchResult[index].mutualList![mutindex].name}",
+      "content": "${preferences.getString("name")} request to ${_searchResult[index].mutualList![mutindex].name}",
       "viaid": _searchResult[index].viaId
     };
     var response = await ContactBloc().sendQrValue(requestBody);
@@ -1055,5 +950,83 @@ class _ConetWebPageState extends State<ConetWebPage> {
         _searchEnabled = true;
       });
     }
+  }
+
+//QRscanner Start
+  _checkQRPermission() async {
+    var status = await Permission.camera.status;
+    if (status.isGranted) {
+      scanQrCode();
+    } else {
+      var reqStatus = await Permission.camera.request();
+      if (reqStatus.isGranted) {
+        scanQrCode();
+      } else if (reqStatus.isDenied) {
+        Utils.displayToast("Permission Denied");
+      }
+    }
+  }
+
+  scanQrCode() async {
+    Navigator.of(context)
+        .push(MaterialPageRoute(
+      builder: (context) => const QRScreen(),
+    ))
+        .then((value) {
+      if (value != null) {
+        setState(() {
+          _outputController!.clear();
+          _outputController!.text = value!;
+        });
+        if (_outputController!.text != '') {
+          setState(() {
+            _loader = true;
+          });
+          _sendQrApi();
+        }
+      }
+    });
+
+    // String? barcode = await scanner.scan();
+    // setState(() {
+    //   _outputController!.clear();
+    //   _outputController!.text = barcode!;
+    // });
+    // if (_outputController!.text != '') {
+    //   setState(() {
+    //     _loader = true;
+    //   });
+    //   _sendQrApi();
+    // }
+  }
+
+  _sendQrApi() async {
+    var requestBody = {"value": _outputController!.text, "qrcode": true};
+    var response = await ContactBloc().sendQrValue(requestBody);
+
+    if (response['status'] == true) {
+      Utils.displayToast("Scanned successfully");
+      setState(() {
+        _loader = false;
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) {
+          return NotificationScreen();
+        }),
+      );
+    } else if (response['status'] == "Token is Expired") {
+      Utils.displayToast('Token is Expired');
+      tokenExpired(context);
+    } else {
+      Utils.displayToast('Something went wrong');
+    }
+  }
+
+  timeFormat(timestamp) {
+    var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    var outputFormat = DateFormat('hh:mm a');
+    var outputDate = outputFormat.format(date);
+    return outputDate;
   }
 }

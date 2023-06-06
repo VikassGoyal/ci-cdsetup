@@ -1,4 +1,5 @@
 import 'package:conet/repositories/userRepository.dart';
+import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserBloc {
@@ -11,8 +12,11 @@ class UserBloc {
   login(requestBody) async {
     try {
       var response = await userRepository?.login(requestBody);
-      if (response['message'] == 'success') {
+      print("response.body['message']");
+      print(response['message']);
+      if (response['message'] == "success") {
         SharedPreferences preferences = await SharedPreferences.getInstance();
+
         preferences.setString('token', response['token']);
         preferences.setString('id', response['user']['user_id'].toString());
         preferences.setInt('formFilled', response['user']['formFilled']);
@@ -25,7 +29,6 @@ class UserBloc {
       return response;
     } catch (e) {
       print("error");
-      print(e);
     }
   }
 

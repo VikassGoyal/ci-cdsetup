@@ -20,6 +20,7 @@ import 'package:conet/utils/textTheme.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:conet/src/ui/introscreen/splashScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -36,14 +37,12 @@ class _AppState extends State<App> {
       title: 'CoNet',
       home: Builder(
         builder: (context) {
-          return const SplashScreen();
+          return SplashScreen();
         },
       ),
       theme: ThemeData(
         primaryColor: AppColor.whiteColor,
-        textTheme: Platform.isAndroid
-            ? ConetTextTheme.androidTextTheme
-            : ConetTextTheme.iosTextTheme,
+        textTheme: Platform.isAndroid ? ConetTextTheme.androidTextTheme : ConetTextTheme.iosTextTheme,
         colorScheme: ColorScheme.fromSwatch().copyWith(
           brightness: Brightness.dark,
         ),

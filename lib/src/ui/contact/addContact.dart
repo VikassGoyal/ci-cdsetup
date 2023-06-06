@@ -95,29 +95,31 @@ class _AddContactState extends State<AddContact> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget contactSearchButton() {
       return Container(
         margin: const EdgeInsets.only(left: 22, right: 22),
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+            backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
             ),
           ),
           onPressed: () async {
             print("clicked");
-            if (_personalNumber.text.length != 10) {
-              Utils.displayToastBottomError("Please enter valid Mobile number.");
+
+            if (_personalNumber.text.length == 0) {
+              Utils.displayToastBottomError("Please Enter Valid Phone  Number");
+              return;
+            }
+            if (_personalNumber.text.length >= 1 && !_personalNumber.text.isValidMobile()) {
+              Utils.displayToastBottomError("Please Enter 10-digit Phone Number");
               return;
             }
 
             Utils.hideKeyboard(context);
 
-            SharedPreferences preferences =
-                await SharedPreferences.getInstance();
+            SharedPreferences preferences = await SharedPreferences.getInstance();
             var phone = preferences.getString("phone");
 
             if (getTrimedNumber(phone) != _personalNumber.text) {
@@ -137,10 +139,7 @@ class _AddContactState extends State<AddContact> {
             child: Text(
               "Search",
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .button
-                  ?.apply(color: AppColor.whiteColor),
+              style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
             ),
           ),
         ),
@@ -155,18 +154,15 @@ class _AddContactState extends State<AddContact> {
             children: [
               const SizedBox(height: 16),
               TextFormFieldContact(
-                hintText: "Enter the Mobile Number",
-                padding: 14.0,
-                margin: 22.0,
-                 maxLength: 10,
-                textInputType: TextInputType.number,
-                actionKeyboard: TextInputAction.done,
-                parametersValidate: "Please enter Mobile number.",
-                controller: _personalNumber,
-                regexexp: RegExp(r'[0-9]')
-
-
-              ),
+                  hintText: "Enter the Mobile Number",
+                  padding: 14.0,
+                  margin: 22.0,
+                  maxLength: 10,
+                  textInputType: TextInputType.number,
+                  actionKeyboard: TextInputAction.done,
+                  parametersValidate: "Please enter Mobile number.",
+                  controller: _personalNumber,
+                  regexexp: RegExp(r'[0-9]')),
               const SizedBox(height: 20),
               contactSearchButton()
             ],
@@ -182,10 +178,8 @@ class _AddContactState extends State<AddContact> {
           Expanded(
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    professionalTab
-                        ? AppColor.accentColor
-                        : AppColor.whiteColor),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(professionalTab ? AppColor.accentColor : AppColor.whiteColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     side: const BorderSide(
@@ -203,10 +197,10 @@ class _AddContactState extends State<AddContact> {
               },
               child: Text(
                 'Personal',
-                style: Theme.of(context).textTheme.headline5?.apply(
-                    color: professionalTab
-                        ? AppColor.whiteColor
-                        : AppColor.accentColor),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    ?.apply(color: professionalTab ? AppColor.whiteColor : AppColor.accentColor),
               ),
             ),
           ),
@@ -214,10 +208,8 @@ class _AddContactState extends State<AddContact> {
           Expanded(
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    professionalTab
-                        ? AppColor.whiteColor
-                        : AppColor.secondaryColor),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(professionalTab ? AppColor.whiteColor : AppColor.secondaryColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     side: const BorderSide(
@@ -238,10 +230,10 @@ class _AddContactState extends State<AddContact> {
               },
               child: Text(
                 'Professional',
-                style: Theme.of(context).textTheme.headline5?.apply(
-                    color: professionalTab
-                        ? AppColor.secondaryColor
-                        : AppColor.whiteColor),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    ?.apply(color: professionalTab ? AppColor.secondaryColor : AppColor.whiteColor),
               ),
             ),
           ),
@@ -471,8 +463,7 @@ class _AddContactState extends State<AddContact> {
         margin: const EdgeInsets.only(left: 22, right: 22),
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+            backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
             ),
@@ -493,10 +484,7 @@ class _AddContactState extends State<AddContact> {
             child: Text(
               "Next",
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .button
-                  ?.apply(color: AppColor.whiteColor),
+              style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
             ),
           ),
         ),
@@ -508,8 +496,7 @@ class _AddContactState extends State<AddContact> {
         margin: const EdgeInsets.only(left: 22, right: 22),
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+            backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
             ),
@@ -526,10 +513,7 @@ class _AddContactState extends State<AddContact> {
             child: Text(
               "Add Contact",
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .button
-                  ?.apply(color: AppColor.whiteColor),
+              style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
             ),
           ),
         ),
@@ -692,8 +676,7 @@ class _AddContactState extends State<AddContact> {
     entreprenerurItemNew(int i) {
       return Padding(
         // padding: EdgeInsets.all(16),
-        padding:
-            const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
+        padding: const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
         child: Material(
           color: AppColor.whiteColor,
           clipBehavior: Clip.antiAlias,
@@ -706,10 +689,7 @@ class _AddContactState extends State<AddContact> {
                 children: [
                   Text(
                     "Company Profile ${i + 1}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.apply(color: AppColor.bottomUnselectItemColor),
+                    style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.bottomUnselectItemColor),
                   ),
                 ],
               ),
@@ -724,13 +704,9 @@ class _AddContactState extends State<AddContact> {
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: TextFormField(
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.apply(color: AppColor.secondaryColor),
+                  style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
                   decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Company",
                     labelStyle: Theme.of(context).textTheme.headline6?.apply(
                           color: const Color.fromRGBO(135, 139, 149, 1),
@@ -766,13 +742,9 @@ class _AddContactState extends State<AddContact> {
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: TextFormField(
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.apply(color: AppColor.secondaryColor),
+                  style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
                   decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Website",
                     labelStyle: Theme.of(context).textTheme.headline6?.apply(
                           color: const Color.fromRGBO(135, 139, 149, 1),
@@ -808,13 +780,9 @@ class _AddContactState extends State<AddContact> {
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: TextFormField(
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.apply(color: AppColor.secondaryColor),
+                  style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
                   decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: 'Work Nature',
                     labelStyle: Theme.of(context).textTheme.headline6?.apply(
                           color: const Color.fromRGBO(135, 139, 149, 1),
@@ -842,8 +810,7 @@ class _AddContactState extends State<AddContact> {
               Row(
                 children: [
                   Visibility(
-                    visible:
-                        entreprenerurList[i].images!.asMap().containsKey(0),
+                    visible: entreprenerurList[i].images!.asMap().containsKey(0),
                     child: Flexible(
                       child: Stack(
                         children: [
@@ -854,44 +821,29 @@ class _AddContactState extends State<AddContact> {
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
                                 child: (entreprenerurList[i].images!.isNotEmpty
-                                        ? entreprenerurList[i]
-                                            .images![0]
-                                            .isUploaded!
+                                        ? entreprenerurList[i].images![0].isUploaded!
                                         : false)
                                     ? CachedNetworkImage(
-                                        imageUrl: entreprenerurList[i]
-                                                .images!
-                                                .isNotEmpty
-                                            ? AppConstant.imageBaseUrl +
-                                                entreprenerurList[i]
-                                                    .images![0]
-                                                    .imageUrl!
+                                        imageUrl: entreprenerurList[i].images!.isNotEmpty
+                                            ? AppConstant.imageBaseUrl + entreprenerurList[i].images![0].imageUrl!
                                             : "",
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
+                                        imageBuilder: (context, imageProvider) => Container(
                                           decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover),
+                                            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                           ),
                                         ),
-                                        placeholder: (context, url) =>
-                                            Image.asset(
+                                        placeholder: (context, url) => Image.asset(
                                           "assets/images/placeholderImage.jpg",
                                           fit: BoxFit.fill,
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset(
+                                        errorWidget: (context, url, error) => Image.asset(
                                           "assets/images/placeholderImage.jpg",
                                           fit: BoxFit.fill,
                                         ),
                                       )
                                     : (entreprenerurList[i].images!.isNotEmpty
                                         ? AssetThumb(
-                                            asset: entreprenerurList[i]
-                                                .images![0]
-                                                .imageAsset,
+                                            asset: entreprenerurList[i].images![0].imageAsset,
                                             width: 114,
                                             height: 102,
                                           )
@@ -905,8 +857,7 @@ class _AddContactState extends State<AddContact> {
                     ),
                   ),
                   Visibility(
-                    visible:
-                        entreprenerurList[i].images!.asMap().containsKey(1),
+                    visible: entreprenerurList[i].images!.asMap().containsKey(1),
                     child: Flexible(
                       child: Stack(
                         children: [
@@ -917,41 +868,25 @@ class _AddContactState extends State<AddContact> {
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
                                 child: (entreprenerurList[i].images!.length >= 2
-                                        ? entreprenerurList[i]
-                                            .images![1]
-                                            .isUploaded!
+                                        ? entreprenerurList[i].images![1].isUploaded!
                                         : false)
                                     ? CachedNetworkImage(
-                                        imageUrl: entreprenerurList[i]
-                                                    .images!
-                                                    .length >=
-                                                2
-                                            ? AppConstant.imageBaseUrl +
-                                                entreprenerurList[i]
-                                                    .images![1]
-                                                    .imageUrl!
+                                        imageUrl: entreprenerurList[i].images!.length >= 2
+                                            ? AppConstant.imageBaseUrl + entreprenerurList[i].images![1].imageUrl!
                                             : "",
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
+                                        imageBuilder: (context, imageProvider) => Container(
                                           decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover),
+                                            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                           ),
                                         ),
-                                        placeholder: (context, url) =>
-                                            Image.asset(
+                                        placeholder: (context, url) => Image.asset(
                                           "assets/images/placeholderImage.jpg",
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
+                                        errorWidget: (context, url, error) => const Icon(Icons.error),
                                       )
                                     : (entreprenerurList[i].images!.length >= 2
                                         ? AssetThumb(
-                                            asset: entreprenerurList[i]
-                                                .images![1]
-                                                .imageAsset,
+                                            asset: entreprenerurList[i].images![1].imageAsset,
                                             width: 114,
                                             height: 102,
                                           )
@@ -965,8 +900,7 @@ class _AddContactState extends State<AddContact> {
                     ),
                   ),
                   Visibility(
-                    visible:
-                        entreprenerurList[i].images!.asMap().containsKey(2),
+                    visible: entreprenerurList[i].images!.asMap().containsKey(2),
                     child: Flexible(
                       child: Stack(
                         children: [
@@ -977,38 +911,24 @@ class _AddContactState extends State<AddContact> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: (entreprenerurList[i].images!.length == 3
-                                      ? entreprenerurList[i]
-                                          .images![2]
-                                          .isUploaded!
+                                      ? entreprenerurList[i].images![2].isUploaded!
                                       : false)
                                   ? CachedNetworkImage(
-                                      imageUrl:
-                                          entreprenerurList[i].images!.length ==
-                                                  3
-                                              ? AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![2]
-                                                      .imageUrl!
-                                              : "",
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
+                                      imageUrl: entreprenerurList[i].images!.length == 3
+                                          ? AppConstant.imageBaseUrl + entreprenerurList[i].images![2].imageUrl!
+                                          : "",
+                                      imageBuilder: (context, imageProvider) => Container(
                                         decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.cover),
+                                          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                         ),
                                       ),
-                                      placeholder: (context, url) =>
-                                          Image.asset(
+                                      placeholder: (context, url) => Image.asset(
                                         "assets/images/placeholderImage.jpg",
                                       ),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
                                     )
                                   : AssetThumb(
-                                      asset: (entreprenerurList[i]
-                                          .images![2]
-                                          .imageAsset),
+                                      asset: (entreprenerurList[i].images![2].imageAsset),
                                       width: 114,
                                       height: 102,
                                     ),
@@ -1141,8 +1061,7 @@ class _AddContactState extends State<AddContact> {
                       physics: const NeverScrollableScrollPhysics(),
                       addAutomaticKeepAlives: true,
                       itemCount: entreprenerurList.length,
-                      itemBuilder: (BuildContext ctxt, int i) =>
-                          entreprenerurItemNew(i),
+                      itemBuilder: (BuildContext ctxt, int i) => entreprenerurItemNew(i),
                     ),
                   ),
                 ),
@@ -1196,9 +1115,7 @@ class _AddContactState extends State<AddContact> {
                     borderRadius: BorderRadius.circular(100.0),
                     child: FadeInImage.assetNetwork(
                       placeholder: "assets/images/profile.png",
-                      image: userImage != null
-                          ? AppConstant.profileImageBaseUrl + userImage
-                          : "",
+                      image: userImage != null ? AppConstant.profileImageBaseUrl + userImage : "",
                       fit: BoxFit.cover,
                       imageErrorBuilder: (context, error, stackTrace) {
                         return Image.asset(
@@ -1253,10 +1170,7 @@ class _AddContactState extends State<AddContact> {
               ),
               Text(
                 "Back",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.whiteColor),
               )
             ],
           ),
@@ -1264,10 +1178,7 @@ class _AddContactState extends State<AddContact> {
         centerTitle: true,
         title: Text(
           "Add Contact",
-          style: Theme.of(context)
-              .textTheme
-              .headline4
-              ?.apply(color: AppColor.whiteColor),
+          style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.whiteColor),
         ),
       ),
       body: LoadingOverlay(
@@ -1279,8 +1190,7 @@ class _AddContactState extends State<AddContact> {
         child: SizedBox(
           height: double.infinity,
           child: SingleChildScrollView(
-            child:
-                _checkContactScreen ? checkContactScreen() : stackContainer(),
+            child: _checkContactScreen ? checkContactScreen() : stackContainer(),
           ),
         ),
       ),
@@ -1314,9 +1224,8 @@ class _AddContactState extends State<AddContact> {
           _personalEmail.text = contactDetail.personal?.email ?? "";
           _personalDob.text = contactDetail.personal?.dOB ?? "";
           _personalAddress.text = contactDetail.personal?.address1 ?? "";
-          _personalLandline.text = (contactDetail.personal?.landline == null
-              ? ''
-              : contactDetail.personal?.landline.toString())!;
+          _personalLandline.text =
+              (contactDetail.personal?.landline == null ? '' : contactDetail.personal?.landline.toString())!;
 
           _personalCity.text = contactDetail.personal?.city ?? "";
           _personalState.text = contactDetail.personal?.state ?? "";
@@ -1326,18 +1235,12 @@ class _AddContactState extends State<AddContact> {
 
           if (contactDetail.professional != null) {
             _occupationValue = contactDetail.professional?.occupation ?? "";
-            _professionalOccupation.text =
-                contactDetail.professional?.occupation ?? "";
-            _professionalCompany.text =
-                contactDetail.professional?.company ?? "";
-            _professionalCompanyWebsite.text =
-                contactDetail.professional?.companyWebsite ?? "";
-            _professionalSchool.text =
-                contactDetail.professional?.schoolUniversity ?? "";
-            _professionalWorkNature.text =
-                contactDetail.professional?.workNature ?? "";
-            _professionalDesignation.text =
-                contactDetail.professional?.designation ?? "";
+            _professionalOccupation.text = contactDetail.professional?.occupation ?? "";
+            _professionalCompany.text = contactDetail.professional?.company ?? "";
+            _professionalCompanyWebsite.text = contactDetail.professional?.companyWebsite ?? "";
+            _professionalSchool.text = contactDetail.professional?.schoolUniversity ?? "";
+            _professionalWorkNature.text = contactDetail.professional?.workNature ?? "";
+            _professionalDesignation.text = contactDetail.professional?.designation ?? "";
             _professionalGrade.text = contactDetail.professional?.grade ?? "";
 
             entreprenerurListJson = contactDetail.professionalList;
@@ -1486,10 +1389,7 @@ class _AddContactState extends State<AddContact> {
                   hintText: "Company",
                   filled: true,
                   fillColor: const Color(0xFFF6F6F6),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.apply(color: const Color(0xFF878B95)),
+                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: const Color(0xFF878B95)),
                 ),
                 cursorColor: AppColor.primaryColor,
                 keyboardType: TextInputType.text,
@@ -1511,10 +1411,7 @@ class _AddContactState extends State<AddContact> {
                   hintText: "Website",
                   filled: true,
                   fillColor: const Color(0xFFF6F6F6),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.apply(color: const Color(0xFF878B95)),
+                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: const Color(0xFF878B95)),
                 ),
                 cursorColor: AppColor.primaryColor,
                 keyboardType: TextInputType.text,
@@ -1536,10 +1433,7 @@ class _AddContactState extends State<AddContact> {
                   hintText: 'Work Nature',
                   filled: true,
                   fillColor: const Color(0xFFF6F6F6),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.apply(color: const Color(0xFF878B95)),
+                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: const Color(0xFF878B95)),
                 ),
                 cursorColor: AppColor.primaryColor,
                 keyboardType: TextInputType.text,
@@ -1569,8 +1463,7 @@ class _AddContactState extends State<AddContact> {
         return Theme(
           data: ThemeData.light().copyWith(
               primaryColor: AppColor.primaryColor,
-              colorScheme: ColorScheme.fromSwatch()
-                  .copyWith(secondary: AppColor.primaryColor)),
+              colorScheme: ColorScheme.fromSwatch().copyWith(secondary: AppColor.primaryColor)),
           child: child!,
         );
       },
@@ -1622,9 +1515,7 @@ class _AddContactState extends State<AddContact> {
       "per_email": _personalEmail.text,
       "per_dob": _personalDob.text,
       "per_add": _personalAddress.text,
-      "per_lan": _personalLandline.text == ''
-          ? null
-          : int.parse(_personalLandline.text),
+      "per_lan": _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
       "pro_occ": _professionalOccupation.text,
       "pro_ind": _professionalIndustry.text,
       "pro_com": _professionalCompany.text,

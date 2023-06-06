@@ -46,7 +46,10 @@ class _ChangePasswordState extends State<ChangePassword> {
         controller: _oldPasswordController,
         textInputType: TextInputType.visiblePassword,
         actionKeyboard: TextInputAction.next,
-        onSubmitField: () {},
+
+        onSubmitField: () {
+          return null;
+        },
         parametersValidate: "Please enter Old Password.",
         // functionValidate: commonValidation(_oldPasswordController.text, ""),
       );
@@ -60,7 +63,9 @@ class _ChangePasswordState extends State<ChangePassword> {
         controller: _newPasswordController,
         textInputType: TextInputType.visiblePassword,
         actionKeyboard: TextInputAction.next,
-        onSubmitField: () {},
+        onSubmitField: () {
+          return null;
+        },
         parametersValidate: "Please enter New Password.",
       );
     }
@@ -73,7 +78,9 @@ class _ChangePasswordState extends State<ChangePassword> {
         controller: _confirmPasswordController,
         textInputType: TextInputType.visiblePassword,
         actionKeyboard: TextInputAction.next,
-        onSubmitField: () {},
+        onSubmitField: () {
+          return null;
+        },
         parametersValidate: "Please enter Confirm Password.",
       );
     }
@@ -98,10 +105,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 ),
                 Text(
                   "Back",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2!
-                      .apply(color: AppColor.whiteColor),
+                  style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.whiteColor),
                 )
               ],
             ),
@@ -109,10 +113,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           centerTitle: true,
           title: Text(
             "Change Password",
-            style: Theme.of(context)
-                .textTheme
-                .headline4!
-                .apply(color: AppColor.whiteColor),
+            style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.whiteColor),
           ),
         ),
         body: LoadingOverlay(

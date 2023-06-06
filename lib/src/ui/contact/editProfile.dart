@@ -13,6 +13,7 @@ import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -152,10 +153,8 @@ class _EditProfileState extends State<EditProfile> {
           Expanded(
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    professionalTab
-                        ? AppColor.accentColor
-                        : AppColor.whiteColor),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(professionalTab ? AppColor.accentColor : AppColor.whiteColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     side: const BorderSide(
@@ -173,10 +172,10 @@ class _EditProfileState extends State<EditProfile> {
               },
               child: Text(
                 'Personal',
-                style: Theme.of(context).textTheme.headline5?.apply(
-                    color: professionalTab
-                        ? AppColor.whiteColor
-                        : AppColor.accentColor),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    ?.apply(color: professionalTab ? AppColor.whiteColor : AppColor.accentColor),
               ),
             ),
           ),
@@ -184,10 +183,8 @@ class _EditProfileState extends State<EditProfile> {
           Expanded(
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    professionalTab
-                        ? AppColor.whiteColor
-                        : AppColor.secondaryColor),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(professionalTab ? AppColor.whiteColor : AppColor.secondaryColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     side: const BorderSide(
@@ -208,10 +205,10 @@ class _EditProfileState extends State<EditProfile> {
               },
               child: Text(
                 'Professional',
-                style: Theme.of(context).textTheme.headline5?.apply(
-                    color: professionalTab
-                        ? AppColor.secondaryColor
-                        : AppColor.whiteColor),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    ?.apply(color: professionalTab ? AppColor.secondaryColor : AppColor.whiteColor),
               ),
             ),
           ),
@@ -287,10 +284,7 @@ class _EditProfileState extends State<EditProfile> {
           borderRadius: BorderRadius.circular(7),
         ),
         child: TextFormField(
-          style: Theme.of(context)
-              .textTheme
-              .bodyText2
-              ?.apply(color: AppColor.secondaryColor),
+          style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
           readOnly: true,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
@@ -335,18 +329,12 @@ class _EditProfileState extends State<EditProfile> {
           borderRadius: BorderRadius.circular(7),
         ),
         child: TextFormField(
-          style: Theme.of(context)
-              .textTheme
-              .bodyText2
-              ?.apply(color: AppColor.secondaryColor),
+          style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
           readOnly: true,
           decoration: InputDecoration(
             labelText: "Address",
             contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
-            labelStyle: Theme.of(context)
-                .textTheme
-                .headline6
-                ?.apply(color: const Color.fromRGBO(135, 139, 149, 1)),
+            labelStyle: Theme.of(context).textTheme.headline6?.apply(color: const Color.fromRGBO(135, 139, 149, 1)),
             filled: true,
             fillColor: AppColor.whiteColor,
             errorBorder: const OutlineInputBorder(
@@ -433,64 +421,63 @@ class _EditProfileState extends State<EditProfile> {
       );
     }
 
-    Widget _buildKeyword() {
-      return Container(
-        margin: const EdgeInsets.only(left: 22.0, right: 22.0),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: const Color.fromRGBO(232, 232, 232, 1),
-          ),
-          borderRadius: BorderRadius.circular(7),
-        ),
-        child: TextFormField(
-          style: Theme.of(context)
-              .textTheme
-              .bodyText2
-              ?.apply(color: AppColor.secondaryColor),
-          decoration: InputDecoration(
-            labelText: "Keyword",
-            filled: true,
-            fillColor: AppColor.whiteColor,
-            focusedBorder: InputBorder.none,
-            hintStyle: Theme.of(context).textTheme.bodyText2?.apply(
-                  color: const Color(0xFF878B95),
-                ),
-            labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                  color: const Color.fromRGBO(135, 139, 149, 1),
-                ),
-          ),
-          cursorColor: AppColor.secondaryColor,
-          validator: (value) {
-            return null;
-          },
-          controller: _personalKeyword,
-          keyboardType: TextInputType.multiline,
-          minLines: 2,
-          maxLines: 5,
-        ),
-      );
-    }
+    // Widget _buildKeyword() {
+    //   return Container(
+    //     margin: const EdgeInsets.only(left: 22.0, right: 22.0),
+    //     decoration: BoxDecoration(
+    //       border: Border.all(
+    //         color: const Color.fromRGBO(232, 232, 232, 1),
+    //       ),
+    //       borderRadius: BorderRadius.circular(7),
+    //     ),
+    //     child: TextFormField(
+    //       style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+    //       inputFormatters: [
+    //         FilteringTextInputFormatter.deny(RegExp(r'\s')),
+    //       ],
+    //       decoration: InputDecoration(
+    //         labelText: "rds",
+    //         filled: true,
+    //         fillColor: AppColor.whiteColor,
+    //         focusedBorder: InputBorder.none,
+    //         hintStyle: Theme.of(context).textTheme.bodyText2?.apply(
+    //               color: const Color(0xFF878B95),
+    //             ),
+    //         labelStyle: Theme.of(context).textTheme.headline6?.apply(
+    //               color: const Color.fromRGBO(135, 139, 149, 1),
+    //             ),
+    //       ),
+    //       cursorColor: AppColor.secondaryColor,
+    //       validator: (value) {
+    //         return null;
+    //       },
+    //       controller: _personalKeyword,
+    //       keyboardType: TextInputType.multiline,
+    //       minLines: 2,
+    //       maxLines: 5,
+    //     ),
+    //   );
+    // }
 
-    Widget _buildLandLine() {
-      return TextFormFieldContact(
-        hintText: "Landline Number",
-        padding: 14.0,
-        margin: 22.0,
-        textInputType: TextInputType.number,
-        actionKeyboard: TextInputAction.next,
-        onSubmitField: () {},
-        controller: _personalLandline,
-        parametersValidate: "Please enter Landline Number.",
-      );
-    }
+    // Widget _buildLandLine() {
+    //   return TextFormFieldContact(
+    //     hintText: "Landline Number",
+    //     padding: 14.0,
+    //     margin: 22.0,
+    //     textInputType: TextInputType.number,
+    //     actionKeyboard: TextInputAction.next,
+    //     onSubmitField: () {},
+    //     controller: _personalLandline,
+    //     parametersValidate: "Please enter Landline Number.",
+    //   );
+    // }
 
     Widget _buildPersonalUpdateButton() {
       return Container(
         margin: const EdgeInsets.only(left: 22, right: 22),
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+            backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
             ),
@@ -511,10 +498,7 @@ class _EditProfileState extends State<EditProfile> {
             child: Text(
               "Next",
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .button
-                  ?.apply(color: AppColor.whiteColor),
+              style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
             ),
           ),
         ),
@@ -527,8 +511,7 @@ class _EditProfileState extends State<EditProfile> {
         margin: const EdgeInsets.only(left: 22, right: 22),
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+            backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
             ),
@@ -545,10 +528,7 @@ class _EditProfileState extends State<EditProfile> {
             child: Text(
               "Update",
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .button
-                  ?.apply(color: AppColor.whiteColor),
+              style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
             ),
           ),
         ),
@@ -838,7 +818,7 @@ class _EditProfileState extends State<EditProfile> {
                 const SizedBox(height: 16),
                 _buildPincode(),
                 const SizedBox(height: 16),
-                _buildLandLine(),
+                //  _buildLandLine(),
                 const SizedBox(height: 30),
                 _buildPersonalUpdateButton(),
                 const SizedBox(height: 30),
@@ -909,8 +889,7 @@ class _EditProfileState extends State<EditProfile> {
                 Container(
                   height: 48,
                   padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-                  margin:
-                      const EdgeInsets.only(top: 20, left: 22.0, right: 22.0),
+                  margin: const EdgeInsets.only(top: 20, left: 22.0, right: 22.0),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: const Color.fromRGBO(232, 232, 232, 1),
@@ -918,15 +897,14 @@ class _EditProfileState extends State<EditProfile> {
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: TextFormField(
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        ?.apply(color: AppColor.secondaryColor),
+                    style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
                     controller: _textEditingController,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                    ],
                     decoration: InputDecoration(
-                      contentPadding:
-                          const EdgeInsets.only(top: 6.0, bottom: 3.0),
-                      labelText: "Keyword",
+                      contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                      labelText: "Keywords",
                       labelStyle: Theme.of(context).textTheme.headline6?.apply(
                             color: const Color.fromRGBO(135, 139, 149, 1),
                           ),
@@ -953,8 +931,7 @@ class _EditProfileState extends State<EditProfile> {
                               _selected = _selected;
                             });
                           } else {
-                            Utils.displayToast(
-                                "You are limited to 10 keywords");
+                            Utils.displayToast("You are limited to 10 keywords");
                           }
                         },
                       ),
@@ -977,10 +954,7 @@ class _EditProfileState extends State<EditProfile> {
                       children: [
                         Text(
                           "Add Company Details",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2
-                              ?.apply(color: AppColor.blackColor),
+                          style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.blackColor),
                         ),
                         Container(
                           width: 32,
@@ -1017,8 +991,7 @@ class _EditProfileState extends State<EditProfile> {
                       addAutomaticKeepAlives: true,
                       itemCount: entreprenerurList.length,
                       // itemCount: 1,
-                      itemBuilder: (BuildContext ctxt, int i) =>
-                          entreprenerurItemNew(i),
+                      itemBuilder: (BuildContext ctxt, int i) => entreprenerurItemNew(i),
                     ),
                   ),
                 ),
@@ -1067,9 +1040,7 @@ class _EditProfileState extends State<EditProfile> {
                       borderRadius: BorderRadius.circular(100.0),
                       child: FadeInImage.assetNetwork(
                         placeholder: "assets/images/profile.png",
-                        image: userImage != null
-                            ? AppConstant.profileImageBaseUrl + userImage
-                            : "",
+                        image: userImage != null ? AppConstant.profileImageBaseUrl + userImage : "",
                         fit: BoxFit.cover,
                         imageErrorBuilder: (context, error, stackTrace) {
                           return Image.asset(
@@ -1123,10 +1094,7 @@ class _EditProfileState extends State<EditProfile> {
               ),
               Text(
                 "Back",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.whiteColor),
               )
             ],
           ),
@@ -1134,25 +1102,20 @@ class _EditProfileState extends State<EditProfile> {
         centerTitle: true,
         title: Text(
           "Edit Profile",
-          style: Theme.of(context)
-              .textTheme
-              .headline4
-              ?.apply(color: AppColor.whiteColor),
+          style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.whiteColor),
         ),
       ),
       body: _loader
           ? const Center(
               child: CircularProgressIndicator(
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
+                valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
             )
           : LoadingOverlay(
               isLoading: _loaderoverflow,
               opacity: 0.3,
               progressIndicator: const CircularProgressIndicator(
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
+                valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
               child: SizedBox(
                 height: double.infinity,
@@ -1199,24 +1162,17 @@ class _EditProfileState extends State<EditProfile> {
         _values = contactDetail?.personal?.keyword!.split(',');
         // _selected = contactDetail?.personal?.keyword.split(',') ?? "";
 
-        _personalLandline.text = contactDetail?.personal?.landline == null
-            ? ''
-            : contactDetail?.personal?.landline.toString() ?? "";
+        _personalLandline.text =
+            contactDetail?.personal?.landline == null ? '' : contactDetail?.personal?.landline.toString() ?? "";
 
         if (contactDetail?.professional != null) {
           _occupationValue = contactDetail?.professional?.occupation ?? "";
-          _professionalOccupation.text =
-              contactDetail?.professional?.occupation ?? "";
-          _professionalCompany.text =
-              contactDetail?.professional?.company ?? "";
-          _professionalCompanyWebsite.text =
-              contactDetail?.professional?.companyWebsite ?? "";
-          _professionalSchool.text =
-              contactDetail?.professional?.schoolUniversity ?? "";
-          _professionalWorkNature.text =
-              contactDetail?.professional?.workNature ?? "";
-          _professionalDesignation.text =
-              contactDetail?.professional?.designation ?? "";
+          _professionalOccupation.text = contactDetail?.professional?.occupation ?? "";
+          _professionalCompany.text = contactDetail?.professional?.company ?? "";
+          _professionalCompanyWebsite.text = contactDetail?.professional?.companyWebsite ?? "";
+          _professionalSchool.text = contactDetail?.professional?.schoolUniversity ?? "";
+          _professionalWorkNature.text = contactDetail?.professional?.workNature ?? "";
+          _professionalDesignation.text = contactDetail?.professional?.designation ?? "";
           _professionalGrade.text = contactDetail?.professional?.grade ?? "";
 
           entreprenerurListJson = contactDetail?.professionalList;
@@ -1279,8 +1235,7 @@ class _EditProfileState extends State<EditProfile> {
   entreprenerurItemNew(int i) {
     return Padding(
       // padding: EdgeInsets.all(16),
-      padding:
-          const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
+      padding: const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
       child: Material(
         color: AppColor.whiteColor,
         clipBehavior: Clip.antiAlias,
@@ -1293,10 +1248,7 @@ class _EditProfileState extends State<EditProfile> {
               children: [
                 Text(
                   "Company Profile ${i + 1}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      ?.apply(color: AppColor.bottomUnselectItemColor),
+                  style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.bottomUnselectItemColor),
                 ),
                 Container(
                   width: 32,
@@ -1334,10 +1286,7 @@ class _EditProfileState extends State<EditProfile> {
                 borderRadius: BorderRadius.circular(7),
               ),
               child: TextFormField(
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.apply(color: AppColor.secondaryColor),
+                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: "Company",
@@ -1374,10 +1323,7 @@ class _EditProfileState extends State<EditProfile> {
                 borderRadius: BorderRadius.circular(7),
               ),
               child: TextFormField(
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.apply(color: AppColor.secondaryColor),
+                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: "Website",
@@ -1414,10 +1360,7 @@ class _EditProfileState extends State<EditProfile> {
                 borderRadius: BorderRadius.circular(7),
               ),
               child: TextFormField(
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.apply(color: AppColor.secondaryColor),
+                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: 'Work Nature',
@@ -1468,8 +1411,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: Container(
                       height: 88,
                       width: 100,
-                      margin:
-                          const EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                      margin: const EdgeInsets.only(top: 10, bottom: 10, right: 10),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: AppColor.secondaryColor,
@@ -1498,41 +1440,29 @@ class _EditProfileState extends State<EditProfile> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
                             child: (entreprenerurList[i].images!.isNotEmpty
-                                    ? entreprenerurList[i]
-                                        .images![0]
-                                        .isUploaded!
+                                    ? entreprenerurList[i].images![0].isUploaded!
                                     : false)
                                 ? CachedNetworkImage(
-                                    imageUrl:
-                                        entreprenerurList[i].images!.isNotEmpty
-                                            ? AppConstant.imageBaseUrl +
-                                                entreprenerurList[i]
-                                                    .images![0]
-                                                    .imageUrl!
-                                            : "",
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
+                                    imageUrl: entreprenerurList[i].images!.isNotEmpty
+                                        ? AppConstant.imageBaseUrl + entreprenerurList[i].images![0].imageUrl!
+                                        : "",
+                                    imageBuilder: (context, imageProvider) => Container(
                                       decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover),
+                                        image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                       ),
                                     ),
                                     placeholder: (context, url) => Image.asset(
                                       "assets/images/placeholderImage.jpg",
                                       fit: BoxFit.fill,
                                     ),
-                                    errorWidget: (context, url, error) =>
-                                        Image.asset(
+                                    errorWidget: (context, url, error) => Image.asset(
                                       "assets/images/placeholderImage.jpg",
                                       fit: BoxFit.fill,
                                     ),
                                   )
                                 : (entreprenerurList[i].images!.isNotEmpty
                                     ? AssetThumb(
-                                        asset: entreprenerurList[i]
-                                            .images![0]
-                                            .imageAsset,
+                                        asset: entreprenerurList[i].images![0].imageAsset,
                                         width: 114,
                                         height: 102,
                                       )
@@ -1572,39 +1502,25 @@ class _EditProfileState extends State<EditProfile> {
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: (entreprenerurList[i].images!.length >= 2
-                                      ? entreprenerurList[i]
-                                          .images![1]
-                                          .isUploaded!
+                                      ? entreprenerurList[i].images![1].isUploaded!
                                       : false)
                                   ? CachedNetworkImage(
-                                      imageUrl:
-                                          entreprenerurList[i].images!.length >=
-                                                  2
-                                              ? AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![1]
-                                                      .imageUrl!
-                                              : "",
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
+                                      imageUrl: entreprenerurList[i].images!.length >= 2
+                                          ? AppConstant.imageBaseUrl + entreprenerurList[i].images![1].imageUrl!
+                                          : "",
+                                      imageBuilder: (context, imageProvider) => Container(
                                         decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.cover),
+                                          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                         ),
                                       ),
-                                      placeholder: (context, url) =>
-                                          Image.asset(
+                                      placeholder: (context, url) => Image.asset(
                                         "assets/images/placeholderImage.jpg",
                                       ),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
                                     )
                                   : (entreprenerurList[i].images!.length >= 2
                                       ? AssetThumb(
-                                          asset: entreprenerurList[i]
-                                              .images![1]
-                                              .imageAsset,
+                                          asset: entreprenerurList[i].images![1].imageAsset,
                                           width: 114,
                                           height: 102,
                                         )
@@ -1643,39 +1559,25 @@ class _EditProfileState extends State<EditProfile> {
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: (entreprenerurList[i].images!.length == 3
-                                      ? entreprenerurList[i]
-                                          .images![2]
-                                          .isUploaded!
+                                      ? entreprenerurList[i].images![2].isUploaded!
                                       : false)
                                   ? CachedNetworkImage(
-                                      imageUrl:
-                                          entreprenerurList[i].images!.length ==
-                                                  3
-                                              ? AppConstant.imageBaseUrl +
-                                                  entreprenerurList[i]
-                                                      .images![2]
-                                                      .imageUrl!
-                                              : "",
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
+                                      imageUrl: entreprenerurList[i].images!.length == 3
+                                          ? AppConstant.imageBaseUrl + entreprenerurList[i].images![2].imageUrl!
+                                          : "",
+                                      imageBuilder: (context, imageProvider) => Container(
                                         decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.cover),
+                                          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                         ),
                                       ),
-                                      placeholder: (context, url) =>
-                                          Image.asset(
+                                      placeholder: (context, url) => Image.asset(
                                         "assets/images/placeholderImage.jpg",
                                       ),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
                                     )
                                   : (entreprenerurList[i].images!.length == 3
                                       ? AssetThumb(
-                                          asset: entreprenerurList[i]
-                                              .images![2]
-                                              .imageAsset,
+                                          asset: entreprenerurList[i].images![2].imageAsset,
                                           width: 114,
                                           height: 102,
                                         )
@@ -1764,10 +1666,7 @@ class _EditProfileState extends State<EditProfile> {
                   hintText: "Website",
                   filled: true,
                   fillColor: const Color(0xFFF6F6F6),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.apply(color: const Color(0xFF878B95)),
+                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: const Color(0xFF878B95)),
                 ),
                 cursorColor: AppColor.secondaryColor,
                 keyboardType: TextInputType.text,
@@ -1789,10 +1688,7 @@ class _EditProfileState extends State<EditProfile> {
                   hintText: 'Work Nature',
                   filled: true,
                   fillColor: const Color(0xFFF6F6F6),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.apply(color: const Color(0xFF878B95)),
+                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: const Color(0xFF878B95)),
                 ),
                 cursorColor: AppColor.secondaryColor,
                 keyboardType: TextInputType.text,
@@ -1814,10 +1710,8 @@ class _EditProfileState extends State<EditProfile> {
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.black45),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.black45),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             side: const BorderSide(
                               color: AppColor.accentColor,
@@ -1898,8 +1792,7 @@ class _EditProfileState extends State<EditProfile> {
         return Theme(
           data: ThemeData.light().copyWith(
               primaryColor: AppColor.primaryColor,
-              colorScheme: ColorScheme.fromSwatch()
-                  .copyWith(secondary: AppColor.primaryColor)),
+              colorScheme: ColorScheme.fromSwatch().copyWith(secondary: AppColor.primaryColor)),
           child: child!,
         );
       },
@@ -1958,9 +1851,7 @@ class _EditProfileState extends State<EditProfile> {
       for (var element in val.images!) {
         ImageUploadRequest imageUpload = ImageUploadRequest();
         imageUpload.isUploaded = element.isUploaded;
-        imageUpload.base64data = element.base64data != null
-            ? "data:image/jpeg;base64,${element.base64data}"
-            : null;
+        imageUpload.base64data = element.base64data != null ? "data:image/jpeg;base64,${element.base64data}" : null;
         imageUpload.imageUrl = element.imageUrl;
         entreprenerurResquest.images!.add(imageUpload);
       }
@@ -1977,9 +1868,7 @@ class _EditProfileState extends State<EditProfile> {
       "per_state": _personalState.text,
       "per_country": _personalCountry.text,
       "per_pincode": _personalPincode.text,
-      "per_lan": _personalLandline.text == ''
-          ? null
-          : int.parse(_personalLandline.text),
+      "per_lan": _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
       "per_keyword": _values!.join(', '),
       "pro_occ": _professionalOccupation.text,
       "pro_ind": _professionalIndustry.text,
@@ -1995,8 +1884,7 @@ class _EditProfileState extends State<EditProfile> {
       "sk": _socialSkype.text,
       // "gp": _socialFacebook.text,
       // "pt": _socialFacebook.text,
-      "entreprenerur_list":
-          (entreprenerurListResquest.map((e) => e.toJson()).toList()),
+      "entreprenerur_list": (entreprenerurListResquest.map((e) => e.toJson()).toList()),
     };
 
     setState(() {
@@ -2127,8 +2015,7 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       _loaderoverflow = true;
     });
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
       setState(() {
         _currentPosition = position;
       });
@@ -2144,8 +2031,7 @@ class _EditProfileState extends State<EditProfile> {
 
   _getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await placemarkFromCoordinates(
-          _currentPosition!.latitude, _currentPosition!.longitude);
+      List<Placemark> p = await placemarkFromCoordinates(_currentPosition!.latitude, _currentPosition!.longitude);
       Placemark? place = p[0];
       setState(() {
         _personalAddress.text = "${place.street},${place.thoroughfare}";

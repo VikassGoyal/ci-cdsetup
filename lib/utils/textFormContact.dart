@@ -56,8 +56,7 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
       children: [
         Container(
           height: 48,
-          padding:
-              EdgeInsets.only(left: widget.padding!, right: widget.padding!),
+          padding: EdgeInsets.only(left: widget.padding!, right: widget.padding!),
           margin: EdgeInsets.only(
             left: widget.margin ?? 0,
             right: widget.margin ?? 0,
@@ -71,16 +70,17 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
           child: TextFormField(
             readOnly: widget.readonly!,
             validator: widget.validator,
-            style: Theme.of(context)
-                .textTheme
-                .bodyText2
-                ?.apply(color: AppColor.secondaryColor),
+            style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
             maxLength: widget.maxLength,
-            inputFormatters: widget.regexexp != null
-                ? [
-                    FilteringTextInputFormatter.allow(widget.regexexp!),
-                  ]
-                : null,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(widget.regexexp == null ? RegExp('.*') : widget.regexexp!),
+              FilteringTextInputFormatter.deny(RegExp(r'\s')),
+            ],
+            // inputFormatters: widget.regexexp != null
+            //     ? [
+            //         FilteringTextInputFormatter.allow(widget.regexexp!),
+            //       ]
+            //     : [FilteringTextInputFormatter.allow(RegExp(r'^[^\s]+$')!)],
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
               labelText: widget.hintText,
@@ -121,8 +121,7 @@ String? requiredValidator(value, messageError) {
   return null;
 }
 
-void changeFocus(
-    BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+void changeFocus(BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
   currentFocus.unfocus();
   FocusScope.of(context).requestFocus(nextFocus);
 }

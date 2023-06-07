@@ -237,11 +237,11 @@ class _SettingsState extends State<Settings> {
                         backgroundColor: Colors.white,
                         title: Text(
                           "Logout",
-                          style: Theme.of(context).textTheme.headline5,
+                          style: Theme.of(context).textTheme.headline4,
                         ),
                         content: Text(
-                          "Are you sure you want logout current user",
-                          style: Theme.of(context).textTheme.headline3,
+                          "Are you sure you want to logout ?",
+                          style: Theme.of(context).textTheme.headline5,
                         ),
                         actions: <Widget>[
                           TextButton(

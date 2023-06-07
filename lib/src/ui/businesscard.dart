@@ -59,8 +59,7 @@ class _BussinessCardState extends State<BussinessCard> {
     _renderContent(context) {
       return Card(
         elevation: 0.0,
-        margin: const EdgeInsets.only(
-            left: 16.0, right: 16.0, top: 20.0, bottom: 0.0),
+        margin: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0, bottom: 0.0),
         color: const Color(0x00000000),
         child: FlipCard(
           direction: FlipDirection.HORIZONTAL,
@@ -81,13 +80,9 @@ class _BussinessCardState extends State<BussinessCard> {
                   child: Container(
                     child: CachedNetworkImage(
                       width: MediaQuery.of(context).size.width / 2,
-                      imageUrl: imageName != ""
-                          ? AppConstant.businessimageBaseUrl + imageName
-                          : "",
-                      placeholder: (context, url) =>
-                          SvgPicture.asset("assets/logo.svg"),
-                      errorWidget: (context, url, error) =>
-                          SvgPicture.asset("assets/logo.svg"),
+                      imageUrl: imageName != "" ? AppConstant.businessimageBaseUrl + imageName : "",
+                      placeholder: (context, url) => SvgPicture.asset("assets/logo.svg"),
+                      errorWidget: (context, url, error) => SvgPicture.asset("assets/logo.svg"),
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -98,10 +93,7 @@ class _BussinessCardState extends State<BussinessCard> {
                     alignment: Alignment.centerRight,
                     child: Text(
                       'Click here to flip back',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          ?.apply(color: AppColor.whiteColor),
+                      style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
                     ),
                   ),
                 ),
@@ -121,13 +113,9 @@ class _BussinessCardState extends State<BussinessCard> {
                     flex: 1,
                     child: CachedNetworkImage(
                       width: MediaQuery.of(context).size.width / 2,
-                      imageUrl: imageName != ""
-                          ? AppConstant.businessimageBaseUrl + imageName
-                          : "",
-                      placeholder: (context, url) =>
-                          SvgPicture.asset("assets/logo.svg"),
-                      errorWidget: (context, url, error) =>
-                          SvgPicture.asset("assets/logo.svg"),
+                      imageUrl: imageName != "" ? AppConstant.businessimageBaseUrl + imageName : "",
+                      placeholder: (context, url) => SvgPicture.asset("assets/logo.svg"),
+                      errorWidget: (context, url, error) => SvgPicture.asset("assets/logo.svg"),
                       fit: BoxFit.contain,
                     )
                     // SvgPicture.asset("assets/logo.svg"),
@@ -137,8 +125,7 @@ class _BussinessCardState extends State<BussinessCard> {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
                   ),
-                  margin:
-                      const EdgeInsets.only(left: 15.0, top: 25.0, right: 15.0),
+                  margin: const EdgeInsets.only(left: 15.0, top: 25.0, right: 15.0),
                   padding: const EdgeInsets.all(10),
                   child: _showQr
                       ? const CircularProgressIndicator(
@@ -165,10 +152,7 @@ class _BussinessCardState extends State<BussinessCard> {
                 Text(
                   'Point your camera at the QR code, to fetch Business card details',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.apply(color: AppColor.whiteColor),
+                  style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
                 ),
                 Expanded(
                   flex: 1,
@@ -211,10 +195,7 @@ class _BussinessCardState extends State<BussinessCard> {
               ),
               Text(
                 "Back",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.apply(color: AppColor.blackColor),
+                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.blackColor),
               )
             ],
           ),
@@ -222,17 +203,13 @@ class _BussinessCardState extends State<BussinessCard> {
         centerTitle: true,
         title: Text(
           "Share Business Card",
-          style: Theme.of(context)
-              .textTheme
-              .headline4
-              ?.apply(color: AppColor.blackColor),
+          style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.blackColor),
         ),
         actions: [
           PopupMenuButton(
             color: const Color(0xFFF0F0F0),
             elevation: 10,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(7.0))),
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7.0))),
             child: const Padding(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: Icon(
@@ -276,20 +253,14 @@ class _BussinessCardState extends State<BussinessCard> {
                 value: 1,
                 child: Text(
                   "Upload Image",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.apply(color: AppColor.blackColor),
+                  style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
                 ),
               ),
               PopupMenuItem(
                 value: 2,
                 child: Text(
                   "Change color",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.apply(color: AppColor.blackColor),
+                  style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
                 ),
               )
             ],
@@ -344,15 +315,13 @@ class _BussinessCardState extends State<BussinessCard> {
       int? value = int.parse(valueString!, radix: 16);
       Color colorvalue = Color(value);
 
-      currentColor = preferences?.getString('businesscardcolor') == null
-          ? AppColor.primaryColor
-          : colorvalue;
+      currentColor = preferences?.getString('businesscardcolor') == null ? AppColor.primaryColor : colorvalue;
     } else {
       currentColor = AppColor.primaryColor;
     }
 
     setState(() {
-      _qrImage = "http://conet.shadesix.in/$qrimage";
+      _qrImage = "http://conet.shade6.in/$qrimage";
       _showQr = false;
     });
   }
@@ -367,8 +336,7 @@ class _BussinessCardState extends State<BussinessCard> {
       var requestBody = {
         "phone": preferences?.getString('phone'),
       };
-      var response =
-          await _contactPageRepository.getProfileDetails(requestBody);
+      var response = await _contactPageRepository.getProfileDetails(requestBody);
 
       setState(() {
         _loader = false;

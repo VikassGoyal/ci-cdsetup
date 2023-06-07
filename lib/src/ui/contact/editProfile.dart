@@ -664,6 +664,7 @@ class _EditProfileState extends State<EditProfile> {
         hintText: "School / University",
         padding: 14.0,
         margin: 22.0,
+        maxLength: 100,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},

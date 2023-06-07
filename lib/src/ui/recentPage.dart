@@ -31,15 +31,24 @@ class _RecentPageState extends State<RecentPage> {
   List<RecentCalls>? _callHistory = [];
   TextEditingController? _outputController;
   bool _loader = false;
-
+  bool _showCancelIcon = false;
+  // final TextEditingController _textEditingController = TextEditingController();
+TextEditingController? _textEditingController;
   @override
   void initState() {
     super.initState();
+    _textEditingController = TextEditingController();
     try {
       _callHistory = widget.callLogs;
     } catch (e) {
       print("RecentPageerror : $e");
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _textEditingController!.dispose();
   }
 
   @override
@@ -236,7 +245,14 @@ class _RecentPageState extends State<RecentPage> {
                   child: SizedBox(
                     height: 36,
                     child: TextField(
+                      
+                      controller: _textEditingController,
                       onChanged: (value) {
+                        setState(() {
+                          value.length > 1
+                              ? _showCancelIcon = true
+                              : _showCancelIcon = false;
+                        });
                         filterSearchResults(value);
                       },
                       maxLines: 1,
@@ -259,12 +275,21 @@ class _RecentPageState extends State<RecentPage> {
                           borderSide: BorderSide.none,
                         ),
                         prefixIconConstraints: const BoxConstraints(maxHeight: 20),
-                        prefixIcon: const Padding(
-                          padding: EdgeInsets.only(left: 11, right: 11),
-                          child: Icon(
-                            Icons.search,
-                            color: AppColor.gray30Color,
-                            size: 18,
+                        prefixIcon: InkWell(
+                          onTap: 
+                          () {
+                              if (_showCancelIcon == true) {
+                                _clearText();
+                              }
+                            },
+                          child:  Padding(
+                            padding:  EdgeInsets.only(left: 11, right: 11),
+                            child: Icon(
+                              
+                                _showCancelIcon ? Icons.close : Icons.search,
+                              color: AppColor.gray30Color,
+                              size: 18,
+                            ),
                           ),
                         ),
                         suffixIcon: IconButton(
@@ -457,5 +482,13 @@ class _RecentPageState extends State<RecentPage> {
     var outputFormat = DateFormat('hh:mm a');
     var outputDate = outputFormat.format(date);
     return outputDate;
+  }
+  
+   void _clearText() {
+    _textEditingController!.clear();
+    FocusScope.of(context).requestFocus(FocusNode());
+    setState(() {
+      _showCancelIcon = false;
+    });
   }
 }

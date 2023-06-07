@@ -55,6 +55,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
+        centerTitle: false,
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
         title: SvgPicture.asset(

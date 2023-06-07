@@ -918,6 +918,16 @@ class _EditProfileState extends State<EditProfile> {
                           width: 34,
                         ),
                         onPressed: () {
+                            if (_textEditingController.text.isEmpty) {
+                            Utils.displayToastBottomError("Keyword cannot be empty");
+                            return;
+                          }
+
+                          if (_values.toString().toLowerCase().contains(_textEditingController.text.toLowerCase())) {
+                            Utils.displayToastBottomError("Keyword already added");
+                            _textEditingController.clear();
+                            return;
+                          }
                           if (_values!.length != 10) {
                             _values!.add(_textEditingController.text);
                             _selected.add(true);

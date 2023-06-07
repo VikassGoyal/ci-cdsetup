@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:flutter/services.dart';
 
+import '../../../networking/apiBaseHelper.dart';
 import '../utils.dart';
 
 class Login extends StatefulWidget {
@@ -144,7 +145,8 @@ class _LoginState extends State<Login> {
                 Utils.displayToast(response["message"]);
               }
             } catch (e) {
-              Utils.displayToastBottomError("Something went wrong!");
+              bool hasInternet = await checkInternetConnection();
+            Utils.displayToastBottomError(hasInternet ? "Something went wrong" : "Please check your internet connection");
               print(e);
             }
           }

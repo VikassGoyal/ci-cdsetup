@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutter/services.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conet/blocs/contactBloc.dart';
@@ -667,6 +668,7 @@ class _EditProfileState extends State<EditProfile> {
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
         controller: _professionalSchool,
+        regexexp: RegExp(r'^[a-zA-Z0-9\s.,]+$'),
         parametersValidate: "Please enter School / University.",
       );
     }

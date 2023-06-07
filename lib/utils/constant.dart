@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppConstant {
-  static String url = 'http://conet.shade6in/';
+  static String url = 'http://conet.shade6.in/';
   // static String url = 'http://192.168.1.2/conet/public/';
 
   static String baseUrl = '$url/api/';

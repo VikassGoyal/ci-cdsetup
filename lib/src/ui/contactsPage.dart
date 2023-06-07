@@ -41,7 +41,7 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-  TextEditingController _textEditingController = TextEditingController();
+  TextEditingController? _textEditingController;
   List<AllContacts> _loadedcontacts = [];
   List<RecentCalls> recentCalls = [];
   List<AllContacts> _contacts = [];
@@ -65,7 +65,7 @@ class _ContactsPageState extends State<ContactsPage> {
     super.initState();
     contactPageRepository = ContactPageRepository();
     var responseData = widget.contactsData ?? _blanklistcontacts;
-
+ _textEditingController = TextEditingController();
     _contacts = [];
     recentCalls = [];
     _loadedcontacts = [];
@@ -113,7 +113,7 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   void _clearText() {
-    _textEditingController.clear();
+    _textEditingController!.clear();
     FocusScope.of(context).requestFocus(FocusNode());
     setState(() {
       _showCancelIcon = false;
@@ -123,7 +123,7 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   void dispose() {
     super.dispose();
-    _textEditingController.dispose();
+    _textEditingController!.dispose();
   }
 
   @override

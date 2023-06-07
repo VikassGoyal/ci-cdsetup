@@ -12,22 +12,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiBaseHelper {
   String _baseUrl = AppConstant.baseUrl;
   final String baseUrl = AppConstant.baseUrl;
-  String? serverHost = 'http://conet.shadesix.in/';
+  String? serverHost = 'http://conet.shade6.in/';
 
   Future postWithoutToken(String url, Map<String, dynamic> body) async {
     print('Api Post, urll $url');
     Map<String, dynamic> responseJson;
     try {
       var uri = Uri.http('conet.shade6.in', "api/$url");
-      final response = await http.post(
-        uri,
-        body: jsonEncode(body),
-      );
-      print(response.body);
-      responseJson = await _returnResponse(response);
-      print("responseJson");
-
-      return responseJson;
+      final response = await http.post(uri, body: body);
+      responseJson = _returnResponse(response);
     } catch (error) {
       print('api ptost.');
       print('FetchDataException : $error');
@@ -71,12 +64,10 @@ class ApiBaseHelper {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       };
-      print("rtrr");
-      var uri = Uri.http('conet.shade.in', "api/$url");
+
+      var uri = Uri.http('conet.shade6.in', "api/$url");
       final response = await http.post(uri, body: jsonEncode(body), headers: headers);
-      print("rtrr");
-      print(response.statusCode);
-      print(response.body);
+      print(response);
 
       responseJson = _returnResponse(response);
     } on SocketException {

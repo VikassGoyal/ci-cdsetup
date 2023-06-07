@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutter/services.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conet/blocs/contactBloc.dart';
@@ -249,7 +250,8 @@ class _EditProfileState extends State<EditProfile> {
         hintText: "Secondary Phone Number",
         padding: 14.0,
         margin: 22.0,
-        enable: false,
+        enable: true,
+        readonly: true,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
@@ -421,56 +423,53 @@ class _EditProfileState extends State<EditProfile> {
       );
     }
 
-    // Widget _buildKeyword() {
-    //   return Container(
-    //     margin: const EdgeInsets.only(left: 22.0, right: 22.0),
-    //     decoration: BoxDecoration(
-    //       border: Border.all(
-    //         color: const Color.fromRGBO(232, 232, 232, 1),
-    //       ),
-    //       borderRadius: BorderRadius.circular(7),
-    //     ),
-    //     child: TextFormField(
-    //       style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
-    //       inputFormatters: [
-    //         FilteringTextInputFormatter.deny(RegExp(r'\s')),
-    //       ],
-    //       decoration: InputDecoration(
-    //         labelText: "rds",
-    //         filled: true,
-    //         fillColor: AppColor.whiteColor,
-    //         focusedBorder: InputBorder.none,
-    //         hintStyle: Theme.of(context).textTheme.bodyText2?.apply(
-    //               color: const Color(0xFF878B95),
-    //             ),
-    //         labelStyle: Theme.of(context).textTheme.headline6?.apply(
-    //               color: const Color.fromRGBO(135, 139, 149, 1),
-    //             ),
-    //       ),
-    //       cursorColor: AppColor.secondaryColor,
-    //       validator: (value) {
-    //         return null;
-    //       },
-    //       controller: _personalKeyword,
-    //       keyboardType: TextInputType.multiline,
-    //       minLines: 2,
-    //       maxLines: 5,
-    //     ),
-    //   );
-    // }
+    Widget _buildKeyword() {
+      return Container(
+        margin: const EdgeInsets.only(left: 22.0, right: 22.0),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: const Color.fromRGBO(232, 232, 232, 1),
+          ),
+          borderRadius: BorderRadius.circular(7),
+        ),
+        child: TextFormField(
+          style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+          decoration: InputDecoration(
+            labelText: "Keyword",
+            filled: true,
+            fillColor: AppColor.whiteColor,
+            focusedBorder: InputBorder.none,
+            hintStyle: Theme.of(context).textTheme.bodyText2?.apply(
+                  color: const Color(0xFF878B95),
+                ),
+            labelStyle: Theme.of(context).textTheme.headline6?.apply(
+                  color: const Color.fromRGBO(135, 139, 149, 1),
+                ),
+          ),
+          cursorColor: AppColor.secondaryColor,
+          validator: (value) {
+            return null;
+          },
+          controller: _personalKeyword,
+          keyboardType: TextInputType.multiline,
+          minLines: 2,
+          maxLines: 5,
+        ),
+      );
+    }
 
-    // Widget _buildLandLine() {
-    //   return TextFormFieldContact(
-    //     hintText: "Landline Number",
-    //     padding: 14.0,
-    //     margin: 22.0,
-    //     textInputType: TextInputType.number,
-    //     actionKeyboard: TextInputAction.next,
-    //     onSubmitField: () {},
-    //     controller: _personalLandline,
-    //     parametersValidate: "Please enter Landline Number.",
-    //   );
-    // }
+    Widget _buildLandLine() {
+      return TextFormFieldContact(
+        hintText: "Landline Number",
+        padding: 14.0,
+        margin: 22.0,
+        textInputType: TextInputType.number,
+        actionKeyboard: TextInputAction.next,
+        onSubmitField: () {},
+        controller: _personalLandline,
+        parametersValidate: "Please enter Landline Number.",
+      );
+    }
 
     Widget _buildPersonalUpdateButton() {
       return Container(
@@ -666,10 +665,12 @@ class _EditProfileState extends State<EditProfile> {
         hintText: "School / University",
         padding: 14.0,
         margin: 22.0,
+        maxLength: 100,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
         controller: _professionalSchool,
+        regexexp: RegExp(r'^[a-zA-Z0-9\s.,]+$'),
         parametersValidate: "Please enter School / University.",
       );
     }
@@ -904,7 +905,7 @@ class _EditProfileState extends State<EditProfile> {
                     ],
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
-                      labelText: "Keywords",
+                      labelText: "Keyword",
                       labelStyle: Theme.of(context).textTheme.headline6?.apply(
                             color: const Color.fromRGBO(135, 139, 149, 1),
                           ),
@@ -921,6 +922,16 @@ class _EditProfileState extends State<EditProfile> {
                           width: 34,
                         ),
                         onPressed: () {
+                            if (_textEditingController.text.isEmpty) {
+                            Utils.displayToastBottomError("Keyword cannot be empty");
+                            return;
+                          }
+
+                          if (_values.toString().toLowerCase().contains(_textEditingController.text.toLowerCase())) {
+                            Utils.displayToastBottomError("Keyword already added");
+                            _textEditingController.clear();
+                            return;
+                          }
                           if (_values!.length != 10) {
                             _values!.add(_textEditingController.text);
                             _selected.add(true);

@@ -14,9 +14,11 @@ import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get_connect/connect.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
@@ -818,7 +820,7 @@ class _EditProfileState extends State<EditProfile> {
                 const SizedBox(height: 16),
                 _buildPincode(),
                 const SizedBox(height: 16),
-                _buildLandLine(),
+                //  _buildLandLine(),
                 const SizedBox(height: 30),
                 _buildPersonalUpdateButton(),
                 const SizedBox(height: 30),
@@ -899,6 +901,9 @@ class _EditProfileState extends State<EditProfile> {
                   child: TextFormField(
                     style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
                     controller: _textEditingController,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                    ],
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                       labelText: "Keyword",
@@ -918,7 +923,7 @@ class _EditProfileState extends State<EditProfile> {
                           width: 34,
                         ),
                         onPressed: () {
-                            if (_textEditingController.text.isEmpty) {
+                          if (_textEditingController.text.isEmpty) {
                             Utils.displayToastBottomError("Keyword cannot be empty");
                             return;
                           }
@@ -1150,6 +1155,7 @@ class _EditProfileState extends State<EditProfile> {
 
       if (response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);
+        print(contactDetail?.profileImage);
 
         //Personal
         _personalName.text = contactDetail?.name ?? "";
@@ -1985,13 +1991,11 @@ class _EditProfileState extends State<EditProfile> {
       var buffer = bytes.buffer;
       var base64data = base64.encode(Uint8List.view(buffer));
       i = i + 1;
-
-      setState(() {
-        if (i == 1) {
-          uploadedProfileImage = base64data;
-          uploadeProfileImage();
-        }
-      });
+      if (i == 1) {
+        uploadedProfileImage = base64data;
+        uploadeProfileImage();
+      }
+      setState(() {});
     }
     if (!mounted) return;
   }
@@ -2004,8 +2008,9 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       _loaderoverflow = true;
     });
+    print("aaaaaaaaaaaa");
     var response = await ContactBloc().updateProfileImage(jsonData);
-
+    print(response);
     setState(() {
       _loaderoverflow = false;
     });

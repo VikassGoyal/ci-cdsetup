@@ -18,8 +18,7 @@ class ContactBloc {
 
   contactRequestResponse(requestBody) async {
     try {
-      var response =
-          await contactPageRepository?.contactRequestResponse(requestBody);
+      var response = await contactPageRepository?.contactRequestResponse(requestBody);
       return response;
     } catch (e) {
       print(e);
@@ -28,8 +27,7 @@ class ContactBloc {
 
   checkContactForAddNew(requestBody) async {
     try {
-      var response =
-          await contactPageRepository?.checkContactForAddNew(requestBody);
+      var response = await contactPageRepository?.checkContactForAddNew(requestBody);
       return response;
     } catch (e) {
       print(e);
@@ -39,8 +37,7 @@ class ContactBloc {
   //GetProfileDetails
   getProfileDetails(requestBody) async {
     try {
-      var response =
-          await contactPageRepository?.getProfileDetails(requestBody);
+      var response = await contactPageRepository?.getProfileDetails(requestBody);
       return response;
     } catch (e) {
       print(e);
@@ -50,8 +47,7 @@ class ContactBloc {
   //UpdateProfile
   updateProfileDetails(requestBody) async {
     try {
-      var response =
-          await contactPageRepository?.updateProfileDetails(requestBody);
+      var response = await contactPageRepository?.updateProfileDetails(requestBody);
       return response;
     } catch (e) {
       print(e);
@@ -61,11 +57,10 @@ class ContactBloc {
   //UpdateProfileImage
   updateProfileImage(requestBody) async {
     try {
-      var response =
-          await contactPageRepository?.updateProfileImage(requestBody);
+      var response = await contactPageRepository?.updateProfileImage(requestBody);
       return response;
     } catch (e) {
-      print(e);
+      print(e.toString());
     }
   }
 
@@ -102,8 +97,7 @@ class ContactBloc {
   //SearchConetwebContact
   searchConetwebContact(requestBody) async {
     try {
-      var response =
-          await contactPageRepository?.searchConetwebContact(requestBody);
+      var response = await contactPageRepository?.searchConetwebContact(requestBody);
       return response;
     } catch (e) {
       print(e);

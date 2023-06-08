@@ -26,8 +26,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     Widget _buildEmail() {
       return Container(
         decoration: BoxDecoration(
-          border: Border.all(
-              color: _emailError ? AppColor.whiteColor : Colors.transparent),
+          border: Border.all(color: _emailError ? AppColor.whiteColor : Colors.transparent),
           borderRadius: BorderRadius.circular(7),
         ),
         height: 58,
@@ -47,8 +46,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 child: Center(
                   child: Text(
                     "Email",
-                    style: Theme.of(context).textTheme.headline5?.apply(
-                        color: const Color.fromRGBO(255, 255, 255, 0.75)),
+                    style:
+                        Theme.of(context).textTheme.headline5?.apply(color: const Color.fromRGBO(255, 255, 255, 0.75)),
                   ),
                 ),
               ),
@@ -57,10 +56,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               child: TextFormField(
                 focusNode: _emailControllerFocus,
                 controller: _emailController,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
@@ -83,10 +79,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       color: Colors.transparent,
                     ),
                   ),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      ?.apply(color: Colors.white54),
+                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
                 ),
                 cursorColor: AppColor.whiteColor,
                 enableSuggestions: false,
@@ -122,8 +115,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     Widget _buildResetPassword() {
       return ElevatedButton(
         style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+          backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
           ),
@@ -182,10 +174,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           child: Text(
             "Reset Password",
             textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .button
-                ?.apply(color: AppColor.whiteColor),
+            style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
           ),
         ),
       );
@@ -223,10 +212,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ),
                   Text(
                     "Back",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2!
-                        .apply(color: AppColor.whiteColor),
+                    style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.whiteColor),
                   )
                 ],
                 //   children: [
@@ -266,27 +252,18 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     const SizedBox(height: 10),
                     Text(
                       "Forgot",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline1
-                          ?.apply(color: AppColor.whiteColor),
+                      style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
                     ),
                     Text(
                       "Password?",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline1
-                          ?.apply(color: AppColor.whiteColor),
+                      style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
                     ),
                     const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.only(right: 60),
                       child: Text(
                         "Enter your email address below and we'll send you an email with instruction how to change your password.",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            ?.apply(color: AppColor.whiteColor),
+                        style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
                       ),
                     ),
                     const SizedBox(height: 30),

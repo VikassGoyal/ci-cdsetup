@@ -16,8 +16,7 @@ class VerifyMobileNumber extends StatefulWidget {
   final String? phone;
   final String? password;
 
-  const VerifyMobileNumber(
-      {this.username, this.email, this.phone, this.password});
+  const VerifyMobileNumber({this.username, this.email, this.phone, this.password});
 
   @override
   _VerifyMobileNumberState createState() => _VerifyMobileNumberState();
@@ -39,25 +38,23 @@ class VerifyMobileNumber extends StatefulWidget {
 
 class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
   final _otpVerifyFormKey = GlobalKey<FormState>();
-  int start= 60;
+  int start = 120;
 
   String? _verificationCode;
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   final FocusNode _pinPutFocusNode = FocusNode();
   final TextEditingController _pinPutController = TextEditingController();
   final BoxDecoration pinPutDecoration = BoxDecoration(
-   // color: Colors.white,
+    // color: Colors.white,
     //borderRadius: BorderRadius.circular(4.0),
     border: Border(
-
       bottom: BorderSide(width: 3.0, color: Colors.white),
     ),
   );
   final BoxDecoration selectdpinPutDecoration = BoxDecoration(
-   // color: Colors.white,
+    // color: Colors.white,
     //borderRadius: BorderRadius.circular(4.0),
     border: Border(
-
       bottom: BorderSide(width: 3.0, color: Colors.white),
     ),
   );
@@ -75,8 +72,8 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  String?  otpNumber= "1";
-  bool wait =false;
+  String? otpNumber = "1";
+  bool wait = false;
 
   @override
   void initState() {
@@ -87,114 +84,113 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
 
   @override
   Widget build(BuildContext context) {
-   // final args = ModalRoute.of(context)!.settings.arguments as PhoneScreenArguments;
+    // final args = ModalRoute.of(context)!.settings.arguments as PhoneScreenArguments;
 
     Widget _buildVerifyMobileNumberButton() {
-      return ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color>(AppColor.secondaryColor),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+      return Padding(
+        padding: const EdgeInsets.only(left: 22.0, right: 22),
+        child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+            ),
           ),
-        ),
-        onPressed: () async {
-          //print(otpNumber!.length);
-          if ( otpNumber!.length != 6) {
-           Utils.displayToastBottomError("Please Enter Valid  OTP");
-            return;
-          }
-          setState(() {
-            _loader = true;
-          });
-
-          try {
-            print("calling");
-            await FirebaseAuth.instance
-                .signInWithCredential(PhoneAuthProvider.credential(
-                    verificationId: _verificationCode!, smsCode: otpNumber!))
-                .then((value) async {
-              print(value.user!);
-              if (value.user != null) {
-               print("value");
-                signupFunction();
-                print("verifynow : Sign up successfully...!");
-              }
-            });
-          } catch (e) {
-            print(e);
-            Utils.displayToast("Invalid OTP");
+          onPressed: () async {
+            //print(otpNumber!.length);
+            if (otpNumber!.length != 6) {
+              Utils.displayToastBottomError("Please Enter Valid  OTP");
+              return;
+            }
             setState(() {
-              _loader = false;
+              _loader = true;
             });
-          }
 
-          // try {
-          //   PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          //       verificationId: widget.verificationId,
-          //       smsCode: SMSCodeController.text);
+            try {
+              print("calling");
+              await FirebaseAuth.instance
+                  .signInWithCredential(
+                      PhoneAuthProvider.credential(verificationId: _verificationCode!, smsCode: otpNumber!))
+                  .then((value) async {
+                print(value.user!);
+                if (value.user != null) {
+                  print("value");
+                  signupFunction();
+                  print("verifynow : Sign up successfully...!");
+                }
+              });
+            } catch (e) {
+              print(e);
+              Utils.displayToast("Invalid OTP");
+              setState(() {
+                _loader = false;
+              });
+            }
 
-          //   print("credential : $credential");
+            // try {
+            //   PhoneAuthCredential credential = PhoneAuthProvider.credential(
+            //       verificationId: widget.verificationId,
+            //       smsCode: SMSCodeController.text);
 
-          //   await auth.signInWithCredential(credential);
-          //   auth.signInWithCredential(credential).then((result) {
-          //     print("signInWithCredential success : $result");
-          //   }).catchError((e) {
-          //     print("signInWithCredential error : $e");
-          //     print(e);
-          //   });
-          // } catch (e) {
-          //   print("PhoneAuthCredential error : $e");
-          //   print(e);
-          // }
-          // var validate = _otpVerifyFormKey.currentState.validate();
-          // if (validate) {
-          //   Utils.hideKeyboard(context);
-          //   setState(() {
-          //     _loader = true;
-          //   });
-          //   var requestBody = {
-          //     "password": _code1Controller.text +
-          //         _code2Controller.text +
-          //         _code3Controller.text +
-          //         _code4Controller.text,
-          //     "email": widget.inputvalue
-          //   };
+            //   print("credential : $credential");
 
-          //   try {
-          //     var response = await UserBloc().otpVerification(requestBody);
-          //     setState(() {
-          //       _loader = false;
-          //     });
+            //   await auth.signInWithCredential(credential);
+            //   auth.signInWithCredential(credential).then((result) {
+            //     print("signInWithCredential success : $result");
+            //   }).catchError((e) {
+            //     print("signInWithCredential error : $e");
+            //     print(e);
+            //   });
+            // } catch (e) {
+            //   print("PhoneAuthCredential error : $e");
+            //   print(e);
+            // }
+            // var validate = _otpVerifyFormKey.currentState.validate();
+            // if (validate) {
+            //   Utils.hideKeyboard(context);
+            //   setState(() {
+            //     _loader = true;
+            //   });
+            //   var requestBody = {
+            //     "password": _code1Controller.text +
+            //         _code2Controller.text +
+            //         _code3Controller.text +
+            //         _code4Controller.text,
+            //     "email": widget.inputvalue
+            //   };
 
-          //     print("response - $response");
-          //     if (response['message'] == 'success') {
-          //       Navigator.pushReplacement(
-          //         context,
-          //         MaterialPageRoute(builder: (context) => HomeScreen()),
-          //       );
-          //     } else {
-          //       Utils.displayToast(response["message"]);
-          //     }
-          //   } catch (e) {
-          //     Utils.displayToast(
-          //         "Oops, something went wrong.Please try again later.");
-          //     print(e);
-          //   }
-          // }
-        },
-        child: Container(
-          constraints: const BoxConstraints(
-            minHeight: 50.0,
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            "Verify Now",
-            textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .button
-                ?.apply(color: AppColor.whiteColor),
+            //   try {
+            //     var response = await UserBloc().otpVerification(requestBody);
+            //     setState(() {
+            //       _loader = false;
+            //     });
+
+            //     print("response - $response");
+            //     if (response['message'] == 'success') {
+            //       Navigator.pushReplacement(
+            //         context,
+            //         MaterialPageRoute(builder: (context) => HomeScreen()),
+            //       );
+            //     } else {
+            //       Utils.displayToast(response["message"]);
+            //     }
+            //   } catch (e) {
+            //     Utils.displayToast(
+            //         "Oops, something went wrong.Please try again later.");
+            //     print(e);
+            //   }
+            // }
+          },
+          child: Container(
+            constraints: const BoxConstraints(
+              minHeight: 50.0,
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              "Verify Now",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
+            ),
           ),
         ),
       );
@@ -221,10 +217,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
             errorStyle: TextStyle(color: Colors.white),
           ),
           textInputAction: TextInputAction.next,
-          style: Theme.of(context)
-              .textTheme
-              .headline1
-              ?.apply(color: AppColor.whiteColor),
+          style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
           onChanged: (text) {
             print("onchange : $text");
             if (text != "") {
@@ -266,10 +259,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
             counterText: '',
           ),
           textInputAction: TextInputAction.next,
-          style: Theme.of(context)
-              .textTheme
-              .headline1
-              ?.apply(color: AppColor.whiteColor),
+          style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
           onChanged: (text) {
             print("onchange : $text");
             if (text != "") {
@@ -308,10 +298,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
             counterText: '',
           ),
           textInputAction: TextInputAction.next,
-          style: Theme.of(context)
-              .textTheme
-              .headline1
-              ?.apply(color: AppColor.whiteColor),
+          style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
           onChanged: (text) {
             print("onchange : $text");
             if (text != "") {
@@ -350,10 +337,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
             counterText: '',
           ),
           textInputAction: TextInputAction.done,
-          style: Theme.of(context)
-              .textTheme
-              .headline1
-              ?.apply(color: AppColor.whiteColor),
+          style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
           onChanged: (text) {
             print("onchange : $text");
             if (text != "") {
@@ -384,27 +368,27 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
       );
     }
 
+    String formatTime(int seconds) {
+      print(seconds);
+      String minutesStr = (seconds ~/ 60).toString().padLeft(2, '0');
+      String secondsStr = (seconds % 60).toString().padLeft(2, '0');
+      return '$minutesStr:$secondsStr';
+    }
+
     Widget _buildResend() {
       return InkWell(
         onTap: () {
-          if(wait){
+          if (wait) {
             _verifyPhone();
-            start=60;
+
+            start = 120;
             startTimer();
-
-
-          }
-        else{
-          }
-
+          } else {}
         },
         child: Center(
           child: Text(
-            "Re-Send code 00:$start",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18
-            ),
+            'Re-Send code ${formatTime(start)}',
+            style: TextStyle(color: Colors.white, fontSize: 18),
           ),
         ),
       );
@@ -416,10 +400,9 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
       textStyle: TextStyle(fontSize: 25.0, color: Colors.white),
       decoration: BoxDecoration(
         border: Border(
-
           bottom: BorderSide(width: 3.0, color: Colors.white),
         ),
-    ),
+      ),
     );
 
     return Scaffold(
@@ -430,146 +413,128 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           centerTitle: false,
           leadingWidth: 150,
           leading: InkWell(
-            onTap: (){
+            onTap: () {
               Navigator.pop(context);
             },
             child: Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left:10,right:3),
-                child: Icon(Icons.arrow_back,color:Colors.white),
-
-
+                  padding: EdgeInsets.only(left: 10, right: 3),
+                  child: Icon(Icons.arrow_back, color: Colors.white),
                 ),
-
                 Text(
                   'Back',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color:Colors.white
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
               ],
             ),
           ),
-
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(left:16.0, right: 22.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-             Container(
-               height: 83,
-               child: Column(
-                 crossAxisAlignment: CrossAxisAlignment.start,
-
-                 children: [
-                   Text(
-                     "Verify OTP Received",
-                     style: Theme.of(context)
-                         .textTheme
-                         .headline1
-                         ?.apply(color: AppColor.whiteColor),
-                   ),
-                   Text(
-                     "in Your Email",
-                     style: Theme.of(context)
-                         .textTheme
-                         .headline1
-                         ?.apply(color: AppColor.whiteColor),
-                   ),
-                 ],
-               ),
-             ),
-              const SizedBox(height: 16),
-              Text("We have sent code to " + widget.email! ,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    ?.apply(color: AppColor.whiteColor),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 22.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Verify OTP Received",
+                    style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
+                  ),
+                  Text(
+                    "in Your Email",
+                    style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "We have sent code to " + widget.email!,
+                    style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
+                  ),
+                  Text(
+                    "Enter the code below.",
+                    style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
+                  ),
+                  const SizedBox(height: 58),
+                ],
               ),
-              Text(
-                "Enter the code below.",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    ?.apply(color: AppColor.whiteColor),
-              ),
-              const SizedBox(height: 60),
-              Directionality(
-                // Specify direction if desired
-                textDirection: TextDirection.ltr,
-                child: Pinput(
-                  length: 6,
-                  focusNode: _pinPutFocusNode,
-                  controller: _pinPutController,
-                  pinAnimationType: PinAnimationType.fade,
-                  defaultPinTheme: defaultPinTheme,
-                  submittedPinTheme:
-                      defaultPinTheme.copyWith(decoration: pinPutDecoration),
-                  focusedPinTheme:
-                      defaultPinTheme.copyWith(decoration: selectdpinPutDecoration),
-                  onChanged: (pin){
-                    debugPrint('onCompleted: $pin');
-                    setState(() {
-                      otpNumber = pin;
-                    });
-                  },
-                  onCompleted: (pin) {
-                    debugPrint('onCompleted: $pin');
-                    setState(() {
-                      otpNumber = pin;
-                    });
-                    Utils.hideKeyboard(context);
-                    print(otpNumber!.length);
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 36.0, right: 34),
+                  child: Directionality(
+                    // Specify direction if desired
+                    textDirection: TextDirection.ltr,
+                    child: Pinput(
+                      length: 6,
+                      focusNode: _pinPutFocusNode,
+                      controller: _pinPutController,
+                      pinAnimationType: PinAnimationType.fade,
+                      defaultPinTheme: defaultPinTheme,
+                      submittedPinTheme: defaultPinTheme.copyWith(decoration: pinPutDecoration),
+                      focusedPinTheme: defaultPinTheme.copyWith(decoration: selectdpinPutDecoration),
+                      onChanged: (pin) {
+                        debugPrint('onCompleted: $pin');
+                        setState(() {
+                          otpNumber = pin;
+                        });
+                      },
+                      onCompleted: (pin) {
+                        debugPrint('onCompleted: $pin');
+                        setState(() {
+                          otpNumber = pin;
+                        });
+                        Utils.hideKeyboard(context);
+                        print(otpNumber!.length);
 
-                    try {
-                      _buildVerifyMobileNumberButton();
-                      print("pin : $pin");
-                    } catch (e) {
-                      FocusScope.of(context).unfocus();
-                      // _scaffoldkey.currentState.showSnackBar(
-                      //     SnackBar(content: Text('invalid OTP')));
-                    }
-                  },
-                  // fieldsCount: 6,
-                  // submittedFieldDecoration: pinPutDecoration,
-                  // selectedFieldDecoration: selectdpinPutDecoration,
-                  // followingFieldDecoration: pinPutDecoration,
-                  // eachFieldWidth: 40.0,
-                  // eachFieldHeight: 55.0,
-                  // onSubmit: (pin) async {
-                  //   setState(() {
-                  //     otpNumber = pin;
-                  //   });
-                  //   Utils.hideKeyboard(context);
-                  //   print(otpNumber.length);
+                        try {
+                          _buildVerifyMobileNumberButton();
+                          print("pin : $pin");
+                        } catch (e) {
+                          FocusScope.of(context).unfocus();
+                          // _scaffoldkey.currentState.showSnackBar(
+                          //     SnackBar(content: Text('invalid OTP')));
+                        }
+                      },
+                      // fieldsCount: 6,
+                      // submittedFieldDecoration: pinPutDecoration,
+                      // selectedFieldDecoration: selectdpinPutDecoration,
+                      // followingFieldDecoration: pinPutDecoration,
+                      // eachFieldWidth: 40.0,
+                      // eachFieldHeight: 55.0,
+                      // onSubmit: (pin) async {
+                      //   setState(() {
+                      //     otpNumber = pin;
+                      //   });
+                      //   Utils.hideKeyboard(context);
+                      //   print(otpNumber.length);
 
-                  //   try {
-                  //     print("pin : $pin");
-                  //   } catch (e) {
-                  //     FocusScope.of(context).unfocus();
-                  //     // _scaffoldkey.currentState.showSnackBar(
-                  //     //     SnackBar(content: Text('invalid OTP')));
-                  //   }
-                  // },
+                      //   try {
+                      //     print("pin : $pin");
+                      //   } catch (e) {
+                      //     FocusScope.of(context).unfocus();
+                      //     // _scaffoldkey.currentState.showSnackBar(
+                      //     //     SnackBar(content: Text('invalid OTP')));
+                      //   }
+                      // },
+                    ),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 40,
-                width: 20,
-              ),
-          _buildVerifyMobileNumberButton(),
-              SizedBox(
-                height: 60,
-                width: 20,
-              ),
-              _buildResend(),
-
-            ],
-          ),
+                SizedBox(
+                  height: 40,
+                  width: 20,
+                ),
+                _buildVerifyMobileNumberButton(),
+                SizedBox(
+                  height: 44.5,
+                  width: 20,
+                ),
+                _buildResend(),
+              ],
+            )
+          ],
         ));
   }
 
@@ -578,9 +543,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
         phoneNumber: '+91${widget.phone}',
         verificationCompleted: (PhoneAuthCredential credential) async {
           print("verificationCompleted");
-          await FirebaseAuth.instance
-              .signInWithCredential(credential)
-              .then((value) async {
+          await FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
             if (value.user != null) {
               signupFunction();
               print("verificationCompleted : Sign up successfully...!");
@@ -652,25 +615,21 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
       print(e);
     }
   }
-  void startTimer(){
-  const onsec= Duration(seconds:1);
-  Timer timer= Timer.periodic(onsec, (timer) {
-    if(start==0) {
-      setState(() {
-        wait = true;
-        timer.cancel();
-      });
-    }
-      else{
+
+  void startTimer() {
+    const onsec = Duration(seconds: 1);
+    Timer timer = Timer.periodic(onsec, (timer) {
+      if (start == 0) {
         setState(() {
-          wait=false;
+          wait = true;
+          timer.cancel();
+        });
+      } else {
+        setState(() {
+          wait = false;
           start--;
         });
-    }
-
-
-  });
-    
-
+      }
+    });
   }
 }

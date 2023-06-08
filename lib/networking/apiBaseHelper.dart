@@ -4,26 +4,27 @@ import 'dart:io';
 
 import 'package:conet/utils/constant.dart';
 import 'package:conet/networking/apiExceptions.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiBaseHelper {
-  // String _baseUrl = AppConstant.baseUrl;
+  String _baseUrl = AppConstant.baseUrl;
   final String baseUrl = AppConstant.baseUrl;
   String? serverHost = 'http://conet.shade6.in/';
 
   Future postWithoutToken(String url, Map<String, dynamic> body) async {
-    print('Api Post, url $url');
+    print('Api Post, urll $url');
     var responseJson;
     try {
       var uri = Uri.http('conet.shade6.in', "api/$url");
       final response = await http.post(uri, body: body);
-      responseJson = _returnResponse(response);
+      responseJson = await _returnResponse(response);
     } catch (error) {
+      print('api ptost.');
       print('FetchDataException : $error');
       throw FetchDataException('No Internet connection');
     }
-    print('api post.');
     return responseJson;
   }
 
@@ -63,10 +64,12 @@ class ApiBaseHelper {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       };
-
+      print("rtrr");
       var uri = Uri.http('conet.shade6.in', "api/$url");
       final response = await http.post(uri, body: jsonEncode(body), headers: headers);
-      print(response);
+      print("rtrr");
+      print(response.statusCode);
+      print(response.body);
 
       responseJson = _returnResponse(response);
     } on SocketException {
@@ -109,12 +112,13 @@ class ApiBaseHelper {
   }
 }
 
-dynamic _returnResponse(http.Response response) {
-  print(response);
+dynamic _returnResponse(http.Response response) async {
   switch (response.statusCode) {
     case 200:
-      var responseJson = json.decode(response.body.toString());
-      print(responseJson);
+      var val = response.body.toString().split("live");
+      print(val[1]);
+      var responseJson = await jsonDecode(val[1]);
+
       return responseJson;
     case 400:
       throw BadRequestException(response.body.toString());

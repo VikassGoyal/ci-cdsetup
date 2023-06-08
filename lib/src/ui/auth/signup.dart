@@ -13,6 +13,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
+import '../../../networking/apiBaseHelper.dart';
 import '../utils.dart';
 import 'login.dart';
 
@@ -478,7 +479,9 @@ class _SignUpState extends State<SignUp> {
             setState(() {
               _loader = true;
             });
-            Navigator.pushReplacement(
+             bool hasInternet = await  checkInternetConnection();
+           if(hasInternet){
+             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => VerifyMobileNumber(
@@ -489,6 +492,18 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
             );
+           }else{
+              setState(() {
+                _loader = false;
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                Utils.displaySnackBar(
+                  'Please check your internet connection',
+                  duration: const Duration(seconds: 2),
+                  backgroundColor: AppColor.redColor,
+                ),
+              );
+           }
           } else {
             //if there is any error in validations then show some common Error msg
             ScaffoldMessenger.of(context).showSnackBar(

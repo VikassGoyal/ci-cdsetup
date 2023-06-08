@@ -1192,7 +1192,7 @@ class _MyProfileState extends State<MyProfile> {
               ),
             ),
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => EditProfile(),

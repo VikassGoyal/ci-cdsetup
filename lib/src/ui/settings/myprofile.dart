@@ -1182,10 +1182,13 @@ class _MyProfileState extends State<MyProfile> {
         ),
         actions: [
           ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              shape: MaterialStateProperty.all<CircleBorder>(
-                const CircleBorder(side: BorderSide(color: Colors.transparent)),
+            // style: ButtonStyle(
+            //   backgroundColor: MaterialStateProperty.all<Color>(AppColor.primaryColor,
+
+            //   ),
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(
+                color: Colors.transparent,
               ),
             ),
             onPressed: () {

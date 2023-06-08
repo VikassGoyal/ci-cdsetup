@@ -51,6 +51,7 @@ class _ContactsPageState extends State<ContactsPage> {
   final List<DeviceContactData> _importportcontacts = [];
   TextEditingController? _outputController;
   ContactPageRepository? contactPageRepository;
+  FocusNode _focusNode = FocusNode();
 
   Barcode? result;
   QRViewController? controller;
@@ -65,7 +66,7 @@ class _ContactsPageState extends State<ContactsPage> {
     super.initState();
     contactPageRepository = ContactPageRepository();
     var responseData = widget.contactsData ?? _blanklistcontacts;
- _textEditingController = TextEditingController();
+    _textEditingController = TextEditingController();
     _contacts = [];
     recentCalls = [];
     _loadedcontacts = [];
@@ -128,16 +129,16 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 180.0
-        : 300.0;
+    var scanArea =
+        (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400) ? 180.0 : 300.0;
 
     Widget contactListItem(int index) {
       return Container(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: GestureDetector(
           onTap: () {
+            _focusNode.unfocus();
+
             if (_contacts[index].userId == null) {
               Navigator.push(
                 context,
@@ -145,7 +146,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   builder: (context) => NonConetContactProfile(
                     _contacts[index].name!,
                     _contacts[index].phone!,
-                    _contacts[index].email!,
+                    _contacts[index].email ?? " ",
                   ),
                 ),
               ).then((value) {
@@ -183,8 +184,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       child: FadeInImage.assetNetwork(
                         placeholder: "assets/images/profile.png",
                         image: _contacts[index].profileImage != null
-                            ? AppConstant.profileImageBaseUrl +
-                                _contacts[index].profileImage!
+                            ? AppConstant.profileImageBaseUrl + _contacts[index].profileImage!
                             : "",
                         fit: BoxFit.cover,
                         imageErrorBuilder: (context, error, stackTrace) {
@@ -201,16 +201,15 @@ class _ContactsPageState extends State<ContactsPage> {
                       top: 0,
                       right: 0,
                       child: Container(
-                        child:
-                            _contacts[index].contactMetaType == "professional"
-                                ? SvgPicture.asset(
-                                    "assets/icons/ic_blue_tick.svg",
-                                    height: 15,
-                                  )
-                                : SvgPicture.asset(
-                                    "assets/icons/ic_green_tick.svg",
-                                    height: 15,
-                                  ),
+                        child: _contacts[index].contactMetaType == "professional"
+                            ? SvgPicture.asset(
+                                "assets/icons/ic_blue_tick.svg",
+                                height: 15,
+                              )
+                            : SvgPicture.asset(
+                                "assets/icons/ic_green_tick.svg",
+                                height: 15,
+                              ),
                       ),
                     ),
                   )
@@ -224,8 +223,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        (_contacts[index].name == null ||
-                                _contacts[index].name == '')
+                        (_contacts[index].name == null || _contacts[index].name == '')
                             ? _contacts[index].phone!
                             : _contacts[index].name!,
                         overflow: TextOverflow.ellipsis,
@@ -234,17 +232,14 @@ class _ContactsPageState extends State<ContactsPage> {
                       const SizedBox(height: 2),
                       _contacts[index].userId != null
                           ? Text(
-                              (_contacts[index].username == null ||
-                                      _contacts[index].username == '')
+                              (_contacts[index].username == null || _contacts[index].username == '')
                                   ? _contacts[index].phone!
                                   : _contacts[index].username!,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context)
                                   .textTheme
                                   .headline6
-                                  ?.copyWith(
-                                      color: AppColor.gray30Color,
-                                      fontWeight: FontWeight.w400),
+                                  ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
                             )
                           : Text(
                               (_contacts[index].phone == null ||
@@ -256,9 +251,7 @@ class _ContactsPageState extends State<ContactsPage> {
                               style: Theme.of(context)
                                   .textTheme
                                   .headline6
-                                  ?.copyWith(
-                                      color: AppColor.gray30Color,
-                                      fontWeight: FontWeight.w400),
+                                  ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
                             )
                     ],
                   ),
@@ -278,10 +271,8 @@ class _ContactsPageState extends State<ContactsPage> {
                     ),
                     onPressed: () {
                       print("Cliked");
-                      Uri emailLaunchUri = Uri(
-                          scheme: 'mailto',
-                          path: _contacts[index].email,
-                          queryParameters: {'subject': null});
+                      Uri emailLaunchUri =
+                          Uri(scheme: 'mailto', path: _contacts[index].email, queryParameters: {'subject': null});
                       launch(emailLaunchUri.toString());
                     },
                   ),
@@ -347,9 +338,10 @@ class _ContactsPageState extends State<ContactsPage> {
             Text(
               susTag,
               textScaleFactor: 1.2,
-              style: Theme.of(context).textTheme.headline3?.copyWith(
-                  color: AppColor.alphaHeaderTextColor,
-                  fontWeight: FontWeight.w400),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline3
+                  ?.copyWith(color: AppColor.alphaHeaderTextColor, fontWeight: FontWeight.w400),
             ),
             const Expanded(
                 child: Divider(
@@ -397,8 +389,7 @@ class _ContactsPageState extends State<ContactsPage> {
               color: Colors.blue[700]!.withAlpha(200),
               shape: BoxShape.circle,
             ),
-            child: Text(hint,
-                style: const TextStyle(color: Colors.white, fontSize: 30.0)),
+            child: Text(hint, style: const TextStyle(color: Colors.white, fontSize: 30.0)),
           );
         },
         indexBarMargin: const EdgeInsets.all(0),
@@ -477,33 +468,27 @@ class _ContactsPageState extends State<ContactsPage> {
 
                           setState(() {
                             // _showCancelIcon = true;
-                            value.length > 1
-                                ? _showCancelIcon = true
-                                : _showCancelIcon = false;
+                            value.length > 1 ? _showCancelIcon = true : _showCancelIcon = false;
                           });
                         },
+                        focusNode: _focusNode,
                         maxLines: 1,
                         minLines: 1,
                         textAlign: TextAlign.left,
                         style: Theme.of(context).textTheme.headline3,
                         textInputAction: TextInputAction.search,
                         decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: -5),
+                          contentPadding: const EdgeInsets.symmetric(vertical: -5),
                           isDense: true,
                           hintText: "Search",
                           fillColor: Colors.white,
                           filled: true,
-                          hintStyle: Theme.of(context)
-                              .textTheme
-                              .headline3!
-                              .apply(color: AppColor.gray30Color),
+                          hintStyle: Theme.of(context).textTheme.headline3!.apply(color: AppColor.gray30Color),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             borderSide: BorderSide.none,
                           ),
-                          prefixIconConstraints:
-                              const BoxConstraints(maxHeight: 20),
+                          prefixIconConstraints: const BoxConstraints(maxHeight: 20),
                           prefixIcon: InkWell(
                             onTap: () {
                               if (_showCancelIcon == true) {
@@ -511,8 +496,7 @@ class _ContactsPageState extends State<ContactsPage> {
                               }
                             },
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 11, right: 11),
+                              padding: const EdgeInsets.only(left: 11, right: 11),
                               child: Icon(
                                 _showCancelIcon ? Icons.close : Icons.search,
                                 color: AppColor.gray30Color,
@@ -605,8 +589,7 @@ class _ContactsPageState extends State<ContactsPage> {
               visible: recentCalls.isNotEmpty,
               child: Container(
                 width: MediaQuery.of(context).size.width * 1.0,
-                constraints:
-                    const BoxConstraints(maxHeight: 110, minHeight: 110.0),
+                constraints: const BoxConstraints(maxHeight: 110, minHeight: 110.0),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20.0),
@@ -657,8 +640,7 @@ class _ContactsPageState extends State<ContactsPage> {
                               ),
                               const SizedBox(height: 3),
                               Text(
-                                (recentCalls[i].name == "" ||
-                                        recentCalls[i].name == "null")
+                                (recentCalls[i].name == "" || recentCalls[i].name == "null")
                                     ? "Unknown"
                                     : recentCalls[i].name!,
                                 overflow: TextOverflow.ellipsis,
@@ -690,10 +672,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           const SizedBox(height: 20),
                           Text(
                             "No Data",
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline4!
-                                .apply(color: AppColor.blackColor),
+                            style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.blackColor),
                           )
                         ],
                       ),
@@ -752,8 +731,7 @@ class _ContactsPageState extends State<ContactsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(14.0))),
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
           backgroundColor: AppColor.whiteColor,
           title: Text(
             'Confirmation',
@@ -768,20 +746,14 @@ class _ContactsPageState extends State<ContactsPage> {
               onPressed: () => Navigator.pop(context, false),
               child: Text(
                 'No',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .apply(color: AppColor.primaryColor),
+                style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
               ),
             ),
             ElevatedButton(
               onPressed: () => Navigator.pop(context, true),
               child: Text(
                 'Yes',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .apply(color: AppColor.primaryColor),
+                style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
               ),
             ),
           ],
@@ -792,8 +764,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
       if (value) {
         print(value);
-        SchedulerBinding.instance
-            .addPostFrameCallback((_) => _checkPermission());
+        SchedulerBinding.instance.addPostFrameCallback((_) => _checkPermission());
       } else {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setBool('imported', true);
@@ -816,13 +787,11 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   _importContacts() async {
-    Iterable<Contact> contacts =
-        await ContactsService.getContacts(withThumbnails: false);
+    Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
 
     for (var item in contacts) {
       if (item.phones!.toList().isNotEmpty) {
-        DeviceContactData data =
-            DeviceContactData(item.displayName, item.phones!.toList()[0].value);
+        DeviceContactData data = DeviceContactData(item.displayName, item.phones!.toList()[0].value);
         _importportcontacts.add(data);
       }
     }

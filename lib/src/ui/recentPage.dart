@@ -1,5 +1,6 @@
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/recentCalls.dart';
+import 'package:conet/src/app.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/src/ui/contact/callHistoryProfile.dart';
@@ -175,21 +176,38 @@ TextEditingController? _textEditingController;
 
     Widget contactsList() {
       return Expanded(
-        child: ListView.separated(
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          itemCount: _callHistory!.length,
-          primary: false,
-          scrollDirection: Axis.vertical,
-          separatorBuilder: (context, index) {
-            return Divider(
-              height: 1,
-              color: Colors.grey.shade200,
+        child: RefreshIndicator(
+          color: AppColor.primaryColor,
+          backgroundColor: AppColor.whiteColor,
+onRefresh: () {
+            return Future.delayed(
+              const Duration(seconds: 1),
+              () {
+                setState(() {
+               
+                  _callHistory = widget.callLogs;
+                 
+                
+                });
+              },
             );
-          },
-          itemBuilder: (context, index) {
-            return contactListItem(index);
-          },
+},
+          child: ListView.separated(
+            shrinkWrap: true,
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: _callHistory!.length,
+            primary: false,
+            scrollDirection: Axis.vertical,
+            separatorBuilder: (context, index) {
+              return Divider(
+                height: 1,
+                color: Colors.grey.shade200,
+              );
+            },
+            itemBuilder: (context, index) {
+              return contactListItem(index);
+            },
+          ),
         ),
       );
     }

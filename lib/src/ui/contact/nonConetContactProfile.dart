@@ -87,11 +87,9 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
             SizedBox(height: MediaQuery.of(context).size.height / 2.5),
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7))),
+                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(7))),
               ),
               onPressed: () async {
                 print("clicked");
@@ -107,10 +105,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                 child: Text(
                   "Invite to CONET",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .button
-                      ?.apply(color: AppColor.whiteColor),
+                  style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
                 ),
               ),
             ),
@@ -124,8 +119,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
       return Column(
         children: [
           const SizedBox(height: 110),
-          Text(_personalName.text ?? "Unknown Number",
-              style: Theme.of(context).textTheme.headline2),
+          Text(_personalName.text ?? "Unknown Number", style: Theme.of(context).textTheme.headline2),
           const SizedBox(height: 22),
           Padding(
             padding: const EdgeInsets.only(left: 16, right: 16),
@@ -138,7 +132,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                       if (_personalNumber == null) {
                         return;
                       }
-                      callChatMessenger(_personalNumber);
+                      callChatMessenger(_personalNumber.text);
                     },
                     child: SvgPicture.asset(
                       "assets/icons/ic_profile_message.svg",
@@ -190,10 +184,8 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                         return;
                       }
 
-                      Uri emailLaunchUri = Uri(
-                          scheme: 'mailto',
-                          path: _personalEmail.text,
-                          queryParameters: {'subject': null});
+                      Uri emailLaunchUri =
+                          Uri(scheme: 'mailto', path: _personalEmail.text, queryParameters: {'subject': null});
                       launch(emailLaunchUri.toString());
                     },
                     child: SvgPicture.asset(
@@ -273,10 +265,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                 ),
                 Text(
                   "Back",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.apply(color: AppColor.whiteColor),
+                  style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.whiteColor),
                 )
               ],
             ),
@@ -284,17 +273,13 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
           centerTitle: true,
           title: Text(
             "Contact",
-            style: Theme.of(context)
-                .textTheme
-                .headline4
-                ?.apply(color: AppColor.whiteColor),
+            style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.whiteColor),
           ),
           actions: [
             PopupMenuButton(
               color: const Color(0xFFF0F0F0),
               elevation: 10,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(7.0))),
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7.0))),
               child: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Icon(
@@ -308,30 +293,21 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                   value: 1,
                   child: Text(
                     "Delete",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.apply(color: AppColor.blackColor),
+                    style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
                   ),
                 ),
                 PopupMenuItem(
                   value: 2,
                   child: Text(
                     "Share",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.apply(color: AppColor.blackColor),
+                    style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
                   ),
                 ),
                 PopupMenuItem(
                   value: 2,
                   child: Text(
                     "Block",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.apply(color: AppColor.blackColor),
+                    style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
                   ),
                 )
               ],

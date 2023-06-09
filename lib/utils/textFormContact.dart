@@ -40,7 +40,7 @@ class TextFormFieldContact extends StatefulWidget {
       this.onSubmitField,
       this.onFieldTap,
       this.prefixIcon,
-      this.maxLength,
+      this.maxLength = 1000,
       this.regexexp,
       this.validator});
 

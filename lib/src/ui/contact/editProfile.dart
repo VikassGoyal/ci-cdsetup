@@ -820,7 +820,7 @@ class _EditProfileState extends State<EditProfile> {
                 const SizedBox(height: 16),
                 _buildPincode(),
                 const SizedBox(height: 16),
-                //  _buildLandLine(),
+                _buildLandLine(),
                 const SizedBox(height: 30),
                 _buildPersonalUpdateButton(),
                 const SizedBox(height: 30),
@@ -1170,6 +1170,7 @@ class _EditProfileState extends State<EditProfile> {
         _personalState.text = contactDetail?.personal?.state ?? "";
         _personalCountry.text = contactDetail?.personal?.country ?? "";
         _personalPincode.text = contactDetail?.personal?.pincode ?? "";
+        _personalLandline.text = contactDetail?.personal?.landline.toString() ?? "";
 
         // _personalKeyword.text = contactDetail?.personal?.keyword ?? "";
         _values = contactDetail?.personal?.keyword!.split(',');

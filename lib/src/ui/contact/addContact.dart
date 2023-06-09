@@ -950,9 +950,13 @@ class _AddContactState extends State<AddContact> {
     Widget _buildForNonConet() {
       return Column(
         children: [
+          Text("ee"),
           const SizedBox(height: 20),
           _buildName(false),
           const SizedBox(height: 16),
+          _buildMobileNumber(true),
+          _buildMobileNumber(true),
+          _buildMobileNumber(true),
           _buildMobileNumber(true),
           const SizedBox(height: 30),
           _buildAddContactButton(),

@@ -696,10 +696,25 @@ class _ContactsPageState extends State<ContactsPage> {
     print(query);
     if (query.isNotEmpty) {
       _searchResult = [];
+      List<String> subQueries = query.trim().split(' ');
+
+      bool subQueryNotPresent = false;
+
       for (var data in _loadedcontacts) {
         if (data.name != null) {
-          if (data.name!.toLowerCase().contains(query.toLowerCase())) {
-            _searchResult.add(data);
+          if (subQueries.length == 1) {
+            if (data.name!.toLowerCase().contains(subQueries[0].toLowerCase())) {
+              _searchResult.add(data);
+            }
+          } else {
+            for (var subQuery in subQueries) {
+              if (!(data.name!.toLowerCase().contains(subQuery.toLowerCase()))) {
+                subQueryNotPresent = true;
+              }
+            }
+            if (!subQueryNotPresent) {
+              _searchResult.add(data);
+            }
           }
         }
       }

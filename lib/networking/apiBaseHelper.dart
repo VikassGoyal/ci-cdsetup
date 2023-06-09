@@ -115,9 +115,9 @@ class ApiBaseHelper {
 dynamic _returnResponse(http.Response response) async {
   switch (response.statusCode) {
     case 200:
-      var val = response.body.toString().split("live");
-      print(val[1]);
-      var responseJson = await jsonDecode(val[1]);
+      var responseWithUrl = response.body.toString();
+      var responseWithOutUrl = responseWithUrl.replaceAll(RegExp('http://4301-ch4-v53.waysuper.live'), '');
+      var responseJson = await jsonDecode(responseWithOutUrl);
 
       return responseJson;
     case 400:
@@ -131,8 +131,9 @@ dynamic _returnResponse(http.Response response) async {
           'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
   }
 }
+
 // Internet connection check
-    Future<bool> checkInternetConnection() async {
+Future<bool> checkInternetConnection() async {
   try {
     final response = await http.get(Uri.parse('https://www.google.com'));
     return response.statusCode == 200;

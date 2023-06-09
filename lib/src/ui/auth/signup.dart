@@ -31,6 +31,7 @@ class _SignUpState extends State<SignUp> {
   bool _passwordError = false;
   bool _showPassword = false;
   bool redirected = true;
+  String _errorMsg = '';
 
   //Controller
   final _nameController = TextEditingController();
@@ -50,8 +51,7 @@ class _SignUpState extends State<SignUp> {
     Widget _buildName() {
       return Container(
         decoration: BoxDecoration(
-          border: Border.all(
-              color: _nameError ? AppColor.whiteColor : Colors.transparent),
+          border: Border.all(color: _nameError ? AppColor.whiteColor : Colors.transparent),
           borderRadius: BorderRadius.circular(7),
         ),
         child: Row(
@@ -72,9 +72,7 @@ class _SignUpState extends State<SignUp> {
                         text: TextSpan(
                             text: "Name",
                             style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.75),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
+                                color: Color.fromRGBO(255, 255, 255, 0.75), fontSize: 15, fontWeight: FontWeight.w600),
                             children: [
                       TextSpan(
                           text: ' *',
@@ -88,10 +86,7 @@ class _SignUpState extends State<SignUp> {
               child: TextFormField(
                 controller: _nameController,
                 focusNode: _nameControllerFocus,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
@@ -114,10 +109,7 @@ class _SignUpState extends State<SignUp> {
                       color: Colors.transparent,
                     ),
                   ),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      ?.apply(color: Colors.white54),
+                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
                 ),
                 cursorColor: AppColor.whiteColor,
                 enableSuggestions: false,
@@ -127,6 +119,7 @@ class _SignUpState extends State<SignUp> {
                   if (value!.isEmpty) {
                     setState(() {
                       _nameError = true;
+                      _errorMsg = 'Name cannot be empty';
                     });
                     return '';
                   } else {
@@ -146,8 +139,7 @@ class _SignUpState extends State<SignUp> {
     Widget _buildEmail() {
       return Container(
         decoration: BoxDecoration(
-          border: Border.all(
-              color: _emailError ? AppColor.whiteColor : Colors.transparent),
+          border: Border.all(color: _emailError ? AppColor.whiteColor : Colors.transparent),
           borderRadius: BorderRadius.circular(7),
         ),
         child: Row(
@@ -168,9 +160,7 @@ class _SignUpState extends State<SignUp> {
                         text: TextSpan(
                             text: "Email",
                             style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.75),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
+                                color: Color.fromRGBO(255, 255, 255, 0.75), fontSize: 15, fontWeight: FontWeight.w600),
                             children: [
                       TextSpan(
                           text: ' *',
@@ -184,10 +174,7 @@ class _SignUpState extends State<SignUp> {
               child: TextFormField(
                 focusNode: _emailControllerFocus,
                 controller: _emailController,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
@@ -210,10 +197,7 @@ class _SignUpState extends State<SignUp> {
                       color: Colors.transparent,
                     ),
                   ),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      ?.apply(color: Colors.white54),
+                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
                 ),
                 cursorColor: AppColor.whiteColor,
                 enableSuggestions: false,
@@ -223,6 +207,7 @@ class _SignUpState extends State<SignUp> {
                   if (!value!.isValidEmail()) {
                     setState(() {
                       _emailError = true;
+                      _errorMsg = "Please enter a valid email ";
                     });
                     // return 'Invalid Email';
                     return '';
@@ -243,8 +228,7 @@ class _SignUpState extends State<SignUp> {
     Widget _buildMobile() {
       return Container(
         decoration: BoxDecoration(
-          border: Border.all(
-              color: _mobileError ? AppColor.whiteColor : Colors.transparent),
+          border: Border.all(color: _mobileError ? AppColor.whiteColor : Colors.transparent),
           borderRadius: BorderRadius.circular(7),
         ),
         child: Row(
@@ -265,9 +249,7 @@ class _SignUpState extends State<SignUp> {
                         text: TextSpan(
                             text: "Mobile",
                             style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.75),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
+                                color: Color.fromRGBO(255, 255, 255, 0.75), fontSize: 15, fontWeight: FontWeight.w600),
                             children: [
                       TextSpan(
                           text: ' *',
@@ -281,10 +263,7 @@ class _SignUpState extends State<SignUp> {
               child: TextFormField(
                 controller: _mobileController,
                 focusNode: _mobileControllerFocus,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
@@ -307,10 +286,7 @@ class _SignUpState extends State<SignUp> {
                       color: Colors.transparent,
                     ),
                   ),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      ?.apply(color: Colors.white54),
+                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
                 ),
                 cursorColor: AppColor.whiteColor,
                 enableSuggestions: false,
@@ -323,6 +299,7 @@ class _SignUpState extends State<SignUp> {
                   if (!value!.isValidMobile()) {
                     setState(() {
                       _mobileError = true;
+                      _errorMsg = "Please enter a valid mobile number ";
                     });
                     // return 'Must have exactly 10 digits';
                     return '';
@@ -343,8 +320,7 @@ class _SignUpState extends State<SignUp> {
     Widget _buildPassword() {
       return Container(
         decoration: BoxDecoration(
-          border: Border.all(
-              color: _passwordError ? AppColor.whiteColor : Colors.transparent),
+          border: Border.all(color: _passwordError ? AppColor.whiteColor : Colors.transparent),
           borderRadius: BorderRadius.circular(7),
         ),
         height: 58,
@@ -366,9 +342,7 @@ class _SignUpState extends State<SignUp> {
                         text: TextSpan(
                             text: "Password",
                             style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.75),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
+                                color: Color.fromRGBO(255, 255, 255, 0.75), fontSize: 15, fontWeight: FontWeight.w600),
                             children: [
                       TextSpan(
                           text: ' *',
@@ -382,10 +356,7 @@ class _SignUpState extends State<SignUp> {
               child: TextFormField(
                 controller: _passwordController,
                 focusNode: _passwordControllerFocus,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
@@ -408,10 +379,7 @@ class _SignUpState extends State<SignUp> {
                       color: Colors.transparent,
                     ),
                   ),
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      ?.apply(color: Colors.white54),
+                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
                   suffixIcon: GestureDetector(
                     onTap: () {
                       setState(() {
@@ -419,15 +387,11 @@ class _SignUpState extends State<SignUp> {
                       });
                     },
                     child: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 10, bottom: 2, right: 10),
+                      padding: const EdgeInsets.only(top: 10, bottom: 2, right: 10),
                       child: Text(
                         "Show",
                         textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .button
-                            ?.apply(color: AppColor.secondaryColor),
+                        style: Theme.of(context).textTheme.button?.apply(color: AppColor.secondaryColor),
                       ),
                     ),
                   ),
@@ -441,6 +405,7 @@ class _SignUpState extends State<SignUp> {
                   if (!value!.isValidPassword()) {
                     setState(() {
                       _passwordError = true;
+                      _errorMsg = "Please enter a valid password";
                     });
                     // return 'Must have exactly 10 digits';
                     return '';
@@ -461,8 +426,7 @@ class _SignUpState extends State<SignUp> {
     Widget buildSignUpButton() {
       return ElevatedButton(
         style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+          backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
           ),
@@ -479,20 +443,20 @@ class _SignUpState extends State<SignUp> {
             setState(() {
               _loader = true;
             });
-             bool hasInternet = await  checkInternetConnection();
-           if(hasInternet){
-             Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => VerifyMobileNumber(
-                  username: _nameController.text,
-                  email: _emailController.text,
-                  phone: _mobileController.text,
-                  password: _passwordController.text,
+            bool hasInternet = await checkInternetConnection();
+            if (hasInternet) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => VerifyMobileNumber(
+                    username: _nameController.text,
+                    email: _emailController.text,
+                    phone: _mobileController.text,
+                    password: _passwordController.text,
+                  ),
                 ),
-              ),
-            );
-           }else{
+              );
+            } else {
               setState(() {
                 _loader = false;
               });
@@ -503,12 +467,12 @@ class _SignUpState extends State<SignUp> {
                   backgroundColor: AppColor.redColor,
                 ),
               );
-           }
+            }
           } else {
             //if there is any error in validations then show some common Error msg
             ScaffoldMessenger.of(context).showSnackBar(
               Utils.displaySnackBar(
-                'Please enter valid data in the fields',
+                _errorMsg,
                 duration: const Duration(seconds: 2),
                 backgroundColor: AppColor.redColor,
               ),
@@ -523,10 +487,7 @@ class _SignUpState extends State<SignUp> {
           child: Text(
             "Sign up",
             textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .button
-                ?.apply(color: AppColor.whiteColor),
+            style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
           ),
         ),
       );
@@ -549,17 +510,11 @@ class _SignUpState extends State<SignUp> {
             children: [
               Text(
                 "Already have an account?  ",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: AppColor.whiteColor.withOpacity(0.7)),
+                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor.withOpacity(0.7)),
               ),
               Text(
                 "Sign In",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
               ),
             ],
           ),
@@ -624,7 +579,7 @@ class _SignUpState extends State<SignUp> {
           elevation: 0.0,
           leadingWidth: 150,
           leading: InkWell(
-            onTap: (){
+            onTap: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => Login()),
@@ -633,26 +588,16 @@ class _SignUpState extends State<SignUp> {
             child: Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left:20,right:3),
-                  child: Icon(Icons.arrow_back,color:Colors.white),
-
-
+                  padding: EdgeInsets.only(left: 20, right: 3),
+                  child: Icon(Icons.arrow_back, color: Colors.white),
                 ),
-
                 Text(
                   'Back',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color:Colors.white
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
               ],
             ),
           ),
-
-
-
         ),
         body: LoadingOverlay(
           isLoading: _loader,
@@ -671,20 +616,14 @@ class _SignUpState extends State<SignUp> {
                     const SizedBox(height: 10),
                     Text(
                       "Sign Up",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline1
-                          ?.apply(color: AppColor.whiteColor),
+                      style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
                     ),
                     const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.only(right: 36),
                       child: Text(
                         "Create an account so you can order your favorite food even faster",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            ?.apply(color: AppColor.whiteColor),
+                        style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -713,10 +652,7 @@ class _SignUpState extends State<SignUp> {
                     Center(
                       child: Text(
                         "By signing up, you're agree to our  ",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline3
-                            ?.apply(color: AppColor.whiteColor),
+                        style: Theme.of(context).textTheme.headline3?.apply(color: AppColor.whiteColor),
                       ),
                     ),
                     termAndCondition(),

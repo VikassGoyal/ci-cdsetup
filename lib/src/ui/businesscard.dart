@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/repositories/contactPageRepository.dart';
@@ -10,10 +9,10 @@ import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BussinessCard extends StatefulWidget {
@@ -26,7 +25,7 @@ class _BussinessCardState extends State<BussinessCard> {
   final picker = ImagePicker();
   final ContactPageRepository _contactPageRepository = ContactPageRepository();
 
-  List<Asset> businesslogo = <Asset>[];
+  // List<Asset> businesslogo = <Asset>[];
   String _qrImage = "";
   String imageName = "";
   String uploadedImageLogo = '';
@@ -268,10 +267,10 @@ class _BussinessCardState extends State<BussinessCard> {
         ],
       ),
       body: _loader
-          ? Center(
+          ? const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children:  [
                   CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation(AppColor.primaryColor),
                   ),
@@ -356,46 +355,31 @@ class _BussinessCardState extends State<BussinessCard> {
     }
   }
 
+File? image;
+String imagePath = "";
+ Uint8List? imageBytes;
   Future<void> loadbusinesslogo() async {
-    List<Asset> resultList = <Asset>[];
-    String error = 'No Error Dectected';
+try{
+  final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  if(image == null) return;
+  final imageTemporary = File(image.path);
+  imagePath = image.path;
+  imageBytes =  await image.readAsBytes();
 
-    try {
-      resultList = await MultipleImagesPicker.pickImages(
-        maxImages: 1,
-        enableCamera: true,
-        selectedAssets: businesslogo,
-        cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: const MaterialOptions(
-          actionBarColor: "#c92329",
-          statusBarColor: "#c92329",
-          actionBarTitle: "New Post Images",
-          allViewTitle: "All Photos",
-          useDetailsView: true,
-          selectCircleStrokeColor: "#c92329",
-        ),
-      );
-    } on Exception catch (e) {
-      error = e.toString();
-      print(error);
-    }
 
-    List<Asset> assets = resultList;
-    int i = 0;
-    for (Asset asset in assets) {
-      var bytes = await asset.getByteData();
-      var buffer = bytes.buffer;
-      var base64data = base64.encode(Uint8List.view(buffer));
-      i = i + 1;
+setState(() {
+  this.image = imageTemporary;
+   var buffer = imageBytes!.buffer;
+    var base64data = base64.encode(Uint8List.view(buffer));
+    uploadedImageLogo = base64data;
+    uploadebusinesslogo();
+});
+ 
 
-      setState(() {
-        if (i == 1) {
-          uploadedImageLogo = base64data;
-          uploadebusinesslogo();
-        }
-      });
-    }
-    if (!mounted) return;
+} on PlatformException catch (e) {
+  print('Failed to pick image: $e');
+  Utils.displayToast("Failed to pick image: $e");
+}
   }
 
   void uploadebusinesslogo() async {

@@ -29,6 +29,19 @@ class _ChangePasswordState extends State<ChangePassword> {
         bgColor: AppColor.primaryColor,
         onClick: () {
           var validate = _changeFormKey.currentState!.validate();
+          if (_oldPasswordController.text.length < 8) {
+            Utils.displayToastTopError("Old Password Must be more than 8 characters");
+            return;
+          }
+          if (_confirmPasswordController.text.length < 8) {
+            Utils.displayToastTopError("New Password Must be more than 8 characters");
+            return;
+          }
+
+          if (_newPasswordController.text.length < 8) {
+            Utils.displayToastTopError("Confirm Password Must be more than 8 characters");
+            return;
+          }
           if (validate) {
             Utils.hideKeyboard(context);
           }
@@ -44,14 +57,14 @@ class _ChangePasswordState extends State<ChangePassword> {
         obscureText: true,
         padding: 14.0,
         controller: _oldPasswordController,
+        maxLength: 16,
         textInputType: TextInputType.visiblePassword,
         actionKeyboard: TextInputAction.next,
-
         onSubmitField: () {
           return null;
         },
         parametersValidate: "Please enter Old Password.",
-        // functionValidate: commonValidation(_oldPasswordController.text, ""),
+        functionValidate: commonValidation(_oldPasswordController.text, ""),
       );
     }
 
@@ -62,6 +75,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         padding: 14.0,
         controller: _newPasswordController,
         textInputType: TextInputType.visiblePassword,
+        maxLength: 16,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {
           return null;
@@ -77,6 +91,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         padding: 14.0,
         controller: _confirmPasswordController,
         textInputType: TextInputType.visiblePassword,
+        maxLength: 16,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {
           return null;

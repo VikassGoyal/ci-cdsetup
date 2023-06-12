@@ -6,6 +6,7 @@ import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/models/imageUploadModel.dart';
 import 'package:conet/repositories/repositories.dart';
+import 'package:conet/src/homeScreen.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/switchContactToggle.dart';
 import 'package:conet/utils/textFormContact.dart';
@@ -1155,14 +1156,13 @@ class _AddContactState extends State<AddContact> {
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
-         if(_checkContactScreen){
-             Navigator.of(context).pop();
-         }
-         else{
-          setState(() {
-            _checkContactScreen = true;
-          });
-         }
+            if (_checkContactScreen) {
+              Navigator.of(context).pop();
+            } else {
+              setState(() {
+                _checkContactScreen = true;
+              });
+            }
           },
           child: Row(
             children: [
@@ -1543,15 +1543,18 @@ class _AddContactState extends State<AddContact> {
     Utils.hideKeyboard(context);
 
     var response = await ContactBloc().addNewContact(requestBody);
-    ContactPageRepository contactPageRepository = ContactPageRepository();
-    await contactPageRepository.getallContacts();
     setState(() {
       _loader = false;
     });
     if (response['status'] == true) {
       Utils.displayToast(response['message'].toString());
       await checkPermission();
-      Navigator.pop(context, true);
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (route) => false,
+      );
     } else if (response['status'] == "Token is Expired") {
       Utils.displayToast('Token is Expired');
       tokenExpired(context);

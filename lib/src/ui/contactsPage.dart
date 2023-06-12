@@ -92,24 +92,23 @@ class _ContactsPageState extends State<ContactsPage> {
 
   // Overridden this due to Error in AZListView
   void _sortListBySuspensionTag(List<ISuspensionBean>? list) {
-  if (list == null || list.isEmpty) return;
-  list.sort((a, b) {
-    if (a.getSuspensionTag() == "@" && b.getSuspensionTag() != "@") {
-      return -1;
-    } else if (a.getSuspensionTag() != "@" && b.getSuspensionTag() == "@") {
-      return 1;
-    } else if (a.getSuspensionTag() == "#" && b.getSuspensionTag() != "#") {
-      return -1;
-    } else if (a.getSuspensionTag() != "#" && b.getSuspensionTag() == "#") {
-      return 1;
-    } else {
-      return a.getSuspensionTag().compareTo(b.getSuspensionTag());
-    }
-  });
-}
+    if (list == null || list.isEmpty) return;
+    list.sort((a, b) {
+      if (a.getSuspensionTag() == "@" && b.getSuspensionTag() != "@") {
+        return -1;
+      } else if (a.getSuspensionTag() != "@" && b.getSuspensionTag() == "@") {
+        return 1;
+      } else if (a.getSuspensionTag() == "#" && b.getSuspensionTag() != "#") {
+        return -1;
+      } else if (a.getSuspensionTag() != "#" && b.getSuspensionTag() == "#") {
+        return 1;
+      } else {
+        return a.getSuspensionTag().compareTo(b.getSuspensionTag());
+      }
+    });
+  }
 
   void _handleList(List<AllContacts> list) {
-    
     for (int i = 0, length = list.length; i < length; i++) {
       String? name = list[i].name ?? list[i].phone;
       String pinyin = PinyinHelper.getPinyinE(name!);
@@ -120,17 +119,15 @@ class _ContactsPageState extends State<ContactsPage> {
         list[i].tagIndex = "#";
       }
     }
-    
-      
-  
- 
-    
 
     _sortListBySuspensionTag(_contacts);
     _contacts.sort((a, b) {
-      return a.name!.toLowerCase().compareTo(b.name!.toLowerCase());
+      final nameA = a.name?.toLowerCase() ?? '';
+      final nameB = b.name?.toLowerCase() ?? '';
+      return nameA.compareTo(nameB);
     });
-    SuspensionUtil.setShowSuspensionStatus(_contacts);    
+    SuspensionUtil.setShowSuspensionStatus(_contacts);
+    // SuspensionUtil.sortListBySuspensionTag(_contacts);
   }
 
   Decoration getIndexBarDecoration(Color color) {
@@ -402,39 +399,38 @@ class _ContactsPageState extends State<ContactsPage> {
       return RefreshIndicator(
           color: AppColor.primaryColor,
           backgroundColor: AppColor.whiteColor,
+          onRefresh: () {
+            return Future.delayed(const Duration(seconds: 3), () {
+              _updateContact();
 
-onRefresh: () {
-        return Future.delayed(const Duration(seconds: 3), () {
-            _updateContact();
-            
-          setState(() {
-            _contacts = _contacts;
-          });
-        });
-},
-        child:AzListView(
-        data: _contacts,
-        itemCount: _contacts.length,
-        itemBuilder: (BuildContext context, int index) {
-          AllContacts model = _contacts[index];
-          return _buildListItem(model, index);
-        },
-        physics: const BouncingScrollPhysics(),
-        indexBarData: SuspensionUtil.getTagIndexList(_contacts),
-        indexHintBuilder: (context, hint) {
-          return Container(
-            alignment: Alignment.center,
-            width: 60.0,
-            height: 60.0,
-            decoration: BoxDecoration(
-              color: Colors.blue[700]!.withAlpha(200),
-              shape: BoxShape.circle,
-            ),
-            child: Text(hint, style: const TextStyle(color: Colors.white, fontSize: 30.0)),
-          );
-        },
-        indexBarMargin: const EdgeInsets.all(0),
-      ));
+              setState(() {
+                _contacts = _contacts;
+              });
+            });
+          },
+          child: AzListView(
+            data: _contacts,
+            itemCount: _contacts.length,
+            itemBuilder: (BuildContext context, int index) {
+              AllContacts model = _contacts[index];
+              return _buildListItem(model, index);
+            },
+            physics: const BouncingScrollPhysics(),
+            indexBarData: SuspensionUtil.getTagIndexList(_contacts),
+            indexHintBuilder: (context, hint) {
+              return Container(
+                alignment: Alignment.center,
+                width: 60.0,
+                height: 60.0,
+                decoration: BoxDecoration(
+                  color: Colors.blue[700]!.withAlpha(200),
+                  shape: BoxShape.circle,
+                ),
+                child: Text(hint, style: const TextStyle(color: Colors.white, fontSize: 30.0)),
+              );
+            },
+            indexBarMargin: const EdgeInsets.all(0),
+          ));
     }
 
     return Scaffold(
@@ -783,7 +779,7 @@ onRefresh: () {
 
   _showDialog() async {
     await Future.delayed(const Duration(milliseconds: 50));
-   showDialog(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -829,10 +825,13 @@ onRefresh: () {
   }
 
   _checkPermission() async {
+    Permission.contacts.request();
     var status = await Permission.contacts.status;
     if (status.isGranted) {
+      // Permission.contacts.request();
       _importContacts();
     } else {
+      openAppSettings();
       var reqStatus = await Permission.contacts.request();
       if (reqStatus.isGranted) {
         _importContacts();

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:conet/src/ui/contact/contactProfile.dart';
 import 'package:flutter/services.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -18,12 +19,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../settings/myprofile.dart';
 import '../utils.dart';
 
 class EditProfile extends StatefulWidget {
@@ -47,6 +50,7 @@ class _EditProfileState extends State<EditProfile> {
   DateTime? selectedDate;
   String? _occupationValue;
   bool _loaderoverflow = true;
+  bool _valuesChanged = false;
   bool _loader = true;
 
   final _personalName = TextEditingController();
@@ -223,6 +227,11 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "Name",
         padding: 14.0,
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         margin: 22.0,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -236,6 +245,11 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "Phone number",
         padding: 14.0,
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         margin: 22.0,
         textInputType: TextInputType.number,
         actionKeyboard: TextInputAction.next,
@@ -250,6 +264,11 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "Secondary Phone Number",
         padding: 14.0,
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         margin: 22.0,
         enable: true,
         textInputType: TextInputType.number,
@@ -263,6 +282,11 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildEmailId() {
       return TextFormFieldContact(
         hintText: "Email",
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         padding: 14.0,
         margin: 22.0,
         textInputType: TextInputType.text,
@@ -286,6 +310,11 @@ class _EditProfileState extends State<EditProfile> {
           borderRadius: BorderRadius.circular(7),
         ),
         child: TextFormField(
+          onChanged: (value) {
+            setState(() {
+              _valuesChanged = true;
+            });
+          },
           style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
@@ -299,7 +328,10 @@ class _EditProfileState extends State<EditProfile> {
               borderSide: BorderSide(color: Colors.transparent),
             ),
             suffixIcon: GestureDetector(
-              onTap: () => _selectDate(context),
+              onTap: () {
+                _selectDate(context);
+                _valuesChanged = true;
+              },
               child: const Icon(
                 Icons.date_range,
                 color: Color(0xFF878B95),
@@ -330,6 +362,11 @@ class _EditProfileState extends State<EditProfile> {
           borderRadius: BorderRadius.circular(7),
         ),
         child: TextFormField(
+          onChanged: (value) {
+            setState(() {
+              _valuesChanged = true;
+            });
+          },
           style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
           decoration: InputDecoration(
             labelText: "Address",
@@ -345,6 +382,9 @@ class _EditProfileState extends State<EditProfile> {
               onTap: () {
                 print('click');
                 getCurrentLocation();
+                setState(() {
+                  _valuesChanged = true;
+                });
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(
@@ -360,7 +400,7 @@ class _EditProfileState extends State<EditProfile> {
             ),
           ),
           cursorColor: AppColor.secondaryColor,
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.streetAddress,
           textInputAction: TextInputAction.next,
           controller: _personalAddress,
           validator: (value) {
@@ -378,6 +418,11 @@ class _EditProfileState extends State<EditProfile> {
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         controller: _personalCountry,
         parametersValidate: "Please enter Address.",
       );
@@ -391,6 +436,11 @@ class _EditProfileState extends State<EditProfile> {
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         controller: _personalState,
         parametersValidate: "Please enter Address.",
       );
@@ -404,6 +454,11 @@ class _EditProfileState extends State<EditProfile> {
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         controller: _personalCity,
         parametersValidate: "Please enter Address.",
       );
@@ -417,6 +472,11 @@ class _EditProfileState extends State<EditProfile> {
         textInputType: TextInputType.phone,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         controller: _personalPincode,
         parametersValidate: "Please enter Address.",
       );
@@ -461,6 +521,11 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "Landline Number",
         padding: 14.0,
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         margin: 22.0,
         textInputType: TextInputType.number,
         actionKeyboard: TextInputAction.next,
@@ -586,6 +651,7 @@ class _EditProfileState extends State<EditProfile> {
           ),
           onChanged: (value) {
             setState(() {
+              _valuesChanged = true;
               _occupationValue = value as String?;
               _professionalOccupation.text = value.toString();
 
@@ -651,6 +717,11 @@ class _EditProfileState extends State<EditProfile> {
         hintText: "Company Website",
         padding: 14.0,
         margin: 22.0,
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
@@ -665,6 +736,11 @@ class _EditProfileState extends State<EditProfile> {
         padding: 14.0,
         margin: 22.0,
         maxLength: 100,
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
@@ -678,6 +754,11 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "Grade",
         padding: 14.0,
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         margin: 22.0,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -691,6 +772,11 @@ class _EditProfileState extends State<EditProfile> {
         hintText: "Work Nature",
         padding: 14.0,
         margin: 22.0,
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         controller: _professionalWorkNature,
@@ -702,6 +788,11 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "Designation",
         padding: 14.0,
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         margin: 22.0,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -713,6 +804,11 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildworkFacebook() {
       return TextFormFieldContact(
         hintText: "Facebook account",
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         padding: 14.0,
         margin: 22.0,
         textInputType: TextInputType.text,
@@ -726,6 +822,11 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "Instagram account",
         padding: 14.0,
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         margin: 22.0,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -739,6 +840,11 @@ class _EditProfileState extends State<EditProfile> {
         hintText: "Twitter account",
         padding: 14.0,
         margin: 22.0,
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         controller: _socialTwitter,
@@ -751,6 +857,11 @@ class _EditProfileState extends State<EditProfile> {
         hintText: "Skype account",
         padding: 14.0,
         margin: 22.0,
+        onChanged: (value) {
+          setState(() {
+            _valuesChanged = true;
+          });
+        },
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         controller: _socialSkype,
@@ -950,7 +1061,9 @@ class _EditProfileState extends State<EditProfile> {
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
                     onChanged: (value) {
-                      setState(() {});
+                      setState(() {
+                        _valuesChanged = true;
+                      });
                     },
                   ),
                 ),
@@ -1091,7 +1204,48 @@ class _EditProfileState extends State<EditProfile> {
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+            if (_valuesChanged) {
+              showDialog(
+                  context: context,
+                  builder: (dialogContext) {
+                    return AlertDialog(
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
+                      backgroundColor: Colors.white,
+                      title: Text(
+                        "Changes not saved",
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      content: Text(
+                        "Are you sure  want to Exit without Saving ?",
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text(
+                            "Cancel",
+                            style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
+                          ),
+                          onPressed: () {
+                            Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
+                          },
+                        ),
+                        TextButton(
+                          child: Text("Yes",
+                              style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor)),
+                          onPressed: () {
+                            setState(() {
+                              _valuesChanged = false;
+                            });
+                            Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  });
+            } else {
+              Navigator.pop(context);
+            }
           },
           child: Row(
             children: [
@@ -1130,6 +1284,7 @@ class _EditProfileState extends State<EditProfile> {
               child: SizedBox(
                 height: double.infinity,
                 child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
                   child: stackContainer(),
                 ),
               ),

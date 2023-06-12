@@ -37,7 +37,7 @@ class _AppState extends State<App> {
       title: 'CoNet',
       home: Builder(
         builder: (context) {
-          return const SplashScreen();
+          return SplashScreen();
         },
       ),
       theme: ThemeData(

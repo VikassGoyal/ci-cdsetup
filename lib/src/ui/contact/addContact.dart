@@ -1157,7 +1157,14 @@ class _AddContactState extends State<AddContact> {
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+         if(_checkContactScreen){
+             Navigator.of(context).pop();
+         }
+         else{
+          setState(() {
+            _checkContactScreen = true;
+          });
+         }
           },
           child: Row(
             children: [

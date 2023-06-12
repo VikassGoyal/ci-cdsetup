@@ -343,6 +343,7 @@ class _EditProfileState extends State<EditProfile> {
             focusedBorder: InputBorder.none,
             suffixIcon: GestureDetector(
               onTap: () {
+                print('click');
                 getCurrentLocation();
                 // Navigator.push(
                 //   context,

@@ -90,7 +90,26 @@ class _ContactsPageState extends State<ContactsPage> {
     //controller!.resumeCamera();
   }
 
+  // Overridden this due to Error in AZListView
+  void _sortListBySuspensionTag(List<ISuspensionBean>? list) {
+  if (list == null || list.isEmpty) return;
+  list.sort((a, b) {
+    if (a.getSuspensionTag() == "@" && b.getSuspensionTag() != "@") {
+      return -1;
+    } else if (a.getSuspensionTag() != "@" && b.getSuspensionTag() == "@") {
+      return 1;
+    } else if (a.getSuspensionTag() == "#" && b.getSuspensionTag() != "#") {
+      return -1;
+    } else if (a.getSuspensionTag() != "#" && b.getSuspensionTag() == "#") {
+      return 1;
+    } else {
+      return a.getSuspensionTag().compareTo(b.getSuspensionTag());
+    }
+  });
+}
+
   void _handleList(List<AllContacts> list) {
+    
     for (int i = 0, length = list.length; i < length; i++) {
       String? name = list[i].name ?? list[i].phone;
       String pinyin = PinyinHelper.getPinyinE(name!);
@@ -101,8 +120,17 @@ class _ContactsPageState extends State<ContactsPage> {
         list[i].tagIndex = "#";
       }
     }
-    SuspensionUtil.sortListBySuspensionTag(_contacts);
-    SuspensionUtil.setShowSuspensionStatus(_contacts);
+    
+      
+  
+ 
+    
+
+    _sortListBySuspensionTag(_contacts);
+    _contacts.sort((a, b) {
+      return a.name!.toLowerCase().compareTo(b.name!.toLowerCase());
+    });
+    SuspensionUtil.setShowSuspensionStatus(_contacts);    
   }
 
   Decoration getIndexBarDecoration(Color color) {
@@ -371,7 +399,20 @@ class _ContactsPageState extends State<ContactsPage> {
     }
 
     Widget azcontactsList() {
-      return AzListView(
+      return RefreshIndicator(
+          color: AppColor.primaryColor,
+          backgroundColor: AppColor.whiteColor,
+
+onRefresh: () {
+        return Future.delayed(const Duration(seconds: 3), () {
+            _updateContact();
+            
+          setState(() {
+            _contacts = _contacts;
+          });
+        });
+},
+        child:AzListView(
         data: _contacts,
         itemCount: _contacts.length,
         itemBuilder: (BuildContext context, int index) {
@@ -393,7 +434,7 @@ class _ContactsPageState extends State<ContactsPage> {
           );
         },
         indexBarMargin: const EdgeInsets.all(0),
-      );
+      ));
     }
 
     return Scaffold(
@@ -727,7 +768,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
   _showDialog() async {
     await Future.delayed(const Duration(milliseconds: 50));
-    showDialog(
+   showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -849,6 +890,7 @@ class _ContactsPageState extends State<ContactsPage> {
       _loadedcontacts = _contacts;
     });
 
+//  _contacts.sort((a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
     _handleList(_contacts);
   }
 

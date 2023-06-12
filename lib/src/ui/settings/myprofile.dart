@@ -1181,7 +1181,7 @@ class _MyProfileState extends State<MyProfile> {
           style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.whiteColor),
         ),
         actions: [
-          ElevatedButton(
+          TextButton(
             // style: ButtonStyle(
             //   backgroundColor: MaterialStateProperty.all<Color>(AppColor.primaryColor,
 
@@ -1192,7 +1192,7 @@ class _MyProfileState extends State<MyProfile> {
               ),
             ),
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => EditProfile(),

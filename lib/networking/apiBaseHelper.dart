@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiBaseHelper {
-  String _baseUrl = AppConstant.baseUrl;
+  //String _baseUrl = AppConstant.baseUrl;
   final String baseUrl = AppConstant.baseUrl;
   String? serverHost = 'http://conet.shade6.in/';
 
@@ -20,6 +20,7 @@ class ApiBaseHelper {
       var uri = Uri.http('conet.shade6.in', "api/$url");
       final response = await http.post(uri, body: body);
       responseJson = await _returnResponse(response);
+      print(responseJson);
     } catch (error) {
       print('api ptost.');
       print('FetchDataException : $error');
@@ -64,10 +65,10 @@ class ApiBaseHelper {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       };
-      print("rtrr");
+
       var uri = Uri.http('conet.shade6.in', "api/$url");
       final response = await http.post(uri, body: jsonEncode(body), headers: headers);
-      print("rtrr");
+
       print(response.statusCode);
       print(response.body);
 
@@ -115,9 +116,9 @@ class ApiBaseHelper {
 dynamic _returnResponse(http.Response response) async {
   switch (response.statusCode) {
     case 200:
-      var val = response.body.toString().split("live");
-      print(val[1]);
-      var responseJson = await jsonDecode(val[1]);
+      var responseWithUrl = response.body.toString();
+      var responseWithOutUrl = responseWithUrl.replaceAll(RegExp('http://4301-ch4-v53.waysuper.live'), '');
+      var responseJson = await jsonDecode(responseWithOutUrl);
 
       return responseJson;
     case 400:
@@ -131,8 +132,9 @@ dynamic _returnResponse(http.Response response) async {
           'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
   }
 }
+
 // Internet connection check
-    Future<bool> checkInternetConnection() async {
+Future<bool> checkInternetConnection() async {
   try {
     final response = await http.get(Uri.parse('https://www.google.com'));
     return response.statusCode == 200;

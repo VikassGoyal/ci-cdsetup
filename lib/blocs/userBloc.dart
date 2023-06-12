@@ -12,7 +12,7 @@ class UserBloc {
   login(requestBody) async {
     try {
       var response = await userRepository?.login(requestBody);
-      print("response.body['message']");
+
       print(response['message']);
       if (response['message'] == "success") {
         SharedPreferences preferences = await SharedPreferences.getInstance();

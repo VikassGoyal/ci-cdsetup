@@ -132,7 +132,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                       if (_personalNumber == null) {
                         return;
                       }
-                      callChatMessenger(_personalNumber);
+                      callChatMessenger(_personalNumber.text);
                     },
                     child: SvgPicture.asset(
                       "assets/icons/ic_profile_message.svg",

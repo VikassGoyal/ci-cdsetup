@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiBaseHelper {
-  String _baseUrl = AppConstant.baseUrl;
+  //String _baseUrl = AppConstant.baseUrl;
   final String baseUrl = AppConstant.baseUrl;
   String? serverHost = 'http://conet.shade6.in/';
 
@@ -20,6 +20,7 @@ class ApiBaseHelper {
       var uri = Uri.http('conet.shade6.in', "api/$url");
       final response = await http.post(uri, body: body);
       responseJson = await _returnResponse(response);
+      print(responseJson);
     } catch (error) {
       print('api ptost.');
       print('FetchDataException : $error');
@@ -64,10 +65,10 @@ class ApiBaseHelper {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       };
-      print("rtrr");
+
       var uri = Uri.http('conet.shade6.in', "api/$url");
       final response = await http.post(uri, body: jsonEncode(body), headers: headers);
-      print("rtrr");
+
       print(response.statusCode);
       print(response.body);
 

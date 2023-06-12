@@ -237,7 +237,7 @@ class _EditProfileState extends State<EditProfile> {
         hintText: "Phone number",
         padding: 14.0,
         margin: 22.0,
-        textInputType: TextInputType.text,
+        textInputType: TextInputType.number,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
         controller: _personalNumber,
@@ -252,8 +252,7 @@ class _EditProfileState extends State<EditProfile> {
         padding: 14.0,
         margin: 22.0,
         enable: true,
-        readonly: true,
-        textInputType: TextInputType.text,
+        textInputType: TextInputType.number,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
         controller: _personalSecondaryNumber,
@@ -288,7 +287,6 @@ class _EditProfileState extends State<EditProfile> {
         ),
         child: TextFormField(
           style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
-          readOnly: true,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
             labelText: "DOB",
@@ -333,7 +331,6 @@ class _EditProfileState extends State<EditProfile> {
         ),
         child: TextFormField(
           style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
-          readOnly: true,
           decoration: InputDecoration(
             labelText: "Address",
             contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
@@ -346,6 +343,7 @@ class _EditProfileState extends State<EditProfile> {
             focusedBorder: InputBorder.none,
             suffixIcon: GestureDetector(
               onTap: () {
+                print('click');
                 getCurrentLocation();
                 // Navigator.push(
                 //   context,

@@ -117,10 +117,10 @@ dynamic _returnResponse(http.Response response) async {
   switch (response.statusCode) {
     case 200:
       var responseWithUrl = response.body.toString();
-      print(responseWithUrl);
-      var responseWithOutUrl = responseWithUrl.split("http://4301-ch4-v53.waysuper.live");
-      var jsonresponsewithouturl = json.decode(responseWithOutUrl[1]);
-      return jsonresponsewithouturl;
+      var responseWithOutUrl = responseWithUrl.replaceAll(RegExp('http://4301-ch4-v53.waysuper.live'), '');
+      var responseJson = await jsonDecode(responseWithOutUrl);
+
+      return responseJson;
     case 400:
       throw BadRequestException(response.body.toString());
     case 401:

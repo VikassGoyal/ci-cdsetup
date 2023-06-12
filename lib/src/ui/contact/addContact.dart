@@ -986,8 +986,6 @@ class _AddContactState extends State<AddContact> {
                 _buildPincode(),
                 const SizedBox(height: 16),
                 _buildLandLine(),
-                // SizedBox(height: 16),
-                // _relationShip(),
                 const SizedBox(height: 30),
                 _buildPersonalUpdateButton(),
                 const SizedBox(height: 30),

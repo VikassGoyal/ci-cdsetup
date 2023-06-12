@@ -172,7 +172,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => NonConetContactProfile(
-                    _contacts[index].name!,
+                    _contacts[index].name ?? "",
                     _contacts[index].phone!,
                     _contacts[index].email ?? " ",
                   ),

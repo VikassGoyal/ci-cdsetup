@@ -287,7 +287,9 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                   color: AppColor.whiteColor,
                 ),
               ),
-              onSelected: (value) {},
+              onSelected: (value) {
+                print(value);
+              },
               itemBuilder: (context) => [
                 PopupMenuItem(
                   value: 1,

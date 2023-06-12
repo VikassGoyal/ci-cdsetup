@@ -201,7 +201,7 @@ class _ContactProfileState extends State<ContactProfile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Keywords",
+              "Keyword",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyText2?.apply(color: const Color.fromRGBO(135, 139, 149, 1)),
             ),

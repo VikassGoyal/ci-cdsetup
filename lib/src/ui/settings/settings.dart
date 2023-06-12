@@ -22,6 +22,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../../networking/apiBaseHelper.dart';
+
 class Settings extends StatefulWidget {
   var totalcount;
 
@@ -316,18 +318,29 @@ class _SettingsState extends State<Settings> {
   }
 
   logoutFun() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.clear();
+    bool hasInternet = await checkInternetConnection();
+    if (hasInternet) {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      await preferences.clear();
 
-    await databaseHelper.trancateAllContacts();
-    await databaseHelper.trancateRecentContacts();
+      await databaseHelper.trancateAllContacts();
+      await databaseHelper.trancateRecentContacts();
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Login(),
-      ),
-    );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Login(),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        Utils.displaySnackBar(
+          'Please check your internet connection',
+          duration: const Duration(seconds: 1),
+          backgroundColor: AppColor.redColor,
+        ),
+      );
+    }
   }
 
   _checkPermission() async {

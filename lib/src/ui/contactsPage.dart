@@ -371,7 +371,20 @@ class _ContactsPageState extends State<ContactsPage> {
     }
 
     Widget azcontactsList() {
-      return AzListView(
+      return RefreshIndicator(
+          color: AppColor.primaryColor,
+          backgroundColor: AppColor.whiteColor,
+
+onRefresh: () {
+        return Future.delayed(const Duration(seconds: 3), () {
+            _updateContact();
+            
+          setState(() {
+            _contacts = _contacts;
+          });
+        });
+},
+        child:AzListView(
         data: _contacts,
         itemCount: _contacts.length,
         itemBuilder: (BuildContext context, int index) {
@@ -393,7 +406,7 @@ class _ContactsPageState extends State<ContactsPage> {
           );
         },
         indexBarMargin: const EdgeInsets.all(0),
-      );
+      ));
     }
 
     return Scaffold(

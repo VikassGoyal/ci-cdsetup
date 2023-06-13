@@ -1187,7 +1187,7 @@ class _MyProfileState extends State<MyProfile> {
 
             //   ),
             style: OutlinedButton.styleFrom(
-              side: BorderSide(
+              side: const BorderSide(
                 color: Colors.transparent,
               ),
             ),
@@ -1216,6 +1216,7 @@ class _MyProfileState extends State<MyProfile> {
               child: SizedBox(
                 height: double.infinity,
                 child: SingleChildScrollView(
+                  physics: ClampingScrollPhysics(),
                   child: stackContainer(),
                 ),
               ),

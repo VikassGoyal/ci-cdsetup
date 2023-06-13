@@ -21,12 +21,15 @@ class TextFormFieldContact extends StatefulWidget {
   final Function? onFieldTap;
   final int? maxLength;
   final RegExp? regexexp;
+  final Function(dynamic)? onChanged;
   final String? Function(String?)? validator;
 
   const TextFormFieldContact(
-      {required this.hintText,
+      {super.key,
+      required this.hintText,
       this.focusNode,
       this.padding,
+      this.onChanged,
       this.margin,
       this.textInputType,
       this.defaultText,
@@ -68,6 +71,9 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
             borderRadius: BorderRadius.circular(7),
           ),
           child: TextFormField(
+            onChanged: (value) {
+              widget.onChanged!.call(value);
+            },
             readOnly: widget.readonly!,
             validator: widget.validator,
             style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),

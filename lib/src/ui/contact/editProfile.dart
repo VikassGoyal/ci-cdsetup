@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:conet/src/ui/contact/contactProfile.dart';
+import 'package:conet/src/ui/settings/myprofile.dart';
 import 'package:flutter/services.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -251,7 +251,7 @@ class _EditProfileState extends State<EditProfile> {
           });
         },
         margin: 22.0,
-        textInputType: TextInputType.number,
+        textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
         controller: _personalNumber,
@@ -271,7 +271,8 @@ class _EditProfileState extends State<EditProfile> {
         },
         margin: 22.0,
         enable: true,
-        textInputType: TextInputType.number,
+        readonly: true,
+        textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
         controller: _personalSecondaryNumber,
@@ -316,6 +317,7 @@ class _EditProfileState extends State<EditProfile> {
             });
           },
           style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+          readOnly: true,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
             labelText: "DOB",
@@ -368,6 +370,7 @@ class _EditProfileState extends State<EditProfile> {
             });
           },
           style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+          readOnly: true,
           decoration: InputDecoration(
             labelText: "Address",
             contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
@@ -380,7 +383,6 @@ class _EditProfileState extends State<EditProfile> {
             focusedBorder: InputBorder.none,
             suffixIcon: GestureDetector(
               onTap: () {
-                print('click');
                 getCurrentLocation();
                 setState(() {
                   _valuesChanged = true;
@@ -929,7 +931,7 @@ class _EditProfileState extends State<EditProfile> {
                 const SizedBox(height: 16),
                 _buildPincode(),
                 const SizedBox(height: 16),
-                _buildLandLine(),
+                //  _buildLandLine(),
                 const SizedBox(height: 30),
                 _buildPersonalUpdateButton(),
                 const SizedBox(height: 30),
@@ -1113,7 +1115,7 @@ class _EditProfileState extends State<EditProfile> {
                       physics: const NeverScrollableScrollPhysics(),
                       addAutomaticKeepAlives: true,
                       itemCount: entreprenerurList.length,
-                      // itemCount: 1,
+                      // itemCount: 1 ,
                       itemBuilder: (BuildContext ctxt, int i) => entreprenerurItemNew(i),
                     ),
                   ),
@@ -1311,6 +1313,7 @@ class _EditProfileState extends State<EditProfile> {
         print(contactDetail?.profileImage);
 
         //Personal
+
         _personalName.text = contactDetail?.name ?? "";
         _personalNumber.text = contactDetail?.personal?.number ?? "";
         _personalEmail.text = contactDetail?.personal?.email ?? "";
@@ -1323,16 +1326,16 @@ class _EditProfileState extends State<EditProfile> {
         _personalState.text = contactDetail?.personal?.state ?? "";
         _personalCountry.text = contactDetail?.personal?.country ?? "";
         _personalPincode.text = contactDetail?.personal?.pincode ?? "";
-        _personalLandline.text = contactDetail?.personal?.landline.toString() ?? "";
 
         // _personalKeyword.text = contactDetail?.personal?.keyword ?? "";
-        _values = contactDetail?.personal?.keyword!.split(',');
+        _values = contactDetail?.personal?.keyword?.split(',') ?? [];
         // _selected = contactDetail?.personal?.keyword.split(',') ?? "";
 
         _personalLandline.text =
             contactDetail?.personal?.landline == null ? '' : contactDetail?.personal?.landline.toString() ?? "";
 
         if (contactDetail?.professional != null) {
+          print(contactDetail?.professional?.occupation);
           _occupationValue = contactDetail?.professional?.occupation ?? "";
           _professionalOccupation.text = contactDetail?.professional?.occupation ?? "";
           _professionalCompany.text = contactDetail?.professional?.company ?? "";
@@ -1345,6 +1348,7 @@ class _EditProfileState extends State<EditProfile> {
           entreprenerurListJson = contactDetail?.professionalList;
 
           for (var data in entreprenerurListJson!) {
+            print("data");
             List<ImageUploadModel> imageData = [];
             for (var businessImagesdata in data.businessImages!) {
               ImageUploadModel imageUpload = ImageUploadModel();
@@ -1366,7 +1370,7 @@ class _EditProfileState extends State<EditProfile> {
             });
           }
 
-          print("entreprenerurList : ${entreprenerurList[0].images!.length}");
+          print("entreprenerurList : ${entreprenerurList.length}");
           checkOccupation();
         }
 
@@ -2064,7 +2068,12 @@ class _EditProfileState extends State<EditProfile> {
     });
     if (response['status'] == true) {
       Utils.displayToast(response['message'].toString());
-      Navigator.of(context).pop();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => MyProfile(requestBody['per_num'] as String?),
+        ),
+      );
     } else if (response['status'] == "Token is Expired") {
       tokenExpired(context);
     } else {

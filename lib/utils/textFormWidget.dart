@@ -1,6 +1,7 @@
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:conet/utils/constant.dart';
 
 class TextFormFieldWidget extends StatefulWidget {
   final TextInputType? textInputType;
@@ -32,8 +33,7 @@ class TextFormFieldWidget extends StatefulWidget {
       this.onSubmitField,
       this.onFieldTap,
       this.prefixIcon,
-        this.regexp
-      });
+      this.regexp});
 
   @override
   _TextFormFieldWidgetState createState() => _TextFormFieldWidgetState();
@@ -45,15 +45,10 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
     return Container(
       padding: EdgeInsets.only(left: widget.padding!, right: widget.padding!),
       child: TextFormField(
-        style: Theme.of(context)
-            .textTheme
-            .headline5
-            ?.apply(color: AppColor.whiteColor),
+        style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
         inputFormatters: [
-          FilteringTextInputFormatter.allow(widget.regexp==null ? RegExp('.*' ) : widget.regexp!),
+          FilteringTextInputFormatter.allow(widget.regexp == null ? RegExp('.*') : widget.regexp!),
           FilteringTextInputFormatter.deny(RegExp(r'\s')),
-
-
         ],
         decoration: InputDecoration(
           hintText: widget.hintText,
@@ -77,18 +72,14 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
           //     color: Colors.transparent,
           //   ),
           // ),
-          hintStyle: Theme.of(context)
-              .textTheme
-              .headline5
-              ?.apply(color: Colors.white54),
+          hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
         ),
         cursorColor: AppColor.whiteColor,
         keyboardType: widget.textInputType,
         textInputAction: widget.actionKeyboard,
         controller: widget.controller,
         validator: (value) {
-          String? resultValidate =
-              widget.functionValidate!(value, widget.parametersValidate);
+          String? resultValidate = widget.functionValidate!(value, widget.parametersValidate);
           return resultValidate;
         },
       ),
@@ -104,12 +95,16 @@ String? commonValidation(String? value, String? messageError) {
 String? requiredValidator(value, messageError) {
   if (value.isEmpty) {
     return messageError;
+  } else if (RegExp(
+              r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+          .hasMatch(value) ||
+      RegExp(r"^[0-9]{10}$").hasMatch(value)) {
+    return null;
   }
-  return null;
+  return "Please Enter Valid Email/Mobile.";
 }
 
 void changeFocus(BuildContext context, FocusNode? currentFocus, FocusNode? nextFocus) {
-
   currentFocus?.unfocus();
   FocusScope.of(context).requestFocus(nextFocus);
 }

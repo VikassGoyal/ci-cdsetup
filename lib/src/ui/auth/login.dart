@@ -142,11 +142,12 @@ class _LoginState extends State<Login> {
                   MaterialPageRoute(builder: (context) => HomeScreen()),
                 );
               } else {
-                Utils.displayToast(response["message"]);
+                Utils.displayToastBottomError(response["message"]);
               }
             } catch (e) {
               bool hasInternet = await checkInternetConnection();
-            Utils.displayToastBottomError(hasInternet ? "Something went wrong" : "Please check your internet connection");
+              Utils.displayToastBottomError(
+                  hasInternet ? "Something went wrong" : "Please check your internet connection");
               print(e);
             }
           }

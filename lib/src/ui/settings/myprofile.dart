@@ -83,6 +83,7 @@ class _MyProfileState extends State<MyProfile> {
     super.initState();
     Future.delayed(Duration.zero, () {
       print(widget.phoneNumber);
+
       getProfileDetails(widget.phoneNumber!);
     });
     _socialInstagram.text = "";

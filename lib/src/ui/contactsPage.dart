@@ -127,7 +127,6 @@ class _ContactsPageState extends State<ContactsPage> {
       return nameA.compareTo(nameB);
     });
     SuspensionUtil.setShowSuspensionStatus(_contacts);
-    // SuspensionUtil.sortListBySuspensionTag(_contacts);
   }
 
   Decoration getIndexBarDecoration(Color color) {

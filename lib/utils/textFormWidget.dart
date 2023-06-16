@@ -1,6 +1,7 @@
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path/path.dart';
 
 class TextFormFieldWidget extends StatefulWidget {
   final TextInputType? textInputType;
@@ -32,8 +33,7 @@ class TextFormFieldWidget extends StatefulWidget {
       this.onSubmitField,
       this.onFieldTap,
       this.prefixIcon,
-        this.regexp
-      });
+      this.regexp});
 
   @override
   _TextFormFieldWidgetState createState() => _TextFormFieldWidgetState();
@@ -45,19 +45,18 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
     return Container(
       padding: EdgeInsets.only(left: widget.padding!, right: widget.padding!),
       child: TextFormField(
-        style: Theme.of(context)
-            .textTheme
-            .headline5
-            ?.apply(color: AppColor.whiteColor),
+        style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
         inputFormatters: [
-          FilteringTextInputFormatter.allow(widget.regexp==null ? RegExp('.*' ) : widget.regexp!),
+          FilteringTextInputFormatter.allow(widget.regexp == null ? RegExp('.*') : widget.regexp!),
           FilteringTextInputFormatter.deny(RegExp(r'\s')),
-
-
         ],
+        onTap: () {
+          FocusScope.of(context).requestFocus(widget.focusNode);
+        },
         decoration: InputDecoration(
           hintText: widget.hintText,
           filled: true,
+          border: InputBorder.none,
           fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
           //errorStyle: const TextStyle(color: Colors.red,fontSize: 15.0),
           enabledBorder: const OutlineInputBorder(
@@ -66,29 +65,26 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
             ),
           ),
 
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Color.fromRGBO(255, 255, 255, 0.20)),
+          errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColor.redColor),
           ),
-          // errorBorder: const OutlineInputBorder(
-          //   borderSide: BorderSide(color: AppColor.whiteColor),
-          // ),
           // focusedErrorBorder: const OutlineInputBorder(
           //   borderSide: BorderSide(
           //     color: Colors.transparent,
           //   ),
           // ),
-          hintStyle: Theme.of(context)
-              .textTheme
-              .headline5
-              ?.apply(color: Colors.white54),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+          hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
         ),
         cursorColor: AppColor.whiteColor,
         keyboardType: widget.textInputType,
         textInputAction: widget.actionKeyboard,
         controller: widget.controller,
         validator: (value) {
-          String? resultValidate =
-              widget.functionValidate!(value, widget.parametersValidate);
+          String? resultValidate = widget.functionValidate!(value, widget.parametersValidate);
           return resultValidate;
         },
       ),
@@ -108,8 +104,7 @@ String? requiredValidator(value, messageError) {
   return null;
 }
 
-void changeFocus(BuildContext context, FocusNode? currentFocus, FocusNode? nextFocus) {
-
-  currentFocus?.unfocus();
-  FocusScope.of(context).requestFocus(nextFocus);
-}
+// void changeFocus(BuildContext context, FocusNode? currentFocus, FocusNode? nextFocus) {
+//   currentFocus?.unfocus();
+//   FocusScope.of(context).requestFocus(nextFocus);
+// }

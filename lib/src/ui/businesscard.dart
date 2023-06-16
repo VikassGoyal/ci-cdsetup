@@ -122,7 +122,7 @@ class _BussinessCardState extends State<BussinessCard> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
+                    //color: Colors.white,
                   ),
                   margin: const EdgeInsets.only(left: 15.0, top: 25.0, right: 15.0),
                   padding: const EdgeInsets.all(10),
@@ -217,7 +217,14 @@ class _BussinessCardState extends State<BussinessCard> {
               ),
             ),
             onSelected: (value) {
-              if (value == 1) {
+              print(value);
+              if (value == 3) {
+                print("val");
+
+                this.imageName = "";
+
+                setState(() {});
+              } else if (value == 1) {
                 loadbusinesslogo();
               } else {
                 showDialog(
@@ -261,6 +268,13 @@ class _BussinessCardState extends State<BussinessCard> {
                   "Change color",
                   style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
                 ),
+              ),
+              PopupMenuItem(
+                value: 3,
+                child: Text(
+                  "Remove Image",
+                  style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
+                ),
               )
             ],
           )
@@ -270,7 +284,7 @@ class _BussinessCardState extends State<BussinessCard> {
           ? const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children:  [
+                children: [
                   CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation(AppColor.primaryColor),
                   ),
@@ -355,31 +369,28 @@ class _BussinessCardState extends State<BussinessCard> {
     }
   }
 
-File? image;
-String imagePath = "";
- Uint8List? imageBytes;
+  File? image;
+  String imagePath = "";
+  Uint8List? imageBytes;
   Future<void> loadbusinesslogo() async {
-try{
-  final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  if(image == null) return;
-  final imageTemporary = File(image.path);
-  imagePath = image.path;
-  imageBytes =  await image.readAsBytes();
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      final imageTemporary = File(image.path);
+      imagePath = image.path;
+      imageBytes = await image.readAsBytes();
 
-
-setState(() {
-  this.image = imageTemporary;
-   var buffer = imageBytes!.buffer;
-    var base64data = base64.encode(Uint8List.view(buffer));
-    uploadedImageLogo = base64data;
-    uploadebusinesslogo();
-});
- 
-
-} on PlatformException catch (e) {
-  print('Failed to pick image: $e');
-  Utils.displayToast("Failed to pick image: $e");
-}
+      setState(() {
+        this.image = imageTemporary;
+        var buffer = imageBytes!.buffer;
+        var base64data = base64.encode(Uint8List.view(buffer));
+        uploadedImageLogo = base64data;
+        uploadebusinesslogo();
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+      Utils.displayToast("Failed to pick image: $e");
+    }
   }
 
   void uploadebusinesslogo() async {

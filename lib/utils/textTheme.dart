@@ -98,7 +98,7 @@ class ConetTextTheme {
       color: AppColor.blackColor,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
-      fontSize: 10,
+      fontSize: 18,
       letterSpacing: 0.2,
     ),
     headline4: TextStyle(

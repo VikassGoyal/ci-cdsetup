@@ -1134,7 +1134,7 @@ class _MyProfileState extends State<MyProfile> {
                     borderRadius: BorderRadius.circular(100.0),
                     child: FadeInImage.assetNetwork(
                       placeholder: "assets/images/profile.png",
-                      image: userImage != null ? AppConstant.profileImageBaseUrl + userImage : "",
+                      image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
                       fit: BoxFit.cover,
                       imageErrorBuilder: (context, error, stackTrace) {
                         return Image.asset(
@@ -1195,10 +1195,11 @@ class _MyProfileState extends State<MyProfile> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => EditProfile(),
-                ),
-              );
+                MaterialPageRoute(builder: (context) => EditProfile()),
+              ).then((value) {
+                getProfileDetails(widget.phoneNumber!);
+                setState(() {});
+              });
             },
             child: Text(
               "Edit",

@@ -135,7 +135,7 @@ class _LoginState extends State<Login> {
                   MaterialPageRoute(builder: (context) => HomeScreen()),
                 );
               } else {
-                Utils.displayToast(response["message"]);
+                Utils.displayToastBottomError(response["message"]);
               }
             } catch (e) {
               bool hasInternet = await checkInternetConnection();

@@ -100,8 +100,13 @@ String? commonValidation(String? value, String? messageError) {
 String? requiredValidator(value, messageError) {
   if (value.isEmpty) {
     return messageError;
+  } else if (RegExp(
+              r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+          .hasMatch(value) ||
+      RegExp(r"^[0-9]{10}$").hasMatch(value)) {
+    return null;
   }
-  return null;
+  return "Please Enter Valid Email/Mobile.";
 }
 
 // void changeFocus(BuildContext context, FocusNode? currentFocus, FocusNode? nextFocus) {

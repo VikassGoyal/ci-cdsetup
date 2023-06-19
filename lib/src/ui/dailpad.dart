@@ -366,20 +366,20 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
 
         print(widget.title);
 
-        widget.onTap!(widget.title);
+        //widget.onTap!(widget.title);
 
-        if (widget.shouldAnimate!) {
-          if (_animationController!.status == AnimationStatus.completed) {
-            _animationController?.reverse();
-          } else {
-            _animationController?.forward();
-            _timer = Timer(const Duration(milliseconds: 200), () {
-              setState(() {
-                _animationController?.reverse();
-              });
-            });
-          }
-        }
+        //   if (widget.shouldAnimate!) {
+        //     if (_animationController!.status == AnimationStatus.completed) {
+        //       _animationController?.reverse();
+        //     } else {
+        //       _animationController?.forward();
+        //       _timer = Timer(const Duration(milliseconds: 200), () {
+        //         setState(() {
+        //           _animationController?.reverse();
+        //         });
+        //       });
+        //     }
+        //   }
       },
       onLongPress: () {
         widget.onLongPress!(widget.title);

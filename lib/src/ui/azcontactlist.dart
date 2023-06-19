@@ -144,8 +144,7 @@ class _AZContactListState extends State<AZContactList> {
                 color: Colors.blue[700]!.withAlpha(200),
                 shape: BoxShape.circle,
               ),
-              child: Text(hint,
-                  style: const TextStyle(color: Colors.white, fontSize: 30.0)),
+              child: Text(hint, style: const TextStyle(color: Colors.white, fontSize: 30.0)),
             );
           },
           indexBarMargin: const EdgeInsets.all(10),

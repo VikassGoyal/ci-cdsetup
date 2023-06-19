@@ -11,8 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'bottomNavigationEvent.dart';
 part 'bottomNavigationState.dart';
 
-class BottomNavigationBloc
-    extends Bloc<BottomNavigationEvent, BottomNavigationState> {
+class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationState> {
   BottomNavigationBloc(
       {required this.contactPageRepository,
       required this.recentPageRepository,
@@ -24,6 +23,10 @@ class BottomNavigationBloc
       add(PageTapped(index: currentIndex));
     });
 
+    on<PageRefreshed>((event, emit) {
+      add(PageTapped(index: currentIndex));
+    });
+
     on<PageTapped>((event, emit) async {
       currentIndex = event.index;
       emit(CurrentIndexChanged(currentIndex: currentIndex));
@@ -32,8 +35,7 @@ class BottomNavigationBloc
       if (currentIndex == 0) {
         var data = await _getContactPageData();
         var mostDailedContactData = await getMostDailedContacts();
-        emit(ContactPageLoaded(
-            contactObject: data, mostDailedContacts: mostDailedContactData));
+        emit(ContactPageLoaded(contactObject: data, mostDailedContacts: mostDailedContactData));
       }
       if (currentIndex == 1) {
         var data = await _getRecentPageData();
@@ -103,10 +105,10 @@ class BottomNavigationBloc
       var data = await recentPageRepository.getData();
 
       if (Platform.isAndroid) {
-        if (data == null) {
-          await recentPageRepository.fetchData();
-          data = await recentPageRepository.getData();
-        }
+        // if (data == null) {
+        await recentPageRepository.fetchData();
+        data = await recentPageRepository.getData();
+        // }
       }
 
       return data;
@@ -148,3 +150,47 @@ class BottomNavigationBloc
     return data;
   }
 }
+
+// class RefreshBloc extends Bloc<RefreshEvent, bool> {
+//   RefreshBloc() : super(false);
+
+//   @override
+//   Stream<bool> mapEventToState(RefreshEvent event) async* {
+//     if (event is RefreshData) {
+//       yield true; // Indicate that refresh is in progress
+
+//       try {
+//         // Perform your data refresh logic here
+//         await _fetchRecentData(); // Example: Fetch recent data from an API
+//         yield false; // Indicate that refresh is complete
+//       } catch (error) {
+//         yield false; // Indicate that refresh failed
+//         // Handle the error as per your application requirements
+//       }
+//     }
+//   }
+
+//   Future<void> _fetchRecentData() async {
+//     // Example: Fetch recent data from an API
+//     // Add your implementation here
+//     try {
+//       var data = await RecentPageRepository().fetchData();
+//       print("Recentpage : $data");
+//     } catch (e) {
+//       print("Recentpage : $e");
+//     }
+//   }
+// }
+
+// // Define the refresh event
+// abstract class RefreshEvent {
+//   const RefreshEvent();
+
+//   @override
+//   List<Object> get props => [];
+// }
+
+// class RefreshData extends RefreshEvent {
+//   @override
+//   String toString() => 'RefreshData';
+// }

@@ -10,12 +10,14 @@ import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
 
+import '../../bottomNavigation/bottomNavigationBloc.dart';
 import 'notification.dart';
 
 class RecentPage extends StatefulWidget {
@@ -34,7 +36,7 @@ class _RecentPageState extends State<RecentPage> {
   bool _loader = false;
   bool _showCancelIcon = false;
   // final TextEditingController _textEditingController = TextEditingController();
-TextEditingController? _textEditingController;
+  TextEditingController? _textEditingController;
   @override
   void initState() {
     super.initState();
@@ -89,20 +91,14 @@ TextEditingController? _textEditingController;
                           ? "Unknown"
                           : _callHistory![index].name!,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline3
-                          ?.copyWith(fontWeight: FontWeight.w400),
+                      style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w400),
                     ),
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        _callHistory![index].callType.toString() !=
-                                    "CallType.missed" &&
-                                _callHistory![index].callType.toString() !=
-                                    "CallType.rejected"
-                            ? _callHistory![index].callType.toString() ==
-                                    "CallType.incoming"
+                        _callHistory![index].callType.toString() != "CallType.missed" &&
+                                _callHistory![index].callType.toString() != "CallType.rejected"
+                            ? _callHistory![index].callType.toString() == "CallType.incoming"
                                 ? Image.asset(
                                     "assets/icons/ic_incoming_call.png",
                                     width: 10,
@@ -119,9 +115,10 @@ TextEditingController? _textEditingController;
                         Text(
                           _callHistory![index].number ?? "",
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.headline6?.copyWith(
-                              color: AppColor.gray30Color,
-                              fontWeight: FontWeight.w400),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6
+                              ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
                         )
                       ],
                     )
@@ -133,8 +130,10 @@ TextEditingController? _textEditingController;
             Text(
               timeFormat(_callHistory![index].timestamp),
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.headline6?.copyWith(
-                  color: AppColor.gray30Color, fontWeight: FontWeight.w400),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6
+                  ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
             ),
             Visibility(
               visible: _callHistory![index].number != null,
@@ -152,16 +151,13 @@ TextEditingController? _textEditingController;
                   onPressed: () {
                     print("Cliked");
 
-                    List<RecentCalls> data = _callHistory
-                        !.where((element) =>
-                            element.number == _callHistory![index].number)
-                        .toList();
+                    List<RecentCalls> data =
+                        _callHistory!.where((element) => element.number == _callHistory![index].number).toList();
 
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            CallHistroyProfile(callLogs: data),
+                        builder: (context) => CallHistroyProfile(callLogs: data),
                       ),
                     );
                   },
@@ -179,35 +175,46 @@ TextEditingController? _textEditingController;
         child: RefreshIndicator(
           color: AppColor.primaryColor,
           backgroundColor: AppColor.whiteColor,
-onRefresh: () {
+          onRefresh: () {
             return Future.delayed(
-              const Duration(seconds: 1),
+              const Duration(seconds: 3),
               () {
-                setState(() {
-               
-                  _callHistory = widget.callLogs;
-                 
-                
-                });
+                BlocProvider.of<BottomNavigationBloc>(context).add(PageRefreshed(index: 1));
               },
             );
-},
-          child: ListView.separated(
-            shrinkWrap: true,
-            physics: const AlwaysScrollableScrollPhysics(),
-            itemCount: _callHistory!.length,
-            primary: false,
-            scrollDirection: Axis.vertical,
-            separatorBuilder: (context, index) {
-              return Divider(
-                height: 1,
-                color: Colors.grey.shade200,
-              );
-            },
-            itemBuilder: (context, index) {
-              return contactListItem(index);
-            },
-          ),
+          },
+          child: _callHistory == null || _callHistory!.isEmpty
+              ? Opacity(
+                  opacity: 0,
+                  child: ListView.separated(
+                    itemCount: 0,
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        height: 1,
+                        color: Colors.grey.shade200,
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                )
+              : ListView.separated(
+                  shrinkWrap: true,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount: _callHistory!.length,
+                  primary: false,
+                  scrollDirection: Axis.vertical,
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      height: 1,
+                      color: Colors.grey.shade200,
+                    );
+                  },
+                  itemBuilder: (context, index) {
+                    return contactListItem(index);
+                  },
+                ),
         ),
       );
     }
@@ -263,13 +270,10 @@ onRefresh: () {
                   child: SizedBox(
                     height: 36,
                     child: TextField(
-                      
                       controller: _textEditingController,
                       onChanged: (value) {
                         setState(() {
-                          value.length > 1
-                              ? _showCancelIcon = true
-                              : _showCancelIcon = false;
+                          value.length > 1 ? _showCancelIcon = true : _showCancelIcon = false;
                         });
                         filterSearchResults(value);
                       },
@@ -284,27 +288,22 @@ onRefresh: () {
                         hintText: "Search",
                         fillColor: Colors.white,
                         filled: true,
-                        hintStyle: Theme.of(context)
-                            .textTheme
-                            .headline3
-                            ?.apply(color: AppColor.gray30Color),
+                        hintStyle: Theme.of(context).textTheme.headline3?.apply(color: AppColor.gray30Color),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
                           borderSide: BorderSide.none,
                         ),
                         prefixIconConstraints: const BoxConstraints(maxHeight: 20),
                         prefixIcon: InkWell(
-                          onTap: 
-                          () {
-                              if (_showCancelIcon == true) {
-                                _clearText();
-                              }
-                            },
-                          child:  Padding(
-                            padding:  EdgeInsets.only(left: 11, right: 11),
+                          onTap: () {
+                            if (_showCancelIcon == true) {
+                              _clearText();
+                            }
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 11, right: 11),
                             child: Icon(
-                              
-                                _showCancelIcon ? Icons.close : Icons.search,
+                              _showCancelIcon ? Icons.close : Icons.search,
                               color: AppColor.gray30Color,
                               size: 18,
                             ),
@@ -439,7 +438,6 @@ onRefresh: () {
   }
 
   scanQrCode() async {
-    
     Navigator.of(context)
         .push(MaterialPageRoute(
       builder: (context) => const QRScreen(),
@@ -458,7 +456,7 @@ onRefresh: () {
         }
       }
     });
-    
+
     // String? barcode = await scanner.scan();
     // setState(() {
     //   _outputController!.clear();
@@ -501,8 +499,8 @@ onRefresh: () {
     var outputDate = outputFormat.format(date);
     return outputDate;
   }
-  
-   void _clearText() {
+
+  void _clearText() {
     _textEditingController!.clear();
     FocusScope.of(context).requestFocus(FocusNode());
     setState(() {

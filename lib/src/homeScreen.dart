@@ -17,22 +17,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'CoNet',
-      home: BlocProvider<BottomNavigationBloc>(
-        create: (context) => BottomNavigationBloc(
-          contactPageRepository: ContactPageRepository(),
-          recentPageRepository: RecentPageRepository(),
-          keypadPageRepository: KeypadPageRepository(),
-          conetWebPageRepository: CoNetWebPageRepository(),
-          settingsPageRepository: SettingsPageRepository(),
-        )..add(AppStarted()),
-        child: const AppScreen(),
-      ),
+      home: const AppScreen(),
       theme: ThemeData(
         primaryColor: AppColor.whiteColor,
-        textTheme: Platform.isAndroid
-            ? ConetTextTheme.androidTextTheme
-            : ConetTextTheme.iosTextTheme,
+        textTheme: Platform.isAndroid ? ConetTextTheme.androidTextTheme : ConetTextTheme.iosTextTheme,
         colorScheme: ColorScheme.fromSwatch().copyWith(
           brightness: Brightness.dark,
         ),

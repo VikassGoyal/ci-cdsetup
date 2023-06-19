@@ -226,6 +226,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
                                 () {
                                   _value = _value.substring(0, _value.length - 1);
                                   textEditingController!.text = _value;
+                                  _contactNameVisible = false;
                                 },
                               );
                               getContactName();
@@ -287,11 +288,30 @@ class _DialPadCustomState extends State<DialPadCustom> {
     setState(() {
       // if (_value.length == 10) {
       try {
-        List<AllContacts> data = _loadedcontacts!.where((element) => element.phone == _value).toList();
+        // _value = _value.replaceAll(',', '').replaceAll('(', '').replaceAll(')', '').replaceAll(' ', '');
+        // List<AllContacts> data = _loadedcontacts!
+        //     .where((element) =>
+        //         element.phone!
+        //             .replaceAll(',', '')
+        //             .replaceAll('(', '')
+        //             .replaceAll(')', '')
+        //             .replaceAll(' ', '')
+        //             .replaceAll('-', '') ==
+        //         _value)
+        //     .toList();
+        List<AllContacts> data = _loadedcontacts!
+            .where((element) =>
+                element.phone!
+                    .replaceAll(RegExp(r'[\s(),-]'), '') // Remove spaces, parentheses, commas, and hyphens
+                    .toLowerCase() ==
+                _value.toLowerCase()) // Compare case-insensitively
+            .toList();
         print(data);
         // print(data[0].name);
-        _contactNameVisible = true;
-        _contactName = data[0].name!;
+        if (data.isNotEmpty) {
+          _contactNameVisible = true;
+          _contactName = data[0].name!;
+        }
       } catch (e) {
         print("Err");
         print(e);

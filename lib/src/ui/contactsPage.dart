@@ -18,6 +18,7 @@ import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -28,6 +29,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../bottomNavigation/bottomNavigationBloc.dart';
 import 'contact/contactProfile.dart';
 
 class ContactsPage extends StatefulWidget {
@@ -108,8 +110,45 @@ class _ContactsPageState extends State<ContactsPage> {
     });
   }
 
+  // void _handleList(List<AllContacts> list) {
+  //   for (int i = 0, length = list.length; i < length; i++) {
+  //     String? name = list[i].name ?? list[i].phone;
+  //     String pinyin = PinyinHelper.getPinyinE(name!);
+  //     String tag = pinyin.substring(0, 1).toUpperCase();
+  //     if (RegExp("[A-Z]").hasMatch(tag)) {
+  //       list[i].tagIndex = tag;
+  //     } else {
+  //       list[i].tagIndex = "#";
+  //     }
+
+  //     Set<String> uniqueContacts = {};
+
+  //     String contactKey = '${list[i].name}${list[i].phone}'; // Create a unique key based on name and phone
+  //     if (!uniqueContacts.contains(contactKey)) {
+  //       uniqueContacts.add(contactKey); // Add the unique key to the set
+  //     } else {
+  //       // Duplicate contact found, remove it from the list
+  //       list.removeAt(i);
+  //       length--; // Update the length to avoid index out of bounds
+  //       i--; // Decrement the index since the list has been modified
+  //     }
+  //   }
+
+  //   _sortListBySuspensionTag(_contacts);
+  //   _contacts.sort((a, b) {
+  //     final nameA = a.name?.toLowerCase() ?? '';
+  //     final nameB = b.name?.toLowerCase() ?? '';
+  //     return nameA.compareTo(nameB);
+  //   });
+  //   SuspensionUtil.setShowSuspensionStatus(_contacts);
+  //   // SuspensionUtil.sortListBySuspensionTag(_contacts);
+  // }
+
   void _handleList(List<AllContacts> list) {
-    for (int i = 0, length = list.length; i < length; i++) {
+    Set<String> uniqueContacts = {};
+    List<AllContacts> uniqueList = [];
+
+    for (int i = 0; i < list.length; i++) {
       String? name = list[i].name ?? list[i].phone;
       String pinyin = PinyinHelper.getPinyinE(name!);
       String tag = pinyin.substring(0, 1).toUpperCase();
@@ -118,15 +157,26 @@ class _ContactsPageState extends State<ContactsPage> {
       } else {
         list[i].tagIndex = "#";
       }
+
+      String contactKey = '${list[i].name}${list[i].phone}'; // Create a unique key based on name and phone
+      if (!uniqueContacts.contains(contactKey)) {
+        uniqueContacts.add(contactKey); // Add the unique key to the set
+        uniqueList.add(list[i]); // Add the unique contact to the unique list
+      }
     }
 
-    _sortListBySuspensionTag(_contacts);
-    _contacts.sort((a, b) {
+    _sortListBySuspensionTag(uniqueList);
+    uniqueList.sort((a, b) {
       final nameA = a.name?.toLowerCase() ?? '';
       final nameB = b.name?.toLowerCase() ?? '';
       return nameA.compareTo(nameB);
     });
-    SuspensionUtil.setShowSuspensionStatus(_contacts);
+    SuspensionUtil.setShowSuspensionStatus(uniqueList);
+    // SuspensionUtil.sortListBySuspensionTag(uniqueList);
+
+    // Update the original list with the unique list
+    list.clear();
+    list.addAll(uniqueList);
   }
 
   Decoration getIndexBarDecoration(Color color) {
@@ -529,6 +579,7 @@ class _ContactsPageState extends State<ContactsPage> {
                             onTap: () {
                               if (_showCancelIcon == true) {
                                 _clearText();
+                                restoreSearchResults();
                               }
                             },
                             child: Padding(
@@ -726,6 +777,14 @@ class _ContactsPageState extends State<ContactsPage> {
     } catch (e) {
       print(e);
     }
+  }
+
+  void restoreSearchResults() {
+    setState(() {
+      _contacts = [];
+      _contacts = _loadedcontacts;
+      _searchResult = [];
+    });
   }
 
   void filterSearchResults(String query) {

@@ -30,6 +30,7 @@ class _KeypadPageState extends State<KeypadPage> {
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
+        centerTitle: false,
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
         title: SvgPicture.asset(
@@ -51,7 +52,9 @@ class _KeypadPageState extends State<KeypadPage> {
             if (number == "") {
               return;
             }
+
             recentPageRepository.insertDailedCall(number);
+
             _callNumber(number);
           },
         ),

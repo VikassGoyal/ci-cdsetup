@@ -1,5 +1,10 @@
 import 'dart:async';
 
+import 'package:conet/repositories/coNetWebPageRepository.dart';
+import 'package:conet/repositories/contactPageRepository.dart';
+import 'package:conet/repositories/keypadPageRepository.dart';
+import 'package:conet/repositories/recentPageRepository.dart';
+import 'package:conet/repositories/settingsPageRepository.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'bottomNavigation/bottomNavigationBloc.dart';
 import 'firebase_options.dart';
 import 'src/app.dart';
 
@@ -43,7 +49,19 @@ void main() {
       }
     };
 
-    runApp(const App());
+    runApp(BlocProvider<BottomNavigationBloc>(
+        create: (context) => BottomNavigationBloc(
+              contactPageRepository: ContactPageRepository(),
+              recentPageRepository: RecentPageRepository(),
+              keypadPageRepository: KeypadPageRepository(),
+              conetWebPageRepository: CoNetWebPageRepository(),
+              settingsPageRepository: SettingsPageRepository(),
+            )..add(AppStarted()),
+        child: Builder(builder: (context) {
+          BlocProvider.of<BottomNavigationBloc>(context).add(AppStarted());
+
+          return const App();
+        })));
   }, (error, stack) {
     print("MainApp : runZonedGuarded : $error");
     FirebaseCrashlytics.instance.recordError(error, stack);

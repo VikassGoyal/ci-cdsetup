@@ -11,8 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'bottomNavigationEvent.dart';
 part 'bottomNavigationState.dart';
 
-class BottomNavigationBloc
-    extends Bloc<BottomNavigationEvent, BottomNavigationState> {
+class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationState> {
   BottomNavigationBloc(
       {required this.contactPageRepository,
       required this.recentPageRepository,
@@ -24,6 +23,10 @@ class BottomNavigationBloc
       add(PageTapped(index: currentIndex));
     });
 
+    on<PageRefreshed>((event, emit) {
+      add(PageTapped(index: currentIndex));
+    });
+
     on<PageTapped>((event, emit) async {
       currentIndex = event.index;
       emit(CurrentIndexChanged(currentIndex: currentIndex));
@@ -32,8 +35,7 @@ class BottomNavigationBloc
       if (currentIndex == 0) {
         var data = await _getContactPageData();
         var mostDailedContactData = await getMostDailedContacts();
-        emit(ContactPageLoaded(
-            contactObject: data, mostDailedContacts: mostDailedContactData));
+        emit(ContactPageLoaded(contactObject: data, mostDailedContacts: mostDailedContactData));
       }
       if (currentIndex == 1) {
         var data = await _getRecentPageData();
@@ -103,10 +105,10 @@ class BottomNavigationBloc
       var data = await recentPageRepository.getData();
 
       if (Platform.isAndroid) {
-        if (data == null) {
-          await recentPageRepository.fetchData();
-          data = await recentPageRepository.getData();
-        }
+        // if (data == null) {
+        await recentPageRepository.fetchData();
+        data = await recentPageRepository.getData();
+        // }
       }
 
       return data;

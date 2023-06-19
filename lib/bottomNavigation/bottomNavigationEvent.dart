@@ -20,3 +20,14 @@ class PageTapped extends BottomNavigationEvent {
   @override
   String toString() => 'PageTapped: $index';
 }
+
+class PageRefreshed extends BottomNavigationEvent {
+  final int index;
+
+  const PageRefreshed({required this.index});
+
+  @override
+  String toString() => 'PageRefreshed: $index';
+}
+
+//5555648583

@@ -404,6 +404,9 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
       onLongPress: () {
         widget.onLongPress!(widget.title);
       },
+      onLongPress: () {
+        widget.onLongPress!(widget.title);
+      },
       child: ClipOval(
         child: AnimatedBuilder(
           animation: _colorTween!,

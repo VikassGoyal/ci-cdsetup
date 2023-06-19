@@ -150,3 +150,47 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
     return data;
   }
 }
+
+// class RefreshBloc extends Bloc<RefreshEvent, bool> {
+//   RefreshBloc() : super(false);
+
+//   @override
+//   Stream<bool> mapEventToState(RefreshEvent event) async* {
+//     if (event is RefreshData) {
+//       yield true; // Indicate that refresh is in progress
+
+//       try {
+//         // Perform your data refresh logic here
+//         await _fetchRecentData(); // Example: Fetch recent data from an API
+//         yield false; // Indicate that refresh is complete
+//       } catch (error) {
+//         yield false; // Indicate that refresh failed
+//         // Handle the error as per your application requirements
+//       }
+//     }
+//   }
+
+//   Future<void> _fetchRecentData() async {
+//     // Example: Fetch recent data from an API
+//     // Add your implementation here
+//     try {
+//       var data = await RecentPageRepository().fetchData();
+//       print("Recentpage : $data");
+//     } catch (e) {
+//       print("Recentpage : $e");
+//     }
+//   }
+// }
+
+// // Define the refresh event
+// abstract class RefreshEvent {
+//   const RefreshEvent();
+
+//   @override
+//   List<Object> get props => [];
+// }
+
+// class RefreshData extends RefreshEvent {
+//   @override
+//   String toString() => 'RefreshData';
+// }

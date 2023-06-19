@@ -40,7 +40,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'CoNet',
       theme: ThemeData(
         primaryColor: AppColor.whiteColor,

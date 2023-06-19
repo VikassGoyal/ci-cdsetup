@@ -31,7 +31,7 @@ class _QRScreenState extends State<QRScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBar(
+      appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
         leading: InkWell(
@@ -49,10 +49,7 @@ class _QRScreenState extends State<QRScreen> {
               ),
               Text(
                 "Back",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.whiteColor),
               )
             ],
           ),
@@ -60,10 +57,7 @@ class _QRScreenState extends State<QRScreen> {
         centerTitle: true,
         title: Text(
           "Social Connect",
-          style: Theme.of(context)
-              .textTheme
-              .headline4
-              ?.apply(color: AppColor.whiteColor),
+          style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.whiteColor),
         ),
       ),
       body: Column(
@@ -76,10 +70,8 @@ class _QRScreenState extends State<QRScreen> {
 
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 180.0
-        : 300.0;
+    var scanArea =
+        (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400) ? 180.0 : 300.0;
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
@@ -99,10 +91,11 @@ class _QRScreenState extends State<QRScreen> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
+    controller.scannedDataStream.listen((scanData) async {
+      await controller.pauseCamera();
+
       setState(() {
         result = scanData;
-        
         Navigator.pop(context, scanData.code);
       });
     });

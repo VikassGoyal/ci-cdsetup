@@ -1,7 +1,9 @@
 import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/login.dart';
+import 'package:conet/src/ui/addContactUserProfilePage.dart';
 import 'package:conet/src/ui/conetWebPage.dart';
 import 'package:conet/src/ui/notification.dart';
 import 'package:conet/src/ui/qrScreen.dart';
@@ -15,6 +17,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
@@ -357,15 +360,15 @@ class _SettingsState extends State<Settings> {
     ))
         .then((value) {
       if (value != null) {
-        setState(() {
-          _outputController!.clear();
-          _outputController!.text = value!;
-        });
+        _outputController!.clear();
+        _outputController!.text = value!;
         if (_outputController!.text != '') {
           setState(() {
             _loader = true;
           });
           _sendQrApi();
+        } else {
+          Utils.displayToastBottomError("Invalid QR code");
         }
       }
     });
@@ -380,19 +383,43 @@ class _SettingsState extends State<Settings> {
   }
 
   _sendQrApi() async {
+    var contactDetail;
     var requestBody = {"value": _outputController!.text, "qrcode": true};
     var response = await ContactBloc().sendQrValue(requestBody);
-
     if (response['status'] == true) {
       Utils.displayToast("Scanned successfully");
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) {
-            return NotificationScreen();
-          },
-        ),
-      );
+      try {
+        var requestBody = {
+          "phone": _outputController!.text,
+        };
+        var response = await ContactBloc().checkContactForAddNew(requestBody);
+        if (response["user"] != null) {
+          contactDetail = ContactDetail.fromJson(response["user"]);
+          setState(() {
+            _loader = false;
+          });
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) {
+                return AddContactUserProfilePage(
+                  contactDetails: contactDetail,
+                  conetUser: true,
+                );
+              },
+            ),
+          );
+        } else {
+          setState(() {
+            _loader = false;
+          });
+          Fluttertoast.cancel();
+          Utils.displayToastTopError(response["message"]);
+        }
+      } catch (e) {
+        Utils.displayToastTopError("Something went wrong");
+      }
     } else if (response['status'] == "Token is Expired") {
       Utils.displayToast('Token is Expired');
       tokenExpired(context);

@@ -289,6 +289,12 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
               ),
               onSelected: (value) {
                 print(value);
+                if (value == 2) {
+                  String contactName = _personalName.text;
+                  String phoneNumber = _personalNumber.text;
+                  String message = 'Name: $contactName\nPhone: $phoneNumber';
+                  Share.share(message);
+                }
               },
               itemBuilder: (context) => [
                 PopupMenuItem(
@@ -305,13 +311,6 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                     style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
                   ),
                 ),
-                PopupMenuItem(
-                  value: 2,
-                  child: Text(
-                    "Block",
-                    style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
-                  ),
-                )
               ],
             )
           ],

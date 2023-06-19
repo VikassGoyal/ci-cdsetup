@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/utils/theme.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dtmf/dtmf.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
@@ -57,22 +58,29 @@ class _DialPadCustomState extends State<DialPadCustom> {
     // print(_loadedcontacts[0].phone);
   }
 
-  _setText(String? value) async {
+  _setText(String? value, bool longPress) async {
     if (widget.enableDtmf!) {
       Dtmf.playTone(digits: value!);
     }
     print(textEditingController!.text.length);
-    if (textEditingController!.text.length == 17) {
+    if (textEditingController!.text.length == 27) {
       return;
     }
 
-    setState(() {
-      _value += value!;
+    if (value == "0" && longPress) {
+      setState(() {
+        _value += "+";
+        textEditingController!.text = _value;
+      });
+    } else {
+      setState(() {
+        _value += value!;
 
-      textEditingController!.text = _value;
+        textEditingController!.text = _value;
 
-      print(textEditingController!.text);
-    });
+        print(textEditingController!.text);
+      });
+    }
 
     getContactName();
   }
@@ -96,7 +104,12 @@ class _DialPadCustomState extends State<DialPadCustom> {
           subtitle: subTitle[i],
           color: widget.buttonColor,
           textColor: widget.buttonTextColor!,
-          onTap: _setText,
+          onTap: (value) {
+            _setText(value, false);
+          },
+          onLongPress: (value) {
+            _setText(value, true);
+          },
         ),
       );
     }
@@ -123,6 +136,8 @@ class _DialPadCustomState extends State<DialPadCustom> {
           Padding(
             padding: const EdgeInsets.all(0),
             child: TextFormField(
+              enableInteractiveSelection: false,
+              scrollPhysics: const BouncingScrollPhysics(),
               readOnly: true,
               style: TextStyle(
                 fontFamily: 'Sfpro-Rounded-Semibold',
@@ -219,6 +234,13 @@ class _DialPadCustomState extends State<DialPadCustom> {
                     onLongPress: () {
                       print("onLongPress");
                       print(_value);
+
+                      setState(
+                        () {
+                          _value = "";
+                          textEditingController!.text = _value;
+                        },
+                      );
                     },
                     onLongPressStart: (_) async {
                       print("onLongPressStart");
@@ -294,6 +316,7 @@ class DialButton extends StatefulWidget {
   final IconData? icon;
   final Color? iconColor;
   final ValueSetter<String?>? onTap;
+  final ValueSetter<String?>? onLongPress;
   final bool? shouldAnimate;
   const DialButton(
       {this.key,
@@ -304,6 +327,7 @@ class DialButton extends StatefulWidget {
       this.icon,
       this.iconColor,
       this.shouldAnimate,
+      this.onLongPress,
       this.onTap});
 
   @override
@@ -336,9 +360,9 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
 
     return GestureDetector(
       onTap: () {
-        if (widget.title != null) {
-          widget.onTap!(widget.title!);
-        }
+        // if(widget.title != null) {
+        //   widget.onTap(widget.title!);
+        // }
 
         print(widget.title);
 
@@ -356,6 +380,9 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
         //       });
         //     }
         //   }
+      },
+      onLongPress: () {
+        widget.onLongPress!(widget.title);
       },
       child: ClipOval(
         child: AnimatedBuilder(

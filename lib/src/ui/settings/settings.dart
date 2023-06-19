@@ -1,7 +1,9 @@
 import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/login.dart';
+import 'package:conet/src/ui/addContactUserProfilePage.dart';
 import 'package:conet/src/ui/conetWebPage.dart';
 import 'package:conet/src/ui/notification.dart';
 import 'package:conet/src/ui/qrScreen.dart';
@@ -15,6 +17,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
@@ -65,253 +68,246 @@ class _SettingsState extends State<Settings> {
           height: 24,
         ),
       ),
-      body: LoadingOverlay(
-        isLoading: _loader,
-        opacity: 0.5,
-        progressIndicator: const CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ListTile(
-                onTap: () async {
-                  SharedPreferences preferences = await SharedPreferences.getInstance();
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ListTile(
+              onTap: () async {
+                SharedPreferences preferences = await SharedPreferences.getInstance();
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => MyProfile(preferences.getString("phone")),
-                    ),
-                  );
-                },
-                title: Text("My Profile", style: Theme.of(context).textTheme.headline3),
-                subtitle: RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: "Business, ",
-                          style: Theme.of(context).textTheme.headline3!.apply(color: AppColor.accentColor)),
-                      TextSpan(
-                        text: "Personal",
-                        style: Theme.of(context).textTheme.headline3!.apply(color: AppColor.primaryColor),
-                      ),
-                    ],
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => MyProfile(preferences.getString("phone")),
                   ),
-                ),
-                leading: SvgPicture.asset(
-                  "assets/icons/ic_settings_profile.svg",
-                  height: 40,
-                ),
-              ),
-              // Divider(height: 1, color: Colors.grey.shade200),
-              // ListTile(
-              //   onTap: () {},
-              //   title: Text(
-              //     "Contact List",
-              //     style: TextStyle(
-              //         fontSize: 18.0,
-              //         fontFamily: "Sf-Regular",
-              //         color: AppColor.blackColor),
-              //   ),
-              //   leading: SvgPicture.asset(
-              //     "assets/icons/ic_settings_contactlist.svg",
-              //     height: 40,
-              //   ),
-              // ),
-              Divider(height: 1, color: Colors.grey.shade200),
-              ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ChangePassword(),
+                );
+              },
+              title: Text("My Profile", style: Theme.of(context).textTheme.headline3),
+              subtitle: RichText(
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: "Business, ",
+                        style: Theme.of(context).textTheme.headline3!.apply(color: AppColor.accentColor)),
+                    TextSpan(
+                      text: "Personal",
+                      style: Theme.of(context).textTheme.headline3!.apply(color: AppColor.primaryColor),
                     ),
-                  );
-                },
-                title: Text(
-                  "Change Password",
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-                leading: SvgPicture.asset(
-                  "assets/icons/ic_settings_changepsw.svg",
-                  height: 40,
+                  ],
                 ),
               ),
-              Divider(height: 1, color: Colors.grey.shade200),
-              ListTile(
-                onTap: () {
-                  _showDialog();
-                },
-                title: Text("Import Contacts", style: Theme.of(context).textTheme.headline3),
-                leading: SvgPicture.asset(
-                  "assets/icons/ic_settings_contactlist.svg",
-                  height: 40,
-                ),
+              leading: SvgPicture.asset(
+                "assets/icons/ic_settings_profile.svg",
+                height: 40,
               ),
+            ),
+            // Divider(height: 1, color: Colors.grey.shade200),
+            // ListTile(
+            //   onTap: () {},
+            //   title: Text(
+            //     "Contact List",
+            //     style: TextStyle(
+            //         fontSize: 18.0,
+            //         fontFamily: "Sf-Regular",
+            //         color: AppColor.blackColor),
+            //   ),
+            //   leading: SvgPicture.asset(
+            //     "assets/icons/ic_settings_contactlist.svg",
+            //     height: 40,
+            //   ),
+            // ),
+            Divider(height: 1, color: Colors.grey.shade200),
+            ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ChangePassword(),
+                  ),
+                );
+              },
+              title: Text(
+                "Change Password",
+                style: Theme.of(context).textTheme.headline3,
+              ),
+              leading: SvgPicture.asset(
+                "assets/icons/ic_settings_changepsw.svg",
+                height: 40,
+              ),
+            ),
+            Divider(height: 1, color: Colors.grey.shade200),
+            ListTile(
+              onTap: () {
+                _showDialog();
+              },
+              title: Text("Import Contacts", style: Theme.of(context).textTheme.headline3),
+              leading: SvgPicture.asset(
+                "assets/icons/ic_settings_contactlist.svg",
+                height: 40,
+              ),
+            ),
 
-              Divider(height: 1, color: Colors.grey.shade200),
-              ListTile(
-                onTap: () {
-                  _checkPermission();
-                },
-                title: Text("QR Code Scanner", style: Theme.of(context).textTheme.headline3),
-                leading: SvgPicture.asset(
-                  "assets/icons/ic_settings_qrscan.svg",
-                  height: 40,
-                ),
+            Divider(height: 1, color: Colors.grey.shade200),
+            ListTile(
+              onTap: () {
+                _checkPermission();
+              },
+              title: Text("QR Code Scanner", style: Theme.of(context).textTheme.headline3),
+              leading: SvgPicture.asset(
+                "assets/icons/ic_settings_qrscan.svg",
+                height: 40,
               ),
-              Divider(height: 1, color: Colors.grey.shade200),
-              ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SocialContact(),
-                    ),
-                  );
-                },
-                title: Text("Social Connect", style: Theme.of(context).textTheme.headline3),
-                leading: SvgPicture.asset(
-                  "assets/icons/ic_settings_socialconnect.svg",
-                  height: 40,
-                ),
+            ),
+            Divider(height: 1, color: Colors.grey.shade200),
+            ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SocialContact(),
+                  ),
+                );
+              },
+              title: Text("Social Connect", style: Theme.of(context).textTheme.headline3),
+              leading: SvgPicture.asset(
+                "assets/icons/ic_settings_socialconnect.svg",
+                height: 40,
               ),
-              Divider(height: 1, color: Colors.grey.shade200),
-              ListTile(
-                onTap: () {
-                  Uri emailLaunchUri =
-                      Uri(scheme: 'mailto', path: "theconetapp@gmail.com", queryParameters: {'subject': null});
-                  launch(emailLaunchUri.toString());
-                },
-                title: Text("Contact us", style: Theme.of(context).textTheme.headline3),
-                leading: SvgPicture.asset(
-                  "assets/icons/ic_settings_contactus.svg",
-                  height: 40,
-                ),
+            ),
+            Divider(height: 1, color: Colors.grey.shade200),
+            ListTile(
+              onTap: () {
+                Uri emailLaunchUri =
+                    Uri(scheme: 'mailto', path: "theconetapp@gmail.com", queryParameters: {'subject': null});
+                launch(emailLaunchUri.toString());
+              },
+              title: Text("Contact us", style: Theme.of(context).textTheme.headline3),
+              leading: SvgPicture.asset(
+                "assets/icons/ic_settings_contactus.svg",
+                height: 40,
               ),
-              Divider(height: 1, color: Colors.grey.shade200),
-              ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NotificationScreen(),
-                    ),
-                  );
-                },
-                title: Text(
-                  "Notifications",
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-                leading: SvgPicture.asset(
-                  "assets/icons/ic_settings_notification.svg",
-                  height: 40,
-                ),
+            ),
+            Divider(height: 1, color: Colors.grey.shade200),
+            ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NotificationScreen(),
+                  ),
+                );
+              },
+              title: Text(
+                "Notifications",
+                style: Theme.of(context).textTheme.headline3,
               ),
-              Divider(height: 1, color: Colors.grey.shade200),
-              ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ConetWebPage(),
-                    ),
-                  );
-                },
-                title: Text(
-                  "Invite to CONET app",
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-                leading: SvgPicture.asset(
-                  "assets/icons/ic_settings_invite.svg",
-                  height: 40,
-                ),
+              leading: SvgPicture.asset(
+                "assets/icons/ic_settings_notification.svg",
+                height: 40,
               ),
-              Divider(height: 1, color: Colors.grey.shade200),
-              ListTile(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
-                        backgroundColor: Colors.white,
-                        title: Text(
-                          "Logout",
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
-                        content: Text(
-                          "Are you sure you want to logout ?",
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            child: Text(
-                              "Cancel",
-                              style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+            ),
+            Divider(height: 1, color: Colors.grey.shade200),
+            ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ConetWebPage(),
+                  ),
+                );
+              },
+              title: Text(
+                "Invite to CONET app",
+                style: Theme.of(context).textTheme.headline3,
+              ),
+              leading: SvgPicture.asset(
+                "assets/icons/ic_settings_invite.svg",
+                height: 40,
+              ),
+            ),
+            Divider(height: 1, color: Colors.grey.shade200),
+            ListTile(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
+                      backgroundColor: Colors.white,
+                      title: Text(
+                        "Logout",
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      content: Text(
+                        "Are you sure you want to logout ?",
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text(
+                            "Cancel",
+                            style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
                           ),
-                          TextButton(
-                            child: Text("Yes",
-                                style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor)),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              logoutFun();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                title: Text("Logout", style: Theme.of(context).textTheme.headline3),
-                leading: SvgPicture.asset(
-                  "assets/icons/ic_settings_logout.svg",
-                  height: 40,
-                ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        TextButton(
+                          child: Text("Yes",
+                              style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor)),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            logoutFun();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              title: Text("Logout", style: Theme.of(context).textTheme.headline3),
+              leading: SvgPicture.asset(
+                "assets/icons/ic_settings_logout.svg",
+                height: 40,
               ),
-              Divider(height: 1, color: Colors.grey.shade200),
-              const SizedBox(height: 10),
-              Center(
-                child: Text(
-                  "v.$version",
-                  style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 14),
-                ),
+            ),
+            Divider(height: 1, color: Colors.grey.shade200),
+            const SizedBox(height: 10),
+            Center(
+              child: Text(
+                "v.$version",
+                style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 14),
               ),
-              const SizedBox(height: 10),
-              SvgPicture.asset(
-                "assets/images/setting_logo.svg",
-                height: 30,
-              ),
-              const SizedBox(height: 10),
-              Text("$totalUsers users Worldwide",
+            ),
+            const SizedBox(height: 10),
+            SvgPicture.asset(
+              "assets/images/setting_logo.svg",
+              height: 30,
+            ),
+            const SizedBox(height: 10),
+            Text("$totalUsers users Worldwide",
+                style: const TextStyle(
+                  color: AppColor.secondaryColor,
+                  fontFamily: 'Sfpro-Rounded-Medium',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                  fontStyle: FontStyle.normal,
+                )),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: Text("With your $totalContact contacts, you have $totalConnection connections",
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
-                    color: AppColor.secondaryColor,
-                    fontFamily: 'Sfpro-Rounded-Medium',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 18,
+                    color: AppColor.accentColor,
+                    fontFamily: 'Sfpro-Rounded-Semibold',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
                     fontStyle: FontStyle.normal,
                   )),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.only(left: 30, right: 30),
-                child: Text("With your $totalContact contacts, you have $totalConnection connections",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: AppColor.accentColor,
-                      fontFamily: 'Sfpro-Rounded-Semibold',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 15,
-                      fontStyle: FontStyle.normal,
-                    )),
-              ),
-              const SizedBox(height: 20),
-            ],
-          ),
+            ),
+            const SizedBox(height: 20),
+          ],
         ),
       ),
     );
@@ -364,15 +360,15 @@ class _SettingsState extends State<Settings> {
     ))
         .then((value) {
       if (value != null) {
-        setState(() {
-          _outputController!.clear();
-          _outputController!.text = value!;
-        });
+        _outputController!.clear();
+        _outputController!.text = value!;
         if (_outputController!.text != '') {
           setState(() {
             _loader = true;
           });
           _sendQrApi();
+        } else {
+          Utils.displayToastBottomError("Invalid QR code");
         }
       }
     });
@@ -387,19 +383,43 @@ class _SettingsState extends State<Settings> {
   }
 
   _sendQrApi() async {
+    var contactDetail;
     var requestBody = {"value": _outputController!.text, "qrcode": true};
     var response = await ContactBloc().sendQrValue(requestBody);
-
     if (response['status'] == true) {
       Utils.displayToast("Scanned successfully");
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) {
-            return NotificationScreen();
-          },
-        ),
-      );
+      try {
+        var requestBody = {
+          "phone": _outputController!.text,
+        };
+        var response = await ContactBloc().checkContactForAddNew(requestBody);
+        if (response["user"] != null) {
+          contactDetail = ContactDetail.fromJson(response["user"]);
+          setState(() {
+            _loader = false;
+          });
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) {
+                return AddContactUserProfilePage(
+                  contactDetails: contactDetail,
+                  conetUser: true,
+                );
+              },
+            ),
+          );
+        } else {
+          setState(() {
+            _loader = false;
+          });
+          Fluttertoast.cancel();
+          Utils.displayToastTopError(response["message"]);
+        }
+      } catch (e) {
+        Utils.displayToastTopError("Something went wrong");
+      }
     } else if (response['status'] == "Token is Expired") {
       Utils.displayToast('Token is Expired');
       tokenExpired(context);
@@ -451,16 +471,39 @@ class _SettingsState extends State<Settings> {
     });
   }
 
+// checkPermission() async {
+//     Permission.contacts.request();
+//     var status = await Permission.contacts.status;
+//     if (status.isGranted) {
+//       // Permission.contacts.request();
+//       _importContacts();
+//     } else {
+//       var reqStatus = await Permission.contacts.request();
+//       openAppSettings();
+//       if (reqStatus.isGranted) {
+//         _importContacts();
+//       } else if (reqStatus.isDenied) {
+//         Utils.displayToast("Permission Denied");
+//       }
+//     }
+//   }
   _checkContactPermission() async {
     var status = await Permission.contacts.status;
     if (status.isGranted) {
       _importContacts();
     } else {
       var reqStatus = await Permission.contacts.request();
+      // openAppSettings();
+      Permission.contacts.request();
       if (reqStatus.isGranted) {
         _importContacts();
       } else if (reqStatus.isDenied) {
         Utils.displayToast("Permission Denied");
+      } else if (reqStatus.isPermanentlyDenied) {
+        Utils.displayToast("Permission Denied Permanently");
+        openAppSettings();
+      } else {
+        Utils.displayToast("Something Went Wrong ");
       }
     }
   }

@@ -23,8 +23,8 @@ class _LoginState extends State<Login> {
   final _mobileEmailController = TextEditingController();
   final _passwordController = TextEditingController();
   //Focus
-  // final FocusNode _mobileEmailControllerFocus = FocusNode();
-  // final FocusNode _passwordControllerFocus = FocusNode();
+  final FocusNode _mobileEmailControllerFocus = FocusNode();
+  final FocusNode _passwordControllerFocus = FocusNode();
   bool _loader = false;
   bool _showPassword = false;
 
@@ -39,22 +39,23 @@ class _LoginState extends State<Login> {
     Widget _buildMobile() {
       return TextFormFieldWidget(
         hintText: "Email / Mobile",
-
         padding: 0.0,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         functionValidate: commonValidation,
         controller: _mobileEmailController,
-
-        //focusNode: _mobileEmailControllerFocus,
+        focusNode: _mobileEmailControllerFocus,
         parametersValidate: "Please enter Email / Mobile.",
-        onSubmitField: () {},
+        onSubmitField: () {
+          //FocusScope.of(context).requestFocus(_passwordControllerFocus);
+        },
       );
     }
 
     Widget _buildPassword() {
       return TextFormField(
         controller: _passwordController,
+        focusNode: _passwordControllerFocus,
         style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
         inputFormatters: [
           FilteringTextInputFormatter.deny(RegExp(r'\s')),
@@ -63,23 +64,14 @@ class _LoginState extends State<Login> {
           hintText: "Password",
           filled: true,
           fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
-          //errorStyle: const TextStyle(color: Colors.red),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.transparent,
-            ),
+          border: InputBorder.none,
+          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+          errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: AppColor.redColor),
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Color.fromRGBO(255, 255, 255, 0.20)),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
           ),
-          // errorBorder: const OutlineInputBorder(
-          //   borderSide: BorderSide(color: AppColor.whiteColor),
-          // ),
-          // focusedErrorBorder: const OutlineInputBorder(
-          //   borderSide: BorderSide(
-          //     color: Colors.transparent,
-          //   ),
-          // ),
           suffixIcon: GestureDetector(
             onTap: () {
               setState(() {
@@ -118,8 +110,9 @@ class _LoginState extends State<Login> {
         onPressed: () async {
           print("clicked");
           var validate = _loginFormKey.currentState!.validate();
+
           if (validate) {
-            // Utils.hideKeyboard(context);
+            Utils.hideKeyboard(context);
 
             setState(() {
               _loader = true;

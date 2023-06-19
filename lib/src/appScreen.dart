@@ -24,8 +24,7 @@ class AppScreen extends StatelessWidget {
           if (state is PageLoading) {
             return const Center(
               child: CircularProgressIndicator(
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
+                valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
             );
           }
@@ -54,8 +53,7 @@ class AppScreen extends StatelessWidget {
           return Container();
         },
       ),
-      bottomNavigationBar:
-          BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
+      bottomNavigationBar: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
         builder: (BuildContext context, BottomNavigationState state) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -66,52 +64,40 @@ class AppScreen extends StatelessWidget {
               selectedItemColor: AppColor.secondaryColor,
               unselectedItemColor: AppColor.bottomUnselectItemColor,
               backgroundColor: AppColor.bottomNavBgColor,
-              currentIndex: context
-                  .select((BottomNavigationBloc bloc) => bloc.currentIndex),
+              currentIndex: context.select((BottomNavigationBloc bloc) => bloc.currentIndex),
               onTap: (index) {
-                print(index);
-                context.read<BottomNavigationBloc>().add(
-                  PageTapped(index: index),
-                );
-
+                final currentIndex = context.read<BottomNavigationBloc>().currentIndex;
+                if (index != currentIndex) {
+                  context.read<BottomNavigationBloc>().add(PageTapped(index: index));
+                }
               },
               items: [
                 BottomNavigationBarItem(
-                  icon: context.select((BottomNavigationBloc bloc) =>
-                              bloc.currentIndex) ==
-                          0
+                  icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 0
                       ? SvgPicture.asset('assets/icons/contacts_active.svg')
                       : SvgPicture.asset('assets/icons/contacts.svg'),
                   label: 'Contacts',
                 ),
                 BottomNavigationBarItem(
-                  icon: context.select((BottomNavigationBloc bloc) =>
-                              bloc.currentIndex) ==
-                          1
+                  icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 1
                       ? SvgPicture.asset('assets/icons/recent_active.svg')
                       : SvgPicture.asset('assets/icons/recent.svg'),
                   label: 'Recent',
                 ),
                 BottomNavigationBarItem(
-                  icon: context.select((BottomNavigationBloc bloc) =>
-                              bloc.currentIndex) ==
-                          2
+                  icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 2
                       ? SvgPicture.asset('assets/icons/keypad_active.svg')
                       : SvgPicture.asset('assets/icons/keypad.svg'),
                   label: 'Keypad',
                 ),
                 BottomNavigationBarItem(
-                  icon: context.select((BottomNavigationBloc bloc) =>
-                              bloc.currentIndex) ==
-                          3
+                  icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 3
                       ? SvgPicture.asset('assets/icons/conetweb_active.svg')
                       : SvgPicture.asset('assets/icons/conetweb.svg'),
                   label: 'CoNet web',
                 ),
                 BottomNavigationBarItem(
-                  icon: context.select((BottomNavigationBloc bloc) =>
-                              bloc.currentIndex) ==
-                          4
+                  icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 4
                       ? SvgPicture.asset('assets/icons/settings_active.svg')
                       : SvgPicture.asset('assets/icons/settings.svg'),
                   label: 'Settings',

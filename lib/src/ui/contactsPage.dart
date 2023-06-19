@@ -831,12 +831,16 @@ class _ContactsPageState extends State<ContactsPage> {
       // Permission.contacts.request();
       _importContacts();
     } else {
-      openAppSettings();
       var reqStatus = await Permission.contacts.request();
       if (reqStatus.isGranted) {
         _importContacts();
       } else if (reqStatus.isDenied) {
         Utils.displayToast("Permission Denied");
+      } else if (reqStatus.isPermanentlyDenied) {
+        openAppSettings();
+        Utils.displayToast("Permission Denied Permanently");
+      } else {
+        Utils.displayToast("Something Went Wrong ");
       }
     }
   }

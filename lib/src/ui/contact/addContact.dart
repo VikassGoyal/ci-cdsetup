@@ -138,6 +138,7 @@ class _AddContactState extends State<AddContact> {
                   maxLength: 10,
                   textInputType: TextInputType.number,
                   actionKeyboard: TextInputAction.done,
+                  onChanged: (value) {},
                   parametersValidate: "Please enter Mobile number.",
                   controller: _personalNumber,
                   regexexp: RegExp(r'[0-9]')),

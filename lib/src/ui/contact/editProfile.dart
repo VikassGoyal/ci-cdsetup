@@ -1163,7 +1163,7 @@ class _EditProfileState extends State<EditProfile> {
                       borderRadius: BorderRadius.circular(100.0),
                       child: FadeInImage.assetNetwork(
                         placeholder: "assets/images/profile.png",
-                        image: userImage != null ? AppConstant.profileImageBaseUrl + userImage : "",
+                        image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
                         fit: BoxFit.cover,
                         imageErrorBuilder: (context, error, stackTrace) {
                           return Image.asset(
@@ -2035,7 +2035,7 @@ class _EditProfileState extends State<EditProfile> {
       "per_state": _personalState.text,
       "per_country": _personalCountry.text,
       "per_pincode": _personalPincode.text,
-      "per_lan": _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
+      "per_lan": _personalLandline.text == null ? '' : _personalLandline.text,
       "per_keyword": _values!.join(', '),
       "pro_occ": _professionalOccupation.text,
       "pro_ind": _professionalIndustry.text,

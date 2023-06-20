@@ -471,30 +471,12 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-// checkPermission() async {
-//     Permission.contacts.request();
-//     var status = await Permission.contacts.status;
-//     if (status.isGranted) {
-//       // Permission.contacts.request();
-//       _importContacts();
-//     } else {
-//       var reqStatus = await Permission.contacts.request();
-//       openAppSettings();
-//       if (reqStatus.isGranted) {
-//         _importContacts();
-//       } else if (reqStatus.isDenied) {
-//         Utils.displayToast("Permission Denied");
-//       }
-//     }
-//   }
   _checkContactPermission() async {
     var status = await Permission.contacts.status;
     if (status.isGranted) {
       _importContacts();
     } else {
       var reqStatus = await Permission.contacts.request();
-      // openAppSettings();
-      Permission.contacts.request();
       if (reqStatus.isGranted) {
         _importContacts();
       } else if (reqStatus.isDenied) {

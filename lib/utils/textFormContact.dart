@@ -72,7 +72,7 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
           ),
           child: TextFormField(
             onChanged: (value) {
-              widget.onChanged!.call(value);
+              if (widget.onChanged != null) widget.onChanged!(value);
             },
             readOnly: widget.readonly!,
             validator: widget.validator,

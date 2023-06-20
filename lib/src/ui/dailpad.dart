@@ -142,7 +142,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
               style: TextStyle(
                 fontFamily: 'Sfpro-Rounded-Semibold',
                 inherit: true,
-                color: AppColor.redColor,
+                color: AppColor.secondaryColor,
                 fontSize: sizeFactor / 2,
               ),
               keyboardType: TextInputType.phone,
@@ -400,9 +400,6 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
         //       });
         //     }
         //   }
-      },
-      onLongPress: () {
-        widget.onLongPress!(widget.title);
       },
       onLongPress: () {
         widget.onLongPress!(widget.title);

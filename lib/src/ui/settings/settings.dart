@@ -178,7 +178,7 @@ class _SettingsState extends State<Settings> {
             ListTile(
               onTap: () {
                 Uri emailLaunchUri =
-                    Uri(scheme: 'mailto', path: "theconetapp@gmail.com", queryParameters: {'subject': null});
+                    Uri(scheme: 'mailto', path: "thekonetapp@gmail.com", queryParameters: {'subject': null});
                 launch(emailLaunchUri.toString());
               },
               title: Text("Contact us", style: Theme.of(context).textTheme.headline3),
@@ -217,7 +217,7 @@ class _SettingsState extends State<Settings> {
                 );
               },
               title: Text(
-                "Invite to CONET app",
+                "Invite to KONET app",
                 style: Theme.of(context).textTheme.headline3,
               ),
               leading: SvgPicture.asset(
@@ -440,7 +440,7 @@ class _SettingsState extends State<Settings> {
             style: Theme.of(context).textTheme.headline5,
           ),
           content: Text(
-            'Do you want to import contacts to conet?',
+            'Do you want to import contacts to konet?',
             style: Theme.of(context).textTheme.headline3,
           ),
           actions: <Widget>[

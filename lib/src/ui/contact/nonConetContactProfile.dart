@@ -94,7 +94,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
               onPressed: () async {
                 print("clicked");
                 Share.share(
-                    'Hey\n\nConet is a fast, simple and secure app that i use to message and call the people.\n\nGet it for free at https://play.google.com/store/apps/details?id=com.shade6.agratrade',
+                    'Hey\n\nKonet is a fast, simple and secure app that i use to message and call the people.\n\nGet it for free at https://play.google.com/store/apps/details?id=com.shade6.agratrade',
                     subject: 'Look what I made!');
               },
               child: Container(
@@ -103,7 +103,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  "Invite to CONET",
+                  "Invite to KONET",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
                 ),

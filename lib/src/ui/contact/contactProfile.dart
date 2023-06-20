@@ -1367,6 +1367,7 @@ class _ContactProfileState extends State<ContactProfile> {
               child: SizedBox(
                 height: double.infinity,
                 child: SingleChildScrollView(
+                  physics: ClampingScrollPhysics(),
                   child: stackContainer(),
                 ),
               ),

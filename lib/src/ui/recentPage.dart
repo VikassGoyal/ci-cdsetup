@@ -33,9 +33,9 @@ class RecentPage extends StatefulWidget {
 }
 
 class _RecentPageState extends State<RecentPage> {
-  final List _loadedCallLogs = [];
-  List? _searchResult = [];
-  List<RecentCalls>? _callHistory = [];
+  List<RecentCalls> _loadedCallLogs = [];
+  List<RecentCalls> _searchResult = [];
+  List<RecentCalls> _callHistory = [];
   TextEditingController? _outputController;
   bool _loader = false;
   bool _showCancelIcon = false;
@@ -69,7 +69,7 @@ class _RecentPageState extends State<RecentPage> {
   void _loadMore() {
     _isRecentCallsLoading = true;
     recentCallsBloc.add(GetRecentCallsEvent(isInitialFetch: false));
-    setState(() {});
+    // setState(() {});
   }
 
   @override
@@ -192,15 +192,20 @@ class _RecentPageState extends State<RecentPage> {
       return BlocConsumer<RecentCallsBloc, RecentCallsState>(
         listener: (context, state) {
           if (state is GetRecentCallsSuccess) {
-            _callHistory = state.recentCallsData;
+            _loadedCallLogs = state.recentCallsData;
+            String searchText = _textEditingController!.text;
+            if (searchText.isEmpty) {
+              _callHistory = _loadedCallLogs;
+            } else {
+              filterSearchResults(searchText);
+            }
             _isFetchedAllData = state.isFetchedAllData;
             _isRecentCallsLoading = false;
             setState(() {});
+          } else if (state is GetRecentCallsLoading) {
+            // _isRecentCallsLoading = true;
+            setState(() {});
           }
-          // else if (state is GetRecentCallsLoading) {
-          //   _isRecentCallsLoading = true;
-          //   setState(() {});
-          // }
         },
         buildWhen: (previous, current) {
           return true;
@@ -218,6 +223,7 @@ class _RecentPageState extends State<RecentPage> {
                     // BlocProvider.of<BottomNavigationBloc>(context).add(PageRefreshed(index: 1));
                     recentCallsBloc.add(GetRecentCallsEvent(isRefreshData: true));
                     _isRecentCallsLoading = true;
+                    _isFetchedAllData = false;
                   },
                 );
               },
@@ -255,11 +261,15 @@ class _RecentPageState extends State<RecentPage> {
                           if (!_isRecentCallsLoading) {
                             _loadMore();
                           }
-                          return const Center(
-                            child: SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: CircularProgressIndicator(),
+                          return Center(
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 5, bottom: 5),
+                              height: 30,
+                              width: 30,
+                              child: const CircularProgressIndicator(
+                                color: AppColor.primaryColor,
+                                backgroundColor: AppColor.whiteColor,
+                              ),
                             ),
                           );
                         }
@@ -468,20 +478,20 @@ class _RecentPageState extends State<RecentPage> {
     if (query.isNotEmpty) {
       _searchResult = [];
       for (var data in _loadedCallLogs) {
-        if (data.tocontact.name.toLowerCase().contains(query.toLowerCase())) {
-          _searchResult!.add(data);
+        if (data.name!.toLowerCase().contains(query.toLowerCase())) {
+          _searchResult.add(data);
         }
       }
 
       setState(() {
         _callHistory = [];
-        _callHistory = _searchResult as List<RecentCalls>?;
+        _callHistory = _searchResult;
       });
       return;
     } else {
       setState(() {
         _callHistory = [];
-        _callHistory = _loadedCallLogs as List<RecentCalls>?;
+        _callHistory = _loadedCallLogs;
       });
     }
   }
@@ -567,6 +577,7 @@ class _RecentPageState extends State<RecentPage> {
   void _clearText() {
     _textEditingController!.clear();
     FocusScope.of(context).requestFocus(FocusNode());
+    _callHistory = _loadedCallLogs;
     setState(() {
       _showCancelIcon = false;
     });

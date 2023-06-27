@@ -12,7 +12,7 @@ class RecentCallsBloc extends Bloc<RecentCallsEvent, RecentCallsState> {
   late DateTime dateTimeFrom;
   late DateTime dateTimeTo;
   late DateTime cutDateTimeForRecentCallsData;
-  late int cutDaysCount = 365;
+  late int cutDaysCount = 730;
   List<RecentCalls> recentCallsData = [];
   int daysGap = 5;
   bool isFetchedAllData = false;
@@ -28,6 +28,7 @@ class RecentCallsBloc extends Bloc<RecentCallsEvent, RecentCallsState> {
         dateTimeFrom = DateTime.now();
         dateTimeTo = dateTimeFrom.subtract(Duration(days: daysGap));
         recentCallsData = [];
+        isFetchedAllData = false;
       } else if (!event.isInitialFetch) {
         dateTimeFrom = dateTimeTo;
         dateTimeTo = dateTimeFrom.subtract(Duration(days: daysGap));
@@ -42,7 +43,7 @@ class RecentCallsBloc extends Bloc<RecentCallsEvent, RecentCallsState> {
         isInitialFetch: event.isInitialFetch,
         isFetchedAllData: isFetchedAllData,
         isRefreshData: event.isRefreshData,
-        recentCallsData: recentCallsData,
+        recentCallsData: List<RecentCalls>.from(recentCallsData),
       ));
     });
   }
@@ -50,19 +51,19 @@ class RecentCallsBloc extends Bloc<RecentCallsEvent, RecentCallsState> {
   //if returns true then it means there is some error response
   Future<bool> fetchRecentCallsData(GetRecentCallsEvent event) async {
     if (cutDateTimeForRecentCallsData.isBefore(dateTimeFrom)) {
-      List<RecentCalls>? callLogs = await _getRecentPageData(dateTimeFrom, dateTimeTo, null);
-      if (callLogs == null) {
+      List<RecentCalls>? _callLogs = await _getRecentPageData(dateTimeFrom, dateTimeTo, null);
+      if (_callLogs == null) {
         return true;
-      } else if (callLogs.isEmpty) {
+      } else if (_callLogs.isEmpty) {
         dateTimeFrom = dateTimeTo;
         dateTimeTo = dateTimeFrom.subtract(Duration(days: daysGap));
         //reccursice call
         await fetchRecentCallsData(event);
       } else {
         if (event.isInitialFetch) {
-          recentCallsData = callLogs;
+          recentCallsData = _callLogs;
         } else {
-          recentCallsData.addAll(callLogs);
+          recentCallsData.addAll(_callLogs);
         }
       }
     } else {

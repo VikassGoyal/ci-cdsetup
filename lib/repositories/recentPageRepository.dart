@@ -56,7 +56,7 @@ class RecentPageRepository {
       _data = [];
       _data = await databaseHelper.getRecentCallsBetweenInDateTime(dateTimeFrom, dateTimeTo, name);
     }
-    return _data;
+    return _data == null ? _data : List<RecentCalls>.from(_data!);
   }
 
   insertDailedCall(phoneNumber) async {

@@ -81,7 +81,9 @@ class _BussinessCardState extends State<BussinessCard> {
                       width: MediaQuery.of(context).size.width / 2,
                       imageUrl: imageName != "" ? AppConstant.businessimageBaseUrl + imageName : "",
                       placeholder: (context, url) => SvgPicture.asset("assets/logo.svg"),
-                      errorWidget: (context, url, error) => SvgPicture.asset("assets/logo.svg"),
+                      errorWidget: (context, url, error) {
+                        return SvgPicture.asset("assets/logo.svg");
+                      },
                       fit: BoxFit.contain,
                     ),
                   ),

@@ -191,6 +191,31 @@ class DatabaseHelper {
     return result;
   }
 
+  Future<List<Map<String, dynamic>>> getRecentCallsBetweenInDateTimeMapList(
+      DateTime dateTimeFrom, DateTime dateTimeTo, String? name) async {
+    int timeFrom = dateTimeFrom.microsecondsSinceEpoch;
+    int timeTo = dateTimeTo.microsecondsSinceEpoch;
+    var result = await database.query(
+      recentCallsTable,
+      orderBy: '$coltimestamp DESC',
+      limit: 1500,
+      where: '$coltimestamp <= ? AND $coltimestamp >= ?',
+      whereArgs: [timeFrom, timeTo],
+    );
+    return result;
+  }
+
+  Future<List<RecentCalls>> getRecentCallsBetweenInDateTime(
+      DateTime dateTimeFrom, DateTime dateTimeTo, String? name) async {
+    var recentCallsMapList = await getRecentCallsBetweenInDateTimeMapList(dateTimeFrom, dateTimeTo, name);
+    int count = recentCallsMapList.length;
+    List<RecentCalls> recentCalls = <RecentCalls>[];
+    for (int i = 0; i < count; i++) {
+      recentCalls.add(RecentCalls.fromJson(recentCallsMapList[i]));
+    }
+    return recentCalls;
+  }
+
   Future<List<RecentCalls>> getRecentCalls() async {
     var recentCallsMapList = await getRecentCallsMapList();
     int count = recentCallsMapList.length;

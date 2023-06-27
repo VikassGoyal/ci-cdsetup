@@ -1,4 +1,7 @@
 import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
+import 'package:conet/blocs/recent_calls/recent_calls_event.dart';
+import 'package:conet/blocs/recent_calls/recent_calls_state.dart';
 import 'package:conet/models/recentCalls.dart';
 import 'package:conet/src/app.dart';
 import 'package:conet/src/ui/businesscard.dart';
@@ -21,9 +24,10 @@ import '../../bottomNavigation/bottomNavigationBloc.dart';
 import 'notification.dart';
 
 class RecentPage extends StatefulWidget {
-  List<RecentCalls>? callLogs;
+  // List<RecentCalls>? callLogs;
 
-  RecentPage({this.callLogs}) : super();
+  // RecentPage({this.callLogs}) : super();
+  const RecentPage({super.key});
   @override
   _RecentPageState createState() => _RecentPageState();
 }
@@ -37,12 +41,19 @@ class _RecentPageState extends State<RecentPage> {
   bool _showCancelIcon = false;
   // final TextEditingController _textEditingController = TextEditingController();
   TextEditingController? _textEditingController;
+  late RecentCallsBloc recentCallsBloc;
+  bool _isRecentCallsLoading = false;
+
+  bool _isFetchedAllData = false;
   @override
   void initState() {
     super.initState();
     _textEditingController = TextEditingController();
     try {
-      _callHistory = widget.callLogs;
+      // _callHistory = widget.callLogs;
+      recentCallsBloc = BlocProvider.of<RecentCallsBloc>(context);
+      recentCallsBloc.add(GetRecentCallsEvent(isInitialFetch: true));
+      _isRecentCallsLoading = true;
     } catch (e) {
       print("RecentPageerror : $e");
     }
@@ -52,6 +63,13 @@ class _RecentPageState extends State<RecentPage> {
   void dispose() {
     super.dispose();
     _textEditingController!.dispose();
+  }
+
+  // Triggers fecth() and then add new items or change _hasMore flag
+  void _loadMore() {
+    _isRecentCallsLoading = true;
+    recentCallsBloc.add(GetRecentCallsEvent(isInitialFetch: false));
+    setState(() {});
   }
 
   @override
@@ -171,51 +189,97 @@ class _RecentPageState extends State<RecentPage> {
     }
 
     Widget contactsList() {
-      return Expanded(
-        child: RefreshIndicator(
-          color: AppColor.primaryColor,
-          backgroundColor: AppColor.whiteColor,
-          onRefresh: () {
-            return Future.delayed(
-              const Duration(seconds: 3),
-              () {
-                BlocProvider.of<BottomNavigationBloc>(context).add(PageRefreshed(index: 1));
+      return BlocConsumer<RecentCallsBloc, RecentCallsState>(
+        listener: (context, state) {
+          if (state is GetRecentCallsSuccess) {
+            _callHistory = state.recentCallsData;
+            _isFetchedAllData = state.isFetchedAllData;
+            _isRecentCallsLoading = false;
+            setState(() {});
+          }
+          // else if (state is GetRecentCallsLoading) {
+          //   _isRecentCallsLoading = true;
+          //   setState(() {});
+          // }
+        },
+        buildWhen: (previous, current) {
+          return true;
+        },
+        builder: (context, state) {
+          // if (state is GetRecentCallsSuccess) {
+          return Expanded(
+            child: RefreshIndicator(
+              color: AppColor.primaryColor,
+              backgroundColor: AppColor.whiteColor,
+              onRefresh: () {
+                return Future.delayed(
+                  const Duration(seconds: 3),
+                  () {
+                    // BlocProvider.of<BottomNavigationBloc>(context).add(PageRefreshed(index: 1));
+                    recentCallsBloc.add(GetRecentCallsEvent(isRefreshData: true));
+                    _isRecentCallsLoading = true;
+                  },
+                );
               },
-            );
-          },
-          child: _callHistory == null || _callHistory!.isEmpty
-              ? Opacity(
-                  opacity: 0,
-                  child: ListView.separated(
-                    itemCount: 0,
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        height: 1,
-                        color: Colors.grey.shade200,
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                )
-              : ListView.separated(
-                  shrinkWrap: true,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  itemCount: _callHistory!.length,
-                  primary: false,
-                  scrollDirection: Axis.vertical,
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      height: 1,
-                      color: Colors.grey.shade200,
-                    );
-                  },
-                  itemBuilder: (context, index) {
-                    return contactListItem(index);
-                  },
-                ),
-        ),
+              child: _callHistory == null || _callHistory!.isEmpty
+                  ? Opacity(
+                      opacity: 0,
+                      child: ListView.separated(
+                        itemCount: 0,
+                        separatorBuilder: (context, index) {
+                          return Divider(
+                            height: 1,
+                            color: Colors.grey.shade200,
+                          );
+                        },
+                        itemBuilder: (context, index) {
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    )
+                  : ListView.separated(
+                      shrinkWrap: true,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: _isFetchedAllData ? _callHistory!.length : _callHistory!.length + 1,
+                      primary: false,
+                      scrollDirection: Axis.vertical,
+                      separatorBuilder: (context, index) {
+                        return Divider(
+                          height: 1,
+                          color: Colors.grey.shade200,
+                        );
+                      },
+                      itemBuilder: (context, index) {
+                        if (index >= _callHistory!.length) {
+                          // Don't trigger if one async loading is already under way
+                          if (!_isRecentCallsLoading) {
+                            _loadMore();
+                          }
+                          return const Center(
+                            child: SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+                        return contactListItem(index);
+                      },
+                    ),
+            ),
+          );
+          // } else {
+          //   return const SizedBox(
+          //     height: 50,
+          //     width: 50,
+          //     child: Center(
+          //       child: CircularProgressIndicator(
+          //         color: AppColor.primaryColor,
+          //       ),
+          //     ),
+          //   );
+          // }
+        },
       );
     }
 

@@ -35,11 +35,7 @@ class AppScreen extends StatelessWidget {
             );
           }
           if (state is RecentPageLoaded) {
-            if (Platform.isAndroid) {
-              return RecentPage(callLogs: state.callLog);
-            } else {
-              return RecentPage(callLogs: state.callLog);
-            }
+            return RecentPage();
           }
           if (state is KeypadPageLoaded) {
             return KeypadPage(contactsData: state.contactObject);

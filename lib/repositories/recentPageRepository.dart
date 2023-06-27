@@ -9,13 +9,22 @@ class RecentPageRepository {
   DatabaseHelper databaseHelper = DatabaseHelper.instance;
   List<CallLogEntry> allContacts = [];
 
-  fetchData() async {
+  fetchData(DateTime dateTimeFrom, DateTime dateTimeTo, String? name) async {
     try {
-      Iterable<CallLogEntry> entries = await CallLog.get();
+      // Iterable<CallLogEntry> entries = await CallLog.get();
+      Iterable<CallLogEntry> entries = await CallLog.query(
+        dateTimeFrom: dateTimeTo,
+        dateTimeTo: dateTimeFrom,
+      );
 
-      await databaseHelper.trancateRecentContacts();
+      // await databaseHelper.trancateRecentContacts();
 
       List<CallLogEntry> list = entries.toList();
+      if (_data == null) {
+        _data = [];
+      } else {
+        _data!.clear();
+      }
       print("_data.... : ${list.length}");
       for (int i = 0; i < list.length; i++) {
         print("Fordata.... : ${list[i].name}");
@@ -24,9 +33,10 @@ class RecentPageRepository {
             callType: list[i].callType.toString(),
             number: list[i].number.toString(),
             timestamp: list[i].timestamp);
-        await databaseHelper.insertRecentContact(recentCalls);
+        _data!.add(recentCalls);
+        // await databaseHelper.insertRecentContact(recentCalls);
       }
-      _data = await databaseHelper.getRecentCalls();
+      // _data = await databaseHelper.getRecentCalls();
     } catch (e) {
       print("Error fetchData :  $e");
       _data = [];
@@ -37,6 +47,14 @@ class RecentPageRepository {
     if (Platform.isIOS) {
       _data = [];
       _data = await databaseHelper.getRecentCalls();
+    }
+    return _data;
+  }
+
+  Future<List<RecentCalls>?> getDataBetweenDateTimes(DateTime dateTimeFrom, DateTime dateTimeTo, String? name) async {
+    if (Platform.isIOS) {
+      _data = [];
+      _data = await databaseHelper.getRecentCallsBetweenInDateTime(dateTimeFrom, dateTimeTo, name);
     }
     return _data;
   }

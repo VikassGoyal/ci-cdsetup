@@ -14,7 +14,6 @@ part 'bottomNavigationState.dart';
 class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationState> {
   BottomNavigationBloc(
       {required this.contactPageRepository,
-      required this.recentPageRepository,
       required this.keypadPageRepository,
       required this.conetWebPageRepository,
       required this.settingsPageRepository})
@@ -38,8 +37,7 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
         emit(ContactPageLoaded(contactObject: data, mostDailedContacts: mostDailedContactData));
       }
       if (currentIndex == 1) {
-        var data = await _getRecentPageData();
-        emit(RecentPageLoaded(callLog: data));
+        emit(RecentPageLoaded());
       }
       if (currentIndex == 2) {
         var data = await _getKeypadPageData();
@@ -57,7 +55,7 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
   }
 
   final ContactPageRepository contactPageRepository;
-  final RecentPageRepository recentPageRepository;
+  // final RecentPageRepository recentPageRepository;
   final KeypadPageRepository keypadPageRepository;
   final CoNetWebPageRepository conetWebPageRepository;
   final SettingsPageRepository settingsPageRepository;
@@ -98,23 +96,6 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
       print("getMostDailedContacts : $e");
     }
     return mostDailedCalls;
-  }
-
-  Future _getRecentPageData() async {
-    try {
-      var data = await recentPageRepository.getData();
-
-      if (Platform.isAndroid) {
-        // if (data == null) {
-        await recentPageRepository.fetchData();
-        data = await recentPageRepository.getData();
-        // }
-      }
-
-      return data;
-    } catch (e) {
-      print("Recentpage : $e");
-    }
   }
 
   Future _getKeypadPageData() async {

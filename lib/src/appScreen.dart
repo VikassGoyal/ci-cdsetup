@@ -90,7 +90,7 @@ class AppScreen extends StatelessWidget {
                   icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 3
                       ? SvgPicture.asset('assets/icons/conetweb_active.svg')
                       : SvgPicture.asset('assets/icons/conetweb.svg'),
-                  label: 'CoNet web',
+                  label: 'KoNet web',
                 ),
                 BottomNavigationBarItem(
                   icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 4

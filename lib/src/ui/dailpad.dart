@@ -142,7 +142,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
               style: TextStyle(
                 fontFamily: 'Sfpro-Rounded-Semibold',
                 inherit: true,
-                color: AppColor.redColor,
+                color: AppColor.secondaryColor,
                 fontSize: sizeFactor / 2,
               ),
               keyboardType: TextInputType.phone,

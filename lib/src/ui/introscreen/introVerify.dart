@@ -43,8 +43,7 @@ Widget verifyBtn(BuildContext context) {
     margin: const EdgeInsets.only(left: 20, right: 20),
     child: ElevatedButton(
       style: ButtonStyle(
-        backgroundColor:
-            MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
         ),
@@ -63,10 +62,7 @@ Widget verifyBtn(BuildContext context) {
         child: Text(
           "Continue",
           textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .button!
-              .apply(color: AppColor.whiteColor),
+          style: Theme.of(context).textTheme.button!.apply(color: AppColor.whiteColor),
         ),
       ),
     ),
@@ -78,18 +74,15 @@ Widget introverifyBody(context) {
     children: [
       Center(
         child: Text(
-          "Welcome to the CONET App",
-          style: Theme.of(context)
-              .textTheme
-              .headline2!
-              .apply(color: AppColor.whiteColor),
+          "Welcome to the KONET App",
+          style: Theme.of(context).textTheme.headline2!.apply(color: AppColor.whiteColor),
         ),
       ),
       const SizedBox(height: 16),
       SizedBox(
         width: displayWidth(context) * 0.8,
         child: const Text(
-            "Connect with your contacts through our CONET WEB feature and conduct business like never before",
+            "Connect with your contacts through our KONET WEB feature and conduct business like never before",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 15.0, color: AppColor.whiteColor)),
       )

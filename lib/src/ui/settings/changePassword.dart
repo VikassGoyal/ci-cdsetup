@@ -152,7 +152,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   const SizedBox(height: 16),
                   Expanded(child: Container()),
                   buildUpdateButton(),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),

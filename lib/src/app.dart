@@ -41,7 +41,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'CoNet',
+      title: 'KoNet',
       theme: ThemeData(
         primaryColor: AppColor.whiteColor,
         textTheme: Platform.isAndroid ? ConetTextTheme.androidTextTheme : ConetTextTheme.iosTextTheme,

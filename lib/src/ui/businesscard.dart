@@ -81,9 +81,7 @@ class _BussinessCardState extends State<BussinessCard> {
                       width: MediaQuery.of(context).size.width / 2,
                       imageUrl: imageName != "" ? AppConstant.businessimageBaseUrl + imageName : "",
                       placeholder: (context, url) => SvgPicture.asset("assets/logo.svg"),
-                      errorWidget: (context, url, error) {
-                        return SvgPicture.asset("assets/logo.svg");
-                      },
+                      errorWidget: (context, url, error) => SvgPicture.asset("assets/logo.svg"),
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -144,7 +142,7 @@ class _BussinessCardState extends State<BussinessCard> {
                               ),
                             )
                           : SvgPicture.network(
-                              _qrImage,
+                              "https://www.svgrepo.com/show/76016/qr-code.svg",
                               width: 150,
                               height: 150,
                             ),
@@ -220,15 +218,17 @@ class _BussinessCardState extends State<BussinessCard> {
             ),
             onSelected: (value) {
               print(value);
-              if (value == 3) {
-                print("val");
+              // if (value == 3) {
+              //   print("val");
 
-                this.imageName = "";
+              //   this.imageName = "";
 
-                setState(() {});
-              } else if (value == 1) {
+              //   setState(() {});
+              // }
+
+              if (value == 1) {
                 loadbusinesslogo();
-              } else {
+              } else if (value == 2) {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {

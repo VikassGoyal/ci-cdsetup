@@ -65,7 +65,8 @@ class _SettingsState extends State<Settings> {
         elevation: 0.0,
         title: SvgPicture.asset(
           "assets/logo.svg",
-          height: 24,
+          height: 20,
+          width: 20,
         ),
       ),
       body: SingleChildScrollView(
@@ -281,9 +282,10 @@ class _SettingsState extends State<Settings> {
             ),
             const SizedBox(height: 10),
             SvgPicture.asset(
-              "assets/images/setting_logo.svg",
+              "assets/logo_orange.svg",
               height: 30,
             ),
+
             const SizedBox(height: 10),
             Text("$totalUsers users Worldwide",
                 style: const TextStyle(

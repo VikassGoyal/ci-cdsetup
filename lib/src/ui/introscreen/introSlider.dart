@@ -230,35 +230,42 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
     return Scaffold(
       backgroundColor: AppColor.primaryColor,
-      body: IntroSlider(
-        renderSkipBtn: renderSkipBtn(),
-        skipButtonStyle: myButtonStyle(),
-        renderNextBtn: renderNextBtn(),
-        onNextPress: onNextPress,
-        nextButtonStyle: myButtonStyle(),
-        renderDoneBtn: renderDoneBtn(),
-        doneButtonStyle: myButtonStyle(),
-        onDonePress: onDonePress,
-        scrollPhysics: const BouncingScrollPhysics(),
-        listCustomTabs: renderListCustomTabs(),
-        onTabChangeCompleted: onTabChangeCompleted,
-        refFuncGoToTab: (refFunc) {
-          goToTab = refFunc;
-        },
-        // colorSkipBtn: Colors.white38,
-        // highlightColorSkipBtn: AppColor.whiteColor,
-        // colorDoneBtn: Colors.white38,
-        // highlightColorDoneBtn: AppColor.whiteColor,
-        // colorDot: AppColor.whiteColor,
-        // sizeDot: 5.0,
-        // typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
-        // backgroundColorAllSlides: AppColor.primaryColor,
-        // shouldHideStatusBar: false,
+      body: Container(
+        width: screenWidth,
+        height: screenHeight - 40,
+        child: IntroSlider(
+          renderSkipBtn: renderSkipBtn(),
+          skipButtonStyle: myButtonStyle(),
+          renderNextBtn: renderNextBtn(),
+          onNextPress: onNextPress,
+          nextButtonStyle: myButtonStyle(),
+          renderDoneBtn: renderDoneBtn(),
+          doneButtonStyle: myButtonStyle(),
+          onDonePress: onDonePress,
+          scrollPhysics: const BouncingScrollPhysics(),
+          listCustomTabs: renderListCustomTabs(),
+          onTabChangeCompleted: onTabChangeCompleted,
+          refFuncGoToTab: (refFunc) {
+            goToTab = refFunc;
+          },
+          // colorSkipBtn: Colors.white38,
+          // highlightColorSkipBtn: AppColor.whiteColor,
+          // colorDoneBtn: Colors.white38,
+          // highlightColorDoneBtn: AppColor.whiteColor,
+          // colorDot: AppColor.whiteColor,
+          // sizeDot: 5.0,
+          // typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
+          // backgroundColorAllSlides: AppColor.primaryColor,
+          // shouldHideStatusBar: false,
+        ),
       ),
     );
   }

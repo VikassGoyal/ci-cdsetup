@@ -448,7 +448,7 @@ class _ContactsPageState extends State<ContactsPage> {
           ));
     }
 
-    return Scaffold(
+     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(

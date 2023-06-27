@@ -179,8 +179,8 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                 Flexible(
                   child: InkWell(
                     onTap: () {
-                      if (_personalEmail.text == '') {
-                        Utils.displayToast("Mail id not found");
+                      if (_personalEmail.text == "") {
+                        Utils.displayToastBottomError("Mail id not found");
                         return;
                       }
 
@@ -324,6 +324,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
           child: SizedBox(
             height: double.infinity,
             child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
               child: stackContainer(),
             ),
           ),

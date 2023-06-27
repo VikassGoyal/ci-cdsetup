@@ -47,21 +47,15 @@ class _NewConetUsersState extends State<NewConetUsers> {
               ),
               Text(
                 "Back",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.whiteColor),
               )
             ],
           ),
         ),
         centerTitle: true,
         title: Text(
-          "CoNet Joiners",
-          style: Theme.of(context)
-              .textTheme
-              .headline4
-              ?.apply(color: AppColor.whiteColor),
+          "KoNet Joiners",
+          style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.whiteColor),
         ),
       ),
       body: _loader
@@ -125,10 +119,7 @@ class _NewConetUsersState extends State<NewConetUsers> {
                               Text(
                                 getDateFormat(_contacts[index].contactMetaType),
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2
-                                    ?.copyWith(
+                                style: Theme.of(context).textTheme.bodyText2?.copyWith(
                                       color: AppColor.gray30Color,
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -136,23 +127,18 @@ class _NewConetUsersState extends State<NewConetUsers> {
                               Text(
                                 _contacts[index].name ?? "",
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline3
-                                    ?.copyWith(fontWeight: FontWeight.w400),
+                                style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w400),
                               )
                             ],
                           ),
                           subtitle: Text(
-                            "${_contacts[index].name ?? ""} joined CoNet!",
+                            "${_contacts[index].name ?? ""} joined KoNet!",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6
-                                ?.copyWith(
-                                    color: AppColor.secondaryColor,
-                                    fontWeight: FontWeight.w400),
+                                ?.copyWith(color: AppColor.secondaryColor, fontWeight: FontWeight.w400),
                           ),
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
@@ -186,10 +172,7 @@ class _NewConetUsersState extends State<NewConetUsers> {
                       const SizedBox(height: 20),
                       Text(
                         "No Data",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4
-                            ?.apply(color: AppColor.blackColor),
+                        style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.blackColor),
                       )
                     ],
                   ),
@@ -205,8 +188,7 @@ class _NewConetUsersState extends State<NewConetUsers> {
         _loader = false;
       });
       if (response['status']) {
-        _contacts = List<AllContacts>.from(
-            response['data'].map((item) => AllContacts.fromJson(item)));
+        _contacts = List<AllContacts>.from(response['data'].map((item) => AllContacts.fromJson(item)));
       }
     } catch (e) {
       setState(() {

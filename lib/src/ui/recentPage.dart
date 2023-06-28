@@ -1,9 +1,11 @@
+// ignore_for_file: file_names
+
+import 'dart:io';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
 import 'package:conet/blocs/recent_calls/recent_calls_event.dart';
 import 'package:conet/blocs/recent_calls/recent_calls_state.dart';
 import 'package:conet/models/recentCalls.dart';
-import 'package:conet/src/app.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
@@ -14,20 +16,16 @@ import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
-
-import '../../bottomNavigation/bottomNavigationBloc.dart';
 import 'notification.dart';
 
 class RecentPage extends StatefulWidget {
-  // List<RecentCalls>? callLogs;
-
-  // RecentPage({this.callLogs}) : super();
   const RecentPage({super.key});
   @override
   _RecentPageState createState() => _RecentPageState();
@@ -51,12 +49,17 @@ class _RecentPageState extends State<RecentPage> {
     super.initState();
     _textEditingController = TextEditingController();
     try {
-      // _callHistory = widget.callLogs;
       recentCallsBloc = BlocProvider.of<RecentCallsBloc>(context);
-      recentCallsBloc.add(GetRecentCallsEvent(isInitialFetch: true));
-      _isRecentCallsLoading = true;
+      SchedulerBinding.instance.addPostFrameCallback((_) => checkPermissionAndFetchCallLogs());
     } catch (e) {
       print("RecentPageerror : $e");
+    }
+  }
+
+  checkPermissionAndFetchCallLogs() async {
+    if (await checkCallLogsPermissions()) {
+      recentCallsBloc.add(GetRecentCallsEvent(isInitialFetch: true));
+      _isRecentCallsLoading = true;
     }
   }
 
@@ -70,7 +73,6 @@ class _RecentPageState extends State<RecentPage> {
   void _loadMore() {
     _isRecentCallsLoading = true;
     recentCallsBloc.add(GetRecentCallsEvent(isInitialFetch: false));
-    // setState(() {});
   }
 
   @override
@@ -106,18 +108,18 @@ class _RecentPageState extends State<RecentPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      (_callHistory![index].name == "" || _callHistory![index].name == "null")
+                      (_callHistory[index].name == "" || _callHistory[index].name == "null")
                           ? "Unknown"
-                          : _callHistory![index].name!,
+                          : _callHistory[index].name!,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w400),
                     ),
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        _callHistory![index].callType.toString() != "CallType.missed" &&
-                                _callHistory![index].callType.toString() != "CallType.rejected"
-                            ? _callHistory![index].callType.toString() == "CallType.incoming"
+                        _callHistory[index].callType.toString() != "CallType.missed" &&
+                                _callHistory[index].callType.toString() != "CallType.rejected"
+                            ? _callHistory[index].callType.toString() == "CallType.incoming"
                                 ? Image.asset(
                                     "assets/icons/ic_incoming_call.png",
                                     width: 10,
@@ -132,7 +134,7 @@ class _RecentPageState extends State<RecentPage> {
                               ),
                         const SizedBox(width: 8),
                         Text(
-                          _callHistory![index].number ?? "",
+                          _callHistory[index].number ?? "",
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
@@ -147,7 +149,7 @@ class _RecentPageState extends State<RecentPage> {
             ),
             const SizedBox(width: 10),
             Text(
-              timeFormat(_callHistory![index].timestamp),
+              timeFormat(_callHistory[index].timestamp),
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context)
                   .textTheme
@@ -155,7 +157,7 @@ class _RecentPageState extends State<RecentPage> {
                   ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
             ),
             Visibility(
-              visible: _callHistory![index].number != null,
+              visible: _callHistory[index].number != null,
               child: Container(
                 width: 38,
                 height: 38,
@@ -171,7 +173,7 @@ class _RecentPageState extends State<RecentPage> {
                     print("Cliked");
 
                     List<RecentCalls> data =
-                        _callHistory!.where((element) => element.number == _callHistory![index].number).toList();
+                        _callHistory.where((element) => element.number == _callHistory[index].number).toList();
 
                     Navigator.push(
                       context,
@@ -204,7 +206,6 @@ class _RecentPageState extends State<RecentPage> {
             _isRecentCallsLoading = false;
             setState(() {});
           } else if (state is GetRecentCallsLoading) {
-            // _isRecentCallsLoading = true;
             setState(() {});
           }
         },
@@ -212,7 +213,6 @@ class _RecentPageState extends State<RecentPage> {
           return true;
         },
         builder: (context, state) {
-          // if (state is GetRecentCallsSuccess) {
           return Expanded(
             child: RefreshIndicator(
               color: AppColor.primaryColor,
@@ -221,14 +221,13 @@ class _RecentPageState extends State<RecentPage> {
                 return Future.delayed(
                   const Duration(seconds: 3),
                   () {
-                    // BlocProvider.of<BottomNavigationBloc>(context).add(PageRefreshed(index: 1));
                     recentCallsBloc.add(GetRecentCallsEvent(isRefreshData: true));
                     _isRecentCallsLoading = true;
                     _isFetchedAllData = false;
                   },
                 );
               },
-              child: _callHistory == null || _callHistory!.isEmpty
+              child: _callHistory.isEmpty
                   ? Opacity(
                       opacity: 0,
                       child: ListView.separated(
@@ -247,7 +246,7 @@ class _RecentPageState extends State<RecentPage> {
                   : ListView.separated(
                       shrinkWrap: true,
                       physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: _isFetchedAllData ? _callHistory!.length : _callHistory!.length + 1,
+                      itemCount: _isFetchedAllData ? _callHistory.length : _callHistory.length + 1,
                       primary: false,
                       scrollDirection: Axis.vertical,
                       separatorBuilder: (context, index) {
@@ -257,7 +256,7 @@ class _RecentPageState extends State<RecentPage> {
                         );
                       },
                       itemBuilder: (context, index) {
-                        if (index >= _callHistory!.length) {
+                        if (index >= _callHistory.length) {
                           // Don't trigger if one async loading is already under way
                           if (!_isRecentCallsLoading) {
                             _loadMore();
@@ -511,6 +510,33 @@ class _RecentPageState extends State<RecentPage> {
       } else if (reqStatus.isDenied) {
         Utils.displayToast("Permission Denied");
       }
+    }
+  }
+
+  Future<bool> checkCallLogsPermissions() async {
+    if (Platform.isAndroid) {
+      var status = await Permission.phone.status;
+      if (status.isGranted) {
+        return true;
+      } else if (status.isPermanentlyDenied) {
+        await openAppSettings();
+        var newStatus = await Permission.phone.status;
+        return (newStatus.isGranted || newStatus.isLimited);
+      } else {
+        var reqStatus = await Permission.phone.request();
+        if (reqStatus.isGranted || reqStatus.isLimited) {
+          return true;
+        } else if (reqStatus.isDenied) {
+          Utils.displayToast("Permission Denied");
+          return false;
+        } else {
+          Utils.displayToast("Permission Denied");
+          return false;
+        }
+      }
+    } else {
+      //iOS doesn't allow call log permissions
+      return true;
     }
   }
 

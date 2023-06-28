@@ -207,6 +207,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
                 child: Center(
                   child: DialButton(
                     icon: Icons.phone,
+                    title: textEditingController?.text ?? '',
                     color: AppColor.secondaryColor,
                     onTap: (value) {
                       widget.makeCall!(_value);

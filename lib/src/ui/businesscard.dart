@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/repositories/contactPageRepository.dart';
+import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/theme.dart';
@@ -81,7 +82,14 @@ class _BussinessCardState extends State<BussinessCard> {
                       width: MediaQuery.of(context).size.width / 2,
                       imageUrl: imageName != "" ? AppConstant.businessimageBaseUrl + imageName : "",
                       placeholder: (context, url) => SvgPicture.asset("assets/logo.svg"),
-                      errorWidget: (context, url, error) => SvgPicture.asset("assets/logo.svg"),
+                      errorWidget: (context, url, error) => Center(
+                        child: KonetLogo(
+                          logoHeight: 24,
+                          fontSize: 19,
+                          textPadding: 9,
+                          spacing: 9,
+                        ),
+                      ),
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -114,7 +122,14 @@ class _BussinessCardState extends State<BussinessCard> {
                       width: MediaQuery.of(context).size.width / 2,
                       imageUrl: imageName != "" ? AppConstant.businessimageBaseUrl + imageName : "",
                       placeholder: (context, url) => SvgPicture.asset("assets/logo.svg"),
-                      errorWidget: (context, url, error) => SvgPicture.asset("assets/logo.svg"),
+                      errorWidget: (context, url, error) => Center(
+                        child: KonetLogo(
+                          logoHeight: 24,
+                          fontSize: 19,
+                          textPadding: 9,
+                          spacing: 9,
+                        ),
+                      ),
                       fit: BoxFit.contain,
                     )
                     // SvgPicture.asset("assets/logo.svg"),
@@ -161,7 +176,12 @@ class _BussinessCardState extends State<BussinessCard> {
                   flex: 1,
                   child: Visibility(
                     visible: imageName != null ? true : false,
-                    child: SvgPicture.asset("assets/logo.svg"),
+                    child: const KonetLogo(
+                      logoHeight: 24,
+                      fontSize: 19,
+                      textPadding: 9,
+                      spacing: 9,
+                    ),
                   ),
                 ),
               ],

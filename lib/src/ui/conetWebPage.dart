@@ -1,6 +1,7 @@
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/searchContacts.dart';
+import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/src/ui/newInConet.dart';
@@ -704,9 +705,11 @@ class _ConetWebPageState extends State<ConetWebPage> {
         appBar: AppBar(
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
-          title: SvgPicture.asset(
-            "assets/logo.svg",
-            height: 24,
+          title: const KonetLogo(
+            logoHeight: 24,
+            fontSize: 19,
+            textPadding: 9,
+            spacing: 9,
           ),
           actions: [
             IconButton(

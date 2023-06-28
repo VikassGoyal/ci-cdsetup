@@ -1,6 +1,7 @@
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/deviceContactData.dart';
+import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/login.dart';
 import 'package:conet/src/ui/addContactUserProfilePage.dart';
@@ -63,10 +64,11 @@ class _SettingsState extends State<Settings> {
         centerTitle: false,
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
-        title: SvgPicture.asset(
-          "assets/logo.svg",
-          height: 20,
-          width: 20,
+        title: KonetLogo(
+          logoHeight: 24,
+          fontSize: 19,
+          textPadding: 9,
+          spacing: 9,
         ),
       ),
       body: SingleChildScrollView(

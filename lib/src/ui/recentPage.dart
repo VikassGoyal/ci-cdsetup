@@ -4,6 +4,7 @@ import 'package:conet/blocs/recent_calls/recent_calls_event.dart';
 import 'package:conet/blocs/recent_calls/recent_calls_state.dart';
 import 'package:conet/models/recentCalls.dart';
 import 'package:conet/src/app.dart';
+import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/src/ui/contact/callHistoryProfile.dart';
@@ -298,9 +299,11 @@ class _RecentPageState extends State<RecentPage> {
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
-        title: SvgPicture.asset(
-          "assets/logo.svg",
-          height: 24,
+        title: const KonetLogo(
+          logoHeight: 24,
+          fontSize: 19,
+          textPadding: 9,
+          spacing: 9,
         ),
         actions: [
           IconButton(

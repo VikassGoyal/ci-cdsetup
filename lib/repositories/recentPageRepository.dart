@@ -11,6 +11,7 @@ class RecentPageRepository {
 
   fetchData(DateTime dateTimeFrom, DateTime dateTimeTo, String? name) async {
     try {
+      print('RecentPageRepository Called');
       // Iterable<CallLogEntry> entries = await CallLog.get();
       Iterable<CallLogEntry> entries = await CallLog.query(
         dateTimeFrom: dateTimeTo,

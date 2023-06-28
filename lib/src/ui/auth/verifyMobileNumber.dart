@@ -412,23 +412,23 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           elevation: 0.0,
           centerTitle: false,
           leadingWidth: 150,
-          leading: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 10, right: 3),
-                  child: Icon(Icons.arrow_back, color: Colors.white),
-                ),
-                Text(
-                  'Back',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-              ],
-            ),
-          ),
+          // leading: InkWell(
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //   },
+          //   child: Row(
+          //     children: [
+          //       Padding(
+          //         padding: EdgeInsets.only(left: 10, right: 3),
+          //         child: Icon(Icons.arrow_back, color: Colors.white),
+          //       ),
+          //       Text(
+          //         'Back',
+          //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -443,12 +443,12 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
                     style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
                   ),
                   Text(
-                    "in Your Email",
+                    "in your SMS",
                     style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    "We have sent code to " + widget.email!,
+                    "We have sent code to ${widget.phone ?? ''}",
                     style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
                   ),
                   Text(

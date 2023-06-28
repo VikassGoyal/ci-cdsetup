@@ -6,6 +6,7 @@ import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/models/recentCalls.dart';
 import 'package:conet/repositories/repositories.dart';
+import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/src/ui/contact/nonConetContactProfile.dart';
@@ -448,15 +449,17 @@ class _ContactsPageState extends State<ContactsPage> {
           ));
     }
 
-     return Scaffold(
+    return Scaffold(
       backgroundColor: AppColor.whiteColor,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
-        title: SvgPicture.asset(
-          "assets/logo.svg",
-          height: 24,
+        title: const KonetLogo(
+          logoHeight: 24,
+          fontSize: 19,
+          textPadding: 9,
+          spacing: 9,
         ),
         actions: [
           IconButton(

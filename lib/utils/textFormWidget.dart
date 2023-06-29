@@ -1,6 +1,8 @@
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:path/path.dart';
 
 class TextFormFieldWidget extends StatefulWidget {
@@ -45,7 +47,13 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
     return Container(
       padding: EdgeInsets.only(left: widget.padding!, right: widget.padding!),
       child: TextFormField(
-        style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
+        style: TextStyle(
+          fontFamily: kSfproRoundedFontFamily,
+          color: AppColor.whiteColor,
+          fontSize: 15.sp,
+          fontWeight: FontWeight.w600,
+          fontStyle: FontStyle.normal,
+        ),
         inputFormatters: [
           FilteringTextInputFormatter.allow(widget.regexp == null ? RegExp('.*') : widget.regexp!),
           FilteringTextInputFormatter.deny(RegExp(r'\s')),

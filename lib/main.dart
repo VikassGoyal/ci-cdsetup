@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'bottomNavigation/bottomNavigationBloc.dart';
 import 'firebase_options.dart';
 import 'src/app.dart';
@@ -50,25 +51,46 @@ void main() {
       }
     };
 
-    runApp(MultiBlocProvider(
-        providers: [
-          BlocProvider<BottomNavigationBloc>(
-              create: (context) => BottomNavigationBloc(
-                    contactPageRepository: ContactPageRepository(),
-                    keypadPageRepository: KeypadPageRepository(),
-                    conetWebPageRepository: CoNetWebPageRepository(),
-                    settingsPageRepository: SettingsPageRepository(),
-                  )..add(AppStarted())),
-          BlocProvider<RecentCallsBloc>(
-              create: (context) => RecentCallsBloc(recentPageRepository: RecentPageRepository())),
-        ],
-        child: Builder(builder: (context) {
-          BlocProvider.of<BottomNavigationBloc>(context).add(AppStarted());
-
-          return const App();
-        })));
-  }, (error, stack) {
+    // Run the application.
+    runApp(const App());
+  },
+      // Catch all asynchronous exceptions not handled by Flutter framework.
+      (error, stack) {
     print("MainApp : runZonedGuarded : $error");
     FirebaseCrashlytics.instance.recordError(error, stack);
   });
+}
+
+class App extends StatelessWidget {
+  const App({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      builder: (context, child) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<BottomNavigationBloc>(
+                create: (context) => BottomNavigationBloc(
+                      contactPageRepository: ContactPageRepository(),
+                      keypadPageRepository: KeypadPageRepository(),
+                      conetWebPageRepository: CoNetWebPageRepository(),
+                      settingsPageRepository: SettingsPageRepository(),
+                    )..add(AppStarted())),
+            BlocProvider<RecentCallsBloc>(
+                create: (context) => RecentCallsBloc(recentPageRepository: RecentPageRepository())),
+          ],
+          child: Builder(
+            builder: (context) {
+              BlocProvider.of<BottomNavigationBloc>(context).add(AppStarted());
+
+              return const MyApp();
+            },
+          ),
+        );
+      },
+    );
+  }
 }

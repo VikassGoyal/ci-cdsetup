@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bottomNavigation/bottomNavigationBloc.dart';
 
-class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  _AppState createState() => _AppState();
+  _MyAppState createState() => _MyAppState();
 }
 
-class _AppState extends State<App> with WidgetsBindingObserver {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);

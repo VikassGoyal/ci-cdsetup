@@ -79,6 +79,7 @@ dependencies:
   url_launcher: ^6.1.11
   firebase_messaging: ^14.6.1
   path: ^1.8.3
+  flutter_screenutil: ^5.8.4
 
 dependency_overrides:
   http: ^1.0.0
@@ -110,22 +111,20 @@ flutter:
   fonts:
     - family: Dreadnoughtus
       fonts:
-        - asset: fonts/DreadnoughtusMedium.ttf
-    - family: Sfpro-Rounded-Bold
+        - asset: assets/fonts/DreadnoughtusMedium.ttf
+
+    # In this font-family, weights are not accurate according to file name but as per figma looks
+    - family: SfproRounded
       fonts:
-        - asset: fonts/sfpro_rounded_bold.ttf
-    - family: Sfpro-Rounded-Light
-      fonts:
-        - asset: fonts/sfpro_rounded_light.ttf
-    - family: Sfpro-Rounded-Medium
-      fonts:
-        - asset: fonts/sfpro_rounded_medium.ttf
-    - family: Sfpro-Rounded-Regular
-      fonts:
-        - asset: fonts/sfpro_rounded_regular.ttf
-    - family: Sfpro-Rounded-Semibold
-      fonts:
-        - asset: fonts/sfpro_rounded_semibold.ttf
-    - family: Sfpro-Rounded-Thin
-      fonts:
-        - asset: fonts/sfpro_rounded_thin.ttf
+        - asset: assets/fonts/sfpro_rounded_thin.ttf
+        - weight: 300
+        - asset: assets/fonts/sfpro_rounded_light.ttf
+        - weight: 400
+        - asset: assets/fonts/sfpro_rounded_regular.ttf
+        - weight: 500
+        - asset: assets/fonts/sfpro_rounded_medium.ttf
+        - weight: 600
+        - asset: assets/fonts/sfpro_rounded_semibold.ttf
+        - weight: 700
+        - asset: assets/fonts/sfpro_rounded_bold.ttf
+        - weight: 800

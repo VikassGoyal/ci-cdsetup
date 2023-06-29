@@ -13,6 +13,7 @@ import 'package:conet/src/ui/settings/myprofile.dart';
 import 'package:conet/src/ui/settings/socialContact.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
@@ -292,7 +293,7 @@ class _SettingsState extends State<Settings> {
             Text("$totalUsers users Worldwide",
                 style: const TextStyle(
                   color: AppColor.secondaryColor,
-                  fontFamily: 'Sfpro-Rounded-Medium',
+                  fontFamily: kSfproRoundedFontFamily,
                   fontWeight: FontWeight.w500,
                   fontSize: 18,
                   fontStyle: FontStyle.normal,
@@ -304,7 +305,7 @@ class _SettingsState extends State<Settings> {
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: AppColor.accentColor,
-                    fontFamily: 'Sfpro-Rounded-Semibold',
+                    fontFamily: kSfproRoundedFontFamily,
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
                     fontStyle: FontStyle.normal,

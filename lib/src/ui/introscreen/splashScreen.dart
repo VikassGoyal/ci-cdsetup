@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/ui/introscreen/introSlider.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -50,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Text(
                     'KONET',
                     style: TextStyle(
-                      fontFamily: 'Dreadnoughtus',
+                      fontFamily: kDreadnoughtusFontFamily,
                       fontSize: 40,
                       color: Colors.white,
                     ),

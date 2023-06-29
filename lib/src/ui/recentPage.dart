@@ -1,6 +1,12 @@
+// ignore_for_file: file_names
+
+import 'dart:io';
 import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
+import 'package:conet/blocs/recent_calls/recent_calls_event.dart';
+import 'package:conet/blocs/recent_calls/recent_calls_state.dart';
 import 'package:conet/models/recentCalls.dart';
-import 'package:conet/src/app.dart';
+import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/src/ui/contact/callHistoryProfile.dart';
@@ -10,41 +16,50 @@ import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
-
-import '../../bottomNavigation/bottomNavigationBloc.dart';
 import 'notification.dart';
 
 class RecentPage extends StatefulWidget {
-  List<RecentCalls>? callLogs;
-
-  RecentPage({this.callLogs}) : super();
+  const RecentPage({super.key});
   @override
   _RecentPageState createState() => _RecentPageState();
 }
 
 class _RecentPageState extends State<RecentPage> {
-  final List _loadedCallLogs = [];
-  List? _searchResult = [];
-  List<RecentCalls>? _callHistory = [];
+  List<RecentCalls> _loadedCallLogs = [];
+  List<RecentCalls> _searchResult = [];
+  List<RecentCalls> _callHistory = [];
   TextEditingController? _outputController;
   bool _loader = false;
   bool _showCancelIcon = false;
   // final TextEditingController _textEditingController = TextEditingController();
   TextEditingController? _textEditingController;
+  late RecentCallsBloc recentCallsBloc;
+  bool _isRecentCallsLoading = false;
+
+  bool _isFetchedAllData = false;
   @override
   void initState() {
     super.initState();
     _textEditingController = TextEditingController();
     try {
-      _callHistory = widget.callLogs;
+      recentCallsBloc = BlocProvider.of<RecentCallsBloc>(context);
+      SchedulerBinding.instance.addPostFrameCallback((_) => checkPermissionAndFetchCallLogs());
     } catch (e) {
       print("RecentPageerror : $e");
+    }
+  }
+
+  checkPermissionAndFetchCallLogs() async {
+    if (await checkCallLogsPermissions()) {
+      recentCallsBloc.add(GetRecentCallsEvent(isInitialFetch: true));
+      _isRecentCallsLoading = true;
     }
   }
 
@@ -52,6 +67,12 @@ class _RecentPageState extends State<RecentPage> {
   void dispose() {
     super.dispose();
     _textEditingController!.dispose();
+  }
+
+  // Triggers fecth() and then add new items or change _hasMore flag
+  void _loadMore() {
+    _isRecentCallsLoading = true;
+    recentCallsBloc.add(GetRecentCallsEvent(isInitialFetch: false));
   }
 
   @override
@@ -87,18 +108,18 @@ class _RecentPageState extends State<RecentPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      (_callHistory![index].name == "" || _callHistory![index].name == "null")
+                      (_callHistory[index].name == "" || _callHistory[index].name == "null")
                           ? "Unknown"
-                          : _callHistory![index].name!,
+                          : _callHistory[index].name!,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w400),
                     ),
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        _callHistory![index].callType.toString() != "CallType.missed" &&
-                                _callHistory![index].callType.toString() != "CallType.rejected"
-                            ? _callHistory![index].callType.toString() == "CallType.incoming"
+                        _callHistory[index].callType.toString() != "CallType.missed" &&
+                                _callHistory[index].callType.toString() != "CallType.rejected"
+                            ? _callHistory[index].callType.toString() == "CallType.incoming"
                                 ? Image.asset(
                                     "assets/icons/ic_incoming_call.png",
                                     width: 10,
@@ -113,7 +134,7 @@ class _RecentPageState extends State<RecentPage> {
                               ),
                         const SizedBox(width: 8),
                         Text(
-                          _callHistory![index].number ?? "",
+                          _callHistory[index].number ?? "",
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
@@ -128,7 +149,7 @@ class _RecentPageState extends State<RecentPage> {
             ),
             const SizedBox(width: 10),
             Text(
-              timeFormat(_callHistory![index].timestamp),
+              timeFormat(_callHistory[index].timestamp),
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context)
                   .textTheme
@@ -136,7 +157,7 @@ class _RecentPageState extends State<RecentPage> {
                   ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
             ),
             Visibility(
-              visible: _callHistory![index].number != null,
+              visible: _callHistory[index].number != null,
               child: Container(
                 width: 38,
                 height: 38,
@@ -152,7 +173,7 @@ class _RecentPageState extends State<RecentPage> {
                     print("Cliked");
 
                     List<RecentCalls> data =
-                        _callHistory!.where((element) => element.number == _callHistory![index].number).toList();
+                        _callHistory.where((element) => element.number == _callHistory[index].number).toList();
 
                     Navigator.push(
                       context,
@@ -171,51 +192,104 @@ class _RecentPageState extends State<RecentPage> {
     }
 
     Widget contactsList() {
-      return Expanded(
-        child: RefreshIndicator(
-          color: AppColor.primaryColor,
-          backgroundColor: AppColor.whiteColor,
-          onRefresh: () {
-            return Future.delayed(
-              const Duration(seconds: 3),
-              () {
-                BlocProvider.of<BottomNavigationBloc>(context).add(PageRefreshed(index: 1));
+      return BlocConsumer<RecentCallsBloc, RecentCallsState>(
+        listener: (context, state) {
+          if (state is GetRecentCallsSuccess) {
+            _loadedCallLogs = state.recentCallsData;
+            String searchText = _textEditingController!.text;
+            if (searchText.isEmpty) {
+              _callHistory = _loadedCallLogs;
+            } else {
+              filterSearchResults(searchText);
+            }
+            _isFetchedAllData = state.isFetchedAllData;
+            _isRecentCallsLoading = false;
+            setState(() {});
+          } else if (state is GetRecentCallsLoading) {
+            setState(() {});
+          }
+        },
+        buildWhen: (previous, current) {
+          return true;
+        },
+        builder: (context, state) {
+          return Expanded(
+            child: RefreshIndicator(
+              color: AppColor.primaryColor,
+              backgroundColor: AppColor.whiteColor,
+              onRefresh: () {
+                return Future.delayed(
+                  const Duration(seconds: 3),
+                  () {
+                    recentCallsBloc.add(GetRecentCallsEvent(isRefreshData: true));
+                    _isRecentCallsLoading = true;
+                    _isFetchedAllData = false;
+                  },
+                );
               },
-            );
-          },
-          child: _callHistory == null || _callHistory!.isEmpty
-              ? Opacity(
-                  opacity: 0,
-                  child: ListView.separated(
-                    itemCount: 0,
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        height: 1,
-                        color: Colors.grey.shade200,
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                )
-              : ListView.separated(
-                  shrinkWrap: true,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  itemCount: _callHistory!.length,
-                  primary: false,
-                  scrollDirection: Axis.vertical,
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      height: 1,
-                      color: Colors.grey.shade200,
-                    );
-                  },
-                  itemBuilder: (context, index) {
-                    return contactListItem(index);
-                  },
-                ),
-        ),
+              child: _callHistory.isEmpty
+                  ? Opacity(
+                      opacity: 0,
+                      child: ListView.separated(
+                        itemCount: 0,
+                        separatorBuilder: (context, index) {
+                          return Divider(
+                            height: 1,
+                            color: Colors.grey.shade200,
+                          );
+                        },
+                        itemBuilder: (context, index) {
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    )
+                  : ListView.separated(
+                      shrinkWrap: true,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: _isFetchedAllData ? _callHistory.length : _callHistory.length + 1,
+                      primary: false,
+                      scrollDirection: Axis.vertical,
+                      separatorBuilder: (context, index) {
+                        return Divider(
+                          height: 1,
+                          color: Colors.grey.shade200,
+                        );
+                      },
+                      itemBuilder: (context, index) {
+                        if (index >= _callHistory.length) {
+                          // Don't trigger if one async loading is already under way
+                          if (!_isRecentCallsLoading) {
+                            _loadMore();
+                          }
+                          return Center(
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 5, bottom: 5),
+                              height: 30,
+                              width: 30,
+                              child: const CircularProgressIndicator(
+                                color: AppColor.primaryColor,
+                                backgroundColor: AppColor.whiteColor,
+                              ),
+                            ),
+                          );
+                        }
+                        return contactListItem(index);
+                      },
+                    ),
+            ),
+          );
+          // } else {
+          //   return const SizedBox(
+          //     height: 50,
+          //     width: 50,
+          //     child: Center(
+          //       child: CircularProgressIndicator(
+          //         color: AppColor.primaryColor,
+          //       ),
+          //     ),
+          //   );
+          // }
+        },
       );
     }
 
@@ -224,9 +298,11 @@ class _RecentPageState extends State<RecentPage> {
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
-        title: SvgPicture.asset(
-          "assets/logo.svg",
-          height: 24,
+        title: const KonetLogo(
+          logoHeight: 24,
+          fontSize: 19,
+          textPadding: 9,
+          spacing: 9,
         ),
         actions: [
           IconButton(
@@ -404,20 +480,20 @@ class _RecentPageState extends State<RecentPage> {
     if (query.isNotEmpty) {
       _searchResult = [];
       for (var data in _loadedCallLogs) {
-        if (data.tocontact.name.toLowerCase().contains(query.toLowerCase())) {
-          _searchResult!.add(data);
+        if (data.name!.toLowerCase().contains(query.toLowerCase())) {
+          _searchResult.add(data);
         }
       }
 
       setState(() {
         _callHistory = [];
-        _callHistory = _searchResult as List<RecentCalls>?;
+        _callHistory = _searchResult;
       });
       return;
     } else {
       setState(() {
         _callHistory = [];
-        _callHistory = _loadedCallLogs as List<RecentCalls>?;
+        _callHistory = _loadedCallLogs;
       });
     }
   }
@@ -434,6 +510,33 @@ class _RecentPageState extends State<RecentPage> {
       } else if (reqStatus.isDenied) {
         Utils.displayToast("Permission Denied");
       }
+    }
+  }
+
+  Future<bool> checkCallLogsPermissions() async {
+    if (Platform.isAndroid) {
+      var status = await Permission.phone.status;
+      if (status.isGranted) {
+        return true;
+      } else if (status.isPermanentlyDenied) {
+        await openAppSettings();
+        var newStatus = await Permission.phone.status;
+        return (newStatus.isGranted || newStatus.isLimited);
+      } else {
+        var reqStatus = await Permission.phone.request();
+        if (reqStatus.isGranted || reqStatus.isLimited) {
+          return true;
+        } else if (reqStatus.isDenied) {
+          Utils.displayToast("Permission Denied");
+          return false;
+        } else {
+          Utils.displayToast("Permission Denied");
+          return false;
+        }
+      }
+    } else {
+      //iOS doesn't allow call log permissions
+      return true;
     }
   }
 
@@ -503,6 +606,7 @@ class _RecentPageState extends State<RecentPage> {
   void _clearText() {
     _textEditingController!.clear();
     FocusScope.of(context).requestFocus(FocusNode());
+    _callHistory = _loadedCallLogs;
     setState(() {
       _showCancelIcon = false;
     });

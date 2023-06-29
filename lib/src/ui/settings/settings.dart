@@ -1,6 +1,7 @@
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/deviceContactData.dart';
+import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/login.dart';
 import 'package:conet/src/ui/addContactUserProfilePage.dart';
@@ -63,9 +64,11 @@ class _SettingsState extends State<Settings> {
         centerTitle: false,
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
-        title: SvgPicture.asset(
-          "assets/logo.svg",
-          height: 24,
+        title: KonetLogo(
+          logoHeight: 24,
+          fontSize: 19,
+          textPadding: 9,
+          spacing: 9,
         ),
       ),
       body: SingleChildScrollView(
@@ -178,7 +181,7 @@ class _SettingsState extends State<Settings> {
             ListTile(
               onTap: () {
                 Uri emailLaunchUri =
-                    Uri(scheme: 'mailto', path: "theconetapp@gmail.com", queryParameters: {'subject': null});
+                    Uri(scheme: 'mailto', path: "thekonetapp@gmail.com", queryParameters: {'subject': null});
                 launch(emailLaunchUri.toString());
               },
               title: Text("Contact us", style: Theme.of(context).textTheme.headline3),
@@ -217,7 +220,7 @@ class _SettingsState extends State<Settings> {
                 );
               },
               title: Text(
-                "Invite to CONET app",
+                "Invite to KONET app",
                 style: Theme.of(context).textTheme.headline3,
               ),
               leading: SvgPicture.asset(
@@ -281,9 +284,10 @@ class _SettingsState extends State<Settings> {
             ),
             const SizedBox(height: 10),
             SvgPicture.asset(
-              "assets/images/setting_logo.svg",
+              "assets/logo_orange.svg",
               height: 30,
             ),
+
             const SizedBox(height: 10),
             Text("$totalUsers users Worldwide",
                 style: const TextStyle(
@@ -440,7 +444,7 @@ class _SettingsState extends State<Settings> {
             style: Theme.of(context).textTheme.headline5,
           ),
           content: Text(
-            'Do you want to import contacts to conet?',
+            'Do you want to import contacts to konet?',
             style: Theme.of(context).textTheme.headline3,
           ),
           actions: <Widget>[
@@ -471,30 +475,12 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-// checkPermission() async {
-//     Permission.contacts.request();
-//     var status = await Permission.contacts.status;
-//     if (status.isGranted) {
-//       // Permission.contacts.request();
-//       _importContacts();
-//     } else {
-//       var reqStatus = await Permission.contacts.request();
-//       openAppSettings();
-//       if (reqStatus.isGranted) {
-//         _importContacts();
-//       } else if (reqStatus.isDenied) {
-//         Utils.displayToast("Permission Denied");
-//       }
-//     }
-//   }
   _checkContactPermission() async {
     var status = await Permission.contacts.status;
     if (status.isGranted) {
       _importContacts();
     } else {
       var reqStatus = await Permission.contacts.request();
-      // openAppSettings();
-      Permission.contacts.request();
       if (reqStatus.isGranted) {
         _importContacts();
       } else if (reqStatus.isDenied) {

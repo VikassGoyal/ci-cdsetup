@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
 import 'package:conet/repositories/coNetWebPageRepository.dart';
 import 'package:conet/repositories/contactPageRepository.dart';
 import 'package:conet/repositories/keypadPageRepository.dart';
@@ -49,14 +50,18 @@ void main() {
       }
     };
 
-    runApp(BlocProvider<BottomNavigationBloc>(
-        create: (context) => BottomNavigationBloc(
-              contactPageRepository: ContactPageRepository(),
-              recentPageRepository: RecentPageRepository(),
-              keypadPageRepository: KeypadPageRepository(),
-              conetWebPageRepository: CoNetWebPageRepository(),
-              settingsPageRepository: SettingsPageRepository(),
-            )..add(AppStarted()),
+    runApp(MultiBlocProvider(
+        providers: [
+          BlocProvider<BottomNavigationBloc>(
+              create: (context) => BottomNavigationBloc(
+                    contactPageRepository: ContactPageRepository(),
+                    keypadPageRepository: KeypadPageRepository(),
+                    conetWebPageRepository: CoNetWebPageRepository(),
+                    settingsPageRepository: SettingsPageRepository(),
+                  )..add(AppStarted())),
+          BlocProvider<RecentCallsBloc>(
+              create: (context) => RecentCallsBloc(recentPageRepository: RecentPageRepository())),
+        ],
         child: Builder(builder: (context) {
           BlocProvider.of<BottomNavigationBloc>(context).add(AppStarted());
 

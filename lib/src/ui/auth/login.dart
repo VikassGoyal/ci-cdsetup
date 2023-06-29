@@ -1,4 +1,5 @@
 import 'package:conet/blocs/userBloc.dart';
+import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/forgotPassword.dart';
@@ -212,10 +213,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      "assets/logo.svg",
-                      height: 50,
-                    ),
+                    const KonetLogo(),
                     const SizedBox(height: 50),
                     _buildMobile(),
                     const SizedBox(height: 20),

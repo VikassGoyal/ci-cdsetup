@@ -35,11 +35,7 @@ class AppScreen extends StatelessWidget {
             );
           }
           if (state is RecentPageLoaded) {
-            if (Platform.isAndroid) {
-              return RecentPage(callLogs: state.callLog);
-            } else {
-              return RecentPage(callLogs: state.callLog);
-            }
+            return RecentPage();
           }
           if (state is KeypadPageLoaded) {
             return KeypadPage(contactsData: state.contactObject);
@@ -94,7 +90,7 @@ class AppScreen extends StatelessWidget {
                   icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 3
                       ? SvgPicture.asset('assets/icons/conetweb_active.svg')
                       : SvgPicture.asset('assets/icons/conetweb.svg'),
-                  label: 'CoNet web',
+                  label: 'KoNet web',
                 ),
                 BottomNavigationBarItem(
                   icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 4

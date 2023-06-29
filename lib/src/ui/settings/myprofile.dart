@@ -1308,16 +1308,20 @@ class _MyProfileState extends State<MyProfile> {
 
         dynamic dat = contactDetail?.personal?.dOB ?? "";
         dat == null ? _personalDob.text : _personalDob.text = dat;
-        if (dat != null) {
-          print(dat);
-          setState(() {
-            selectedDate = DateFormat('dd-mm-yyyy').parse(dat);
-          });
-        } else {
-          setState(() {
-            selectedDate = DateTime.now();
-          });
-        }
+
+        // TODO: This makes the page stuck in loading. Debug later.
+        // if (dat != null) {
+        //   print(dat);
+        //   setState(() {
+        //     selectedDate = DateFormat('dd-mm-yyyy').parse(dat);
+        //   });
+        // } else {
+        //   setState(() {
+        // selectedDate = DateTime.now();
+        //   });
+        // }
+
+        setState(() {});
       } else {
         Utils.displayToast(response["message"]);
       }

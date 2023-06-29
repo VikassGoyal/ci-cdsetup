@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'CoNet',
+      title: 'KoNet',
       home: const AppScreen(),
       theme: ThemeData(
         primaryColor: AppColor.whiteColor,

@@ -142,7 +142,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
               style: TextStyle(
                 fontFamily: 'Sfpro-Rounded-Semibold',
                 inherit: true,
-                color: AppColor.redColor,
+                color: AppColor.secondaryColor,
                 fontSize: sizeFactor / 2,
               ),
               keyboardType: TextInputType.phone,
@@ -207,6 +207,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
                 child: Center(
                   child: DialButton(
                     icon: Icons.phone,
+                    title: textEditingController?.text ?? '',
                     color: AppColor.secondaryColor,
                     onTap: (value) {
                       widget.makeCall!(_value);
@@ -240,6 +241,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
                         () {
                           _value = "";
                           textEditingController!.text = _value;
+                          _contactNameVisible = false;
                         },
                       );
                     },
@@ -380,32 +382,14 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
 
     return GestureDetector(
       onTap: () {
-        // if(widget.title != null) {
-        //   widget.onTap(widget.title!);
-        // }
-
-        print(widget.title);
-
-        //widget.onTap!(widget.title);
-
-        //   if (widget.shouldAnimate!) {
-        //     if (_animationController!.status == AnimationStatus.completed) {
-        //       _animationController?.reverse();
-        //     } else {
-        //       _animationController?.forward();
-        //       _timer = Timer(const Duration(milliseconds: 200), () {
-        //         setState(() {
-        //           _animationController?.reverse();
-        //         });
-        //       });
-        //     }
-        //   }
+        if (widget.title != null) {
+          widget.onTap!(widget.title!);
+        }
       },
       onLongPress: () {
-        widget.onLongPress!(widget.title);
-      },
-      onLongPress: () {
-        widget.onLongPress!(widget.title);
+        if (widget.title != null) {
+          widget.onLongPress!(widget.title!);
+        }
       },
       child: ClipOval(
         child: AnimatedBuilder(

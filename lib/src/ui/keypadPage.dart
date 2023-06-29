@@ -1,4 +1,5 @@
 import 'package:conet/repositories/recentPageRepository.dart';
+import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -33,9 +34,11 @@ class _KeypadPageState extends State<KeypadPage> {
         centerTitle: false,
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
-        title: SvgPicture.asset(
-          "assets/logo.svg",
-          height: 24,
+        title: const KonetLogo(
+          logoHeight: 24,
+          fontSize: 19,
+          textPadding: 9,
+          spacing: 9,
         ),
       ),
       body: Align(

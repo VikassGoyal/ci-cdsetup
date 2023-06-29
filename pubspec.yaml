@@ -108,6 +108,9 @@ flutter:
     - assets/data/
     - assets/
   fonts:
+    - family: Dreadnoughtus
+      fonts:
+        - asset: fonts/DreadnoughtusMedium.ttf
     - family: Sfpro-Rounded-Bold
       fonts:
         - asset: fonts/sfpro_rounded_bold.ttf

@@ -1,6 +1,7 @@
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/searchContacts.dart';
+import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/src/ui/newInConet.dart';
@@ -92,7 +93,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                   ),
                   const SizedBox(height: 32),
                   Text(
-                    "CONET Web Search",
+                    "KONET Web Search",
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline4,
@@ -669,7 +670,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
             ),
             const SizedBox(height: 42),
             Text(
-              "CONET Web Search",
+              "KONET Web Search",
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.placeholder),
@@ -704,9 +705,11 @@ class _ConetWebPageState extends State<ConetWebPage> {
         appBar: AppBar(
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
-          title: SvgPicture.asset(
-            "assets/logo.svg",
-            height: 24,
+          title: const KonetLogo(
+            logoHeight: 24,
+            fontSize: 19,
+            textPadding: 9,
+            spacing: 9,
           ),
           actions: [
             IconButton(
@@ -770,10 +773,9 @@ class _ConetWebPageState extends State<ConetWebPage> {
                             controller: _searchController,
                             onChanged: (value) {
                               // filterSearchResults(value);
-                             setState(() {
-                                value.length > 1 ? _showCancelIcon =true:
-                              _showCancelIcon =false;
-                             });
+                              setState(() {
+                                value.length > 1 ? _showCancelIcon = true : _showCancelIcon = false;
+                              });
                             },
                             onSubmitted: (value) {
                               print(value);
@@ -798,16 +800,16 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                 borderRadius: BorderRadius.circular(8.0),
                                 borderSide: BorderSide.none,
                               ),
-                              prefixIcon:  InkWell(
+                              prefixIcon: InkWell(
                                 onTap: () {
-                              if (_showCancelIcon == true) {
-                                _clearText();
-                              }
-                            },
+                                  if (_showCancelIcon == true) {
+                                    _clearText();
+                                  }
+                                },
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 11, right: 11),
                                   child: Icon(
-                                   _showCancelIcon ? Icons.close : Icons.search,
+                                    _showCancelIcon ? Icons.close : Icons.search,
                                     color: AppColor.gray30Color,
                                     size: 18,
                                   ),
@@ -1048,8 +1050,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
     var outputDate = outputFormat.format(date);
     return outputDate;
   }
-  
-   void _clearText() {
+
+  void _clearText() {
     _searchController!.clear();
     FocusScope.of(context).requestFocus(FocusNode());
     setState(() {

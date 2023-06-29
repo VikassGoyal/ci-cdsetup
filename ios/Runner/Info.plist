@@ -3,11 +3,11 @@
 <plist version="1.0">
 	<dict>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
-		<true/>
+		<true />
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Conet</string>
+		<string>KONET</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -36,9 +36,9 @@
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
-		<true/>
+		<true />
 		<key>UIApplicationSupportsIndirectInputEvents</key>
-		<true/>
+		<true />
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>fetch</string>
@@ -53,14 +53,14 @@
 			<string>UIInterfaceOrientationPortrait</string>
 		</array>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
-		<false/>
+		<false />
 		<key>UIStatusBarHidden</key>
-		<false/>
+		<false />
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>Access to the photo library is required to upload business Logo.</string>
 		<key>NSCameraUsageDescription</key>
 		<string>Access to the camera is required to upload business Logo.</string>
-		<key>NSContactsUsageDescription</key>  
+		<key>NSContactsUsageDescription</key>
 		<string>This app requires contacts access to function properly.</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Access to the microphone is required to upload business Logo.</string>

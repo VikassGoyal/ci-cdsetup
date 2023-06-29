@@ -23,23 +23,21 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
 
     slides.add(
       const ContentConfig(
-          title: "Welcome to the CONET App",
-          description:
-              "View, Manage, Download your Contacts on any device from anywhere at anytime hassle-free",
+          title: "Welcome to the KONET App",
+          description: "View, Manage, Download your Contacts on any device from anywhere at anytime hassle-free",
           pathImage: "assets/images/screen1.png"),
     );
     slides.add(
       const ContentConfig(
-          title: "Welcome to the CONET App",
+          title: "Welcome to the KONET App",
           description:
               "Secure yourself with the updated information of your Contacts and their businesses in real-time",
           pathImage: "assets/images/screen2.png"),
     );
     slides.add(
       const ContentConfig(
-          title: "Welcome to the CONET App",
-          description:
-              "End - to - End Encryption. Privacy and Security is guaranteed.",
+          title: "Welcome to the KONET App",
+          description: "End - to - End Encryption. Privacy and Security is guaranteed.",
           pathImage: "assets/images/screen3.png"),
     );
   }
@@ -54,8 +52,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
   void onTabChangeCompleted(index) {}
 
   Widget? renderNextBtn() {
-    return const Icon(Icons.navigate_next,
-        size: 25, color: AppColor.whiteColor);
+    return const Icon(Icons.navigate_next, size: 25, color: AppColor.whiteColor);
   }
 
   Widget renderDoneBtn() {
@@ -98,17 +95,13 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                           onTap: () {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => IntroVerify()),
+                              MaterialPageRoute(builder: (context) => IntroVerify()),
                             );
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(right: 16),
                             child: Text("Skip",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .apply(color: AppColor.whiteColor)),
+                                style: Theme.of(context).textTheme.bodyText1!.apply(color: AppColor.whiteColor)),
                           ),
                         ),
                       ),
@@ -124,19 +117,14 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                             width: widthImage,
                           ),
                         ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                         Center(
                           child: Text(
                             "${currentSlide.title}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline2!
-                                .apply(color: AppColor.whiteColor),
+                            style: Theme.of(context).textTheme.headline2!.apply(color: AppColor.whiteColor),
                           ),
                         ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.03),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                         Center(
                           child: Padding(
                             padding: const EdgeInsets.only(
@@ -146,8 +134,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                             child: Text(
                               "${currentSlide.description}",
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontSize: 15.0, color: AppColor.whiteColor),
+                              style: const TextStyle(fontSize: 15.0, color: AppColor.whiteColor),
                             ),
                           ),
                         ),
@@ -168,17 +155,13 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                           onTap: () {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => IntroVerify()),
+                              MaterialPageRoute(builder: (context) => IntroVerify()),
                             );
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(right: 16),
                             child: Text("Skip",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .apply(color: AppColor.whiteColor)),
+                                style: Theme.of(context).textTheme.bodyText1!.apply(color: AppColor.whiteColor)),
                           ),
                         ),
                       ),
@@ -203,10 +186,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                       child: Center(
                         child: Text(
                           "${currentSlide.title}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline2!
-                              .apply(color: AppColor.whiteColor),
+                          style: Theme.of(context).textTheme.headline2!.apply(color: AppColor.whiteColor),
                         ),
                       ),
                     ),
@@ -223,8 +203,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                           child: Text(
                             "${currentSlide.description}",
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 15.0, color: AppColor.whiteColor),
+                            style: const TextStyle(fontSize: 15.0, color: AppColor.whiteColor),
                           ),
                         ),
                       ),
@@ -251,35 +230,42 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
     return Scaffold(
       backgroundColor: AppColor.primaryColor,
-      body: IntroSlider(
-        renderSkipBtn: renderSkipBtn(),
-        skipButtonStyle: myButtonStyle(),
-        renderNextBtn: renderNextBtn(),
-        onNextPress: onNextPress,
-        nextButtonStyle: myButtonStyle(),
-        renderDoneBtn: renderDoneBtn(),
-        doneButtonStyle: myButtonStyle(),
-        onDonePress: onDonePress,
-        scrollPhysics: const BouncingScrollPhysics(),
-        listCustomTabs: renderListCustomTabs(),
-        onTabChangeCompleted: onTabChangeCompleted,
-        refFuncGoToTab: (refFunc) {
-          goToTab = refFunc;
-        },
-        // colorSkipBtn: Colors.white38,
-        // highlightColorSkipBtn: AppColor.whiteColor,
-        // colorDoneBtn: Colors.white38,
-        // highlightColorDoneBtn: AppColor.whiteColor,
-        // colorDot: AppColor.whiteColor,
-        // sizeDot: 5.0,
-        // typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
-        // backgroundColorAllSlides: AppColor.primaryColor,
-        // shouldHideStatusBar: false,
+      body: Container(
+        width: screenWidth,
+        height: screenHeight - 40,
+        child: IntroSlider(
+          renderSkipBtn: renderSkipBtn(),
+          skipButtonStyle: myButtonStyle(),
+          renderNextBtn: renderNextBtn(),
+          onNextPress: onNextPress,
+          nextButtonStyle: myButtonStyle(),
+          renderDoneBtn: renderDoneBtn(),
+          doneButtonStyle: myButtonStyle(),
+          onDonePress: onDonePress,
+          scrollPhysics: const BouncingScrollPhysics(),
+          listCustomTabs: renderListCustomTabs(),
+          onTabChangeCompleted: onTabChangeCompleted,
+          refFuncGoToTab: (refFunc) {
+            goToTab = refFunc;
+          },
+          // colorSkipBtn: Colors.white38,
+          // highlightColorSkipBtn: AppColor.whiteColor,
+          // colorDoneBtn: Colors.white38,
+          // highlightColorDoneBtn: AppColor.whiteColor,
+          // colorDot: AppColor.whiteColor,
+          // sizeDot: 5.0,
+          // typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
+          // backgroundColorAllSlides: AppColor.primaryColor,
+          // shouldHideStatusBar: false,
+        ),
       ),
     );
   }

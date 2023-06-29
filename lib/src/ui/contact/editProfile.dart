@@ -653,7 +653,7 @@ class _EditProfileState extends State<EditProfile> {
           ),
           onChanged: (value) {
             setState(() {
-              _valuesChanged = true;
+              // _valuesChanged = true;
               _occupationValue = value as String?;
               _professionalOccupation.text = value.toString();
 

@@ -6,6 +6,7 @@ import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/models/recentCalls.dart';
 import 'package:conet/repositories/repositories.dart';
+import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/src/ui/contact/nonConetContactProfile.dart';
@@ -110,40 +111,6 @@ class _ContactsPageState extends State<ContactsPage> {
     });
   }
 
-  // void _handleList(List<AllContacts> list) {
-  //   for (int i = 0, length = list.length; i < length; i++) {
-  //     String? name = list[i].name ?? list[i].phone;
-  //     String pinyin = PinyinHelper.getPinyinE(name!);
-  //     String tag = pinyin.substring(0, 1).toUpperCase();
-  //     if (RegExp("[A-Z]").hasMatch(tag)) {
-  //       list[i].tagIndex = tag;
-  //     } else {
-  //       list[i].tagIndex = "#";
-  //     }
-
-  //     Set<String> uniqueContacts = {};
-
-  //     String contactKey = '${list[i].name}${list[i].phone}'; // Create a unique key based on name and phone
-  //     if (!uniqueContacts.contains(contactKey)) {
-  //       uniqueContacts.add(contactKey); // Add the unique key to the set
-  //     } else {
-  //       // Duplicate contact found, remove it from the list
-  //       list.removeAt(i);
-  //       length--; // Update the length to avoid index out of bounds
-  //       i--; // Decrement the index since the list has been modified
-  //     }
-  //   }
-
-  //   _sortListBySuspensionTag(_contacts);
-  //   _contacts.sort((a, b) {
-  //     final nameA = a.name?.toLowerCase() ?? '';
-  //     final nameB = b.name?.toLowerCase() ?? '';
-  //     return nameA.compareTo(nameB);
-  //   });
-  //   SuspensionUtil.setShowSuspensionStatus(_contacts);
-  //   // SuspensionUtil.sortListBySuspensionTag(_contacts);
-  // }
-
   void _handleList(List<AllContacts> list) {
     Set<String> uniqueContacts = {};
     List<AllContacts> uniqueList = [];
@@ -157,8 +124,8 @@ class _ContactsPageState extends State<ContactsPage> {
       } else {
         list[i].tagIndex = "#";
       }
-
-      String contactKey = '${list[i].name}${list[i].phone}'; // Create a unique key based on name and phone
+      // Create a unique key based on name and phone
+      String contactKey = '${list[i].name}${list[i].phone}';
       if (!uniqueContacts.contains(contactKey)) {
         uniqueContacts.add(contactKey); // Add the unique key to the set
         uniqueList.add(list[i]); // Add the unique contact to the unique list
@@ -197,8 +164,11 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _textEditingController!.dispose();
+    _outputController!.dispose();
+    _focusNode.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -212,7 +182,7 @@ class _ContactsPageState extends State<ContactsPage> {
         child: GestureDetector(
           onTap: () {
             _focusNode.unfocus();
-
+            _clearText();
             if (_contacts[index].userId == null) {
               Navigator.push(
                 context,
@@ -220,7 +190,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   builder: (context) => NonConetContactProfile(
                     _contacts[index].name ?? "",
                     _contacts[index].phone!,
-                    _contacts[index].email ?? " ",
+                    _contacts[index].email ?? "",
                   ),
                 ),
               ).then((value) {
@@ -449,12 +419,9 @@ class _ContactsPageState extends State<ContactsPage> {
           color: AppColor.primaryColor,
           backgroundColor: AppColor.whiteColor,
           onRefresh: () {
-            return Future.delayed(const Duration(seconds: 3), () {
+            return Future.delayed(const Duration(milliseconds: 500), () {
+              BlocProvider.of<BottomNavigationBloc>(context).add(PageRefreshed(index: 0));
               _updateContact();
-
-              setState(() {
-                _contacts = _contacts;
-              });
             });
           },
           child: AzListView(
@@ -488,9 +455,11 @@ class _ContactsPageState extends State<ContactsPage> {
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
-        title: SvgPicture.asset(
-          "assets/logo.svg",
-          height: 24,
+        title: const KonetLogo(
+          logoHeight: 24,
+          fontSize: 19,
+          textPadding: 9,
+          spacing: 9,
         ),
         actions: [
           IconButton(
@@ -883,10 +852,8 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   _checkPermission() async {
-    Permission.contacts.request();
     var status = await Permission.contacts.status;
     if (status.isGranted) {
-      // Permission.contacts.request();
       _importContacts();
     } else {
       var reqStatus = await Permission.contacts.request();
@@ -966,7 +933,6 @@ class _ContactsPageState extends State<ContactsPage> {
       _loadedcontacts = _contacts;
     });
 
-//  _contacts.sort((a, b) => a.name!.toLowerCase().compareTo(b.name!.toLowerCase()));
     _handleList(_contacts);
   }
 

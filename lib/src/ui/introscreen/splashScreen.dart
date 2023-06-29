@@ -24,20 +24,47 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    precacheImage(const AssetImage('assets/ios_splash.png'), context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: Container(
-        alignment: Alignment.center,
-        height: double.infinity,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage("assets/ios_splash.png"), fit: BoxFit.cover),
-        ),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: AppColor.primaryColor,
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: MediaQuery.sizeOf(context).height * 0.35),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset(
+                  "assets/logo.svg",
+                  color: Colors.white,
+                  height: 47,
+                ),
+                const SizedBox(width: 15),
+                const Padding(
+                  padding: EdgeInsets.only(top: 15.0),
+                  child: Text(
+                    'KONET',
+                    style: TextStyle(
+                      fontFamily: 'Dreadnoughtus',
+                      fontSize: 40,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Spacer(),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Image.asset("assets/images/splashbottompng.png"),
+          )
+        ],
       ),
     );
   }

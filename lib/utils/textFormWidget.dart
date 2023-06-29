@@ -51,7 +51,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
           FilteringTextInputFormatter.deny(RegExp(r'\s')),
         ],
         onTap: () {
-          FocusScope.of(context).requestFocus(widget.focusNode);
+          // FocusScope.of(context).requestFocus(widget.focusNode);
         },
         decoration: InputDecoration(
           hintText: widget.hintText,

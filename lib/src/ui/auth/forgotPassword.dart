@@ -1,18 +1,22 @@
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import '../utils.dart';
 import 'login.dart';
 
 class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({super.key});
+
   @override
   _ForgotPasswordState createState() => _ForgotPasswordState();
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  final _signupFormKey = GlobalKey<FormState>();
+  final _forgotPasswordFormKey = GlobalKey<FormState>();
   bool _loader = false;
   bool _emailError = false;
 
@@ -27,7 +31,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(color: _emailError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(7),
+          borderRadius: BorderRadius.circular(5),
+          color: AppColor.whiteColor.withOpacity(0.25),
         ),
         height: 58,
         child: Row(
@@ -39,15 +44,19 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               },
               child: Container(
                 height: 58,
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 0.15),
-                ),
-                padding: const EdgeInsets.only(left: 21, right: 0),
+                // decoration: BoxDecoration(
+                //   color: Color.fromRGBO(255, 255, 255, 0.15),
+                // ),
+                padding: EdgeInsets.only(left: 15.w, right: 35.w),
                 child: Center(
                   child: Text(
                     "Email",
-                    style:
-                        Theme.of(context).textTheme.headline5?.apply(color: const Color.fromRGBO(255, 255, 255, 0.75)),
+                    style: TextStyle(
+                      color: AppColor.whiteColor.withOpacity(0.75),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: kSfproRoundedFontFamily,
+                    ),
                   ),
                 ),
               ),
@@ -56,10 +65,16 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               child: TextFormField(
                 focusNode: _emailControllerFocus,
                 controller: _emailController,
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.whiteColor,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                ),
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
+                  // filled: true,
+                  // fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
                   errorStyle: const TextStyle(color: Colors.white, height: 0),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
@@ -79,7 +94,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       color: Colors.transparent,
                     ),
                   ),
-                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
+                  hintStyle: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: Colors.white54,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                  ),
                 ),
                 cursorColor: AppColor.whiteColor,
                 enableSuggestions: false,
@@ -122,7 +143,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         ),
         onPressed: () async {
           print("clicked");
-          var validate = _signupFormKey.currentState!.validate();
+          var validate = _forgotPasswordFormKey.currentState!.validate();
           if (validate) {
             Utils.hideKeyboard(context);
             setState(() {
@@ -167,14 +188,20 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           }
         },
         child: Container(
-          constraints: const BoxConstraints(
-            minHeight: 50.0,
+          constraints: BoxConstraints(
+            minHeight: 50.h,
           ),
           alignment: Alignment.center,
           child: Text(
             "Reset Password",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
+            style: TextStyle(
+              fontFamily: kSfproRoundedFontFamily,
+              color: AppColor.whiteColor,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.normal,
+            ),
           ),
         ),
       );
@@ -185,53 +212,29 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         appBar: AppBar(
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 2.0),
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => Login()),
-                      );
-                    },
-                    child: const Icon(
-                      Icons.arrow_back_sharp,
-                      color: AppColor.whiteColor,
-                    ),
+          leadingWidth: 150.w,
+          leading: InkWell(
+            onTap: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+            },
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: const Icon(Icons.arrow_back, color: Colors.white),
+                ),
+                SizedBox(width: 6.w),
+                Text(
+                  'Back',
+                  style: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
                   ),
-                  const SizedBox(
-                    width: 2,
-                  ),
-                  Text(
-                    "Back",
-                    style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.whiteColor),
-                  )
-                ],
-                //   children: [
-                //     IconButton(
-                //        icon: const Icon(
-                //          Icons.arrow_back_sharp,
-                //          color: AppColor.whiteColor,
-                //          ),
-                //       onPressed: () {
-                //       Navigator.pushReplacement(
-                //       context,
-                //    MaterialPageRoute(builder: (context) => Login()),
-                // );
-                //  },
-                //     ),
-                //     SizedBox(width: 2), // Add spacing between back arrow and text
-                //     Text("Back",  style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),),
-                //   ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -242,35 +245,56 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
           ),
           child: Container(
-            padding: const EdgeInsets.only(left: 20, right: 20),
+            padding: EdgeInsets.only(left: 16.w, right: 16.w),
             child: SingleChildScrollView(
               child: Form(
-                key: _signupFormKey,
+                key: _forgotPasswordFormKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10),
-                    Text(
-                      "Forgot",
-                      style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
-                    ),
-                    Text(
-                      "Password?",
-                      style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
-                    ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
+                    Text("Forgot",
+                        style: TextStyle(
+                            fontFamily: kSfproRoundedFontFamily,
+                            color: AppColor.whiteColor,
+                            fontSize: 34.sp,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal)),
+                    Text("Password?",
+                        style: TextStyle(
+                            fontFamily: kSfproRoundedFontFamily,
+                            color: AppColor.whiteColor,
+                            fontSize: 34.sp,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal)),
+                    SizedBox(height: 16.h),
                     Container(
-                      padding: const EdgeInsets.only(right: 60),
+                      padding: EdgeInsets.only(right: 15.w),
                       child: Text(
-                        "Enter your email address below and we'll send you an email with instruction how to change your password.",
-                        style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
+                        "Enter your email address below and we'll send you an email with instruction how to change your password",
+                        style: TextStyle(
+                          fontFamily: kSfproRoundedFontFamily,
+                          color: AppColor.whiteColor,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w300,
+                          fontStyle: FontStyle.normal,
+                          letterSpacing: -0.5,
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 30),
-                    _buildEmail(),
-                    const SizedBox(height: 20),
-                    _buildResetPassword(),
-                    const SizedBox(height: 30),
+                    SizedBox(height: 43.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildEmail(),
+                          SizedBox(height: 23.h),
+                          _buildResetPassword(),
+                          const SizedBox(height: 30),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

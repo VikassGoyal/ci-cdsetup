@@ -109,9 +109,7 @@ class _SignUpState extends State<SignUp> {
           }
         },
         child: Container(
-          constraints: BoxConstraints(
-            minHeight: 50.0.h,
-          ),
+          constraints: BoxConstraints(minHeight: 50.h),
           alignment: Alignment.center,
           child: Text(
             "Sign up",
@@ -139,30 +137,28 @@ class _SignUpState extends State<SignUp> {
           );
         },
         child: Container(
-          padding: const EdgeInsets.only(top: 10, bottom: 10),
+          padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "Already have an account?  ",
                 style: TextStyle(
-                  fontFamily: kSfproRoundedFontFamily,
+                  fontFamily: kSfproDisplayFontFamily,
                   color: AppColor.whiteColor,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w300,
                   fontStyle: FontStyle.normal,
-                  fontSize: 17.sp,
-                  letterSpacing: -0.2,
+                  fontSize: 16.sp,
                 ),
               ),
               Text(
                 "Sign In",
                 style: TextStyle(
-                  fontFamily: kSfproRoundedFontFamily,
+                  fontFamily: kSfproDisplayFontFamily,
                   color: AppColor.secondaryColor,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w300,
                   fontStyle: FontStyle.normal,
-                  fontSize: 17.sp,
-                  letterSpacing: -0.2,
+                  fontSize: 16.sp,
                 ),
               ),
             ],
@@ -177,17 +173,16 @@ class _SignUpState extends State<SignUp> {
         fontSize: 15.sp,
         fontFamily: kSfproRoundedFontFamily,
         fontWeight: FontWeight.w300,
-        letterSpacing: 1,
+        letterSpacing: 0.2,
       );
       TextStyle linkStyle = TextStyle(
         color: AppColor.secondaryColor,
         fontSize: 15.sp,
         fontFamily: kSfproRoundedFontFamily,
         fontWeight: FontWeight.w300,
-        letterSpacing: 1,
+        letterSpacing: 0.2,
       );
-      return Padding(
-        padding: EdgeInsets.only(left: 50.w, right: 50.w),
+      return Center(
         child: RichText(
           text: TextSpan(
             style: defaultStyle,
@@ -223,24 +218,15 @@ class _SignUpState extends State<SignUp> {
       );
     }
 
-    setErrorMsg(String msg) {
-      setState(() {
-        _errorMsg = msg;
-      });
-    }
-
     return Scaffold(
         backgroundColor: AppColor.primaryColor,
         appBar: AppBar(
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
-          leadingWidth: 150,
+          leadingWidth: 150.w,
           leading: InkWell(
             onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => Login()),
-              );
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
             },
             child: Row(
               children: [
@@ -277,7 +263,7 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
                     Text(
                       "Sign Up",
                       style: TextStyle(
@@ -416,13 +402,13 @@ class _SignUpState extends State<SignUp> {
                           SizedBox(height: 16.h),
                           Center(
                             child: Text(
-                              "By signing up, you're agree to our   ",
+                              "By signing up, you're agree to our",
                               style: TextStyle(
                                 fontFamily: kSfproRoundedFontFamily,
                                 color: AppColor.whiteColor,
                                 fontWeight: FontWeight.w300,
                                 fontStyle: FontStyle.normal,
-                                fontSize: 15.sp,
+                                fontSize: 14.sp,
                                 letterSpacing: -0.5,
                               ),
                             ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:flutter/services.dart';
 
 import 'package:conet/blocs/userBloc.dart';
@@ -11,6 +12,7 @@ import 'package:conet/utils/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import '../../../networking/apiBaseHelper.dart';
@@ -52,7 +54,8 @@ class _SignUpState extends State<SignUp> {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(color: _nameError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(7),
+          borderRadius: BorderRadius.circular(5),
+          color: AppColor.whiteColor.withOpacity(0.25),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -63,33 +66,38 @@ class _SignUpState extends State<SignUp> {
               },
               child: Container(
                 height: 58,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 0.15),
-                ),
-                padding: const EdgeInsets.only(left: 21, right: 0),
+                padding: EdgeInsets.only(left: 15.w, right: 33.w),
                 child: Center(
-                    child: RichText(
-                        text: TextSpan(
-                            text: "Name",
-                            style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.75), fontSize: 15, fontWeight: FontWeight.w600),
-                            children: [
-                      TextSpan(
-                          text: ' *',
+                  child: RichText(
+                      text: TextSpan(
+                          text: "Name",
                           style: TextStyle(
-                            color: Colors.red,
-                          ))
-                    ]))),
+                            color: AppColor.whiteColor.withOpacity(0.75),
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          children: const [
+                        TextSpan(
+                            text: ' *',
+                            style: TextStyle(
+                              color: Colors.red,
+                            ))
+                      ])),
+                ),
               ),
             ),
             Expanded(
               child: TextFormField(
                 controller: _nameController,
                 focusNode: _nameControllerFocus,
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.whiteColor,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                ),
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
                   errorStyle: const TextStyle(color: Colors.white, height: 0),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
@@ -109,7 +117,13 @@ class _SignUpState extends State<SignUp> {
                       color: Colors.transparent,
                     ),
                   ),
-                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
+                  hintStyle: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: Colors.white54,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                  ),
                 ),
                 cursorColor: AppColor.whiteColor,
                 enableSuggestions: false,
@@ -140,7 +154,8 @@ class _SignUpState extends State<SignUp> {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(color: _emailError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(7),
+          borderRadius: BorderRadius.circular(5),
+          color: AppColor.whiteColor.withOpacity(0.25),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -151,17 +166,17 @@ class _SignUpState extends State<SignUp> {
               },
               child: Container(
                 height: 58,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 0.15),
-                ),
-                padding: const EdgeInsets.only(left: 21, right: 0),
+                padding: EdgeInsets.only(left: 15.w, right: 35.w),
                 child: Center(
                     child: RichText(
                         text: TextSpan(
                             text: "Email",
                             style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.75), fontSize: 15, fontWeight: FontWeight.w600),
-                            children: [
+                              color: AppColor.whiteColor.withOpacity(0.75),
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            children: const [
                       TextSpan(
                           text: ' *',
                           style: TextStyle(
@@ -174,10 +189,14 @@ class _SignUpState extends State<SignUp> {
               child: TextFormField(
                 focusNode: _emailControllerFocus,
                 controller: _emailController,
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.whiteColor,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                ),
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
                   errorStyle: const TextStyle(color: Colors.white, height: 0),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
@@ -197,7 +216,13 @@ class _SignUpState extends State<SignUp> {
                       color: Colors.transparent,
                     ),
                   ),
-                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
+                  hintStyle: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: Colors.white54,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                  ),
                 ),
                 cursorColor: AppColor.whiteColor,
                 enableSuggestions: false,
@@ -229,7 +254,8 @@ class _SignUpState extends State<SignUp> {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(color: _mobileError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(7),
+          borderRadius: BorderRadius.circular(5),
+          color: AppColor.whiteColor.withOpacity(0.25),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -240,17 +266,16 @@ class _SignUpState extends State<SignUp> {
               },
               child: Container(
                 height: 58,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 0.15),
-                ),
-                padding: const EdgeInsets.only(left: 21, right: 0),
+                padding: EdgeInsets.only(left: 15.w, right: 27.w),
                 child: Center(
                     child: RichText(
                         text: TextSpan(
                             text: "Mobile",
                             style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.75), fontSize: 15, fontWeight: FontWeight.w600),
-                            children: [
+                                color: AppColor.whiteColor.withOpacity(0.75),
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600),
+                            children: const [
                       TextSpan(
                           text: ' *',
                           style: TextStyle(
@@ -263,10 +288,14 @@ class _SignUpState extends State<SignUp> {
               child: TextFormField(
                 controller: _mobileController,
                 focusNode: _mobileControllerFocus,
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.whiteColor,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                ),
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
                   errorStyle: const TextStyle(color: Colors.white, height: 0),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
@@ -286,7 +315,13 @@ class _SignUpState extends State<SignUp> {
                       color: Colors.transparent,
                     ),
                   ),
-                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
+                  hintStyle: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: Colors.white54,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                  ),
                 ),
                 cursorColor: AppColor.whiteColor,
                 enableSuggestions: false,
@@ -321,7 +356,8 @@ class _SignUpState extends State<SignUp> {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(color: _passwordError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(7),
+          borderRadius: BorderRadius.circular(5),
+          color: AppColor.whiteColor.withOpacity(0.25),
         ),
         height: 58,
         child: Row(
@@ -333,17 +369,17 @@ class _SignUpState extends State<SignUp> {
               },
               child: Container(
                 height: 58,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 0.15),
-                ),
-                padding: const EdgeInsets.only(left: 21, right: 0),
+                padding: EdgeInsets.only(left: 15.w, right: 7.w),
                 child: Center(
                     child: RichText(
                         text: TextSpan(
                             text: "Password",
                             style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.75), fontSize: 15, fontWeight: FontWeight.w600),
-                            children: [
+                              color: AppColor.whiteColor.withOpacity(0.75),
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            children: const [
                       TextSpan(
                           text: ' *',
                           style: TextStyle(
@@ -356,10 +392,14 @@ class _SignUpState extends State<SignUp> {
               child: TextFormField(
                 controller: _passwordController,
                 focusNode: _passwordControllerFocus,
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.whiteColor,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                ),
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
                   errorStyle: const TextStyle(color: Colors.white, height: 0),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(
@@ -379,7 +419,13 @@ class _SignUpState extends State<SignUp> {
                       color: Colors.transparent,
                     ),
                   ),
-                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
+                  hintStyle: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: Colors.white54,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                  ),
                   suffixIcon: GestureDetector(
                     onTap: () {
                       setState(() {
@@ -387,11 +433,17 @@ class _SignUpState extends State<SignUp> {
                       });
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 2, right: 10),
+                      padding: const EdgeInsets.only(top: 14, bottom: 2, right: 10),
                       child: Text(
                         "Show",
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.button?.apply(color: AppColor.secondaryColor),
+                        style: TextStyle(
+                          fontFamily: kSfproRoundedFontFamily,
+                          color: AppColor.secondaryColor,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.normal,
+                        ),
                       ),
                     ),
                   ),
@@ -480,14 +532,20 @@ class _SignUpState extends State<SignUp> {
           }
         },
         child: Container(
-          constraints: const BoxConstraints(
-            minHeight: 50.0,
+          constraints: BoxConstraints(
+            minHeight: 50.0.h,
           ),
           alignment: Alignment.center,
           child: Text(
             "Sign up",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
+            style: TextStyle(
+              fontFamily: kSfproRoundedFontFamily,
+              color: AppColor.whiteColor,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.normal,
+            ),
           ),
         ),
       );
@@ -510,11 +568,26 @@ class _SignUpState extends State<SignUp> {
             children: [
               Text(
                 "Already have an account?  ",
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor.withOpacity(0.7)),
+                // style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor.withOpacity(0.7)),
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.whiteColor,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 17.sp,
+                  letterSpacing: -0.2,
+                ),
               ),
               Text(
                 "Sign In",
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.secondaryColor,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 17.sp,
+                  letterSpacing: -0.2,
+                ),
               ),
             ],
           ),
@@ -523,20 +596,22 @@ class _SignUpState extends State<SignUp> {
     }
 
     Widget termAndCondition() {
-      TextStyle defaultStyle = const TextStyle(
+      TextStyle defaultStyle = TextStyle(
         color: Colors.white,
-        fontSize: 15.0,
-        fontFamily: "Sf-Regular",
-        letterSpacing: 0.2,
+        fontSize: 15.sp,
+        fontFamily: kSfproRoundedFontFamily,
+        fontWeight: FontWeight.w300,
+        letterSpacing: 1,
       );
-      TextStyle linkStyle = const TextStyle(
+      TextStyle linkStyle = TextStyle(
         color: AppColor.secondaryColor,
-        fontSize: 15.0,
-        fontFamily: "Sf-Bold",
-        letterSpacing: 0.2,
+        fontSize: 15.sp,
+        fontFamily: kSfproRoundedFontFamily,
+        fontWeight: FontWeight.w300,
+        letterSpacing: 1,
       );
       return Padding(
-        padding: const EdgeInsets.only(left: 60, right: 60),
+        padding: EdgeInsets.only(left: 50.w, right: 50.w),
         child: RichText(
           text: TextSpan(
             style: defaultStyle,
@@ -588,12 +663,19 @@ class _SignUpState extends State<SignUp> {
             child: Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 20, right: 3),
-                  child: Icon(Icons.arrow_back, color: Colors.white),
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
+                SizedBox(width: 6.w),
                 Text(
                   'Back',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
+                  ),
                 ),
               ],
             ),
@@ -606,7 +688,7 @@ class _SignUpState extends State<SignUp> {
             valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
           ),
           child: Container(
-            padding: const EdgeInsets.only(left: 20, right: 20),
+            padding: EdgeInsets.only(left: 16.w, right: 16.w),
             child: SingleChildScrollView(
               child: Form(
                 key: _signupFormKey,
@@ -616,49 +698,77 @@ class _SignUpState extends State<SignUp> {
                     const SizedBox(height: 10),
                     Text(
                       "Sign Up",
-                      style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      padding: const EdgeInsets.only(right: 36),
-                      child: Text(
-                        "Create an account so you can order your favorite food even faster",
-                        style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    _buildName(),
-                    const SizedBox(height: 20),
-                    _buildEmail(),
-                    const SizedBox(height: 20),
-                    _buildMobile(),
-                    const SizedBox(height: 20),
-                    _buildPassword(),
-                    const SizedBox(height: 10),
-                    const Text(
-                      "Your password must be 8 to 16 characters long & contains mix of upper & lower case letters, numbers & symbols.",
                       style: TextStyle(
-                        fontFamily: 'Sfpro-Rounded-Light',
+                        fontFamily: kSfproRoundedFontFamily,
                         color: AppColor.whiteColor,
-                        fontWeight: FontWeight.w300,
+                        fontSize: 34.sp,
+                        fontWeight: FontWeight.w700,
                         fontStyle: FontStyle.normal,
-                        fontSize: 15,
-                        letterSpacing: -0.2,
                       ),
                     ),
-                    const SizedBox(height: 50),
-                    buildSignUpButton(),
-                    const SizedBox(height: 20),
-                    Center(
+                    SizedBox(height: 10.h),
+                    Container(
+                      padding: EdgeInsets.only(right: 15.w),
                       child: Text(
-                        "By signing up, you're agree to our  ",
-                        style: Theme.of(context).textTheme.headline3?.apply(color: AppColor.whiteColor),
+                        "Sign up for an account so you can do business like you never have before",
+                        style: TextStyle(
+                          fontFamily: kSfproRoundedFontFamily,
+                          color: AppColor.whiteColor,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w300,
+                          fontStyle: FontStyle.normal,
+                          letterSpacing: -0.5,
+                        ),
                       ),
                     ),
-                    termAndCondition(),
-                    const SizedBox(height: 30),
-                    _buildAlreadAccount(),
-                    const SizedBox(height: 30),
+                    SizedBox(height: 39.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildName(),
+                          SizedBox(height: 9.h),
+                          _buildEmail(),
+                          SizedBox(height: 9.h),
+                          _buildMobile(),
+                          SizedBox(height: 9.h),
+                          _buildPassword(),
+                          SizedBox(height: 13.h),
+                          Text(
+                            "Your password must be 8 to 16 characters long & contains mix of upper & lower case letters, numbers & symbols.",
+                            style: TextStyle(
+                              fontFamily: kSfproRoundedFontFamily,
+                              color: AppColor.whiteColor,
+                              fontWeight: FontWeight.w300,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 13.sp,
+                              letterSpacing: -0.2,
+                            ),
+                          ),
+                          SizedBox(height: 49.h),
+                          buildSignUpButton(),
+                          SizedBox(height: 16.h),
+                          Center(
+                            child: Text(
+                              "By signing up, you're agree to our   ",
+                              style: TextStyle(
+                                fontFamily: kSfproRoundedFontFamily,
+                                color: AppColor.whiteColor,
+                                fontWeight: FontWeight.w300,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 15.sp,
+                                letterSpacing: -0.5,
+                              ),
+                            ),
+                          ),
+                          termAndCondition(),
+                          SizedBox(height: 33.h),
+                          _buildAlreadAccount(),
+                          const SizedBox(height: 30),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -791,3 +901,142 @@ class _SignUpState extends State<SignUp> {
   }
 }
 // keytool -list -v -keystore ~/.android/debug.keystore
+
+// class CustomTextFormFieldBox extends StatefulWidget {
+//   final bool isError;
+//   final FocusNode focusNode;
+//   final String label;
+//   final TextEditingController textEditingController;
+//   final bool hasSuffix;
+//   final Function(String) setErrorMsg;
+//   final Function(String) setIsError;
+//   const CustomTextFormFieldBox({
+//     super.key,
+//     required this.focusNode,
+//     required this.label,
+//     required this.textEditingController,
+//     required this.isError,
+//     required this.setIsError,
+//     required this.setErrorMsg,
+//     this.hasSuffix = false,
+//   });
+
+//   @override
+//   State<CustomTextFormFieldBox> createState() => _CustomTextFormFieldBoxState();
+// }
+
+// class _CustomTextFormFieldBoxState extends State<CustomTextFormFieldBox> {
+//   late bool _showPassword;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _showPassword = false;
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: BoxDecoration(
+//         border: Border.all(color: widget.isError ? AppColor.whiteColor : Colors.transparent),
+//         borderRadius: BorderRadius.circular(5),
+//         color: AppColor.whiteColor.withOpacity(0.25),
+//       ),               _errorMsg = 'Name cannot be empty';
+//                   });
+//                   return '';
+//                 } else {
+//                   setState(() {
+//                     isError = false;
+//                   });
+//                 }
+//                 return null;
+//               },
+//             ),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+//   //
+// }
+//       child: Row(
+//         mainAxisSize: MainAxisSize.min,
+//         children: [
+//           GestureDetector(
+//             onTap: () {
+//               widget.focusNode.requestFocus();
+//             },
+//             child: Container(
+//               height: 58,
+//               padding: const EdgeInsets.only(left: 21, right: 0),
+//               child: Center(
+//                   child: RichText(
+//                       text: TextSpan(
+//                           text: widget.label,
+//                           style: TextStyle(
+//                             color: AppColor.whiteColor.withOpacity(0.75),
+//                             fontSize: 15,
+//                             fontWeight: FontWeight.w600,
+//                           ),
+//                           children: const [
+//                     TextSpan(
+//                         text: ' *',
+//                         style: TextStyle(
+//                           color: Colors.red,
+//                         ))
+//                   ]))),
+//             ),
+//           ),
+//           Expanded(
+//             child: TextFormField(
+//               controller: widget.textEditingController,
+//               focusNode: widget.focusNode,
+//               style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
+//               decoration: InputDecoration(
+//                 errorStyle: const TextStyle(color: Colors.white, height: 0),
+//                 enabledBorder: const OutlineInputBorder(
+//                   borderSide: BorderSide(
+//                     color: Colors.transparent,
+//                   ),
+//                 ),
+//                 errorBorder: const OutlineInputBorder(
+//                   borderSide: BorderSide(color: Colors.transparent),
+//                 ),
+//                 focusedBorder: const OutlineInputBorder(
+//                   borderSide: BorderSide(
+//                     color: Colors.transparent,
+//                   ),
+//                 ),
+//                 focusedErrorBorder: const OutlineInputBorder(
+//                   borderSide: BorderSide(
+//                     color: Colors.transparent,
+//                   ),
+//                 ),
+//                 hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
+//                 suffixIcon: widget.hasSuffix
+//                     ? GestureDetector(
+//                         onTap: () {
+//                           setState(() {
+//                             _showPassword = !_showPassword;
+//                           });
+//                         },
+//                         child: Padding(
+//                           padding: const EdgeInsets.only(top: 10, bottom: 2, right: 10),
+//                           child: Text(
+//                             "Show",
+//                             textAlign: TextAlign.center,
+//                             style: Theme.of(context).textTheme.button?.apply(color: AppColor.secondaryColor),
+//                           ),
+//                         ),
+//                       )
+//                     : null,
+//               ),
+//               cursorColor: AppColor.whiteColor,
+//               enableSuggestions: false,
+//               keyboardType: TextInputType.text,
+//               textInputAction: TextInputAction.next,
+//               validator: (value) {
+//                 if (value!.isEmpty) {
+//                   setState(() {
+//                     isError = true;
+     

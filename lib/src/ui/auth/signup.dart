@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
@@ -50,431 +52,6 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    Widget _buildName() {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: _nameError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(5),
-          color: AppColor.whiteColor.withOpacity(0.25),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              onTap: () {
-                _nameControllerFocus.requestFocus();
-              },
-              child: Container(
-                height: 58,
-                padding: EdgeInsets.only(left: 15.w, right: 33.w),
-                child: Center(
-                  child: RichText(
-                      text: TextSpan(
-                          text: "Name",
-                          style: TextStyle(
-                            color: AppColor.whiteColor.withOpacity(0.75),
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          children: const [
-                        TextSpan(
-                            text: ' *',
-                            style: TextStyle(
-                              color: Colors.red,
-                            ))
-                      ])),
-                ),
-              ),
-            ),
-            Expanded(
-              child: TextFormField(
-                controller: _nameController,
-                focusNode: _nameControllerFocus,
-                style: TextStyle(
-                  fontFamily: kSfproRoundedFontFamily,
-                  color: AppColor.whiteColor,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.normal,
-                ),
-                decoration: InputDecoration(
-                  errorStyle: const TextStyle(color: Colors.white, height: 0),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  errorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  hintStyle: TextStyle(
-                    fontFamily: kSfproRoundedFontFamily,
-                    color: Colors.white54,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
-                cursorColor: AppColor.whiteColor,
-                enableSuggestions: false,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    setState(() {
-                      _nameError = true;
-                      _errorMsg = 'Name cannot be empty';
-                    });
-                    return '';
-                  } else {
-                    setState(() {
-                      _nameError = false;
-                    });
-                  }
-                  return null;
-                },
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget _buildEmail() {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: _emailError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(5),
-          color: AppColor.whiteColor.withOpacity(0.25),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              onTap: () {
-                _emailControllerFocus.requestFocus();
-              },
-              child: Container(
-                height: 58,
-                padding: EdgeInsets.only(left: 15.w, right: 35.w),
-                child: Center(
-                    child: RichText(
-                        text: TextSpan(
-                            text: "Email",
-                            style: TextStyle(
-                              color: AppColor.whiteColor.withOpacity(0.75),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            children: const [
-                      TextSpan(
-                          text: ' *',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ))
-                    ]))),
-              ),
-            ),
-            Expanded(
-              child: TextFormField(
-                focusNode: _emailControllerFocus,
-                controller: _emailController,
-                style: TextStyle(
-                  fontFamily: kSfproRoundedFontFamily,
-                  color: AppColor.whiteColor,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.normal,
-                ),
-                decoration: InputDecoration(
-                  errorStyle: const TextStyle(color: Colors.white, height: 0),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  errorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  hintStyle: TextStyle(
-                    fontFamily: kSfproRoundedFontFamily,
-                    color: Colors.white54,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
-                cursorColor: AppColor.whiteColor,
-                enableSuggestions: false,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                validator: (value) {
-                  if (!value!.isValidEmail()) {
-                    setState(() {
-                      _emailError = true;
-                      _errorMsg = "Please enter a valid email ";
-                    });
-                    // return 'Invalid Email';
-                    return '';
-                  } else {
-                    setState(() {
-                      _emailError = false;
-                    });
-                  }
-                  return null;
-                },
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget _buildMobile() {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: _mobileError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(5),
-          color: AppColor.whiteColor.withOpacity(0.25),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              onTap: () {
-                _mobileControllerFocus.requestFocus();
-              },
-              child: Container(
-                height: 58,
-                padding: EdgeInsets.only(left: 15.w, right: 27.w),
-                child: Center(
-                    child: RichText(
-                        text: TextSpan(
-                            text: "Mobile",
-                            style: TextStyle(
-                                color: AppColor.whiteColor.withOpacity(0.75),
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600),
-                            children: const [
-                      TextSpan(
-                          text: ' *',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ))
-                    ]))),
-              ),
-            ),
-            Expanded(
-              child: TextFormField(
-                controller: _mobileController,
-                focusNode: _mobileControllerFocus,
-                style: TextStyle(
-                  fontFamily: kSfproRoundedFontFamily,
-                  color: AppColor.whiteColor,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.normal,
-                ),
-                decoration: InputDecoration(
-                  errorStyle: const TextStyle(color: Colors.white, height: 0),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  errorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  hintStyle: TextStyle(
-                    fontFamily: kSfproRoundedFontFamily,
-                    color: Colors.white54,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
-                cursorColor: AppColor.whiteColor,
-                enableSuggestions: false,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                ],
-                textInputAction: TextInputAction.next,
-                validator: (value) {
-                  if (!value!.isValidMobile()) {
-                    setState(() {
-                      _mobileError = true;
-                      _errorMsg = "Please enter a valid mobile number ";
-                    });
-                    // return 'Must have exactly 10 digits';
-                    return '';
-                  } else {
-                    setState(() {
-                      _mobileError = false;
-                    });
-                  }
-                  return null;
-                },
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget _buildPassword() {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: _passwordError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(5),
-          color: AppColor.whiteColor.withOpacity(0.25),
-        ),
-        height: 58,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              onTap: () {
-                _passwordControllerFocus.requestFocus();
-              },
-              child: Container(
-                height: 58,
-                padding: EdgeInsets.only(left: 15.w, right: 7.w),
-                child: Center(
-                    child: RichText(
-                        text: TextSpan(
-                            text: "Password",
-                            style: TextStyle(
-                              color: AppColor.whiteColor.withOpacity(0.75),
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            children: const [
-                      TextSpan(
-                          text: ' *',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ))
-                    ]))),
-              ),
-            ),
-            Expanded(
-              child: TextFormField(
-                controller: _passwordController,
-                focusNode: _passwordControllerFocus,
-                style: TextStyle(
-                  fontFamily: kSfproRoundedFontFamily,
-                  color: AppColor.whiteColor,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.normal,
-                ),
-                decoration: InputDecoration(
-                  errorStyle: const TextStyle(color: Colors.white, height: 0),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  errorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  hintStyle: TextStyle(
-                    fontFamily: kSfproRoundedFontFamily,
-                    color: Colors.white54,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.normal,
-                  ),
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _showPassword = !_showPassword;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 14, bottom: 2, right: 10),
-                      child: Text(
-                        "Show",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: kSfproRoundedFontFamily,
-                          color: AppColor.secondaryColor,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.normal,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                obscureText: !_showPassword,
-                cursorColor: AppColor.whiteColor,
-                enableSuggestions: false,
-                keyboardType: TextInputType.visiblePassword,
-                textInputAction: TextInputAction.done,
-                validator: (value) {
-                  if (!value!.isValidPassword()) {
-                    setState(() {
-                      _passwordError = true;
-                      _errorMsg = "Please enter a valid password";
-                    });
-                    // return 'Must have exactly 10 digits';
-                    return '';
-                  } else {
-                    setState(() {
-                      _passwordError = false;
-                    });
-                  }
-                  return null;
-                },
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
     Widget buildSignUpButton() {
       return ElevatedButton(
         style: ButtonStyle(
@@ -568,7 +145,6 @@ class _SignUpState extends State<SignUp> {
             children: [
               Text(
                 "Already have an account?  ",
-                // style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor.withOpacity(0.7)),
                 style: TextStyle(
                   fontFamily: kSfproRoundedFontFamily,
                   color: AppColor.whiteColor,
@@ -645,6 +221,12 @@ class _SignUpState extends State<SignUp> {
           ),
         ),
       );
+    }
+
+    setErrorMsg(String msg) {
+      setState(() {
+        _errorMsg = msg;
+      });
     }
 
     return Scaffold(
@@ -727,13 +309,96 @@ class _SignUpState extends State<SignUp> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildName(),
+                          CustomTextFormFieldBox(
+                            formFieldType: FormFieldType.name,
+                            focusNode: _nameControllerFocus,
+                            label: 'Name',
+                            textEditingController: _nameController,
+                            isError: _nameError,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                setState(() {
+                                  _nameError = true;
+                                  _errorMsg = 'Name cannot be empty';
+                                });
+                                return '';
+                              } else {
+                                setState(() {
+                                  _nameError = false;
+                                });
+                              }
+                              return null;
+                            },
+                          ),
                           SizedBox(height: 9.h),
-                          _buildEmail(),
+                          CustomTextFormFieldBox(
+                            formFieldType: FormFieldType.email,
+                            focusNode: _emailControllerFocus,
+                            label: 'Email',
+                            textEditingController: _emailController,
+                            isError: _emailError,
+                            validator: (value) {
+                              if (!value!.isValidEmail()) {
+                                setState(() {
+                                  _emailError = true;
+                                  _errorMsg = "Please enter a valid email ";
+                                });
+                                // return 'Invalid Email';
+                                return '';
+                              } else {
+                                setState(() {
+                                  _emailError = false;
+                                });
+                              }
+                              return null;
+                            },
+                          ),
                           SizedBox(height: 9.h),
-                          _buildMobile(),
+                          CustomTextFormFieldBox(
+                            formFieldType: FormFieldType.mobile,
+                            focusNode: _mobileControllerFocus,
+                            label: 'Mobile',
+                            textEditingController: _mobileController,
+                            isError: _mobileError,
+                            validator: (value) {
+                              if (!value!.isValidMobile()) {
+                                setState(() {
+                                  _mobileError = true;
+                                  _errorMsg = "Please enter a valid mobile number ";
+                                });
+                                // return 'Must have exactly 10 digits';
+                                return '';
+                              } else {
+                                setState(() {
+                                  _mobileError = false;
+                                });
+                              }
+                              return null;
+                            },
+                          ),
                           SizedBox(height: 9.h),
-                          _buildPassword(),
+                          CustomTextFormFieldBox(
+                            formFieldType: FormFieldType.password,
+                            focusNode: _passwordControllerFocus,
+                            label: 'Password',
+                            textEditingController: _passwordController,
+                            isError: _passwordError,
+                            validator: (value) {
+                              if (!value!.isValidPassword()) {
+                                setState(() {
+                                  _passwordError = true;
+                                  _errorMsg = "Please enter a valid password";
+                                });
+                                // return 'Must have exactly 10 digits';
+                                return '';
+                              } else {
+                                setState(() {
+                                  _passwordError = false;
+                                });
+                              }
+                              return null;
+                            },
+                          ),
                           SizedBox(height: 13.h),
                           Text(
                             "Your password must be 8 to 16 characters long & contains mix of upper & lower case letters, numbers & symbols.",
@@ -902,141 +567,167 @@ class _SignUpState extends State<SignUp> {
 }
 // keytool -list -v -keystore ~/.android/debug.keystore
 
-// class CustomTextFormFieldBox extends StatefulWidget {
-//   final bool isError;
-//   final FocusNode focusNode;
-//   final String label;
-//   final TextEditingController textEditingController;
-//   final bool hasSuffix;
-//   final Function(String) setErrorMsg;
-//   final Function(String) setIsError;
-//   const CustomTextFormFieldBox({
-//     super.key,
-//     required this.focusNode,
-//     required this.label,
-//     required this.textEditingController,
-//     required this.isError,
-//     required this.setIsError,
-//     required this.setErrorMsg,
-//     this.hasSuffix = false,
-//   });
+enum FormFieldType { name, email, mobile, password }
 
-//   @override
-//   State<CustomTextFormFieldBox> createState() => _CustomTextFormFieldBoxState();
-// }
+class CustomTextFormFieldBox extends StatefulWidget {
+  final FormFieldType formFieldType;
+  final bool isError;
+  final FocusNode focusNode;
+  final String label;
+  final TextEditingController textEditingController;
+  final String? Function(String?)? validator;
+  const CustomTextFormFieldBox({
+    super.key,
+    required this.formFieldType,
+    required this.focusNode,
+    required this.label,
+    required this.textEditingController,
+    required this.isError,
+    required this.validator,
+  });
 
-// class _CustomTextFormFieldBoxState extends State<CustomTextFormFieldBox> {
-//   late bool _showPassword;
+  @override
+  State<CustomTextFormFieldBox> createState() => _CustomTextFormFieldBoxState();
+}
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     _showPassword = false;
-//   }
+class _CustomTextFormFieldBoxState extends State<CustomTextFormFieldBox> {
+  late bool _showPassword;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: BoxDecoration(
-//         border: Border.all(color: widget.isError ? AppColor.whiteColor : Colors.transparent),
-//         borderRadius: BorderRadius.circular(5),
-//         color: AppColor.whiteColor.withOpacity(0.25),
-//       ),               _errorMsg = 'Name cannot be empty';
-//                   });
-//                   return '';
-//                 } else {
-//                   setState(() {
-//                     isError = false;
-//                   });
-//                 }
-//                 return null;
-//               },
-//             ),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-//   //
-// }
-//       child: Row(
-//         mainAxisSize: MainAxisSize.min,
-//         children: [
-//           GestureDetector(
-//             onTap: () {
-//               widget.focusNode.requestFocus();
-//             },
-//             child: Container(
-//               height: 58,
-//               padding: const EdgeInsets.only(left: 21, right: 0),
-//               child: Center(
-//                   child: RichText(
-//                       text: TextSpan(
-//                           text: widget.label,
-//                           style: TextStyle(
-//                             color: AppColor.whiteColor.withOpacity(0.75),
-//                             fontSize: 15,
-//                             fontWeight: FontWeight.w600,
-//                           ),
-//                           children: const [
-//                     TextSpan(
-//                         text: ' *',
-//                         style: TextStyle(
-//                           color: Colors.red,
-//                         ))
-//                   ]))),
-//             ),
-//           ),
-//           Expanded(
-//             child: TextFormField(
-//               controller: widget.textEditingController,
-//               focusNode: widget.focusNode,
-//               style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
-//               decoration: InputDecoration(
-//                 errorStyle: const TextStyle(color: Colors.white, height: 0),
-//                 enabledBorder: const OutlineInputBorder(
-//                   borderSide: BorderSide(
-//                     color: Colors.transparent,
-//                   ),
-//                 ),
-//                 errorBorder: const OutlineInputBorder(
-//                   borderSide: BorderSide(color: Colors.transparent),
-//                 ),
-//                 focusedBorder: const OutlineInputBorder(
-//                   borderSide: BorderSide(
-//                     color: Colors.transparent,
-//                   ),
-//                 ),
-//                 focusedErrorBorder: const OutlineInputBorder(
-//                   borderSide: BorderSide(
-//                     color: Colors.transparent,
-//                   ),
-//                 ),
-//                 hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
-//                 suffixIcon: widget.hasSuffix
-//                     ? GestureDetector(
-//                         onTap: () {
-//                           setState(() {
-//                             _showPassword = !_showPassword;
-//                           });
-//                         },
-//                         child: Padding(
-//                           padding: const EdgeInsets.only(top: 10, bottom: 2, right: 10),
-//                           child: Text(
-//                             "Show",
-//                             textAlign: TextAlign.center,
-//                             style: Theme.of(context).textTheme.button?.apply(color: AppColor.secondaryColor),
-//                           ),
-//                         ),
-//                       )
-//                     : null,
-//               ),
-//               cursorColor: AppColor.whiteColor,
-//               enableSuggestions: false,
-//               keyboardType: TextInputType.text,
-//               textInputAction: TextInputAction.next,
-//               validator: (value) {
-//                 if (value!.isEmpty) {
-//                   setState(() {
-//                     isError = true;
-     
+  @override
+  void initState() {
+    super.initState();
+    _showPassword = false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: widget.isError ? AppColor.whiteColor : Colors.transparent),
+        borderRadius: BorderRadius.circular(5),
+        color: AppColor.whiteColor.withOpacity(0.25),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            onTap: () {
+              widget.focusNode.requestFocus();
+            },
+            child: Container(
+              height: 58,
+              padding: EdgeInsets.only(
+                left: 15.w,
+                right: widget.formFieldType == FormFieldType.email
+                    ? 35.w
+                    : widget.formFieldType == FormFieldType.mobile
+                        ? 27.w
+                        : widget.formFieldType == FormFieldType.password
+                            ? 9.w
+                            : 33.w,
+              ),
+              child: Center(
+                child: RichText(
+                    text: TextSpan(
+                        text: widget.label,
+                        style: TextStyle(
+                          color: AppColor.whiteColor.withOpacity(0.75),
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: kSfproRoundedFontFamily,
+                        ),
+                        children: const [
+                      TextSpan(
+                          text: ' *',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ))
+                    ])),
+              ),
+            ),
+          ),
+          Expanded(
+            child: TextFormField(
+              controller: widget.textEditingController,
+              focusNode: widget.focusNode,
+              style: TextStyle(
+                fontFamily: kSfproRoundedFontFamily,
+                color: AppColor.whiteColor,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.normal,
+              ),
+              decoration: InputDecoration(
+                errorStyle: const TextStyle(color: Colors.white, height: 0),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.transparent,
+                  ),
+                ),
+                errorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.transparent,
+                  ),
+                ),
+                focusedErrorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.transparent,
+                  ),
+                ),
+                hintStyle: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: Colors.white54,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                ),
+                suffixIcon: widget.formFieldType == FormFieldType.password
+                    ? GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _showPassword = !_showPassword;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 14, bottom: 2, right: 10),
+                          child: Text(
+                            "Show",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: kSfproRoundedFontFamily,
+                              color: AppColor.secondaryColor,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                        ),
+                      )
+                    : null,
+              ),
+              cursorColor: AppColor.whiteColor,
+              enableSuggestions: false,
+              obscureText: widget.formFieldType == FormFieldType.password ? !_showPassword : false,
+              keyboardType: widget.formFieldType == FormFieldType.email
+                  ? TextInputType.emailAddress
+                  : widget.formFieldType == FormFieldType.mobile
+                      ? TextInputType.number
+                      : widget.formFieldType == FormFieldType.password
+                          ? TextInputType.visiblePassword
+                          : TextInputType.text,
+              inputFormatters: widget.formFieldType == FormFieldType.mobile
+                  ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))]
+                  : null,
+              textInputAction:
+                  widget.formFieldType == FormFieldType.password ? TextInputAction.done : TextInputAction.next,
+              validator: widget.validator,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

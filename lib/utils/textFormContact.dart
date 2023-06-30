@@ -1,6 +1,8 @@
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextFormFieldContact extends StatefulWidget {
   final TextInputType? textInputType;
@@ -58,8 +60,8 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
     return Column(
       children: [
         Container(
-          height: 48,
-          padding: EdgeInsets.only(left: widget.padding!, right: widget.padding!),
+          height: 48.h,
+          padding: EdgeInsets.only(left: widget.padding!.w, right: widget.padding!.w),
           margin: EdgeInsets.only(
             left: widget.margin ?? 0,
             right: widget.margin ?? 0,
@@ -74,9 +76,14 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
             onChanged: (value) {
               if (widget.onChanged != null) widget.onChanged!(value);
             },
+
             readOnly: widget.readonly!,
             validator: widget.validator,
-            style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+            style: TextStyle(
+                fontSize: 15.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: Color(0xFF0087FB)),
             maxLength: widget.maxLength,
             inputFormatters: [
               FilteringTextInputFormatter.allow(widget.regexexp == null ? RegExp('.*') : widget.regexexp!),
@@ -91,9 +98,16 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
               contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
               labelText: widget.hintText,
               counterText: "",
-              labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                    color: const Color.fromRGBO(135, 139, 149, 1),
-                  ),
+              hintStyle: TextStyle(
+                  fontSize: 13.sp,
+                  fontFamily: kSfproRoundedFontFamily,
+                  fontWeight: FontWeight.w300,
+                  color: Color(0XFF878B95)),
+              labelStyle: TextStyle(
+                  fontSize: 13.sp,
+                  fontFamily: kSfproRoundedFontFamily,
+                  fontWeight: FontWeight.w300,
+                  color: Color(0XFF878B95)),
               filled: true,
               fillColor: AppColor.whiteColor,
               errorBorder: const OutlineInputBorder(

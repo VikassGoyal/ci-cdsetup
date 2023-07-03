@@ -72,15 +72,13 @@ class _LoginState extends State<Login> {
         decoration: InputDecoration(
           hintText: "Password",
           filled: true,
-          fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
+          fillColor: AppColor.whiteColor.withOpacity(0.15),
           border: InputBorder.none,
           focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
           errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: AppColor.redColor),
           ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-          ),
+          focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
           suffixIcon: GestureDetector(
             onTap: () {
               setState(() {
@@ -93,8 +91,8 @@ class _LoginState extends State<Login> {
             ),
           ),
           hintStyle: TextStyle(
-            fontFamily: kSfproRoundedFontFamily,
-            color: Colors.white54,
+            fontFamily: kSfCompactDisplayFontFamily,
+            color: AppColor.whiteColor.withOpacity(0.75),
             fontSize: 15.sp,
             fontWeight: FontWeight.w600,
             fontStyle: FontStyle.normal,
@@ -204,7 +202,7 @@ class _LoginState extends State<Login> {
               Text(
                 "Don't have an account?  ",
                 style: TextStyle(
-                  fontFamily: kSfproRoundedFontFamily,
+                  fontFamily: kSfCompactDisplayFontFamily,
                   color: AppColor.whiteColor.withOpacity(0.7),
                   fontSize: 15.sp,
                   fontWeight: FontWeight.w600,
@@ -214,7 +212,7 @@ class _LoginState extends State<Login> {
               Text(
                 "Sign Up",
                 style: TextStyle(
-                  fontFamily: kSfproRoundedFontFamily,
+                  fontFamily: kSfCompactDisplayFontFamily,
                   color: AppColor.whiteColor,
                   fontSize: 15.sp,
                   fontWeight: FontWeight.w600,
@@ -227,56 +225,60 @@ class _LoginState extends State<Login> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: AppColor.primaryColor,
-      body: LoadingOverlay(
-        isLoading: _loader,
-        opacity: 0.2,
-        progressIndicator: const CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _loginFormKey,
-              child: Container(
-                padding: const EdgeInsets.only(left: 22, right: 22),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const KonetLogo(),
-                    const SizedBox(height: 50),
-                    _buildMobile(),
-                    const SizedBox(height: 20),
-                    _buildPassword(),
-                    const SizedBox(height: 9),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        child: Text(
-                          "Forgot password?",
-                          style: TextStyle(
-                            fontFamily: kSfproRoundedFontFamily,
-                            color: AppColor.whiteColor,
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w600,
-                            fontStyle: FontStyle.normal,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light, //for status bar colors
+      //since there is no appBar used here so to give proper colors to the status bar, we used the AnnotatedRegion
+      child: Scaffold(
+        backgroundColor: AppColor.primaryColor,
+        body: LoadingOverlay(
+          isLoading: _loader,
+          opacity: 0.2,
+          progressIndicator: const CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _loginFormKey,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 22.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const KonetLogo(),
+                      const SizedBox(height: 50),
+                      _buildMobile(),
+                      const SizedBox(height: 20),
+                      _buildPassword(),
+                      const SizedBox(height: 9),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          child: Text(
+                            "Forgot password?",
+                            style: TextStyle(
+                              fontFamily: kSfproRoundedFontFamily,
+                              color: AppColor.whiteColor,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                            ),
                           ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ForgotPassword()),
+                            );
+                          },
                         ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ForgotPassword()),
-                          );
-                        },
                       ),
-                    ),
-                    const SizedBox(height: 40),
-                    _buildSignInButton(),
-                    const SizedBox(height: 20),
-                    _buildDontAccount()
-                  ],
+                      const SizedBox(height: 40),
+                      _buildSignInButton(),
+                      const SizedBox(height: 20),
+                      _buildDontAccount()
+                    ],
+                  ),
                 ),
               ),
             ),

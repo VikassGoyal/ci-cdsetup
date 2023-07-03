@@ -48,7 +48,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
       padding: EdgeInsets.only(left: widget.padding!, right: widget.padding!),
       child: TextFormField(
         style: TextStyle(
-          fontFamily: kSfproRoundedFontFamily,
+          fontFamily: kSfCompactDisplayFontFamily,
           color: AppColor.whiteColor,
           fontSize: 15.sp,
           fontWeight: FontWeight.w600,
@@ -65,7 +65,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
           hintText: widget.hintText,
           filled: true,
           border: InputBorder.none,
-          fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
+          fillColor: AppColor.whiteColor.withOpacity(0.15),
           //errorStyle: const TextStyle(color: Colors.red,fontSize: 15.0),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
@@ -76,16 +76,15 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
           errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: AppColor.redColor),
           ),
-          // focusedErrorBorder: const OutlineInputBorder(
-          //   borderSide: BorderSide(
-          //     color: Colors.transparent,
-          //   ),
-          // ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+          focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+          hintStyle: TextStyle(
+            fontFamily: kSfCompactDisplayFontFamily,
+            color: AppColor.whiteColor.withOpacity(0.75),
+            fontSize: 15.sp,
+            fontWeight: FontWeight.w600,
+            fontStyle: FontStyle.normal,
           ),
-          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-          hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
         ),
         cursorColor: AppColor.whiteColor,
         keyboardType: widget.textInputType,

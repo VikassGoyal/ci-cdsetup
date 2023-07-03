@@ -53,9 +53,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     "Email",
                     style: TextStyle(
                       color: AppColor.whiteColor.withOpacity(0.75),
-                      fontSize: 14.sp,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w600,
-                      fontFamily: kSfproRoundedFontFamily,
+                      fontFamily: kSfCompactDisplayFontFamily,
                     ),
                   ),
                 ),
@@ -66,9 +66,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 focusNode: _emailControllerFocus,
                 controller: _emailController,
                 style: TextStyle(
-                  fontFamily: kSfproRoundedFontFamily,
+                  fontFamily: kSfCompactDisplayFontFamily,
                   color: AppColor.whiteColor,
-                  fontSize: 14.sp,
+                  fontSize: 15.sp,
                   fontWeight: FontWeight.w600,
                   fontStyle: FontStyle.normal,
                 ),
@@ -210,6 +210,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     return Scaffold(
         backgroundColor: AppColor.primaryColor,
         appBar: AppBar(
+          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
           leadingWidth: 150.w,

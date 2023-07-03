@@ -3,6 +3,7 @@ import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:conet/src/ui/auth/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IntroVerify extends StatefulWidget {
@@ -15,26 +16,30 @@ class IntroVerify extends StatefulWidget {
 class _IntroVerifyState extends State<IntroVerify> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.primaryColor,
-      body: Column(
-        children: [
-          const Spacer(flex: 2),
-          Center(
-            child: GestureDetector(
-              child: Image.asset(
-                "assets/images/screen4.png",
-                fit: BoxFit.cover,
-                width: displayWidth(context) * 0.84,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light, //for status bar colors
+      //since there is no appBar used here so to give proper colors to the status bar, we used the AnnotatedRegion
+      child: Scaffold(
+        backgroundColor: AppColor.primaryColor,
+        body: Column(
+          children: [
+            const Spacer(flex: 2),
+            Center(
+              child: GestureDetector(
+                child: Image.asset(
+                  "assets/images/screen4.png",
+                  fit: BoxFit.cover,
+                  width: displayWidth(context) * 0.84,
+                ),
               ),
             ),
-          ),
-          const Spacer(flex: 1),
-          introverifyBody(context),
-          const Spacer(flex: 1),
-          verifyBtn(context),
-          SizedBox(height: MediaQuery.of(context).padding.bottom + 30),
-        ],
+            const Spacer(flex: 1),
+            introverifyBody(context),
+            const Spacer(flex: 1),
+            verifyBtn(context),
+            SizedBox(height: MediaQuery.of(context).padding.bottom + 30),
+          ],
+        ),
       ),
     );
   }
@@ -94,13 +99,12 @@ Widget introverifyBody(context) {
         ),
       ),
       SizedBox(height: 14.h),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 31.w),
+      Center(
         child: Text(
-          "Connect with your contacts through our KONET WEB feature and conduct business like never before",
+          "Connect with your contacts through\n our KONET WEB feature and conduct\n business like never before",
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: kSfproRoundedFontFamily,
+            fontFamily: kSfproDisplayFontFamily,
             color: AppColor.whiteColor,
             fontSize: 18.sp,
             fontWeight: FontWeight.w400,

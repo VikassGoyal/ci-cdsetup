@@ -62,6 +62,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
         centerTitle: false,
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,

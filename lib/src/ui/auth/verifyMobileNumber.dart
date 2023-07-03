@@ -443,6 +443,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
     return Scaffold(
         backgroundColor: AppColor.primaryColor,
         appBar: AppBar(
+          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
           leadingWidth: 150.w,

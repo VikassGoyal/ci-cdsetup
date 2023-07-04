@@ -1,9 +1,11 @@
 import 'package:conet/blocs/userBloc.dart';
 import 'package:conet/src/ui/utils.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:conet/utils/widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -23,31 +25,40 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     Widget buildUpdateButton() {
-      return raisedButton(
-        context: context,
-        text: "Update",
-        bgColor: AppColor.primaryColor,
-        onClick: () {
-          var validate = _changeFormKey.currentState!.validate();
-          if (_oldPasswordController.text.length < 8) {
-            Utils.displayToastTopError("Old Password Must be more than 8 characters");
-            return;
-          }
-          if (_confirmPasswordController.text.length < 8) {
-            Utils.displayToastTopError("New Password Must be more than 8 characters");
-            return;
-          }
+      return Container(
+        constraints: BoxConstraints(minWidth: 331.0.w, minHeight: 48.h),
+        child: ElevatedButton(
+          child: Text(
+            "Update",
+            style: TextStyle(fontSize: 18.sp, fontFamily: kSfproRoundedFontFamily, fontWeight: FontWeight.w500),
+          ),
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+              )),
+          onPressed: () {
+            var validate = _changeFormKey.currentState!.validate();
+            if (_oldPasswordController.text.length < 8) {
+              Utils.displayToastTopError("Old Password Must be more than 8 characters");
+              return;
+            }
+            if (_confirmPasswordController.text.length < 8) {
+              Utils.displayToastTopError("New Password Must be more than 8 characters");
+              return;
+            }
 
-          if (_newPasswordController.text.length < 8) {
-            Utils.displayToastTopError("Confirm Password Must be more than 8 characters");
-            return;
-          }
-          if (validate) {
-            Utils.hideKeyboard(context);
-          }
-          changePassword();
-          print("clicked");
-        },
+            if (_newPasswordController.text.length < 8) {
+              Utils.displayToastTopError("Confirm Password Must be more than 8 characters");
+              return;
+            }
+            if (validate) {
+              Utils.hideKeyboard(context);
+            }
+            changePassword();
+            print("clicked");
+          },
+        ),
       );
     }
 
@@ -86,9 +97,9 @@ class _ChangePasswordState extends State<ChangePassword> {
 
     Widget buildConfirmPassword() {
       return TextFormFieldContact(
-        hintText: "Confirm Password",
+        hintText: "Confirm New Password",
         obscureText: true,
-        padding: 14.0,
+        padding: 12.0.w,
         controller: _confirmPasswordController,
         textInputType: TextInputType.visiblePassword,
         maxLength: 16,
@@ -104,60 +115,66 @@ class _ChangePasswordState extends State<ChangePassword> {
         backgroundColor: AppColor.whiteColor,
         appBar: AppBar(
           backgroundColor: AppColor.primaryColor,
+          leadingWidth: 80.w,
           elevation: 0.0,
           leading: InkWell(
             onTap: () {
-              Navigator.of(context).pop();
+              Navigator.pop(context);
             },
             child: Row(
               children: [
-                const Icon(
-                  Icons.arrow_back_sharp,
-                  color: AppColor.whiteColor,
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
-                const SizedBox(
-                  width: 2,
-                ),
+                SizedBox(width: 6.w),
                 Text(
-                  "Back",
-                  style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.whiteColor),
-                )
+                  'Back',
+                  style: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
               ],
             ),
           ),
           centerTitle: true,
-          title: Text(
-            "Change Password",
-            style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.whiteColor),
-          ),
+          title: Text("Change Password",
+              style: TextStyle(
+                  fontSize: 18.sp,
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500)),
         ),
         body: LoadingOverlay(
-          isLoading: _loader,
-          opacity: 0.5,
-          progressIndicator: const CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
-          ),
-          child: Form(
-            key: _changeFormKey,
-            child: Container(
-              margin: const EdgeInsets.only(left: 10, right: 10),
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  buildOldPassword(),
-                  const SizedBox(height: 16),
-                  buildNewPassword(),
-                  const SizedBox(height: 16),
-                  buildConfirmPassword(),
-                  const SizedBox(height: 16),
-                  Expanded(child: Container()),
-                  buildUpdateButton(),
-                  const SizedBox(height: 40),
-                ],
-              ),
+            isLoading: _loader,
+            opacity: 0.5,
+            progressIndicator: const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
             ),
-          ),
-        ));
+            child: Form(
+              key: _changeFormKey,
+              child: Container(
+                margin: EdgeInsets.only(left: 15.w, right: 15.w),
+                child: Column(
+                  children: [
+                    SizedBox(height: 30.h),
+                    buildOldPassword(),
+                    SizedBox(height: 16.h),
+                    buildNewPassword(),
+                    SizedBox(height: 16.h),
+                    buildConfirmPassword(),
+                    SizedBox(height: 16.h),
+                    Expanded(child: Container()),
+                    buildUpdateButton(),
+                    SizedBox(height: 40.h),
+                  ],
+                ),
+              ),
+            )));
   }
 
   Future<void> changePassword() async {

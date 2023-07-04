@@ -16,6 +16,7 @@ import 'package:conet/utils/theme.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -26,6 +27,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../utils/custom_fonts.dart';
 import '../settings/myprofile.dart';
 import '../utils.dart';
 
@@ -155,7 +157,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget selectButton() {
       return Row(
         children: [
-          const SizedBox(width: 22),
+          SizedBox(width: 22),
           Expanded(
             child: ElevatedButton(
               style: ButtonStyle(
@@ -163,7 +165,7 @@ class _EditProfileState extends State<EditProfile> {
                     MaterialStateProperty.all<Color>(professionalTab ? AppColor.accentColor : AppColor.whiteColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                    side: const BorderSide(
+                    side: BorderSide(
                       color: AppColor.accentColor,
                       width: 1,
                     ),
@@ -185,7 +187,7 @@ class _EditProfileState extends State<EditProfile> {
               ),
             ),
           ),
-          const SizedBox(width: 15),
+          SizedBox(width: 15),
           Expanded(
             child: ElevatedButton(
               style: ButtonStyle(
@@ -193,7 +195,7 @@ class _EditProfileState extends State<EditProfile> {
                     MaterialStateProperty.all<Color>(professionalTab ? AppColor.whiteColor : AppColor.secondaryColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                    side: const BorderSide(
+                    side: BorderSide(
                       color: AppColor.secondaryColor,
                       width: 1,
                       style: BorderStyle.solid,
@@ -218,7 +220,7 @@ class _EditProfileState extends State<EditProfile> {
               ),
             ),
           ),
-          const SizedBox(width: 22),
+          SizedBox(width: 22),
         ],
       );
     }
@@ -302,11 +304,11 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildDob() {
       return Container(
         height: 48,
-        margin: const EdgeInsets.only(left: 22.0, right: 22.0),
-        padding: const EdgeInsets.only(left: 14.0, right: 14.0),
+        margin: EdgeInsets.only(left: 22.0, right: 22.0),
+        padding: EdgeInsets.only(left: 14.0, right: 14.0),
         decoration: BoxDecoration(
           border: Border.all(
-            color: const Color.fromRGBO(232, 232, 232, 1),
+            color: Color.fromRGBO(232, 232, 232, 1),
           ),
           borderRadius: BorderRadius.circular(7),
         ),
@@ -319,14 +321,14 @@ class _EditProfileState extends State<EditProfile> {
           style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
           readOnly: true,
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+            contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
             labelText: "DOB",
             labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                  color: const Color.fromRGBO(135, 139, 149, 1),
+                  color: Color.fromRGBO(135, 139, 149, 1),
                 ),
             filled: true,
             fillColor: AppColor.whiteColor,
-            errorBorder: const OutlineInputBorder(
+            errorBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
             ),
             suffixIcon: GestureDetector(
@@ -334,7 +336,7 @@ class _EditProfileState extends State<EditProfile> {
                 _selectDate(context);
                 _valuesChanged = true;
               },
-              child: const Icon(
+              child: Icon(
                 Icons.date_range,
                 color: Color(0xFF878B95),
               ),
@@ -352,14 +354,14 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildAddress() {
       return Container(
         height: 48,
-        padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-        margin: const EdgeInsets.only(
+        padding: EdgeInsets.only(left: 14.0, right: 14.0),
+        margin: EdgeInsets.only(
           left: 22.0,
           right: 22.0,
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: const Color(0xFFE8E8E8),
+            color: Color(0xFFE8E8E8),
           ),
           borderRadius: BorderRadius.circular(7),
         ),
@@ -373,11 +375,11 @@ class _EditProfileState extends State<EditProfile> {
           readOnly: true,
           decoration: InputDecoration(
             labelText: "Address",
-            contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
-            labelStyle: Theme.of(context).textTheme.headline6?.apply(color: const Color.fromRGBO(135, 139, 149, 1)),
+            contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
+            labelStyle: Theme.of(context).textTheme.headline6?.apply(color: Color.fromRGBO(135, 139, 149, 1)),
             filled: true,
             fillColor: AppColor.whiteColor,
-            errorBorder: const OutlineInputBorder(
+            errorBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
             ),
             focusedBorder: InputBorder.none,
@@ -486,10 +488,10 @@ class _EditProfileState extends State<EditProfile> {
 
     Widget _buildKeyword() {
       return Container(
-        margin: const EdgeInsets.only(left: 22.0, right: 22.0),
+        margin: EdgeInsets.only(left: 22.0, right: 22.0),
         decoration: BoxDecoration(
           border: Border.all(
-            color: const Color.fromRGBO(232, 232, 232, 1),
+            color: Color.fromRGBO(232, 232, 232, 1),
           ),
           borderRadius: BorderRadius.circular(7),
         ),
@@ -501,10 +503,10 @@ class _EditProfileState extends State<EditProfile> {
             fillColor: AppColor.whiteColor,
             focusedBorder: InputBorder.none,
             hintStyle: Theme.of(context).textTheme.bodyText2?.apply(
-                  color: const Color(0xFF878B95),
+                  color: Color(0xFF878B95),
                 ),
             labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                  color: const Color.fromRGBO(135, 139, 149, 1),
+                  color: Color.fromRGBO(135, 139, 149, 1),
                 ),
           ),
           cursorColor: AppColor.secondaryColor,
@@ -539,7 +541,7 @@ class _EditProfileState extends State<EditProfile> {
 
     Widget _buildPersonalUpdateButton() {
       return Container(
-        margin: const EdgeInsets.only(left: 22, right: 22),
+        margin: EdgeInsets.only(left: 22, right: 22),
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -556,7 +558,7 @@ class _EditProfileState extends State<EditProfile> {
             );
           },
           child: Container(
-            constraints: const BoxConstraints(
+            constraints: BoxConstraints(
               minHeight: 50.0,
             ),
             alignment: Alignment.center,
@@ -573,7 +575,7 @@ class _EditProfileState extends State<EditProfile> {
     //Professional
     Widget _buildProfessionlUpdateButton() {
       return Container(
-        margin: const EdgeInsets.only(left: 22, right: 22),
+        margin: EdgeInsets.only(left: 22, right: 22),
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -586,7 +588,7 @@ class _EditProfileState extends State<EditProfile> {
             updateProfile();
           },
           child: Container(
-            constraints: const BoxConstraints(
+            constraints: BoxConstraints(
               minHeight: 50.0,
             ),
             alignment: Alignment.center,
@@ -603,16 +605,16 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildOccupation() {
       return Container(
         height: 48,
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-        margin: const EdgeInsets.only(left: 22, right: 22),
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        margin: EdgeInsets.only(left: 22, right: 22),
         child: DropdownButtonFormField(
-          style: const TextStyle(color: AppColor.secondaryColor, fontSize: 13),
-          icon: const Icon(
+          style: TextStyle(color: AppColor.secondaryColor, fontSize: 13),
+          icon: Icon(
             Icons.arrow_drop_down,
             color: Color(0xFF878B95),
           ),
           dropdownColor: AppColor.whiteColor,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             contentPadding: EdgeInsets.fromLTRB(18, 0, 0, 0),
             filled: true,
             fillColor: AppColor.whiteColor,
@@ -624,7 +626,7 @@ class _EditProfileState extends State<EditProfile> {
             ),
           ),
           value: _occupationValue,
-          items: const [
+          items: [
             DropdownMenuItem<String>(
               value: 'Entrepreneur',
               child: Text('Entrepreneur'),
@@ -642,7 +644,7 @@ class _EditProfileState extends State<EditProfile> {
               child: Text('Student'),
             ),
           ],
-          hint: const Text(
+          hint: Text(
             'Select Occupation',
             style: TextStyle(
               fontSize: 13,
@@ -910,38 +912,38 @@ class _EditProfileState extends State<EditProfile> {
       return Column(
         children: professionalTab
             ? [
-                const SizedBox(height: 10),
+                SizedBox(height: 10.h),
                 _buildName(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildPhoneNumber(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildSecondaryPhoneNumber(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildEmailId(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildDob(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildAddress(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildCity(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildState(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildCountry(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildPincode(),
-                const SizedBox(height: 16),
-                //  _buildLandLine(),
-                const SizedBox(height: 30),
+                SizedBox(height: 16.h),
+                _buildLandLine(),
+                SizedBox(height: 30.h),
                 _buildPersonalUpdateButton(),
-                const SizedBox(height: 30),
+                SizedBox(height: 30.h),
               ]
             : [
-                const SizedBox(height: 10),
+                SizedBox(height: 10.h),
                 _buildOccupation(),
                 Visibility(
                   visible: _companyVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _companyVisible,
@@ -949,7 +951,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 Visibility(
                   visible: _companyWebsiteVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _companyWebsiteVisible,
@@ -957,7 +959,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 Visibility(
                   visible: _studentSchoolVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16),
                 ),
                 Visibility(
                   visible: _studentSchoolVisible,
@@ -965,7 +967,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 Visibility(
                   visible: _studentGradeVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16),
                 ),
                 Visibility(
                   visible: _studentGradeVisible,
@@ -973,7 +975,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 Visibility(
                   visible: _companyWorkNatureVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _companyWorkNatureVisible,
@@ -981,31 +983,31 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 Visibility(
                   visible: _designationVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _designationVisible,
                   child: _buildDesignation(),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildworkFacebook(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildworkInstagram(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildworkTwitter(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildworkSkype(),
-                // SizedBox(height: 16),
-                // _buildKeyword(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
+                _buildKeyword(),
+                SizedBox(height: 16.h),
                 SingleChildScrollView(child: buildChips()),
                 Container(
                   height: 48,
-                  padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-                  margin: const EdgeInsets.only(top: 20, left: 22.0, right: 22.0),
+                  padding: EdgeInsets.only(left: 14.0, right: 14.0),
+                  margin: EdgeInsets.only(top: 20, left: 22.0, right: 22.0),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: const Color.fromRGBO(232, 232, 232, 1),
+                      color: Color.fromRGBO(232, 232, 232, 1),
                     ),
                     borderRadius: BorderRadius.circular(7),
                   ),
@@ -1016,14 +1018,14 @@ class _EditProfileState extends State<EditProfile> {
                       FilteringTextInputFormatter.deny(RegExp(r'\s')),
                     ],
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                      contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
                       labelText: "Keyword",
                       labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                            color: const Color.fromRGBO(135, 139, 149, 1),
+                            color: Color.fromRGBO(135, 139, 149, 1),
                           ),
                       filled: true,
                       fillColor: AppColor.whiteColor,
-                      errorBorder: const OutlineInputBorder(
+                      errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.transparent),
                       ),
                       focusedBorder: InputBorder.none,
@@ -1069,11 +1071,11 @@ class _EditProfileState extends State<EditProfile> {
                     },
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
                 Visibility(
                   visible: _enterpreneurForms,
                   child: Container(
-                    padding: const EdgeInsets.only(left: 25.0, right: 20),
+                    padding: EdgeInsets.only(left: 25.0, right: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1088,14 +1090,14 @@ class _EditProfileState extends State<EditProfile> {
                           child: FloatingActionButton(
                             heroTag: null,
                             elevation: 0,
-                            shape: const RoundedRectangleBorder(
+                            shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10.0),
                               ),
                             ),
                             backgroundColor: AppColor.secondaryColor,
                             onPressed: onAddForm,
-                            child: const Icon(
+                            child: Icon(
                               Icons.add,
                               size: 18,
                               color: AppColor.whiteColor,
@@ -1112,7 +1114,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics: NeverScrollableScrollPhysics(),
                       addAutomaticKeepAlives: true,
                       itemCount: entreprenerurList.length,
                       // itemCount: 1 ,
@@ -1120,9 +1122,9 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 _buildProfessionlUpdateButton(),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
               ],
       );
     }
@@ -1130,7 +1132,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget bodyContent() {
       return Column(
         children: [
-          const SizedBox(height: 80),
+          SizedBox(height: 80),
           selectButton(),
           _buildformBody(),
         ],
@@ -1160,7 +1162,7 @@ class _EditProfileState extends State<EditProfile> {
                   Container(
                     width: 120,
                     height: 120,
-                    padding: const EdgeInsets.all(8),
+                    padding: EdgeInsets.all(8),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100.0),
                       child: FadeInImage.assetNetwork(
@@ -1180,11 +1182,11 @@ class _EditProfileState extends State<EditProfile> {
                     child: Container(
                       height: 24,
                       width: 24,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppColor.secondaryColor,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.edit,
                         color: Colors.white,
                         size: 12,
@@ -1203,6 +1205,7 @@ class _EditProfileState extends State<EditProfile> {
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
@@ -1211,37 +1214,62 @@ class _EditProfileState extends State<EditProfile> {
                   context: context,
                   builder: (dialogContext) {
                     return AlertDialog(
-                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0.w))),
                       backgroundColor: Colors.white,
                       title: Text(
                         "Changes not saved",
-                        style: Theme.of(context).textTheme.headline4,
+                        style: TextStyle(
+                            color: Color(0xff3F3D56),
+                            fontFamily: kSfproDisplayFontFamily,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500),
                       ),
-                      content: Text(
-                        "Are you sure  want to Exit without Saving ?",
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
+                      content: Text("Are you sure  want to Exit without Saving ?",
+                          style: TextStyle(
+                              color: Color(0xff878B95),
+                              fontFamily: kSfproRoundedFontFamily,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w300)),
                       actions: <Widget>[
-                        TextButton(
-                          child: Text(
-                            "Cancel",
-                            style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
-                          ),
-                          onPressed: () {
-                            Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
-                          },
-                        ),
-                        TextButton(
-                          child: Text("Yes",
-                              style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor)),
-                          onPressed: () {
-                            setState(() {
-                              _valuesChanged = false;
-                            });
-                            Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
-                            Navigator.of(context).pop();
-                          },
-                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              child: Text("Yes",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: kSfproRoundedFontFamily,
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500)),
+                              onPressed: () {
+                                setState(() {
+                                  _valuesChanged = false;
+                                });
+                                Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                  )),
+                              child: Text("Cancel",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: kSfproRoundedFontFamily,
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500)),
+                              onPressed: () {
+                                Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
+                              },
+                            ),
+                          ],
+                        )
                       ],
                     );
                   });
@@ -1251,17 +1279,21 @@ class _EditProfileState extends State<EditProfile> {
           },
           child: Row(
             children: [
-              const Icon(
-                Icons.arrow_back_sharp,
-                color: AppColor.whiteColor,
+              Padding(
+                padding: EdgeInsets.only(left: 16.w),
+                child: const Icon(Icons.arrow_back, color: Colors.white),
               ),
-              const SizedBox(
-                width: 2,
-              ),
+              SizedBox(width: 6.w),
               Text(
-                "Back",
-                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.whiteColor),
-              )
+                'Back',
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.whiteColor,
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
             ],
           ),
         ),
@@ -1272,7 +1304,7 @@ class _EditProfileState extends State<EditProfile> {
         ),
       ),
       body: _loader
-          ? const Center(
+          ? Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
@@ -1280,13 +1312,13 @@ class _EditProfileState extends State<EditProfile> {
           : LoadingOverlay(
               isLoading: _loaderoverflow,
               opacity: 0.3,
-              progressIndicator: const CircularProgressIndicator(
+              progressIndicator: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
               child: SizedBox(
                 height: double.infinity,
                 child: SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(),
+                  physics: ClampingScrollPhysics(),
                   child: stackContainer(),
                 ),
               ),
@@ -1406,7 +1438,7 @@ class _EditProfileState extends State<EditProfile> {
   entreprenerurItemNew(int i) {
     return Padding(
       // padding: EdgeInsets.all(16),
-      padding: const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
+      padding: EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
       child: Material(
         color: AppColor.whiteColor,
         clipBehavior: Clip.antiAlias,
@@ -1428,13 +1460,13 @@ class _EditProfileState extends State<EditProfile> {
                   child: FloatingActionButton(
                     heroTag: null,
                     elevation: 0,
-                    shape: const RoundedRectangleBorder(
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10.0),
                       ),
                     ),
                     backgroundColor: AppColor.removeIconColor,
-                    child: const Icon(
+                    child: Icon(
                       Icons.close,
                       size: 18,
                       color: AppColor.whiteColor,
@@ -1448,25 +1480,25 @@ class _EditProfileState extends State<EditProfile> {
             ),
             Container(
               height: 48,
-              padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-              margin: const EdgeInsets.only(top: 20, left: 10.0, right: 10.0),
+              padding: EdgeInsets.only(left: 14.0, right: 14.0),
+              margin: EdgeInsets.only(top: 20, left: 10.0, right: 10.0),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: const Color.fromRGBO(232, 232, 232, 1),
+                  color: Color.fromRGBO(232, 232, 232, 1),
                 ),
                 borderRadius: BorderRadius.circular(7),
               ),
               child: TextFormField(
                 style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                  contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: "Company",
                   labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                        color: const Color.fromRGBO(135, 139, 149, 1),
+                        color: Color.fromRGBO(135, 139, 149, 1),
                       ),
                   filled: true,
                   fillColor: AppColor.whiteColor,
-                  errorBorder: const OutlineInputBorder(
+                  errorBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
                   focusedBorder: InputBorder.none,
@@ -1482,28 +1514,28 @@ class _EditProfileState extends State<EditProfile> {
                 },
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Container(
               height: 48,
-              padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-              margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+              padding: EdgeInsets.only(left: 14.0, right: 14.0),
+              margin: EdgeInsets.only(left: 10.0, right: 10.0),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: const Color.fromRGBO(232, 232, 232, 1),
+                  color: Color.fromRGBO(232, 232, 232, 1),
                 ),
                 borderRadius: BorderRadius.circular(7),
               ),
               child: TextFormField(
                 style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                  contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: "Website",
                   labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                        color: const Color.fromRGBO(135, 139, 149, 1),
+                        color: Color.fromRGBO(135, 139, 149, 1),
                       ),
                   filled: true,
                   fillColor: AppColor.whiteColor,
-                  errorBorder: const OutlineInputBorder(
+                  errorBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
                   focusedBorder: InputBorder.none,
@@ -1519,28 +1551,28 @@ class _EditProfileState extends State<EditProfile> {
                 },
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Container(
               height: 48,
-              padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-              margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+              padding: EdgeInsets.only(left: 14.0, right: 14.0),
+              margin: EdgeInsets.only(left: 10.0, right: 10.0),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: const Color.fromRGBO(232, 232, 232, 1),
+                  color: Color.fromRGBO(232, 232, 232, 1),
                 ),
                 borderRadius: BorderRadius.circular(7),
               ),
               child: TextFormField(
                 style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                  contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: 'Work Nature',
                   labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                        color: const Color.fromRGBO(135, 139, 149, 1),
+                        color: Color.fromRGBO(135, 139, 149, 1),
                       ),
                   filled: true,
                   fillColor: AppColor.whiteColor,
-                  errorBorder: const OutlineInputBorder(
+                  errorBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
                   focusedBorder: InputBorder.none,
@@ -1556,8 +1588,8 @@ class _EditProfileState extends State<EditProfile> {
                 },
               ),
             ),
-            const SizedBox(height: 8),
-            const Align(
+            SizedBox(height: 8),
+            Align(
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.only(left: 2),
@@ -1570,7 +1602,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Row(
               children: [
                 Visibility(
@@ -1582,12 +1614,12 @@ class _EditProfileState extends State<EditProfile> {
                     child: Container(
                       height: 88,
                       width: 100,
-                      margin: const EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                      margin: EdgeInsets.only(top: 10, bottom: 10, right: 10),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: AppColor.secondaryColor,
                         ),
-                        borderRadius: const BorderRadius.all(
+                        borderRadius: BorderRadius.all(
                           Radius.circular(10.0),
                         ),
                       ),
@@ -1605,7 +1637,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: Stack(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: EdgeInsets.all(8),
                           width: 114,
                           height: 102,
                           child: ClipRRect(
@@ -1637,7 +1669,7 @@ class _EditProfileState extends State<EditProfile> {
                                         width: 114,
                                         height: 102,
                                       )
-                                    : const SizedBox(
+                                    : SizedBox(
                                         width: 114,
                                         height: 102,
                                       )),
@@ -1647,7 +1679,7 @@ class _EditProfileState extends State<EditProfile> {
                           right: -14,
                           top: -14,
                           child: IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.cancel,
                               color: AppColor.removeIconColor,
                               size: 24,
@@ -1667,7 +1699,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: Stack(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: EdgeInsets.all(8),
                           width: 114,
                           height: 102,
                           child: ClipRRect(
@@ -1687,7 +1719,7 @@ class _EditProfileState extends State<EditProfile> {
                                       placeholder: (context, url) => Image.asset(
                                         "assets/images/placeholderImage.jpg",
                                       ),
-                                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                                      errorWidget: (context, url, error) => Icon(Icons.error),
                                     )
                                   : (entreprenerurList[i].images!.length >= 2
                                       ? AssetThumb(
@@ -1695,7 +1727,7 @@ class _EditProfileState extends State<EditProfile> {
                                           width: 114,
                                           height: 102,
                                         )
-                                      : const SizedBox(
+                                      : SizedBox(
                                           width: 114,
                                           height: 102,
                                         ))),
@@ -1704,7 +1736,7 @@ class _EditProfileState extends State<EditProfile> {
                           right: -14,
                           top: -14,
                           child: IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.cancel,
                               color: AppColor.removeIconColor,
                               size: 24,
@@ -1724,7 +1756,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: Stack(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: EdgeInsets.all(8),
                           width: 114,
                           height: 102,
                           child: ClipRRect(
@@ -1744,7 +1776,7 @@ class _EditProfileState extends State<EditProfile> {
                                       placeholder: (context, url) => Image.asset(
                                         "assets/images/placeholderImage.jpg",
                                       ),
-                                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                                      errorWidget: (context, url, error) => Icon(Icons.error),
                                     )
                                   : (entreprenerurList[i].images!.length == 3
                                       ? AssetThumb(
@@ -1752,7 +1784,7 @@ class _EditProfileState extends State<EditProfile> {
                                           width: 114,
                                           height: 102,
                                         )
-                                      : const SizedBox(
+                                      : SizedBox(
                                           width: 114,
                                           height: 102,
                                         ))),
@@ -1761,7 +1793,7 @@ class _EditProfileState extends State<EditProfile> {
                           right: -14,
                           top: -14,
                           child: IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.cancel,
                               color: AppColor.removeIconColor,
                               size: 24,
@@ -1777,7 +1809,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
           ],
         ),
       ),
@@ -1786,7 +1818,7 @@ class _EditProfileState extends State<EditProfile> {
 
   entreprenerurItem(int i) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       child: Material(
         color: AppColor.whiteColor,
         elevation: 2,
@@ -1801,20 +1833,20 @@ class _EditProfileState extends State<EditProfile> {
                 onPressed: () {
                   removeCompanyProfile(i);
                 },
-                icon: const Icon(Icons.close),
+                icon: Icon(Icons.close),
                 color: AppColor.primaryColor,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
+              padding: EdgeInsets.only(left: 16, right: 16),
               child: TextFormField(
                 style: Theme.of(context).textTheme.bodyText2,
                 decoration: InputDecoration(
                   hintText: "Company",
                   filled: true,
-                  fillColor: const Color(0xFFF6F6F6),
+                  fillColor: Color(0xFFF6F6F6),
                   hintStyle: Theme.of(context).textTheme.bodyText2?.apply(
-                        color: const Color(0xFF878B95),
+                        color: Color(0xFF878B95),
                       ),
                 ),
                 cursorColor: AppColor.secondaryColor,
@@ -1828,16 +1860,16 @@ class _EditProfileState extends State<EditProfile> {
                 },
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
+              padding: EdgeInsets.only(left: 16, right: 16),
               child: TextFormField(
                 style: Theme.of(context).textTheme.bodyText2,
                 decoration: InputDecoration(
                   hintText: "Website",
                   filled: true,
-                  fillColor: const Color(0xFFF6F6F6),
-                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: const Color(0xFF878B95)),
+                  fillColor: Color(0xFFF6F6F6),
+                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: Color(0xFF878B95)),
                 ),
                 cursorColor: AppColor.secondaryColor,
                 keyboardType: TextInputType.text,
@@ -1850,16 +1882,16 @@ class _EditProfileState extends State<EditProfile> {
                 },
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
+              padding: EdgeInsets.only(left: 16, right: 16),
               child: TextFormField(
                 style: Theme.of(context).textTheme.bodyText2,
                 decoration: InputDecoration(
                   hintText: 'Work Nature',
                   filled: true,
-                  fillColor: const Color(0xFFF6F6F6),
-                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: const Color(0xFF878B95)),
+                  fillColor: Color(0xFFF6F6F6),
+                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: Color(0xFF878B95)),
                 ),
                 cursorColor: AppColor.secondaryColor,
                 keyboardType: TextInputType.text,
@@ -1872,9 +1904,9 @@ class _EditProfileState extends State<EditProfile> {
                 },
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Container(
-              margin: const EdgeInsets.only(right: 16),
+              margin: EdgeInsets.only(right: 16),
               child: Column(
                 children: [
                   Align(
@@ -1884,7 +1916,7 @@ class _EditProfileState extends State<EditProfile> {
                         backgroundColor: MaterialStateProperty.all<Color>(Colors.black45),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                            side: const BorderSide(
+                            side: BorderSide(
                               color: AppColor.accentColor,
                               width: 1,
                             ),
@@ -1895,7 +1927,7 @@ class _EditProfileState extends State<EditProfile> {
                       onPressed: () {
                         loadImages(i);
                       },
-                      child: const Text(
+                      child: Text(
                         "Add pictures",
                         style: TextStyle(
                           color: AppColor.whiteColor,
@@ -1910,7 +1942,7 @@ class _EditProfileState extends State<EditProfile> {
                       entreprenerurList[i].images!.isEmpty
                           ? ''
                           : '(Added Image ${entreprenerurList[i].images!.length})',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppColor.gray30Color,
                         fontSize: 10,
                         fontFamily: 'Segoe-Ui',
@@ -1920,7 +1952,7 @@ class _EditProfileState extends State<EditProfile> {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
           ],
         ),
       ),
@@ -2091,8 +2123,8 @@ class _EditProfileState extends State<EditProfile> {
         maxImages: 3,
         enableCamera: true,
         selectedAssets: images,
-        cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: const MaterialOptions(
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: MaterialOptions(
           actionBarColor: "#FF931E",
           statusBarColor: "#FF931E",
           actionBarTitle: "Company Image",
@@ -2132,8 +2164,8 @@ class _EditProfileState extends State<EditProfile> {
         maxImages: 1,
         enableCamera: true,
         selectedAssets: profileImage,
-        cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: const MaterialOptions(
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: MaterialOptions(
           actionBarColor: "#FF931E",
           statusBarColor: "#FF931E",
           actionBarTitle: "Profile Image",

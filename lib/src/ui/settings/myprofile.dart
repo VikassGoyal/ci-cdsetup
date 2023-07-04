@@ -7,9 +7,11 @@ import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/models/imageUploadModel.dart';
 import 'package:conet/src/ui/contact/editProfile.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
@@ -195,17 +197,18 @@ class _MyProfileState extends State<MyProfile> {
     Widget selectButton() {
       return Row(
         children: [
-          const SizedBox(width: 22),
-          Expanded(
+          SizedBox(width: 22.w),
+          Container(
+            height: 37.h,
+            width: 158.w,
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all<Color>(personalTab ? AppColor.accentColor : AppColor.whiteColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                    side: const BorderSide(
-                      color: AppColor.accentColor,
-                      width: 1,
+                    side: BorderSide(
+                      color: personalTab ? AppColor.accentColor : AppColor.secondaryColor,
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -218,15 +221,18 @@ class _MyProfileState extends State<MyProfile> {
               },
               child: Text(
                 'Personal',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .apply(color: personalTab ? AppColor.whiteColor : AppColor.accentColor),
+                style: TextStyle(
+                    color: personalTab ? AppColor.whiteColor : AppColor.secondaryColor,
+                    fontSize: 15.sp,
+                    fontFamily: kSfCompactDisplayFontFamily,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),
-          const SizedBox(width: 15),
-          Expanded(
+          SizedBox(width: 15.w),
+          Container(
+            height: 37.h,
+            width: 158.w,
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
@@ -251,10 +257,11 @@ class _MyProfileState extends State<MyProfile> {
               },
               child: Text(
                 'Professional',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .apply(color: personalTab ? AppColor.secondaryColor : AppColor.whiteColor),
+                style: TextStyle(
+                    color: personalTab ? AppColor.secondaryColor : AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontFamily: kSfCompactDisplayFontFamily,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -265,9 +272,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildMobileNumber() {
       return TextFormFieldContact(
-        hintText: "Mobile number",
-        padding: 14.0,
-        margin: 22.0,
+        hintText: " Phone Number",
+        padding: 16.0.w,
+        margin: 22.0.w,
         readonly: true,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -280,7 +287,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildSecondaryPhoneNumber() {
       return TextFormFieldContact(
         hintText: "Secondary Phone Number",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         enable: false,
@@ -295,7 +302,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildEmailId() {
       return TextFormFieldContact(
         hintText: "Email",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -309,7 +316,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildDob() {
       return TextFormFieldContact(
         hintText: "DOB",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -322,7 +329,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildAddress() {
       return TextFormFieldContact(
         hintText: "Address",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -336,7 +343,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildCountry() {
       return TextFormFieldContact(
         hintText: "Country",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -350,7 +357,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildState() {
       return TextFormFieldContact(
         hintText: "State",
-        padding: 14.0,
+        padding: 16.0,
         readonly: true,
         margin: 22.0,
         textInputType: TextInputType.text,
@@ -364,7 +371,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildCity() {
       return TextFormFieldContact(
         hintText: "City",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -378,7 +385,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildPincode() {
       return TextFormFieldContact(
         hintText: "Pincode",
-        padding: 14.0,
+        padding: 16.0,
         readonly: true,
         margin: 22.0,
         textInputType: TextInputType.phone,
@@ -430,7 +437,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildLandLine() {
       return TextFormFieldContact(
         hintText: "Landline Number",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.number,
@@ -460,8 +467,8 @@ class _MyProfileState extends State<MyProfile> {
             );
           },
           child: Container(
-            constraints: const BoxConstraints(
-              minHeight: 50.0,
+            constraints: BoxConstraints(
+              minHeight: 50.0.h,
             ),
             alignment: Alignment.center,
             child: Text(
@@ -478,7 +485,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildOccupation() {
       return TextFormFieldContact(
         hintText: "Occupation",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -492,7 +499,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildCompany() {
       return TextFormFieldContact(
         hintText: "Company",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -506,7 +513,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildCompanyWebsite() {
       return TextFormFieldContact(
         hintText: "Company Website",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -520,7 +527,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildProfessionalSchool() {
       return TextFormFieldContact(
         hintText: "School / University",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -534,7 +541,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildGrade() {
       return TextFormFieldContact(
         hintText: "Grade",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -547,7 +554,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildworknature() {
       return TextFormFieldContact(
         hintText: "Work Nature",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -560,7 +567,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildDesignation() {
       return TextFormFieldContact(
         hintText: "Designation",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -573,7 +580,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildworkFacebook() {
       return TextFormFieldContact(
         hintText: "Facebook",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -586,7 +593,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildworkInstagram() {
       return TextFormFieldContact(
         hintText: "Instagram",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -599,7 +606,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildworkTwitter() {
       return TextFormFieldContact(
         hintText: "Twitter",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -612,7 +619,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildworkSkype() {
       return TextFormFieldContact(
         hintText: "Skype",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -988,7 +995,7 @@ class _MyProfileState extends State<MyProfile> {
       return Column(
         children: personalTab
             ? [
-                const SizedBox(height: 26),
+                SizedBox(height: 26.h),
                 _buildMobileNumber(),
                 _personalSecondaryNumber.text != "" ? const SizedBox(height: 16) : Container(),
                 _personalSecondaryNumber.text != "" ? _buildSecondaryPhoneNumber() : Container(),
@@ -1095,14 +1102,15 @@ class _MyProfileState extends State<MyProfile> {
     Widget bodyContent() {
       return Column(
         children: [
-          const SizedBox(height: 80),
-          Text(_personalName.text ?? "Unknown Number", style: Theme.of(context).textTheme.headline2),
-          const SizedBox(height: 22),
+          Padding(
+            padding: EdgeInsets.only(top: 77.h, bottom: 24.h),
+            child: Text(_personalName.text ?? "Unknown Number",
+                style: TextStyle(fontSize: 20.sp, fontFamily: kSfproRoundedFontFamily, fontWeight: FontWeight.w600)),
+          ),
           Visibility(
             visible: _values.isNotEmpty,
             child: keywordbody(),
           ),
-          const SizedBox(height: 16),
           selectButton(),
           _buildformBody(),
         ],
@@ -1116,22 +1124,24 @@ class _MyProfileState extends State<MyProfile> {
           Column(
             children: <Widget>[
               Container(
-                height: 100.0,
-                color: AppColor.primaryColor,
+                decoration: BoxDecoration(
+                  color: AppColor.primaryColor,
+                ),
+                height: 56.h,
               ),
               bodyContent()
             ],
           ),
           Positioned(
-            top: 50.0,
+            top: 0.h,
             child: Stack(
               alignment: Alignment.center,
               children: [
                 SizedBox(
-                  width: 100,
-                  height: 100,
+                  width: 110.w,
+                  height: 110.w,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100.0),
+                    borderRadius: BorderRadius.circular(100.0.w),
                     child: FadeInImage.assetNetwork(
                       placeholder: "assets/images/profile.png",
                       image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
@@ -1155,32 +1165,42 @@ class _MyProfileState extends State<MyProfile> {
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
+        leadingWidth: 100.w,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context);
           },
-          child: Row(
-            children: [
-              const Icon(
-                Icons.arrow_back_sharp,
-                color: AppColor.whiteColor,
-              ),
-              const SizedBox(
-                width: 2,
-              ),
-              Text(
-                "Back",
-                style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.whiteColor),
-              )
-            ],
+          child: Container(
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: const Icon(Icons.arrow_back, color: Colors.white),
+                ),
+                SizedBox(width: 6.w),
+                Text(
+                  'Back',
+                  style: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         centerTitle: true,
-        title: Text(
-          "Contact",
-          style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.whiteColor),
-        ),
+        title: Text("Contact",
+            style: TextStyle(
+                fontSize: 17.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w500,
+                color: Colors.white)),
         actions: [
           TextButton(
             // style: ButtonStyle(
@@ -1201,10 +1221,12 @@ class _MyProfileState extends State<MyProfile> {
                 setState(() {});
               });
             },
-            child: Text(
-              "Edit",
-              style: Theme.of(context).textTheme.bodyText1!.apply(color: AppColor.whiteColor),
-            ),
+            child: Text("Edit",
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white)),
           ),
         ],
       ),

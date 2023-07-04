@@ -19,6 +19,16 @@ class AppColor {
   static const dividerItemColor = Color(0xFFD7D7D7);
   static const alphaHeaderTextColor = Color(0xFF878B95);
   static const removeIconColor = Color(0xFFDE5753);
+  static const SettingprofileIconColor = Color(0xFF0087FB);
+}
+
+class StatusBarTheme {
+  //status bar colors
+  static const systemUiOverlayStyleLight = SystemUiOverlayStyle(
+    statusBarColor: AppColor.primaryColor,
+    statusBarIconBrightness: Brightness.light, //<-- For Android
+    statusBarBrightness: Brightness.dark, //<-- For iOS
+  );
 }
 
 class StatusBarTheme {

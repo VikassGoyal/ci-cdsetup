@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
@@ -224,21 +223,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
             top: 10.0,
             child: Stack(
               alignment: Alignment.center,
-              children: [
-                Container(
-                  width: 110,
-                  height: 110,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(
-                        'assets/images/profile.png',
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              children: [],
             ),
           )
         ],
@@ -315,20 +300,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
             )
           ],
         ),
-        body: LoadingOverlay(
-          isLoading: _loaderoverflow,
-          opacity: 0.3,
-          progressIndicator: const CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
-          ),
-          child: SizedBox(
-            height: double.infinity,
-            child: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: stackContainer(),
-            ),
-          ),
-        ));
+        body: Text("hellow"));
   }
 
   _callNumber(String phone) async {

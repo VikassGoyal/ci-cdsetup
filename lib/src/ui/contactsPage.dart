@@ -205,9 +205,9 @@ class _ContactsPageState extends State<ContactsPage> {
                 MaterialPageRoute(
                   builder: (context) => ContactProfile(
                     _contacts[index].phone!,
-                    _contacts[index].contactMetaId!,
-                    _contacts[index].contactMetaType!,
-                    _contacts[index].fromContactMetaType!,
+                    _contacts[index].contactMetaId,
+                    _contacts[index].contactMetaType,
+                    _contacts[index].fromContactMetaType,
                   ),
                 ),
               ).then((value) {

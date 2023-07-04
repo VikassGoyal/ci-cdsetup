@@ -210,7 +210,7 @@ class _SettingsState extends State<Settings> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SocialContact(),
+                        builder: (context) => SocialContact(),
                       ),
                     );
                   },

@@ -367,7 +367,7 @@ class _SettingsState extends State<Settings> {
                                     style: ButtonStyle(
                                         backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
                                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.w)),
                                         )),
                                     child: Text("Cancel",
                                         style: TextStyle(
@@ -562,31 +562,78 @@ class _SettingsState extends State<Settings> {
 
   _showDialog() async {
     await Future.delayed(const Duration(milliseconds: 50));
+    // ignore: use_build_context_synchronously
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: AppColor.whiteColor,
-          title: Text(
-            'Confirmation',
-            style: Theme.of(context).textTheme.headline5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.w), // Set the desired border radius
+          ),
+          title: Center(
+            child: Text(
+              'Confirmation',
+              style: TextStyle(
+                  color: Color(0xff3F3D56),
+                  fontFamily: kSfproDisplayFontFamily,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w500),
+            ),
           ),
           content: Text(
             'Do you want to import contacts to konet?',
-            style: Theme.of(context).textTheme.headline3,
+            style: TextStyle(
+                color: Color(0xff878B95),
+                fontFamily: kSfproRoundedFontFamily,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w300),
           ),
           actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: Text(
-                'No',
-                style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: Text('Yes', style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor)),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  constraints: BoxConstraints(minWidth: 100.0.w),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.w)),
+                        )),
+                    onPressed: () => Navigator.pop(context, true),
+                    child: Text('Yes',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: kSfproRoundedFontFamily,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500)),
+                  ),
+                ),
+                SizedBox(
+                  width: 20.w,
+                ),
+                Container(
+                  constraints: BoxConstraints(minWidth: 100.0.w),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.w)),
+                        )),
+                    onPressed: () => Navigator.pop(context, false),
+                    child: Text(
+                      'No',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: kSfproRoundedFontFamily,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
         );
       },

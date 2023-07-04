@@ -197,17 +197,18 @@ class _MyProfileState extends State<MyProfile> {
     Widget selectButton() {
       return Row(
         children: [
-          const SizedBox(width: 22),
-          Expanded(
+          SizedBox(width: 22.w),
+          Container(
+            height: 37.h,
+            width: 158.w,
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all<Color>(personalTab ? AppColor.accentColor : AppColor.whiteColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                    side: const BorderSide(
-                      color: AppColor.accentColor,
-                      width: 1,
+                    side: BorderSide(
+                      color: personalTab ? AppColor.accentColor : AppColor.secondaryColor,
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -220,15 +221,18 @@ class _MyProfileState extends State<MyProfile> {
               },
               child: Text(
                 'Personal',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .apply(color: personalTab ? AppColor.whiteColor : AppColor.accentColor),
+                style: TextStyle(
+                    color: personalTab ? AppColor.whiteColor : AppColor.secondaryColor,
+                    fontSize: 15.sp,
+                    fontFamily: kSfCompactDisplayFontFamily,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),
-          const SizedBox(width: 15),
-          Expanded(
+          SizedBox(width: 15.w),
+          Container(
+            height: 37.h,
+            width: 158.w,
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
@@ -253,10 +257,11 @@ class _MyProfileState extends State<MyProfile> {
               },
               child: Text(
                 'Professional',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .apply(color: personalTab ? AppColor.secondaryColor : AppColor.whiteColor),
+                style: TextStyle(
+                    color: personalTab ? AppColor.secondaryColor : AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontFamily: kSfCompactDisplayFontFamily,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -268,8 +273,8 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildMobileNumber() {
       return TextFormFieldContact(
         hintText: " Phone Number",
-        padding: 16.0,
-        margin: 22.0,
+        padding: 16.0.w,
+        margin: 22.0.w,
         readonly: true,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -462,8 +467,8 @@ class _MyProfileState extends State<MyProfile> {
             );
           },
           child: Container(
-            constraints: const BoxConstraints(
-              minHeight: 50.0,
+            constraints: BoxConstraints(
+              minHeight: 50.0.h,
             ),
             alignment: Alignment.center,
             child: Text(
@@ -990,7 +995,7 @@ class _MyProfileState extends State<MyProfile> {
       return Column(
         children: personalTab
             ? [
-                const SizedBox(height: 26),
+                SizedBox(height: 26.h),
                 _buildMobileNumber(),
                 _personalSecondaryNumber.text != "" ? const SizedBox(height: 16) : Container(),
                 _personalSecondaryNumber.text != "" ? _buildSecondaryPhoneNumber() : Container(),
@@ -1134,9 +1139,9 @@ class _MyProfileState extends State<MyProfile> {
               children: [
                 SizedBox(
                   width: 110.w,
-                  height: 110.h,
+                  height: 110.w,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100.0),
+                    borderRadius: BorderRadius.circular(100.0.w),
                     child: FadeInImage.assetNetwork(
                       placeholder: "assets/images/profile.png",
                       image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
@@ -1160,7 +1165,8 @@ class _MyProfileState extends State<MyProfile> {
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
-        leadingWidth: 100,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
+        leadingWidth: 100.w,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
@@ -1192,7 +1198,7 @@ class _MyProfileState extends State<MyProfile> {
         title: Text("Contact",
             style: TextStyle(
                 fontSize: 17.sp,
-                fontFamily: kSfproDisplayFontFamily,
+                fontFamily: kSfproRoundedFontFamily,
                 fontWeight: FontWeight.w500,
                 color: Colors.white)),
         actions: [

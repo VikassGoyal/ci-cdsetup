@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:conet/models/contactDetails.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:share_plus/share_plus.dart';
@@ -11,14 +13,14 @@ import 'package:url_launcher/url_launcher.dart';
 import '../utils.dart';
 
 class NonConetContactProfile extends StatefulWidget {
-  String? name;
-  String? phoneNumber;
-  String? email;
+  final String? name;
+  final String? phoneNumber;
+  final String? email;
 
-  NonConetContactProfile(this.name, this.phoneNumber, this.email);
+  const NonConetContactProfile(this.name, this.phoneNumber, this.email, {super.key});
 
   @override
-  _NonConetContactProfileState createState() => _NonConetContactProfileState();
+  State<NonConetContactProfile> createState() => _NonConetContactProfileState();
 }
 
 class _NonConetContactProfileState extends State<NonConetContactProfile> {
@@ -70,20 +72,21 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
 
     Widget _buildformBody() {
       return Container(
-        padding: const EdgeInsets.only(left: 16, right: 16),
+        padding: EdgeInsets.symmetric(horizontal: 21.w),
         child: Column(
           children: [
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
             Visibility(
               visible: _personalNumber.text == '' ? false : true,
               child: _buildMobileNumber(),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 10.h),
             Visibility(
               visible: _personalEmail.text == '' ? false : true,
               child: _buildEmailId(),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height / 2.5),
+            SizedBox(height: _personalEmail.text == '' ? 0 : 50.h),
+            SizedBox(height: MediaQuery.of(context).size.height / 2.9),
             ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -108,7 +111,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                 ),
               ),
             ),
-            const SizedBox(height: 36),
+            SizedBox(height: 36.h),
           ],
         ),
       );
@@ -117,11 +120,20 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
     Widget bodyContent() {
       return Column(
         children: [
-          const SizedBox(height: 110),
-          Text(_personalName.text ?? "Unknown Number", style: Theme.of(context).textTheme.headline2),
-          const SizedBox(height: 22),
+          SizedBox(height: 110.h),
+          Text(
+            _personalName.text ?? "Unknown Number",
+            style: TextStyle(
+              fontFamily: kSfproRoundedFontFamily,
+              color: AppColor.blackColor,
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w600,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          SizedBox(height: 16.h),
           Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16),
+            padding: EdgeInsets.only(left: 14.w, right: 14.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -135,11 +147,11 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                     },
                     child: SvgPicture.asset(
                       "assets/icons/ic_profile_message.svg",
-                      height: 56,
+                      height: 56.h,
+                      width: 80.w,
                     ),
                   ),
                 ),
-                const SizedBox(width: 4),
                 Flexible(
                   child: InkWell(
                     onTap: () {
@@ -150,11 +162,11 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                     },
                     child: SvgPicture.asset(
                       "assets/icons/ic_profile_call.svg",
-                      height: 56,
+                      height: 56.h,
+                      width: 80.w,
                     ),
                   ),
                 ),
-                const SizedBox(width: 4),
                 Flexible(
                   child: InkWell(
                     onTap: () {
@@ -170,11 +182,11 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                     },
                     child: SvgPicture.asset(
                       "assets/icons/ic_profile_whatsapp.svg",
-                      height: 56,
+                      height: 56.h,
+                      width: 80.w,
                     ),
                   ),
                 ),
-                const SizedBox(width: 4),
                 Flexible(
                   child: InkWell(
                     onTap: () {
@@ -189,14 +201,15 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                     },
                     child: SvgPicture.asset(
                       "assets/icons/ic_profile_mail.svg",
-                      height: 56,
+                      height: 56.h,
+                      width: 80.w,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           _buildformBody(),
           // Positioned.fill(
           //   child:
@@ -220,7 +233,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
             ],
           ),
           Positioned(
-            top: 10.0,
+            top: 10.h,
             child: Stack(
               alignment: Alignment.center,
               children: [],
@@ -233,43 +246,57 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
     return Scaffold(
         backgroundColor: AppColor.whiteColor,
         appBar: AppBar(
+          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
+          leadingWidth: 80.w,
           leading: InkWell(
             onTap: () {
               Navigator.of(context).pop();
             },
             child: Row(
               children: [
-                const Icon(
-                  Icons.arrow_back_sharp,
-                  color: AppColor.whiteColor,
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
-                const SizedBox(
-                  width: 2,
-                ),
+                SizedBox(width: 6.w),
                 Text(
-                  "Back",
-                  style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.whiteColor),
-                )
+                  'Back',
+                  style: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
               ],
             ),
           ),
           centerTitle: true,
           title: Text(
             "Contact",
-            style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.whiteColor),
+            style: TextStyle(
+              fontFamily: kSfproDisplayFontFamily,
+              color: AppColor.whiteColor,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
           ),
           actions: [
             PopupMenuButton(
               color: const Color(0xFFF0F0F0),
               elevation: 10,
               shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7.0))),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Icon(
-                  Icons.more_horiz,
-                  color: AppColor.whiteColor,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: const Center(
+                  child: Icon(
+                    Icons.more_horiz,
+                    color: AppColor.whiteColor,
+                  ),
                 ),
               ),
               onSelected: (value) {
@@ -286,21 +313,78 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                   value: 1,
                   child: Text(
                     "Delete",
-                    style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
+                    style: TextStyle(
+                      fontFamily: kSfproDisplayFontFamily,
+                      color: AppColor.blackColor,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    ),
                   ),
                 ),
                 PopupMenuItem(
                   value: 2,
                   child: Text(
                     "Share",
-                    style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
+                    style: TextStyle(
+                      fontFamily: kSfproDisplayFontFamily,
+                      color: AppColor.blackColor,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    ),
                   ),
                 ),
               ],
             )
           ],
         ),
-        body: Text("hellow"));
+        // bottomNavigationBar: BottomAppBar(
+        //   elevation: 0,
+        //   height: 86.h,
+        //   child: Container(
+        //     color: AppColor.whiteColor,
+        //     padding: EdgeInsets.only(bottom: 36.h, left: 21.w, right: 21.w),
+        //     child: ElevatedButton(
+        //       style: ButtonStyle(
+        //         backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+        //         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(7))),
+        //       ),
+        //       onPressed: () async {
+        //         print("clicked");
+        //         Share.share(
+        //             'Hey\n\nKonet is a fast, simple and secure app that i use to message and call the people.\n\nGet it for free at https://play.google.com/store/apps/details?id=com.shade6.agratrade',
+        //             subject: 'Look what I made!');
+        //       },
+        //       child: Container(
+        //         constraints: BoxConstraints(
+        //           minHeight: 50.h,
+        //         ),
+        //         alignment: Alignment.center,
+        //         child: Text(
+        //           "Invite to KONET",
+        //           textAlign: TextAlign.center,
+        //           style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        body: LoadingOverlay(
+          isLoading: _loaderoverflow,
+          opacity: 0.3,
+          progressIndicator: const CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
+          ),
+          child: SizedBox(
+            height: double.infinity,
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: stackContainer(),
+            ),
+          ),
+        ));
   }
 
   _callNumber(String phone) async {

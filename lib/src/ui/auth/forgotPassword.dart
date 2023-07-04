@@ -213,7 +213,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
-          leadingWidth: 150.w,
+          leadingWidth: 80.w,
           leading: InkWell(
             onTap: () {
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));

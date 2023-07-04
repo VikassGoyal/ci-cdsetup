@@ -370,7 +370,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     primary: false,
                     scrollDirection: Axis.vertical,
                     separatorBuilder: (context, index) {
-                      return const Divider(
+                      return Divider(
                         height: 1.h,
                         color: Color(0xFF757575),
                       );
@@ -389,7 +389,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           "assets/icons/no_data.svg",
                           height: 200.h,
                         ),
-                        const SizedBox(height: 20.h),
+                        SizedBox(height: 20.h),
                         Text(
                           "No Data",
                           style: TextStyle(

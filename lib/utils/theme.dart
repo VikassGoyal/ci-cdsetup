@@ -30,12 +30,3 @@ class StatusBarTheme {
     statusBarBrightness: Brightness.dark, //<-- For iOS
   );
 }
-
-class StatusBarTheme {
-  //status bar colors
-  static const systemUiOverlayStyleLight = SystemUiOverlayStyle(
-    statusBarColor: AppColor.primaryColor,
-    statusBarIconBrightness: Brightness.light, //<-- For Android
-    statusBarBrightness: Brightness.dark, //<-- For iOS
-  );
-}

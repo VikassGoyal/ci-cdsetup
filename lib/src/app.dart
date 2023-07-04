@@ -5,6 +5,7 @@ import 'package:conet/utils/textTheme.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:conet/src/ui/introscreen/splashScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bottomNavigation/bottomNavigationBloc.dart';
 
@@ -47,6 +48,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         textTheme: Platform.isAndroid ? ConetTextTheme.androidTextTheme : ConetTextTheme.iosTextTheme,
         colorScheme: ColorScheme.fromSwatch().copyWith(
           brightness: Brightness.dark,
+        ),
+        appBarTheme: const AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: AppColor.primaryColor,
+            statusBarIconBrightness: Brightness.light, //<-- For Android
+            statusBarBrightness: Brightness.dark, //<-- For iOS
+          ),
         ),
       ),
       home: const SplashScreen(),

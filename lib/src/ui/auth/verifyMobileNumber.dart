@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:conet/blocs/userBloc.dart';
+import 'package:conet/src/ui/auth/login.dart';
 import 'package:conet/src/ui/auth/phoneScreenArguments.dart';
 import 'package:conet/src/ui/auth/signup.dart';
 import 'package:conet/src/ui/auth/validateMobileNumberVerified.dart';
 import 'package:conet/src/ui/utils.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
 
 class VerifyMobileNumber extends StatefulWidget {
@@ -182,14 +185,18 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
             // }
           },
           child: Container(
-            constraints: const BoxConstraints(
-              minHeight: 50.0,
-            ),
+            constraints: BoxConstraints(minHeight: 50.h),
             alignment: Alignment.center,
             child: Text(
               "Verify Now",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
+              style: TextStyle(
+                fontFamily: kSfproRoundedFontFamily,
+                color: AppColor.whiteColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              ),
             ),
           ),
         ),
@@ -385,22 +392,50 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
             startTimer();
           } else {}
         },
-        child: Center(
-          child: Text(
-            'Re-Send code ${formatTime(start)}',
-            style: TextStyle(color: Colors.white, fontSize: 18),
+        child: Container(
+          padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Re-Send code ',
+                style: TextStyle(
+                  fontFamily: kSfproDisplayFontFamily,
+                  color: AppColor.whiteColor,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 16.sp,
+                ),
+              ),
+              Text(
+                formatTime(start),
+                style: TextStyle(
+                  fontFamily: kSfproDisplayFontFamily,
+                  color: AppColor.whiteColor,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 18.sp,
+                ),
+              ),
+            ],
           ),
         ),
       );
     }
 
     final defaultPinTheme = PinTheme(
-      width: 50,
-      height: 55,
-      textStyle: TextStyle(fontSize: 25.0, color: Colors.white),
+      width: 60.w,
+      height: 55.h,
+      textStyle: TextStyle(
+        fontFamily: kSfproRoundedFontFamily,
+        fontWeight: FontWeight.w700,
+        fontSize: 35.sp,
+        fontStyle: FontStyle.normal,
+        color: AppColor.whiteColor,
+      ),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(width: 3.0, color: Colors.white),
+          bottom: BorderSide(width: 4.h, color: Colors.white),
         ),
       ),
     );
@@ -408,54 +443,88 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
     return Scaffold(
         backgroundColor: AppColor.primaryColor,
         appBar: AppBar(
+          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
-          centerTitle: false,
-          leadingWidth: 150,
-          // leading: InkWell(
-          //   onTap: () {
-          //     Navigator.pop(context);
-          //   },
-          //   child: Row(
-          //     children: [
-          //       Padding(
-          //         padding: EdgeInsets.only(left: 10, right: 3),
-          //         child: Icon(Icons.arrow_back, color: Colors.white),
-          //       ),
-          //       Text(
-          //         'Back',
-          //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          leadingWidth: 150.w,
+          leading: InkWell(
+            onTap: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+            },
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: const Icon(Icons.arrow_back, color: Colors.white),
+                ),
+                SizedBox(width: 6.w),
+                Text(
+                  'Back',
+                  style: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 22.0),
+              padding: EdgeInsets.only(left: 16.w, right: 16.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 10.h),
                   Text(
                     "Verify OTP Received",
-                    style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
+                    style: TextStyle(
+                      fontFamily: kSfproRoundedFontFamily,
+                      color: AppColor.whiteColor,
+                      fontSize: 34.sp,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal,
+                    ),
                   ),
                   Text(
                     "in your SMS",
-                    style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
+                    style: TextStyle(
+                      fontFamily: kSfproRoundedFontFamily,
+                      color: AppColor.whiteColor,
+                      fontSize: 34.sp,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.normal,
+                    ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   Text(
                     "We have sent code to ${widget.phone ?? ''}",
-                    style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
+                    style: TextStyle(
+                      fontFamily: kSfproRoundedFontFamily,
+                      color: AppColor.whiteColor,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.normal,
+                      letterSpacing: -0.5,
+                    ),
                   ),
                   Text(
                     "Enter the code below.",
-                    style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
+                    style: TextStyle(
+                      fontFamily: kSfproRoundedFontFamily,
+                      color: AppColor.whiteColor,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.normal,
+                      letterSpacing: -0.5,
+                    ),
                   ),
-                  const SizedBox(height: 58),
+                  SizedBox(height: 58.h),
                 ],
               ),
             ),
@@ -463,7 +532,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 36.0, right: 34),
+                  padding: EdgeInsets.only(left: 36.w, right: 34.w),
                   child: Directionality(
                     // Specify direction if desired
                     textDirection: TextDirection.ltr,

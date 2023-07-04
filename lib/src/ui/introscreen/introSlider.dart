@@ -26,20 +26,20 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
     slides.add(
       const ContentConfig(
           title: "Welcome to the KONET App",
-          description: "View, Manage, Download your Contacts on any device from anywhere at anytime hassle-free",
+          description: "View, Manage, Download your Contacts\n on any device from anywhere at\n anytime hassle-free",
           pathImage: "assets/images/screen1.png"),
     );
     slides.add(
       const ContentConfig(
           title: "Welcome to the KONET App",
           description:
-              "Secure yourself with the updated information of your Contacts and their businesses in real-time",
+              "Secure yourself with the updated\n information of your Contacts and their\n businesses in real-time",
           pathImage: "assets/images/screen2.png"),
     );
     slides.add(
       const ContentConfig(
           title: "Welcome to the KONET App",
-          description: "End - to - End Encryption. Privacy and Security is guaranteed.",
+          description: "End - to - End Encryption. Privacy and\n Security is guaranteed.",
           pathImage: "assets/images/screen3.png"),
     );
   }
@@ -141,23 +141,20 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                             ),
                           ),
                         ),
-                        // SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                         SizedBox(height: 14.h),
                         Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 23.w),
-                            child: Text(
-                              "${currentSlide.description}",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: kSfproRoundedFontFamily,
-                                color: AppColor.whiteColor,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                              ),
+                          child: Text(
+                            "${currentSlide.description}",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: kSfproDisplayFontFamily,
+                              color: AppColor.whiteColor,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
                             ),
                           ),
+                          // ),
                         ),
                       ],
                     ),
@@ -257,35 +254,39 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
-    return Scaffold(
-      backgroundColor: AppColor.primaryColor,
-      body: Container(
-        width: screenWidth,
-        height: screenHeight - 40,
-        child: IntroSlider(
-          renderSkipBtn: renderSkipBtn(),
-          skipButtonStyle: myButtonStyle(),
-          renderNextBtn: renderNextBtn(),
-          onNextPress: onNextPress,
-          nextButtonStyle: myButtonStyle(),
-          renderDoneBtn: renderDoneBtn(),
-          doneButtonStyle: myButtonStyle(),
-          onDonePress: onDonePress,
-          scrollPhysics: const BouncingScrollPhysics(),
-          listCustomTabs: renderListCustomTabs(),
-          onTabChangeCompleted: onTabChangeCompleted,
-          refFuncGoToTab: (refFunc) {
-            goToTab = refFunc;
-          },
-          // colorSkipBtn: Colors.white38,
-          // highlightColorSkipBtn: AppColor.whiteColor,
-          // colorDoneBtn: Colors.white38,
-          // highlightColorDoneBtn: AppColor.whiteColor,
-          // colorDot: AppColor.whiteColor,
-          // sizeDot: 5.0,
-          // typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
-          // backgroundColorAllSlides: AppColor.primaryColor,
-          // shouldHideStatusBar: false,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light, //for status bar colors
+      //since there is no appBar used here so to give proper colors to the status bar, we used the AnnotatedRegion
+      child: Scaffold(
+        backgroundColor: AppColor.primaryColor,
+        body: Container(
+          width: screenWidth,
+          height: screenHeight - 40,
+          child: IntroSlider(
+            renderSkipBtn: renderSkipBtn(),
+            skipButtonStyle: myButtonStyle(),
+            renderNextBtn: renderNextBtn(),
+            onNextPress: onNextPress,
+            nextButtonStyle: myButtonStyle(),
+            renderDoneBtn: renderDoneBtn(),
+            doneButtonStyle: myButtonStyle(),
+            onDonePress: onDonePress,
+            scrollPhysics: const BouncingScrollPhysics(),
+            listCustomTabs: renderListCustomTabs(),
+            onTabChangeCompleted: onTabChangeCompleted,
+            refFuncGoToTab: (refFunc) {
+              goToTab = refFunc;
+            },
+            // colorSkipBtn: Colors.white38,
+            // highlightColorSkipBtn: AppColor.whiteColor,
+            // colorDoneBtn: Colors.white38,
+            // highlightColorDoneBtn: AppColor.whiteColor,
+            // colorDot: AppColor.whiteColor,
+            // sizeDot: 5.0,
+            // typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
+            // backgroundColorAllSlides: AppColor.primaryColor,
+            // shouldHideStatusBar: false,
+          ),
         ),
       ),
     );

@@ -62,35 +62,9 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
         centerTitle: true,
-        leadingWidth: 100,
         backgroundColor: AppColor.primaryColor,
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Container(
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 16.w),
-                  child: const Icon(Icons.arrow_back, color: Colors.white),
-                ),
-                SizedBox(width: 6.w),
-                Text(
-                  'Back',
-                  style: TextStyle(
-                    fontFamily: kSfproRoundedFontFamily,
-                    color: AppColor.whiteColor,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w300,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
         elevation: 0.0,
         title: Text(
           "Settings",
@@ -126,7 +100,7 @@ class _SettingsState extends State<Settings> {
                         style: TextStyle(
                             color: AppColor.blackColor,
                             fontSize: 17.sp,
-                            fontFamily: kSfproRoundedFontFamily,
+                            fontFamily: kSfproDisplayFontFamily,
                             fontWeight: FontWeight.w400)),
                     subtitle: RichText(
                       text: TextSpan(
@@ -150,11 +124,11 @@ class _SettingsState extends State<Settings> {
                       ),
                     ),
                     leading: Container(
-                      height: 34.h,
+                      height: 34.w,
                       width: 34.w,
                       child: SvgPicture.asset(
                         "assets/icons/ic_settings_profile.svg",
-                        height: 24.h,
+                        height: 24.w,
                         width: 24.w,
                       ),
                     )),
@@ -174,15 +148,15 @@ class _SettingsState extends State<Settings> {
                       style: TextStyle(
                           color: AppColor.blackColor,
                           fontSize: 17.sp,
-                          fontFamily: "SF Pro Display",
+                          fontFamily: kSfproDisplayFontFamily,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.h,
+                    height: 34.w,
                     width: 34.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_changepsw.svg",
-                      height: 24.h,
+                      height: 24.w,
                       width: 24.w,
                     ),
                   )),
@@ -200,11 +174,11 @@ class _SettingsState extends State<Settings> {
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.h,
+                    height: 34.w,
                     width: 34.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_contactlist.svg",
-                      height: 24.h,
+                      height: 24.w,
                       width: 24.w,
                     ),
                   )),
@@ -221,15 +195,15 @@ class _SettingsState extends State<Settings> {
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.h,
+                    height: 34.w,
                     width: 34.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_qrscan.svg",
-                      height: 24.h,
+                      height: 24.w,
                       width: 24.w,
                     ),
                   )),
-              Divider(height: 1, color: Colors.grey.shade200),
+              Divider(height: 1.h, color: Colors.grey.shade200),
               ListTile(
                   contentPadding: EdgeInsets.zero,
                   onTap: () {
@@ -248,7 +222,7 @@ class _SettingsState extends State<Settings> {
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.h,
+                    height: 34.w,
                     width: 34.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_socialconnect.svg",
@@ -272,15 +246,15 @@ class _SettingsState extends State<Settings> {
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.h,
+                    height: 34.w,
                     width: 34.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_contactus.svg",
-                      height: 24.h,
+                      height: 24.w,
                       width: 24.w,
                     ),
                   )),
-              Divider(height: 1, color: Colors.grey.shade200),
+              Divider(height: 1.h, color: Colors.grey.shade200),
               ListTile(
                   contentPadding: EdgeInsets.zero,
                   onTap: () {
@@ -299,15 +273,15 @@ class _SettingsState extends State<Settings> {
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.h,
+                    height: 34.w,
                     width: 34.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_notification.svg",
-                      height: 24.h,
+                      height: 24.w,
                       width: 24.w,
                     ),
                   )),
-              Divider(height: 1, color: Colors.grey.shade200),
+              Divider(height: 1.h, color: Colors.grey.shade200),
               ListTile(
                   contentPadding: EdgeInsets.zero,
                   onTap: () {
@@ -326,15 +300,15 @@ class _SettingsState extends State<Settings> {
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.h,
+                    height: 34.w,
                     width: 34.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_invite.svg",
-                      height: 24.h,
+                      height: 24.w,
                       width: 24.w,
                     ),
                   )),
-              Divider(height: 1, color: Colors.grey.shade200),
+              Divider(height: 1.h, color: Colors.grey.shade200),
               ListTile(
                   contentPadding: EdgeInsets.zero,
                   onTap: () {
@@ -344,32 +318,70 @@ class _SettingsState extends State<Settings> {
                         return AlertDialog(
                           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
                           backgroundColor: Colors.white,
-                          title: Text(
-                            "Logout",
-                            style: Theme.of(context).textTheme.headline4,
+                          title: Center(
+                            child: Text("Logout",
+                                style: TextStyle(
+                                    color: Color(0xff3F3D56),
+                                    fontFamily: kSfproDisplayFontFamily,
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w500)),
                           ),
                           content: Text(
                             "Are you sure you want to logout ?",
-                            style: Theme.of(context).textTheme.headline5,
+                            style: TextStyle(
+                                color: Color(0xff878B95),
+                                fontFamily: kSfproRoundedFontFamily,
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w300),
                           ),
                           actions: <Widget>[
-                            TextButton(
-                              child: Text(
-                                "Cancel",
-                                style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                            TextButton(
-                              child: Text("Yes",
-                                  style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor)),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                logoutFun();
-                              },
-                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  constraints: BoxConstraints(minWidth: 100.0.w),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                        )),
+                                    child: Text("Yes",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: kSfproRoundedFontFamily,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w500)),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      logoutFun();
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Container(
+                                  constraints: BoxConstraints(minWidth: 100.0.w),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                        )),
+                                    child: Text("Cancel",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: kSfproRoundedFontFamily,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w500)),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
                         );
                       },
@@ -383,27 +395,27 @@ class _SettingsState extends State<Settings> {
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.h,
+                    height: 34.w,
                     width: 34.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_logout.svg",
-                      height: 24.h,
+                      height: 24.w,
                       width: 24.w,
                     ),
                   )),
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Center(
                 child: Text(
                   "v.$version",
-                  style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 14),
+                  style: TextStyle(fontSize: 11.sp, fontFamily: kSfproRoundedFontFamily, fontWeight: FontWeight.w400),
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
               SvgPicture.asset(
                 "assets/logo_orange.svg",
-                height: 30,
+                height: 22.h,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Text("$totalUsers+ users Worldwide",
                   style: TextStyle(
                     color: AppColor.secondaryColor,
@@ -412,9 +424,9 @@ class _SettingsState extends State<Settings> {
                     fontSize: 15.sp,
                     fontStyle: FontStyle.normal,
                   )),
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Container(
-                padding: const EdgeInsets.only(left: 30, right: 30),
+                padding: EdgeInsets.only(left: 33.w, right: 33.w),
                 child: Text("With your $totalContact contacts, you have $totalConnection connections",
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -425,7 +437,7 @@ class _SettingsState extends State<Settings> {
                       fontStyle: FontStyle.normal,
                     )),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
             ],
           ),
         ),

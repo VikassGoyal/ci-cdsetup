@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AppColor {
   static const primaryColor = Color(0xFFFF931E);
@@ -7,6 +7,7 @@ class AppColor {
   static const whiteColor = Color(0xFFFFFFFF);
   static const redColor = Color(0xFFE92200);
   static const blackColor = Color(0xFF000000);
+  static const black2 = Color(0xFF3F3D56);
   static const subTitleColor = Color(0xFF3C3C43);
   static const textFieldBlueBgColor = Color(0xFF050632);
   static const textFieldBgColor = Color(0xFFF6F6F6);
@@ -19,4 +20,13 @@ class AppColor {
   static const alphaHeaderTextColor = Color(0xFF878B95);
   static const removeIconColor = Color(0xFFDE5753);
   static const SettingprofileIconColor = Color(0xFF0087FB);
+}
+
+class StatusBarTheme {
+  //status bar colors
+  static const systemUiOverlayStyleLight = SystemUiOverlayStyle(
+    statusBarColor: AppColor.primaryColor,
+    statusBarIconBrightness: Brightness.light, //<-- For Android
+    statusBarBrightness: Brightness.dark, //<-- For iOS
+  );
 }

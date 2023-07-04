@@ -150,3 +150,24 @@ flutter:
         - weight: 800
         - asset: assets/fonts/SF-Pro-Display-Black.ttf
         - weight: 900
+
+    - family: SfCompactDisplay
+      fonts:
+        - asset: assets/fonts/SF-Compact-Display-Ultralight.ttf
+        - weight: 100
+        - asset: assets/fonts/SF-Compact-Display-Thin.ttf
+        - weight: 200
+        - asset: assets/fonts/SF-Compact-Display-Light.ttf
+        - weight: 300
+        - asset: assets/fonts/SF-Compact-Display-Regular.ttf
+        - weight: 400
+        - asset: assets/fonts/SF-Compact-Display-Medium.ttf
+        - weight: 500
+        - asset: assets/fonts/SF-Compact-Display-Semibold.ttf
+        - weight: 600
+        - asset: assets/fonts/SF-Compact-Display-Bold.ttf
+        - weight: 700
+        - asset: assets/fonts/SF-Compact-Display-Heavy.ttf
+        - weight: 800
+        - asset: assets/fonts/SF-Compact-Display-Black.ttf
+        - weight: 900

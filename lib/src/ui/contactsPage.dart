@@ -60,7 +60,7 @@ class _ContactsPageState extends State<ContactsPage> {
   FocusNode _focusNode = FocusNode();
 
   Barcode? result;
-  QRViewController? controller;
+  // QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   bool _loader = false;
@@ -86,15 +86,14 @@ class _ContactsPageState extends State<ContactsPage> {
     _handleList(_contacts);
   }
 
-  //QR SCAN
-  @override
-  void reassemble() {
-    super.reassemble();
-    if (Platform.isAndroid) {
-      controller!.pauseCamera();
-    }
-    //controller!.resumeCamera();
-  }
+  // //QR SCAN
+  // @override
+  // void reassemble() {
+  //   super.reassemble();
+  //   if (Platform.isAndroid) {
+  //     qrViewController!.pauseCamera();
+  //   }
+  // }
 
   // Overridden this due to Error in AZListView
   void _sortListBySuspensionTag(List<ISuspensionBean>? list) {

@@ -7,11 +7,13 @@ import 'package:conet/repositories/contactPageRepository.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,7 +60,7 @@ class _BussinessCardState extends State<BussinessCard> {
 
     _renderContent(context) {
       return Card(
-        elevation: 0.0,
+        elevation: 18.h,
         margin: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0, bottom: 0.0),
         color: const Color(0x00000000),
         child: FlipCard(
@@ -194,48 +196,53 @@ class _BussinessCardState extends State<BussinessCard> {
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
-        backgroundColor: AppColor.whiteColor,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleWhite,
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
         elevation: 0.0,
+        leadingWidth: 80.w,
         leading: InkWell(
           onTap: () {
             Navigator.of(context).pop();
           },
           child: Row(
             children: [
-              const SizedBox(
-                width: 2,
+              Padding(
+                padding: EdgeInsets.only(left: 16.w),
+                child: const Icon(Icons.arrow_back, color: AppColor.blackColor),
               ),
-              const Icon(
-                Icons.arrow_back_sharp,
-                color: AppColor.blackColor,
-              ),
-              const SizedBox(
-                width: 2,
-              ),
-              Text(
-                "Back",
-                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.blackColor),
-              )
+              // SizedBox(width: 6.w),
+              // Text(
+              //   'Back',
+              //   style: TextStyle(
+              //     fontFamily: kSfproRoundedFontFamily,
+              //     color: AppColor.blackColor,
+              //     fontSize: 15.sp,
+              //     fontWeight: FontWeight.w300,
+              //     fontStyle: FontStyle.normal,
+              //   ),
+              // ),
             ],
           ),
         ),
         centerTitle: true,
         title: Text(
           "Share Business Card",
-          style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.blackColor),
+          style: TextStyle(
+            fontFamily: kSfproRoundedFontFamily,
+            color: AppColor.black3,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w500,
+            fontStyle: FontStyle.normal,
+          ),
         ),
         actions: [
           PopupMenuButton(
             color: const Color(0xFFF0F0F0),
             elevation: 10,
             shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7.0))),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: Icon(
-                Icons.more_horiz,
-                color: AppColor.blackColor,
-              ),
-            ),
+            child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: const Icon(Icons.more_horiz, color: AppColor.black3)),
             onSelected: (value) {
               print(value);
               // if (value == 3) {
@@ -281,21 +288,39 @@ class _BussinessCardState extends State<BussinessCard> {
                 value: 1,
                 child: Text(
                   "Upload Image",
-                  style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
+                  style: TextStyle(
+                    fontFamily: kSfproDisplayFontFamily,
+                    color: AppColor.blackColor,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
                 ),
               ),
               PopupMenuItem(
                 value: 2,
                 child: Text(
                   "Change color",
-                  style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
+                  style: TextStyle(
+                    fontFamily: kSfproDisplayFontFamily,
+                    color: AppColor.blackColor,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
                 ),
               ),
               PopupMenuItem(
                 value: 3,
                 child: Text(
                   "Remove Image",
-                  style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.blackColor),
+                  style: TextStyle(
+                    fontFamily: kSfproDisplayFontFamily,
+                    color: AppColor.blackColor,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
                 ),
               )
             ],

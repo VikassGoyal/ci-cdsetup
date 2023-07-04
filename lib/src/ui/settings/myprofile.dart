@@ -1165,7 +1165,7 @@ class _MyProfileState extends State<MyProfile> {
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
-        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
         leadingWidth: 100.w,
         elevation: 0.0,
         leading: InkWell(

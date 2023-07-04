@@ -6,10 +6,12 @@ import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/ui/addContactUserProfilePage.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,11 +19,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../utils.dart';
 
 class AddContact extends StatefulWidget {
-  String? phoneNumber;
-  AddContact({this.phoneNumber});
+  final String? phoneNumber;
+  const AddContact({super.key, this.phoneNumber});
 
   @override
-  _AddContactState createState() => _AddContactState();
+  State<AddContact> createState() => _AddContactState();
 }
 
 class _AddContactState extends State<AddContact> {
@@ -75,7 +77,7 @@ class _AddContactState extends State<AddContact> {
   Widget build(BuildContext context) {
     Widget contactSearchButton() {
       return Container(
-        margin: const EdgeInsets.only(left: 22, right: 22),
+        margin: EdgeInsets.only(left: 22.w, right: 22.w),
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -110,14 +112,18 @@ class _AddContactState extends State<AddContact> {
             }
           },
           child: Container(
-            constraints: const BoxConstraints(
-              minHeight: 50.0,
-            ),
+            constraints: BoxConstraints(minHeight: 50.h),
             alignment: Alignment.center,
             child: Text(
               "Search",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
+              style: TextStyle(
+                fontFamily: kSfproRoundedFontFamily,
+                color: AppColor.whiteColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              ),
             ),
           ),
         ),
@@ -142,7 +148,7 @@ class _AddContactState extends State<AddContact> {
                   parametersValidate: "Please enter Mobile number.",
                   controller: _personalNumber,
                   regexexp: RegExp(r'[0-9]')),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               contactSearchButton()
             ],
           ),
@@ -153,32 +159,44 @@ class _AddContactState extends State<AddContact> {
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
+        leadingWidth: 80.w,
         leading: InkWell(
           onTap: () {
             Navigator.of(context).pop();
           },
           child: Row(
             children: [
-              const Icon(
-                Icons.arrow_back_sharp,
-                color: AppColor.whiteColor,
+              Padding(
+                padding: EdgeInsets.only(left: 16.w),
+                child: const Icon(Icons.arrow_back, color: Colors.white),
               ),
-              const SizedBox(
-                width: 2,
-              ),
+              SizedBox(width: 6.w),
               Text(
-                "Back",
-                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.whiteColor),
-              )
+                'Back',
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.whiteColor,
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
             ],
           ),
         ),
         centerTitle: true,
         title: Text(
           "Add Contact",
-          style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.whiteColor),
+          style: TextStyle(
+            fontFamily: kSfproRoundedFontFamily,
+            color: AppColor.whiteColor,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w500,
+            fontStyle: FontStyle.normal,
+          ),
         ),
       ),
       body: LoadingOverlay(

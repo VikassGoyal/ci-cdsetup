@@ -1,4 +1,7 @@
+import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class AnimatedToggle extends StatefulWidget {
@@ -33,8 +36,10 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Get.width * 0.6,
-      margin: const EdgeInsets.all(20),
+      // width: Get.width * 0.6,
+      width: 170.w,
+      // margin: const EdgeInsets.all(20),
+      margin: EdgeInsets.all(8.w),
       child: Stack(
         children: <Widget>[
           GestureDetector(
@@ -48,26 +53,25 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
               setState(() {});
             },
             child: Container(
-              width: Get.width * 0.6,
-              padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+              width: 170.w,
+              padding: EdgeInsets.only(top: 4.h, bottom: 4.h),
               decoration: ShapeDecoration(
                 color: widget.backgroundColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Get.width * 0.1),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.w)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: List.generate(
                   widget.values.length,
                   (index) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: Get.width * 0.05),
+                    padding: EdgeInsets.symmetric(horizontal: 15.w),
                     child: Text(
                       widget.values[index],
                       style: TextStyle(
-                        fontFamily: 'Rubik',
-                        fontSize: 14,
-                        color: widget.textColor,
+                        fontSize: 11.sp,
+                        fontFamily: kSfproRoundedFontFamily,
+                        fontWeight: FontWeight.w400,
+                        color: AppColor.whiteColor,
                       ),
                     ),
                   ),
@@ -78,25 +82,23 @@ class _AnimatedToggleState extends State<AnimatedToggle> {
           AnimatedAlign(
             duration: const Duration(milliseconds: 250),
             curve: Curves.decelerate,
-            alignment:
-                initialPosition! ? Alignment.centerRight : Alignment.centerLeft,
+            alignment: initialPosition! ? Alignment.centerRight : Alignment.centerLeft,
             child: Container(
-              padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-              width: Get.width * 0.33,
+              padding: EdgeInsets.only(top: 4.h, bottom: 4.h),
+              // width: Get.width * 0.33,
+              width: 90.w,
               decoration: ShapeDecoration(
                 color: widget.buttonColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Get.width * 0.1),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.w)),
               ),
               alignment: Alignment.center,
               child: Text(
                 initialPosition! ? widget.values[1] : widget.values[0],
                 style: TextStyle(
-                  fontFamily: 'Rubik',
-                  fontSize: 14,
+                  fontSize: 11.sp,
+                  fontFamily: kSfproRoundedFontFamily,
+                  fontWeight: FontWeight.w400,
                   color: widget.textColor,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

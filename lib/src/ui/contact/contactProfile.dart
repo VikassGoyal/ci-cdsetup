@@ -23,15 +23,16 @@ import 'package:url_launcher/url_launcher.dart';
 import '../utils.dart';
 
 class ContactProfile extends StatefulWidget {
-  String? phoneNumber;
-  int? contactmetaid;
-  String? contactMetaType;
-  String? fromContactMetaType;
+  final String? phoneNumber;
+  final int? contactmetaid;
+  final String? contactMetaType;
+  final String? fromContactMetaType;
 
-  ContactProfile(this.phoneNumber, this.contactmetaid, this.contactMetaType, this.fromContactMetaType);
+  const ContactProfile(this.phoneNumber, this.contactmetaid, this.contactMetaType, this.fromContactMetaType,
+      {super.key});
 
   @override
-  _ContactProfileState createState() => _ContactProfileState();
+  State<ContactProfile> createState() => _ContactProfileState();
 }
 
 class _ContactProfileState extends State<ContactProfile> {
@@ -218,7 +219,7 @@ class _ContactProfileState extends State<ContactProfile> {
     Widget selectButton() {
       return Row(
         children: [
-          const SizedBox(width: 22),
+          SizedBox(width: 22.w),
           Expanded(
             child: ElevatedButton(
               style: ButtonStyle(
@@ -226,10 +227,7 @@ class _ContactProfileState extends State<ContactProfile> {
                     MaterialStateProperty.all<Color>(personalTab ? AppColor.accentColor : AppColor.whiteColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                    side: const BorderSide(
-                      color: AppColor.accentColor,
-                      width: 1,
-                    ),
+                    side: const BorderSide(color: AppColor.accentColor, width: 1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
@@ -241,25 +239,24 @@ class _ContactProfileState extends State<ContactProfile> {
               },
               child: Text(
                 'Personal',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: personalTab ? AppColor.whiteColor : AppColor.accentColor),
+                style: TextStyle(
+                  fontFamily: kSfCompactDisplayFontFamily,
+                  color: personalTab ? AppColor.whiteColor : AppColor.accentColor,
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                ),
               ),
             ),
           ),
-          const SizedBox(width: 15),
+          SizedBox(width: 15.w),
           Expanded(
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all<Color>(personalTab ? AppColor.whiteColor : AppColor.secondaryColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                  side: const BorderSide(
-                    color: AppColor.secondaryColor,
-                    width: 1,
-                    style: BorderStyle.solid,
-                  ),
+                  side: const BorderSide(color: AppColor.secondaryColor, width: 1, style: BorderStyle.solid),
                   borderRadius: BorderRadius.circular(8),
                 )),
               ),
@@ -272,14 +269,17 @@ class _ContactProfileState extends State<ContactProfile> {
               },
               child: Text(
                 'Professional',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: personalTab ? AppColor.secondaryColor : AppColor.whiteColor),
+                style: TextStyle(
+                  fontFamily: kSfCompactDisplayFontFamily,
+                  color: personalTab ? AppColor.secondaryColor : AppColor.whiteColor,
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                ),
               ),
             ),
           ),
-          const SizedBox(width: 22),
+          SizedBox(width: 22.w),
         ],
       );
     }
@@ -464,7 +464,7 @@ class _ContactProfileState extends State<ContactProfile> {
 
     Widget _buildPersonalUpdateButton() {
       return Container(
-        margin: const EdgeInsets.only(left: 22, right: 22),
+        margin: EdgeInsets.only(left: 22.w, right: 22.w),
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -481,14 +481,18 @@ class _ContactProfileState extends State<ContactProfile> {
             );
           },
           child: Container(
-            constraints: const BoxConstraints(
-              minHeight: 50.0,
-            ),
+            constraints: BoxConstraints(minHeight: 50.h),
             alignment: Alignment.center,
             child: Text(
               "Next",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
+              style: TextStyle(
+                fontFamily: kSfproRoundedFontFamily,
+                color: AppColor.whiteColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              ),
             ),
           ),
         ),
@@ -646,7 +650,7 @@ class _ContactProfileState extends State<ContactProfile> {
     entreprenerurItemNew(int i) {
       return Padding(
         // padding: EdgeInsets.all(16),
-        padding: const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
+        padding: EdgeInsets.only(left: 25.w, right: 20.w, top: 30.h, bottom: 16.h),
         child: Material(
           color: AppColor.whiteColor,
           clipBehavior: Clip.antiAlias,
@@ -664,23 +668,27 @@ class _ContactProfileState extends State<ContactProfile> {
                 ],
               ),
               Container(
-                height: 48,
-                padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-                margin: const EdgeInsets.only(top: 20, left: 10.0, right: 10.0),
+                height: 48.h,
+                padding: EdgeInsets.only(left: 14.w, right: 14.w),
+                margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: const Color.fromRGBO(232, 232, 232, 1),
-                  ),
+                  border: Border.all(color: const Color.fromRGBO(232, 232, 232, 1)),
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: TextFormField(
-                  style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.secondaryColor),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding: EdgeInsets.only(top: 6.h, bottom: 3.h),
                     labelText: "Company",
-                    labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                          color: const Color.fromRGBO(135, 139, 149, 1),
-                        ),
+                    labelStyle: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: kSfproRoundedFontFamily,
+                        fontWeight: FontWeight.w300,
+                        color: AppColor.placeholder),
                     filled: true,
                     enabled: false,
                     fillColor: AppColor.whiteColor,
@@ -700,25 +708,29 @@ class _ContactProfileState extends State<ContactProfile> {
                   },
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Container(
-                height: 48,
-                padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-                margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                height: 48.h,
+                padding: EdgeInsets.only(left: 14.w, right: 14.w),
+                margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: const Color.fromRGBO(232, 232, 232, 1),
-                  ),
+                  border: Border.all(color: const Color.fromRGBO(232, 232, 232, 1)),
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: TextFormField(
-                  style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.secondaryColor),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Website",
-                    labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                          color: const Color.fromRGBO(135, 139, 149, 1),
-                        ),
+                    labelStyle: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: kSfproRoundedFontFamily,
+                        fontWeight: FontWeight.w300,
+                        color: AppColor.placeholder),
                     filled: true,
                     fillColor: AppColor.whiteColor,
                     errorBorder: const OutlineInputBorder(
@@ -738,25 +750,29 @@ class _ContactProfileState extends State<ContactProfile> {
                   },
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Container(
-                height: 48,
-                padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-                margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                height: 48.h,
+                padding: EdgeInsets.only(left: 14.w, right: 14.w),
+                margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: const Color.fromRGBO(232, 232, 232, 1),
-                  ),
+                  border: Border.all(color: const Color.fromRGBO(232, 232, 232, 1)),
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: TextFormField(
-                  style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.secondaryColor),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding: EdgeInsets.only(top: 6.h, bottom: 3.h),
                     labelText: 'Work Nature',
-                    labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                          color: const Color.fromRGBO(135, 139, 149, 1),
-                        ),
+                    labelStyle: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: kSfproRoundedFontFamily,
+                        fontWeight: FontWeight.w300,
+                        color: AppColor.placeholder),
                     filled: true,
                     enabled: false,
                     fillColor: AppColor.whiteColor,
@@ -776,7 +792,7 @@ class _ContactProfileState extends State<ContactProfile> {
                   },
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               // Align(
               //   alignment: Alignment.centerLeft,
               //   child: Padding(
@@ -790,7 +806,7 @@ class _ContactProfileState extends State<ContactProfile> {
               //     ),
               //   ),
               // ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Row(
                 children: [
                   Visibility(
@@ -800,8 +816,8 @@ class _ContactProfileState extends State<ContactProfile> {
                         children: [
                           Container(
                             padding: const EdgeInsets.all(8),
-                            width: 114,
-                            height: 102,
+                            width: 114.w,
+                            height: 102.h,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: (entreprenerurList[i].images!.isNotEmpty
@@ -1020,36 +1036,39 @@ class _ContactProfileState extends State<ContactProfile> {
     Widget _relationShip() {
       return Container(
         decoration: BoxDecoration(
-          border: Border.all(
-            color: const Color(0xFFE8E8E8),
-          ),
+          border: Border.all(color: const Color(0xFFE8E8E8)),
           borderRadius: BorderRadius.circular(7),
         ),
         // height: 48,
         padding: const EdgeInsets.all(0),
-        margin: const EdgeInsets.only(
-          left: 22,
-          right: 22,
-        ),
+        margin: EdgeInsets.only(left: 22.w, right: 22.w),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
               child: TextFormField(
-                style: Theme.of(context).textTheme.bodyText2?.apply(
-                      color: AppColor.secondaryColor,
-                    ),
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w300,
+                    color: AppColor.secondaryColor),
                 decoration: InputDecoration(
                   labelText: "Relationship",
                   filled: true,
                   fillColor: AppColor.whiteColor,
                   focusedBorder: InputBorder.none,
-                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(
-                        color: const Color(0xFF878B95),
-                      ),
-                  labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                        color: const Color.fromRGBO(135, 139, 149, 1),
-                      ),
+                  hintStyle: TextStyle(
+                    fontSize: 13.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w300,
+                    color: AppColor.placeholder,
+                  ),
+                  labelStyle: TextStyle(
+                    fontSize: 13.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w300,
+                    color: AppColor.placeholder,
+                  ),
                 ),
                 readOnly: true,
                 initialValue: "Switch",
@@ -1075,7 +1094,7 @@ class _ContactProfileState extends State<ContactProfile> {
               },
               buttonColor: AppColor.accentColor,
               backgroundColor: AppColor.placeholder,
-              textColor: const Color(0xFFFFFFFF),
+              textColor: AppColor.whiteColor,
               value: switchTypeStatus,
             ),
           ],
@@ -1102,29 +1121,29 @@ class _ContactProfileState extends State<ContactProfile> {
       return Column(
         children: personalTab
             ? [
-                const SizedBox(height: 26),
+                SizedBox(height: 26.h),
                 _buildMobileNumber(),
-                _personalSecondaryNumber.text != "" ? const SizedBox(height: 16) : Container(),
+                _personalSecondaryNumber.text != "" ? SizedBox(height: 16.h) : Container(),
                 _personalSecondaryNumber.text != "" ? _buildSecondaryPhoneNumber() : Container(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildEmailId(),
-                _personalDob.text != "" ? const SizedBox(height: 16) : Container(),
+                _personalDob.text != "" ? SizedBox(height: 16.h) : Container(),
                 _personalDob.text != "" ? _buildDob() : Container(),
                 widget.fromContactMetaType == "personal" ? _addressContainer() : Container(),
-                _personalLandline.text != "" ? const SizedBox(height: 16) : Container(),
+                _personalLandline.text != "" ? SizedBox(height: 16.h) : Container(),
                 _personalLandline.text != "" ? _buildLandLine() : Container(),
-                widget.contactmetaid != null ? const SizedBox(height: 16) : Container(),
+                widget.contactmetaid != null ? SizedBox(height: 16.h) : Container(),
                 widget.contactmetaid != null ? _relationShip() : Container(),
-                const SizedBox(height: 30),
+                SizedBox(height: 30.h),
                 _buildPersonalUpdateButton(),
-                const SizedBox(height: 30),
+                SizedBox(height: 30.h),
               ]
             : [
-                const SizedBox(height: 26),
+                SizedBox(height: 26.h),
                 _buildOccupation(),
                 Visibility(
                   visible: _companyVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _companyVisible,
@@ -1132,7 +1151,7 @@ class _ContactProfileState extends State<ContactProfile> {
                 ),
                 Visibility(
                   visible: _companyWebsiteVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _companyWebsiteVisible,
@@ -1140,7 +1159,7 @@ class _ContactProfileState extends State<ContactProfile> {
                 ),
                 Visibility(
                   visible: _studentSchoolVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _studentSchoolVisible,
@@ -1148,7 +1167,7 @@ class _ContactProfileState extends State<ContactProfile> {
                 ),
                 Visibility(
                   visible: _studentGradeVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _studentGradeVisible,
@@ -1156,7 +1175,7 @@ class _ContactProfileState extends State<ContactProfile> {
                 ),
                 Visibility(
                   visible: _companyWorkNatureVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _companyWorkNatureVisible,
@@ -1164,21 +1183,21 @@ class _ContactProfileState extends State<ContactProfile> {
                 ),
                 Visibility(
                   visible: _designationVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _designationVisible,
                   child: _buildDesignation(),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildworkFacebook(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildworkInstagram(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildworkTwitter(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildworkSkype(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 Visibility(
                   visible: _enterpreneurForms,
                   child: Container(
@@ -1192,7 +1211,7 @@ class _ContactProfileState extends State<ContactProfile> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: 30.h),
               ],
       );
     }
@@ -1200,16 +1219,23 @@ class _ContactProfileState extends State<ContactProfile> {
     Widget bodyContent() {
       return Column(
         children: [
-          const SizedBox(height: 80),
-          Text(_personalName.text ?? "Unknown Number", style: Theme.of(context).textTheme.headline2),
-          const SizedBox(height: 22),
+          SizedBox(height: 80.h),
+          Text(_personalName.text ?? "Unknown Number",
+              style: TextStyle(
+                fontFamily: kSfproRoundedFontFamily,
+                color: AppColor.blackColor,
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.normal,
+              )),
+          SizedBox(height: 12.h),
           Visibility(
             visible: _values.isNotEmpty,
             child: keywordbody(),
           ),
-          const SizedBox(height: 22),
+          SizedBox(height: 22.h),
           Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16),
+            padding: EdgeInsets.only(left: 14.w, right: 14.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -1223,11 +1249,11 @@ class _ContactProfileState extends State<ContactProfile> {
                     },
                     child: SvgPicture.asset(
                       "assets/icons/ic_profile_message.svg",
-                      height: 56,
+                      height: 56.h,
+                      width: 80.w,
                     ),
                   ),
                 ),
-                const SizedBox(width: 4),
                 Flexible(
                   child: InkWell(
                     onTap: () {
@@ -1238,11 +1264,11 @@ class _ContactProfileState extends State<ContactProfile> {
                     },
                     child: SvgPicture.asset(
                       "assets/icons/ic_profile_call.svg",
-                      height: 56,
+                      height: 56.h,
+                      width: 80.w,
                     ),
                   ),
                 ),
-                const SizedBox(width: 4),
                 Flexible(
                   child: InkWell(
                     onTap: () {
@@ -1258,11 +1284,11 @@ class _ContactProfileState extends State<ContactProfile> {
                     },
                     child: SvgPicture.asset(
                       "assets/icons/ic_profile_whatsapp.svg",
-                      height: 56,
+                      height: 56.h,
+                      width: 80.w,
                     ),
                   ),
                 ),
-                const SizedBox(width: 4),
                 Flexible(
                   child: InkWell(
                     onTap: () {
@@ -1277,14 +1303,15 @@ class _ContactProfileState extends State<ContactProfile> {
                     },
                     child: SvgPicture.asset(
                       "assets/icons/ic_profile_mail.svg",
-                      height: 56,
+                      height: 56.h,
+                      width: 80.w,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 22),
+          SizedBox(height: 16.h),
           selectButton(),
           _buildformBody(),
         ],
@@ -1296,20 +1323,20 @@ class _ContactProfileState extends State<ContactProfile> {
         Column(
           children: <Widget>[
             Container(
-              height: 100.0,
+              height: 100.h,
               color: AppColor.primaryColor,
             ),
             bodyContent()
           ],
         ),
         Positioned(
-          top: 50.0,
+          top: 50.h,
           child: Stack(
             alignment: Alignment.center,
             children: [
               SizedBox(
-                width: 100,
-                height: 100,
+                width: 100.w,
+                height: 100.w,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100.0),
                   child: FadeInImage.assetNetwork(
@@ -1337,7 +1364,7 @@ class _ContactProfileState extends State<ContactProfile> {
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
-        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
         leadingWidth: 80.w,

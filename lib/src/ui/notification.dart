@@ -316,7 +316,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
         leadingWidth: 80.w,
-        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {

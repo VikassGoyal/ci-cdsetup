@@ -3,8 +3,10 @@ import 'package:conet/repositories/contactPageRepository.dart';
 import 'package:conet/src/ui/contact/contactProfile.dart';
 import 'package:conet/src/ui/contact/nonConetContactProfile.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NewConetUsers extends StatefulWidget {
@@ -30,32 +32,44 @@ class _NewConetUsersState extends State<NewConetUsers> {
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
+        leadingWidth: 80.w,
         leading: InkWell(
           onTap: () {
             Navigator.of(context).pop();
           },
           child: Row(
             children: [
-              const Icon(
-                Icons.arrow_back_sharp,
-                color: AppColor.whiteColor,
+              Padding(
+                padding: EdgeInsets.only(left: 16.w),
+                child: const Icon(Icons.arrow_back, color: Colors.white),
               ),
-              const SizedBox(
-                width: 2,
-              ),
+              SizedBox(width: 6.w),
               Text(
-                "Back",
-                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.whiteColor),
-              )
+                'Back',
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.whiteColor,
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
             ],
           ),
         ),
         centerTitle: true,
         title: Text(
           "KoNet Joiners",
-          style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.whiteColor),
+          style: TextStyle(
+            fontFamily: kSfproRoundedFontFamily,
+            color: AppColor.whiteColor,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w500,
+            fontStyle: FontStyle.normal,
+          ),
         ),
       ),
       body: _loader
@@ -119,15 +133,30 @@ class _NewConetUsersState extends State<NewConetUsers> {
                               Text(
                                 getDateFormat(_contacts[index].contactMetaType),
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                                      color: AppColor.gray30Color,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                // style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                                //       color: AppColor.gray30Color,
+                                //       fontWeight: FontWeight.w400,
+                                // ),
+                                style: TextStyle(
+                                  fontFamily: kSfproRoundedFontFamily,
+                                  color: AppColor.grey2.withOpacity(0.60),
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500,
+                                  fontStyle: FontStyle.normal,
+                                  letterSpacing: 0.16,
+                                ),
                               ),
                               Text(
                                 _contacts[index].name ?? "",
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w400),
+                                style: TextStyle(
+                                  fontFamily: kSfproDisplayFontFamily,
+                                  color: AppColor.blackColor,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w600,
+                                  fontStyle: FontStyle.normal,
+                                  letterSpacing: -0.24,
+                                ),
                               )
                             ],
                           ),
@@ -135,16 +164,20 @@ class _NewConetUsersState extends State<NewConetUsers> {
                             "${_contacts[index].name ?? ""} joined KoNet!",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                ?.copyWith(color: AppColor.secondaryColor, fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                              fontFamily: kSfproDisplayFontFamily,
+                              color: AppColor.secondaryColor,
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              letterSpacing: -0.08,
+                            ),
                           ),
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child: Container(
-                              width: 46,
-                              height: 46,
+                              width: 46.w,
+                              height: 46.w,
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
@@ -167,12 +200,18 @@ class _NewConetUsersState extends State<NewConetUsers> {
                     children: [
                       SvgPicture.asset(
                         "assets/icons/no_data.svg",
-                        height: 200,
+                        height: 200.h,
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 30.h),
                       Text(
                         "No Data",
-                        style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.blackColor),
+                        style: TextStyle(
+                          fontFamily: kSfproRoundedFontFamily,
+                          color: AppColor.black2,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 18.sp,
+                        ),
                       )
                     ],
                   ),

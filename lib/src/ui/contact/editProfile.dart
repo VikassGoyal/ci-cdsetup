@@ -1205,7 +1205,7 @@ class _EditProfileState extends State<EditProfile> {
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
-        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {

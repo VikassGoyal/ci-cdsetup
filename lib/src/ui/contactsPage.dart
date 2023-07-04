@@ -470,7 +470,7 @@ class _ContactsPageState extends State<ContactsPage> {
       backgroundColor: AppColor.whiteColor,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
         title: const KonetLogo(
@@ -524,15 +524,14 @@ class _ContactsPageState extends State<ContactsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(color: AppColor.primaryColor, height: 20.h),
             Container(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
               color: AppColor.primaryColor,
               child: Row(
                 children: <Widget>[
                   Flexible(
                     child: Container(
-                      height: 36,
+                      height: 36.w,
                       color: AppColor.primaryColor,
                       child: TextField(
                         controller: _textEditingController,
@@ -606,21 +605,17 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                   SizedBox(width: 8.w),
                   Container(
-                    width: 32.w,
-                    height: 32.w,
+                    width: 36.w,
+                    height: 36.w,
                     alignment: Alignment.center,
                     child: FloatingActionButton(
                       heroTag: null,
                       elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                      ),
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
                       backgroundColor: AppColor.secondaryColor,
-                      child: const Icon(
+                      child: Icon(
                         Icons.add,
-                        size: 18,
+                        size: 18.h,
                         color: AppColor.whiteColor,
                       ),
                       onPressed: () {
@@ -640,22 +635,15 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                   SizedBox(width: 8.w),
                   Container(
-                    width: 32.w,
-                    height: 32.w,
+                    width: 36.w,
+                    height: 36.w,
                     alignment: Alignment.center,
                     child: FloatingActionButton(
                       heroTag: null,
                       elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                      ),
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
                       backgroundColor: AppColor.accentColor,
-                      child: SvgPicture.asset(
-                        "assets/icons/ic_businesscard.svg",
-                        height: 18,
-                      ),
+                      child: SvgPicture.asset("assets/icons/ic_businesscard.svg", height: 18.h),
                       onPressed: () {
                         print("Cliked");
                         Navigator.push(
@@ -670,12 +658,11 @@ class _ContactsPageState extends State<ContactsPage> {
                 ],
               ),
             ),
-            Container(color: AppColor.primaryColor, height: 20),
             Visibility(
               visible: recentCalls.isNotEmpty,
               child: Container(
                 width: MediaQuery.of(context).size.width * 1.0,
-                constraints: const BoxConstraints(maxHeight: 110, minHeight: 110.0),
+                constraints: BoxConstraints(maxHeight: 110.h, minHeight: 110.h),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20.0),
@@ -704,7 +691,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           _callNumber(recentCalls[i].number!);
                         },
                         child: Container(
-                          width: 80,
+                          width: 80.w,
                           margin: EdgeInsets.only(top: 18.h),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -716,9 +703,9 @@ class _ContactsPageState extends State<ContactsPage> {
                                 backgroundColor: AppColor.whiteColor,
                                 child: Container(
                                   margin: EdgeInsets.all(3.w),
-                                  child: const Image(
-                                    height: 38,
-                                    image: AssetImage(
+                                  child: Image(
+                                    height: 38.w,
+                                    image: const AssetImage(
                                       'assets/images/profile_placeholder.png',
                                     ),
                                   ),
@@ -753,7 +740,7 @@ class _ContactsPageState extends State<ContactsPage> {
                         children: [
                           SvgPicture.asset(
                             "assets/icons/no_data.svg",
-                            height: 130,
+                            height: 130.h,
                           ),
                           SizedBox(height: 30.h),
                           Text(

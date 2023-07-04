@@ -100,14 +100,18 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                     subject: 'Look what I made!');
               },
               child: Container(
-                constraints: const BoxConstraints(
-                  minHeight: 50.0,
-                ),
+                constraints: BoxConstraints(minHeight: 50.h),
                 alignment: Alignment.center,
                 child: Text(
                   "Invite to KONET",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
+                  style: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: AppColor.whiteColor,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.normal,
+                  ),
                 ),
               ),
             ),
@@ -211,9 +215,6 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
           ),
           SizedBox(height: 20.h),
           _buildformBody(),
-          // Positioned.fill(
-          //   child:
-          // ),
         ],
       );
     }
@@ -226,7 +227,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
             // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Container(
-                height: 60.0,
+                height: 60.h,
                 color: AppColor.primaryColor,
               ),
               bodyContent()
@@ -236,7 +237,21 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
             top: 10.h,
             child: Stack(
               alignment: Alignment.center,
-              children: [],
+              children: [
+                Container(
+                  width: 110.w,
+                  height: 110.w,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage(
+                        'assets/images/profile.png',
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           )
         ],
@@ -246,7 +261,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
     return Scaffold(
         backgroundColor: AppColor.whiteColor,
         appBar: AppBar(
-          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
+          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
           leadingWidth: 80.w,
@@ -278,10 +293,10 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
           title: Text(
             "Contact",
             style: TextStyle(
-              fontFamily: kSfproDisplayFontFamily,
+              fontFamily: kSfproRoundedFontFamily,
               color: AppColor.whiteColor,
               fontSize: 18.sp,
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w500,
               fontStyle: FontStyle.normal,
             ),
           ),
@@ -292,12 +307,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
               shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7.0))),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
-                child: const Center(
-                  child: Icon(
-                    Icons.more_horiz,
-                    color: AppColor.whiteColor,
-                  ),
-                ),
+                child: const Center(child: Icon(Icons.more_horiz, color: AppColor.whiteColor)),
               ),
               onSelected: (value) {
                 print(value);

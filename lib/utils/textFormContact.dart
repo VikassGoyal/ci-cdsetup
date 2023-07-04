@@ -62,15 +62,10 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
         Container(
           height: 48.h,
           width: 331.w,
-          padding: EdgeInsets.only(left: widget.padding!.w, right: widget.padding!.w),
-          margin: EdgeInsets.only(
-            left: widget.margin ?? 0,
-            right: widget.margin ?? 0,
-          ),
+          padding: widget.padding != null ? EdgeInsets.only(left: widget.padding!.w, right: widget.padding!.w) : null,
+          margin: EdgeInsets.only(left: widget.margin ?? 0, right: widget.margin ?? 0),
           decoration: BoxDecoration(
-            border: Border.all(
-              color: const Color(0xFFE8E8E8),
-            ),
+            border: Border.all(color: const Color(0xFFE8E8E8)),
             borderRadius: BorderRadius.circular(5),
           ),
           child: TextFormField(
@@ -80,12 +75,11 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
 
             readOnly: widget.readonly!,
             validator: widget.validator,
-
             style: TextStyle(
                 fontSize: 15.sp,
                 fontFamily: kSfproRoundedFontFamily,
                 fontWeight: FontWeight.w300,
-                color: Color(0xFF0087FB)),
+                color: AppColor.secondaryColor),
             maxLength: widget.maxLength,
             inputFormatters: [
               FilteringTextInputFormatter.allow(widget.regexexp == null ? RegExp('.*') : widget.regexexp!),
@@ -104,12 +98,12 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
                   fontSize: 13.sp,
                   fontFamily: kSfproRoundedFontFamily,
                   fontWeight: FontWeight.w300,
-                  color: Color(0XFF878B95)),
+                  color: AppColor.placeholder),
               labelStyle: TextStyle(
                   fontSize: 13.sp,
                   fontFamily: kSfproRoundedFontFamily,
                   fontWeight: FontWeight.w300,
-                  color: Color(0XFF878B95)),
+                  color: AppColor.placeholder),
               filled: true,
               fillColor: AppColor.whiteColor,
               errorBorder: const OutlineInputBorder(

@@ -143,7 +143,7 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
     return Scaffold(
         backgroundColor: AppColor.primaryColor,
         appBar: AppBar(
-          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleLight,
+          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
           leadingWidth: 80.w,

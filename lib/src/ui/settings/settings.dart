@@ -238,7 +238,7 @@ class _SettingsState extends State<Settings> {
                         Uri(scheme: 'mailto', path: "thekonetapp@gmail.com", queryParameters: {'subject': null});
                     launch(emailLaunchUri.toString());
                   },
-                  title: Text("Contact us",
+                  title: Text("Contact US",
                       style: TextStyle(
                           color: AppColor.blackColor,
                           fontSize: 17.sp,
@@ -288,7 +288,9 @@ class _SettingsState extends State<Settings> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ConetWebPage(),
+                        builder: (context) => ConetWebPage(
+                          contactsData: null,
+                        ),
                       ),
                     );
                   },

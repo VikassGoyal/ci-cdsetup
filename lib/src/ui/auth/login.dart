@@ -4,6 +4,7 @@ import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/forgotPassword.dart';
 import 'package:conet/src/ui/auth/signup.dart';
+import 'package:conet/utils/check_internet_connection.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/textFormWidget.dart';
 import 'package:conet/utils/theme.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:flutter/services.dart';
 
-import '../../../networking/apiBaseHelper.dart';
 import '../utils.dart';
 
 class Login extends StatefulWidget {

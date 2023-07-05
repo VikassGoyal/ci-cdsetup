@@ -11,6 +11,7 @@ import 'package:conet/src/ui/settings/changePassword.dart';
 import 'package:conet/src/ui/settings/myprofile.dart';
 import 'package:conet/src/ui/settings/socialContact.dart';
 import 'package:conet/src/ui/utils.dart';
+import 'package:conet/utils/check_internet_connection.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
@@ -26,8 +27,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
-import '../../../networking/apiBaseHelper.dart';
 
 class Settings extends StatefulWidget {
   var totalcount;

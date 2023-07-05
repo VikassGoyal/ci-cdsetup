@@ -6,7 +6,9 @@ import 'package:conet/repositories/contactPageRepository.dart';
 import 'package:conet/repositories/keypadPageRepository.dart';
 import 'package:conet/repositories/recentPageRepository.dart';
 import 'package:conet/repositories/settingsPageRepository.dart';
+import 'package:conet/services/storage_service.dart';
 import 'package:conet/src/localdb/database_helper.dart';
+import 'package:conet/utils/get_it.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,8 +37,13 @@ void main() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
+    // Register getIt dependencies.
+    registerServicesWithGetIt();
+
     // Initializing FlutterFire
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+    await locator<StorageService>().init();
 
     // Initialise SQLite database.
     await DatabaseHelper.instance.initialize();

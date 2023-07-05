@@ -2,12 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:conet/config/app_config.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/repositories/contactPageRepository.dart';
+import 'package:conet/services/storage_service.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/get_it.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +19,6 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class BussinessCard extends StatefulWidget {
   @override
@@ -36,10 +38,9 @@ class _BussinessCardState extends State<BussinessCard> {
   bool _loader = true;
   Color? currentColor;
 
-  SharedPreferences? preferences;
   void changeColor(Color color) {
     setState(() => currentColor = color);
-    preferences!.setString('businesscardcolor', color.toString());
+    locator<StorageService>().setPrefs<String>('businesscardcolor', color.toString());
   }
 
   @override
@@ -365,23 +366,22 @@ class _BussinessCardState extends State<BussinessCard> {
   }
 
   getQRImage() async {
-    preferences = await SharedPreferences.getInstance();
+    String? qrimage = locator<StorageService>().getPrefs('image');
 
-    String? qrimage = preferences!.getString('image');
-
-    if (preferences!.getString('businesscardcolor') != null) {
-      String? colorString = preferences?.getString('businesscardcolor');
+    if (locator<StorageService>().getPrefs('businesscardcolor') != null) {
+      String? colorString = locator<StorageService>().getPrefs('businesscardcolor');
       String? valueString = colorString?.split('(0x')[1].split(')')[0];
       int? value = int.parse(valueString!, radix: 16);
       Color colorvalue = Color(value);
 
-      currentColor = preferences?.getString('businesscardcolor') == null ? AppColor.primaryColor : colorvalue;
+      currentColor =
+          locator<StorageService>().getPrefs('businesscardcolor') == null ? AppColor.primaryColor : colorvalue;
     } else {
       currentColor = AppColor.primaryColor;
     }
 
     setState(() {
-      _qrImage = "http://conet.shade6.in/$qrimage";
+      _qrImage = "${locator<AppConfig>().baseApiUrl}/$qrimage";
       _showQr = false;
     });
   }
@@ -390,11 +390,10 @@ class _BussinessCardState extends State<BussinessCard> {
     setState(() {
       _loader = true;
     });
-    preferences = await SharedPreferences.getInstance();
 
     try {
       var requestBody = {
-        "phone": preferences?.getString('phone'),
+        "phone": locator<StorageService>().getPrefs('phone'),
       };
       var response = await _contactPageRepository.getProfileDetails(requestBody);
 

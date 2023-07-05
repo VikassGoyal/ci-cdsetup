@@ -1,6 +1,7 @@
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/searchContacts.dart';
+import 'package:conet/services/storage_service.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
@@ -8,6 +9,7 @@ import 'package:conet/src/ui/newInConet.dart';
 import 'package:conet/src/ui/notification.dart';
 import 'package:conet/src/ui/qrScreen.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/get_it.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -758,15 +760,14 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         child: GestureDetector(
                           onTap: () async {
                             print("success");
-                            SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
                             setState(() {
                               _searchEnabled = true;
                             });
 
-                            if (sharedPreferences.getBool("conetwebpopup") == null) {
+                            if (locator<StorageService>().getPrefs("conetwebpopup") == null) {
                               _showPopup();
-                              sharedPreferences.setBool("conetwebpopup", true);
+                              locator<StorageService>().setPrefs<bool>("conetwebpopup", true);
                             }
                           },
                           child: TextField(

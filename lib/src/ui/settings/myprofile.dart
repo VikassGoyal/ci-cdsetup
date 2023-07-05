@@ -268,7 +268,7 @@ class _MyProfileState extends State<MyProfile> {
               ),
             ),
           ),
-          const SizedBox(width: 22),
+          SizedBox(width: 21.w),
         ],
       );
     }

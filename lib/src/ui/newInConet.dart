@@ -166,7 +166,7 @@ class _NewConetUsersState extends State<NewConetUsers> {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontFamily: kSfproDisplayFontFamily,
-                              color: AppColor.secondaryColor,
+                              color: AppColor.primaryColor,
                               fontSize: 13.sp,
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.normal,

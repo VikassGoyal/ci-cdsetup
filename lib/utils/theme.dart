@@ -24,6 +24,7 @@ class AppColor {
   static const KonetwebsearchTextColor = Color(0xFF878B95);
   static const Alertheadingcolor = Color(0xFF3F3D56);
   static const Alertsubtitlecolor = Color(0xFF878B95);
+  static const Companyprofilenumber = Color(0xff757575);
 }
 
 class StatusBarTheme {

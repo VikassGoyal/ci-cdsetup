@@ -11,11 +11,13 @@ import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/custom_fonts.dart';
 import 'utils.dart';
 
 class ConetWebPage extends StatefulWidget {
@@ -75,8 +77,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
             child: Container(
               height: MediaQuery.of(context).size.height * 0.6,
               width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.only(left: 22, right: 22),
-              padding: const EdgeInsets.only(left: 32, right: 32),
+              margin: EdgeInsets.only(left: 22.w, right: 22.w),
+              padding: EdgeInsets.only(left: 32.w, right: 32.w),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
@@ -84,46 +86,59 @@ class _ConetWebPageState extends State<ConetWebPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 50),
+                  SizedBox(height: 50.h),
                   Image(
                     width: MediaQuery.of(context).size.width * 0.4,
                     image: const AssetImage(
                       'assets/images/alert_conetweb.png',
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32.h),
+                  Text("KONET Web Search",
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: AppColor.Alertheadingcolor,
+                          fontSize: 18.sp,
+                          fontFamily: kSfproRoundedFontFamily,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w500)),
+                  SizedBox(height: 20.h),
                   Text(
-                    "KONET Web Search",
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    "Business Designer,  Graphic Designer, Interior Designer,  MSME, Textiles, Event Planners,  Digital marketing....",
-                    overflow: TextOverflow.clip,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.placeholder),
-                  ),
-                  const SizedBox(height: 30),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                      "Business Designer,  Graphic Designer, Interior Designer,  MSME, Textiles, Event Planners,  Digital marketing....",
+                      overflow: TextOverflow.clip,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: AppColor.Alertsubtitlecolor,
+                          fontSize: 15.sp,
+                          fontFamily: kSfproRoundedFontFamily,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w700)),
+                  SizedBox(height: 30.h),
+                  Container(
+                    constraints: BoxConstraints(minHeight: 48.h, maxWidth: 130.w),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                        ),
                       ),
-                    ),
-                    onPressed: () {
-                      _focus.hasFocus.toString();
-                      Navigator.of(context).pop();
-                    },
-                    child: Container(
-                      constraints: const BoxConstraints(minHeight: 40.0, maxWidth: 100.0),
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Got it",
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
+                      onPressed: () {
+                        _focus.hasFocus.toString();
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        constraints: BoxConstraints(minHeight: 40.0.h, maxWidth: 100.0.w),
+                        alignment: Alignment.center,
+                        child: Text("Got it",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: AppColor.whiteColor,
+                                fontSize: 18.sp,
+                                fontFamily: kSfproRoundedFontFamily,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w500)),
                       ),
                     ),
                   )
@@ -138,15 +153,15 @@ class _ConetWebPageState extends State<ConetWebPage> {
     Widget contactListItem(int index) {
       print(_contacts[index].name);
       return Container(
-        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
         child: Row(
           children: [
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
             Stack(
               children: [
                 SizedBox(
-                  width: 40,
-                  height: 40,
+                  width: 40.w,
+                  height: 40.w,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100.0),
                     child: FadeInImage.assetNetwork(
@@ -170,40 +185,40 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     child: _contacts[index].contactMetaType == "professional"
                         ? SvgPicture.asset(
                             "assets/icons/ic_blue_tick.svg",
-                            height: 15,
+                            height: 15.h,
                           )
                         : SvgPicture.asset(
                             "assets/icons/ic_green_tick.svg",
-                            height: 15,
+                            height: 15.h,
                           ),
                   ),
                 )
               ],
             ),
-            const SizedBox(width: 14),
+            SizedBox(width: 14.w),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: EdgeInsets.only(right: 8.0.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "${_contacts[index].name}",
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline3
-                          ?.copyWith(color: AppColor.blackColor, fontWeight: FontWeight.w400),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      "${_contacts[index].name}",
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
-                    )
+                    Text("${_contacts[index].name}",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: AppColor.blackColor,
+                            fontSize: 13.sp,
+                            fontFamily: kSfproRoundedFontFamily,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400)),
+                    SizedBox(height: 2.w),
+                    Text("${_contacts[index].name}",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: AppColor.gray30Color,
+                            fontSize: 13.sp,
+                            fontFamily: kSfproRoundedFontFamily,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400)),
                   ],
                 ),
               ),
@@ -211,8 +226,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
             Visibility(
               visible: _contacts[index].email != null,
               child: Container(
-                width: 38,
-                height: 38,
+                width: 38.w,
+                height: 38.w,
                 alignment: Alignment.center,
                 child: FloatingActionButton(
                   heroTag: null,
@@ -226,12 +241,12 @@ class _ConetWebPageState extends State<ConetWebPage> {
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10.w),
             Visibility(
               visible: _contacts[index].phone != null,
               child: Container(
-                width: 38,
-                height: 38,
+                width: 38.w,
+                height: 38.w,
                 alignment: Alignment.center,
                 child: FloatingActionButton(
                   heroTag: null,
@@ -245,12 +260,12 @@ class _ConetWebPageState extends State<ConetWebPage> {
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10.w),
             Visibility(
               visible: _contacts[index].phone != null,
               child: Container(
-                width: 38,
-                height: 38,
+                width: 38.w,
+                height: 38.w,
                 alignment: Alignment.center,
                 child: FloatingActionButton(
                   heroTag: null,
@@ -265,7 +280,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                 ),
               ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
           ],
         ),
       );
@@ -273,7 +288,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
     Widget contactSearchListItem(int index) {
       return Container(
-        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
         child: Column(
           children: [
             InkWell(
@@ -286,7 +301,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
               },
               child: Row(
                 children: [
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16.w),
                   Stack(
                     children: [
                       SizedBox(
@@ -327,27 +342,28 @@ class _ConetWebPageState extends State<ConetWebPage> {
                             children: [
                               SvgPicture.asset(
                                 "assets/icons/ic_contactlink.svg",
-                                height: 10,
+                                height: 10.h,
                               ),
-                              const SizedBox(width: 8),
+                              SizedBox(width: 8.w),
+                              Text((_searchResult[index].via ?? ""),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: AppColor.secondaryColor,
+                                      fontSize: 13.sp,
+                                      fontFamily: kSfproRoundedFontFamily,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w400)),
                               Text(
-                                (_searchResult[index].via ?? ""),
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    ?.copyWith(color: AppColor.secondaryColor, fontWeight: FontWeight.w400),
-                              ),
-                              Text(
-                                (_searchResult[index].mutualList?.length == 1
-                                    ? ""
-                                    : " ${'(${_searchResult[index].mutualList?.length})'}"),
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    ?.copyWith(color: AppColor.secondaryColor, fontWeight: FontWeight.w400),
-                              )
+                                  (_searchResult[index].mutualList?.length == 1
+                                      ? ""
+                                      : " ${'(${_searchResult[index].mutualList?.length})'}"),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: AppColor.secondaryColor,
+                                      fontSize: 13.sp,
+                                      fontFamily: kSfproRoundedFontFamily,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w400)),
                             ],
                           ),
                         ],
@@ -357,7 +373,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                   Visibility(
                     visible: (_searchResult[index].status == 'accepted'),
                     child: Container(
-                      height: 30,
+                      height: 30.h,
+                      width: 90.w,
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         style: ButtonStyle(
@@ -370,11 +387,14 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         child: Container(
                           constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 84.0),
                           alignment: Alignment.center,
-                          child: Text(
-                            "Accepted",
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
-                          ),
+                          child: Text("Accepted",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: AppColor.whiteColor,
+                                  fontSize: 18.sp,
+                                  fontFamily: kSfproRoundedFontFamily,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w500)),
                         ),
                       ),
                     ),
@@ -382,7 +402,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                   Visibility(
                     visible: (_searchResult[index].status == 'requested'),
                     child: Container(
-                      height: 30,
+                      height: 30.h,
+                      width: 90.w,
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         style: ButtonStyle(
@@ -395,11 +416,14 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         child: Container(
                           constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 100.0),
                           alignment: Alignment.center,
-                          child: Text(
-                            "Requested",
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
-                          ),
+                          child: Text("Requested",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: AppColor.whiteColor,
+                                  fontSize: 18.sp,
+                                  fontFamily: kSfproRoundedFontFamily,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w500)),
                         ),
                       ),
                     ),
@@ -407,7 +431,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                   Visibility(
                     visible: (_searchResult[index].status == null),
                     child: Container(
-                      height: 30,
+                      height: 30.h,
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         style: ButtonStyle(
@@ -426,25 +450,35 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           }
                         },
                         child: Container(
-                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 70.0),
+                          constraints: BoxConstraints(minHeight: 30.0.h, maxWidth: 90.0.w),
                           alignment: Alignment.center,
-                          child: Text(
-                            "Connect",
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.button?.apply(color: AppColor.accentColor),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppColor.accentColor,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
+                          child: Text("Connect",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: AppColor.accentColor,
+                                  fontSize: 18.sp,
+                                  fontFamily: kSfproRoundedFontFamily,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w500)),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16.w),
                 ],
               ),
             ),
             Visibility(
               visible: _searchResult[index].visible!,
               child: Container(
-                margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
                 decoration: BoxDecoration(
                   color: AppColor.whiteColor,
                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
@@ -502,7 +536,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                       )
                                     ],
                                   ),
-                                  const SizedBox(width: 14),
+                                  SizedBox(width: 14.w),
                                   Expanded(
                                     child: Container(
                                       padding: const EdgeInsets.only(right: 8.0),
@@ -517,7 +551,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                                 .headline3
                                                 ?.copyWith(fontWeight: FontWeight.w400),
                                           ),
-                                          const SizedBox(height: 2),
+                                          SizedBox(height: 2.h),
                                           Text(
                                             _searchResult[index].mutualList![mutindex] == null
                                                 ? ""
@@ -704,11 +738,13 @@ class _ConetWebPageState extends State<ConetWebPage> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: AppColor.primaryColor,
+          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
+          automaticallyImplyLeading: false,
           elevation: 0.0,
-          title: const KonetLogo(
-            logoHeight: 24,
-            fontSize: 19,
-            textPadding: 9,
+          title: KonetLogo(
+            logoHeight: 24.h,
+            fontSize: 19.sp,
+            textPadding: 9.w,
             spacing: 9,
           ),
           actions: [
@@ -746,15 +782,15 @@ class _ConetWebPageState extends State<ConetWebPage> {
           physics: const ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
           child: Column(
             children: [
-              Container(color: AppColor.primaryColor, height: 20),
+              Container(color: AppColor.primaryColor, height: 20.h),
               Container(
-                padding: const EdgeInsets.only(left: 16, right: 16),
+                padding: EdgeInsets.only(left: 16.w, right: 16.w),
                 color: AppColor.primaryColor,
                 child: Row(
                   children: <Widget>[
                     Flexible(
                       child: SizedBox(
-                        height: 36,
+                        height: 36.h,
                         child: GestureDetector(
                           onTap: () async {
                             print("success");
@@ -787,7 +823,13 @@ class _ConetWebPageState extends State<ConetWebPage> {
                             textAlign: TextAlign.left,
                             // enabled: false,
                             enabled: _searchEnabled,
-                            style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w400),
+                            style: TextStyle(
+                              fontFamily: kSfproDisplayFontFamily,
+                              color: AppColor.placeholder,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 18.sp,
+                            ),
                             textInputAction: TextInputAction.search,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(vertical: -5),
@@ -795,7 +837,13 @@ class _ConetWebPageState extends State<ConetWebPage> {
                               fillColor: Colors.white,
                               filled: true,
                               isDense: true,
-                              hintStyle: Theme.of(context).textTheme.headline3?.apply(color: AppColor.gray30Color),
+                              hintStyle: TextStyle(
+                                fontFamily: kSfproDisplayFontFamily,
+                                color: AppColor.gray30Color,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 18.sp,
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                                 borderSide: BorderSide.none,
@@ -807,19 +855,19 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                   }
                                 },
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 11, right: 11),
+                                  padding: EdgeInsets.only(left: 11.w, right: 11.w),
                                   child: Icon(
                                     _showCancelIcon ? Icons.close : Icons.search,
                                     color: AppColor.gray30Color,
-                                    size: 18,
+                                    size: 20.w,
                                   ),
                                 ),
                               ),
                               suffixIcon: IconButton(
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.qr_code,
                                   color: AppColor.gray30Color,
-                                  size: 18,
+                                  size: 20.w,
                                 ),
                                 onPressed: () {
                                   _checkQRPermission();
@@ -830,10 +878,10 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: 8.w),
                     Container(
-                      width: 32,
-                      height: 32,
+                      width: 36.w,
+                      height: 36.w,
                       alignment: Alignment.center,
                       child: FloatingActionButton(
                         heroTag: null,
@@ -844,9 +892,9 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           ),
                         ),
                         backgroundColor: AppColor.secondaryColor,
-                        child: const Icon(
+                        child: Icon(
                           Icons.add,
-                          size: 18,
+                          size: 18.h,
                           color: AppColor.whiteColor,
                         ),
                         onPressed: () {
@@ -859,10 +907,10 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         },
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: 8.w),
                     Container(
-                      width: 32,
-                      height: 32,
+                      width: 36.w,
+                      height: 36.w,
                       alignment: Alignment.center,
                       child: FloatingActionButton(
                         heroTag: null,
@@ -875,7 +923,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         backgroundColor: AppColor.accentColor,
                         child: SvgPicture.asset(
                           "assets/icons/ic_businesscard.svg",
-                          height: 18,
+                          height: 18.h,
                         ),
                         onPressed: () {
                           print("Cliked");
@@ -893,7 +941,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                   ],
                 ),
               ),
-              Container(color: AppColor.primaryColor, height: 20),
+              Container(color: AppColor.primaryColor, height: 20.h),
               _searchvisible! ? searchConetwebList() : conetWebSearchDefault(),
             ],
           ),

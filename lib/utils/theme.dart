@@ -21,6 +21,9 @@ class AppColor {
   static const dividerItemColor = Color(0xFFD7D7D7);
   static const removeIconColor = Color(0xFFDE5753);
   static const SettingprofileIconColor = Color(0xFF0087FB);
+  static const KonetwebsearchTextColor = Color(0xFF878B95);
+  static const Alertheadingcolor = Color(0xFF3F3D56);
+  static const Alertsubtitlecolor = Color(0xFF878B95);
 }
 
 class StatusBarTheme {

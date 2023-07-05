@@ -623,7 +623,7 @@ class _ContactsPageState extends State<ContactsPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AddContact(),
+                            builder: (context) => const AddContact(),
                           ),
                         ).then((value) {
                           if (value != null && value == true) {

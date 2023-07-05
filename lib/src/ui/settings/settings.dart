@@ -288,7 +288,9 @@ class _SettingsState extends State<Settings> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ConetWebPage(),
+                        builder: (context) => ConetWebPage(
+                          contactsData: null,
+                        ),
                       ),
                     );
                   },

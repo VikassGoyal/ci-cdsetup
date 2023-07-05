@@ -18,12 +18,13 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/custom_fonts.dart';
 import 'utils.dart';
 
 class ConetWebPage extends StatefulWidget {
-  // var contactsData;
+  //var contactsData;
 
-  const ConetWebPage({super.key, required contactsData});
+  const ConetWebPage({super.key});
 
   @override
   State<ConetWebPage> createState() => _ConetWebPageState();
@@ -156,15 +157,15 @@ class _ConetWebPageState extends State<ConetWebPage> {
     Widget contactListItem(int index) {
       print(_contacts[index].name);
       return Container(
-        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
         child: Row(
           children: [
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
             Stack(
               children: [
                 SizedBox(
-                  width: 40,
-                  height: 40,
+                  width: 40.w,
+                  height: 40.w,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100.0),
                     child: FadeInImage.assetNetwork(
@@ -188,7 +189,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     child: _contacts[index].contactMetaType == "professional"
                         ? SvgPicture.asset(
                             "assets/icons/ic_blue_tick.svg",
-                            height: 15,
+                            height: 15.h,
                           )
                         : SvgPicture.asset(
                             "assets/icons/ic_green_tick.svg",
@@ -205,23 +206,23 @@ class _ConetWebPageState extends State<ConetWebPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "${_contacts[index].name}",
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline3
-                          ?.copyWith(color: AppColor.blackColor, fontWeight: FontWeight.w400),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      "${_contacts[index].name}",
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
-                    )
+                    Text("${_contacts[index].name}",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: AppColor.blackColor,
+                            fontSize: 13.sp,
+                            fontFamily: kSfproRoundedFontFamily,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400)),
+                    SizedBox(height: 2.w),
+                    Text("${_contacts[index].name}",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: AppColor.gray30Color,
+                            fontSize: 13.sp,
+                            fontFamily: kSfproRoundedFontFamily,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400)),
                   ],
                 ),
               ),

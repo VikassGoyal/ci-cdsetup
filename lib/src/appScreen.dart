@@ -41,7 +41,8 @@ class AppScreen extends StatelessWidget {
             return KeypadPage(contactsData: state.contactObject);
           }
           if (state is CoNetWebPageLoaded) {
-            return ConetWebPage(contactsData: state.conetContactObject);
+            //return ConetWebPage(contactsData: state.conetContactObject);
+            return const ConetWebPage();
           }
           if (state is SettingsPageLoaded) {
             return Settings(totalcount: state.totalcountData);

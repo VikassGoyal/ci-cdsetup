@@ -8,6 +8,7 @@ import 'package:conet/blocs/recent_calls/recent_calls_state.dart';
 import 'package:conet/models/recentCalls.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/businesscard.dart';
+import 'package:conet/src/ui/calendar.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/src/ui/contact/callHistoryProfile.dart';
 import 'package:conet/src/ui/newInConet.dart';
@@ -38,6 +39,7 @@ class _RecentPageState extends State<RecentPage> {
   List<RecentCalls> _searchResult = [];
   List<RecentCalls> _callHistory = [];
   TextEditingController? _outputController;
+  bool toogler = false;
   bool _loader = false;
   bool _showCancelIcon = false;
   // final TextEditingController _textEditingController = TextEditingController();
@@ -49,6 +51,7 @@ class _RecentPageState extends State<RecentPage> {
   @override
   void initState() {
     super.initState();
+    toogler = false;
     _textEditingController = TextEditingController();
     try {
       recentCallsBloc = BlocProvider.of<RecentCallsBloc>(context);
@@ -298,189 +301,201 @@ class _RecentPageState extends State<RecentPage> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: AppColor.whiteColor,
-      appBar: AppBar(
-        backgroundColor: AppColor.primaryColor,
-        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
-        leadingWidth: 80.w,
-        title: KonetLogo(
-          logoHeight: 24.h,
-          fontSize: 19.sp,
-          textPadding: 9,
-          spacing: 9,
-        ),
-        elevation: 0.0,
-        actions: [
-          IconButton(
-            icon: SvgPicture.asset(
-              "assets/icons/ic_conet_join.svg",
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NewConetUsers(),
-                ),
-              );
-            },
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: AppColor.whiteColor,
+        appBar: AppBar(
+          backgroundColor: AppColor.primaryColor,
+          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
+          leadingWidth: 80.w,
+          title: KonetLogo(
+            logoHeight: 24.h,
+            fontSize: 19.sp,
+            textPadding: 9,
+            spacing: 9,
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              color: AppColor.whiteColor,
+          elevation: 0.0,
+          actions: [
+            IconButton(
+              icon: SvgPicture.asset(
+                "assets/images/Calendar_Icon.svg",
+              ),
+              onPressed: () {
+                setState(() {
+                  toogler = true;
+                });
+              },
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NotificationScreen(),
-                ),
-              );
-            },
-          )
-        ],
-      ),
-      body: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-            color: AppColor.primaryColor,
-            child: Row(
-              children: <Widget>[
-                Flexible(
-                  child: Container(
-                    height: 36.h,
-                    child: TextField(
-                      controller: _textEditingController,
-                      onChanged: (value) {
-                        setState(() {
-                          value.length > 1 ? _showCancelIcon = true : _showCancelIcon = false;
-                        });
-                        filterSearchResults(value);
-                      },
-                      maxLines: 1,
-                      minLines: 1,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: kSfproDisplayFontFamily,
-                        color: AppColor.placeholder,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 18.sp,
-                      ),
-                      textInputAction: TextInputAction.search,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(vertical: -5),
-                        isDense: true,
-                        hintText: "Search",
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintStyle: TextStyle(
+            IconButton(
+              icon: SvgPicture.asset(
+                "assets/icons/ic_conet_join.svg",
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NewConetUsers(),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.notifications,
+                color: AppColor.whiteColor,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NotificationScreen(),
+                  ),
+                );
+              },
+            )
+          ],
+        ),
+        body: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+              color: AppColor.primaryColor,
+              child: Row(
+                children: <Widget>[
+                  Flexible(
+                    child: Container(
+                      height: 36.h,
+                      child: TextField(
+                        controller: _textEditingController,
+                        onChanged: (value) {
+                          setState(() {
+                            value.length > 1 ? _showCancelIcon = true : _showCancelIcon = false;
+                          });
+                          filterSearchResults(value);
+                        },
+                        maxLines: 1,
+                        minLines: 1,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
                           fontFamily: kSfproDisplayFontFamily,
-                          color: AppColor.gray30Color,
+                          color: AppColor.placeholder,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 18.sp,
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide.none,
-                        ),
-                        prefixIconConstraints: BoxConstraints(maxHeight: 20.h),
-                        prefixIcon: InkWell(
-                          onTap: () {
-                            if (_showCancelIcon == true) {
-                              _clearText();
-                            }
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 11.w, right: 11.w),
-                            child: Icon(
-                              _showCancelIcon ? Icons.close : Icons.search,
-                              color: AppColor.gray30Color.withOpacity(0.5),
-                              size: 20.w,
+                        textInputAction: TextInputAction.search,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(vertical: -5),
+                          isDense: true,
+                          hintText: "Search",
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintStyle: TextStyle(
+                            fontFamily: kSfproDisplayFontFamily,
+                            color: AppColor.gray30Color,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 18.sp,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          prefixIconConstraints: BoxConstraints(maxHeight: 20.h),
+                          prefixIcon: InkWell(
+                            onTap: () {
+                              if (_showCancelIcon == true) {
+                                _clearText();
+                              }
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 11.w, right: 11.w),
+                              child: Icon(
+                                _showCancelIcon ? Icons.close : Icons.search,
+                                color: AppColor.gray30Color.withOpacity(0.5),
+                                size: 20.w,
+                              ),
                             ),
                           ),
-                        ),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.qr_code,
-                            color: AppColor.gray30Color,
-                            size: 20.w,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              Icons.qr_code,
+                              color: AppColor.gray30Color,
+                              size: 20.w,
+                            ),
+                            onPressed: () {
+                              _checkQRPermission();
+                            },
                           ),
-                          onPressed: () {
-                            _checkQRPermission();
-                          },
                         ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(width: 8.w),
-                Container(
-                  width: 36.w,
-                  height: 36.w,
-                  alignment: Alignment.center,
-                  child: FloatingActionButton(
-                    heroTag: null,
-                    elevation: 0,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10.0),
-                      ),
-                    ),
-                    backgroundColor: AppColor.secondaryColor,
-                    child: Icon(
-                      Icons.add,
-                      size: 18.h,
-                      color: AppColor.whiteColor,
-                    ),
-                    onPressed: () {
-                      print("Cliked");
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddContact(),
+                  SizedBox(width: 8.w),
+                  Container(
+                    width: 36.w,
+                    height: 36.w,
+                    alignment: Alignment.center,
+                    child: FloatingActionButton(
+                      heroTag: null,
+                      elevation: 0,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
                         ),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(width: 8.h),
-                Container(
-                  width: 36.w,
-                  height: 36.w,
-                  alignment: Alignment.center,
-                  child: FloatingActionButton(
-                    heroTag: null,
-                    elevation: 0,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10.0),
                       ),
+                      backgroundColor: AppColor.secondaryColor,
+                      child: Icon(
+                        Icons.add,
+                        size: 18.h,
+                        color: AppColor.whiteColor,
+                      ),
+                      onPressed: () {
+                        print("Cliked");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddContact(),
+                          ),
+                        );
+                      },
                     ),
-                    backgroundColor: AppColor.accentColor,
-                    child: SvgPicture.asset(
-                      "assets/icons/ic_businesscard.svg",
-                      height: 18.h,
-                    ),
-                    onPressed: () {
-                      print("Cliked");
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) {
-                          return BussinessCard();
-                        }),
-                      );
-                    },
                   ),
-                )
-              ],
+                  SizedBox(width: 8.h),
+                  Container(
+                    width: 36.w,
+                    height: 36.w,
+                    alignment: Alignment.center,
+                    child: FloatingActionButton(
+                      heroTag: null,
+                      elevation: 0,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                      ),
+                      backgroundColor: AppColor.accentColor,
+                      child: SvgPicture.asset(
+                        "assets/icons/ic_businesscard.svg",
+                        height: 18.h,
+                      ),
+                      onPressed: () {
+                        print("Cliked");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) {
+                            return BussinessCard();
+                          }),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          contactsList()
-        ],
+            toogler ? Calendar() : contactsList()
+          ],
+        ),
       ),
     );
   }

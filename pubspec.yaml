@@ -80,6 +80,7 @@ dependencies:
   firebase_messaging: ^14.6.1
   path: ^1.8.3
   flutter_screenutil: ^5.8.4
+  syncfusion_flutter_datepicker: ^22.1.37
 
 dependency_overrides:
   http: ^1.0.0

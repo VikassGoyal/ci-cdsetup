@@ -20,12 +20,12 @@ import 'package:another_carousel_pro/another_carousel_pro.dart';
 import '../utils.dart';
 
 class MyProfile extends StatefulWidget {
-  String? phoneNumber;
+  final String? phoneNumber;
 
-  MyProfile(this.phoneNumber, {Key? key}) : super(key: key);
+  const MyProfile(this.phoneNumber, {Key? key}) : super(key: key);
 
   @override
-  _MyProfileState createState() => _MyProfileState();
+  State<MyProfile> createState() => _MyProfileState();
 }
 
 class _MyProfileState extends State<MyProfile> {
@@ -275,6 +275,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildMobileNumber() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: " Phone Number",
         padding: 16.0.w,
         margin: 22.0.w,
@@ -289,6 +290,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildSecondaryPhoneNumber() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Secondary Phone Number",
         padding: 16.0,
         margin: 22.0,
@@ -304,6 +306,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildEmailId() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Email",
         padding: 16.0,
         margin: 22.0,
@@ -318,6 +321,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildDob() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "DOB",
         padding: 16.0,
         margin: 22.0,
@@ -331,6 +335,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildAddress() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Address",
         padding: 16.0,
         margin: 22.0,
@@ -345,6 +350,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildCountry() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Country",
         padding: 16.0,
         margin: 22.0,
@@ -359,6 +365,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildState() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "State",
         padding: 16.0,
         readonly: true,
@@ -373,6 +380,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildCity() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "City",
         padding: 16.0,
         margin: 22.0,
@@ -387,6 +395,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildPincode() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Pincode",
         padding: 16.0,
         readonly: true,
@@ -439,6 +448,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildLandLine() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Landline Number",
         padding: 16.0,
         margin: 22.0,
@@ -487,6 +497,7 @@ class _MyProfileState extends State<MyProfile> {
     //Professional
     Widget _buildOccupation() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Occupation",
         padding: 16.0,
         margin: 22.0,
@@ -501,6 +512,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildCompany() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Company",
         padding: 16.0,
         margin: 22.0,
@@ -515,6 +527,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildCompanyWebsite() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Company Website",
         padding: 16.0,
         margin: 22.0,
@@ -529,6 +542,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildProfessionalSchool() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "School / University",
         padding: 16.0,
         margin: 22.0,
@@ -543,6 +557,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildGrade() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Grade",
         padding: 16.0,
         margin: 22.0,
@@ -556,6 +571,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildworknature() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Work Nature",
         padding: 16.0,
         margin: 22.0,
@@ -569,6 +585,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildDesignation() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Designation",
         padding: 16.0,
         margin: 22.0,
@@ -582,6 +599,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildworkFacebook() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Facebook",
         padding: 16.0,
         margin: 22.0,
@@ -595,6 +613,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildworkInstagram() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Instagram",
         padding: 16.0,
         margin: 22.0,
@@ -608,6 +627,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildworkTwitter() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Twitter",
         padding: 16.0,
         margin: 22.0,
@@ -621,6 +641,7 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildworkSkype() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Skype",
         padding: 16.0,
         margin: 22.0,

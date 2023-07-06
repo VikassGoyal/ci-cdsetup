@@ -25,6 +25,7 @@ class TextFormFieldContact extends StatefulWidget {
   final RegExp? regexexp;
   final Function(dynamic)? onChanged;
   final String? Function(String?)? validator;
+  final Color textColor;
 
   const TextFormFieldContact(
       {super.key,
@@ -46,6 +47,7 @@ class TextFormFieldContact extends StatefulWidget {
       this.onFieldTap,
       this.prefixIcon,
       this.maxLength = 1000,
+      this.textColor = AppColor.secondaryColor,
       this.regexexp,
       this.validator});
 
@@ -79,7 +81,7 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
                 fontSize: 15.sp,
                 fontFamily: kSfproRoundedFontFamily,
                 fontWeight: FontWeight.w300,
-                color: AppColor.secondaryColor),
+                color: widget.textColor),
             maxLength: widget.maxLength,
             inputFormatters: [
               FilteringTextInputFormatter.allow(widget.regexexp == null ? RegExp('.*') : widget.regexexp!),

@@ -1195,7 +1195,7 @@ class _MyProfileState extends State<MyProfile> {
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
         systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
-        leadingWidth: 100.w,
+        leadingWidth: 80.w,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {

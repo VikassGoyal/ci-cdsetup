@@ -19,10 +19,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
+import '../../utils/custom_fonts.dart';
 import 'notification.dart';
 
 class RecentPage extends StatefulWidget {
@@ -79,15 +81,15 @@ class _RecentPageState extends State<RecentPage> {
   Widget build(BuildContext context) {
     Widget contactListItem(int index) {
       return Container(
-        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
         child: Row(
           children: [
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
             Stack(
               children: [
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: 38.w,
+                  height: 38.w,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
@@ -100,7 +102,7 @@ class _RecentPageState extends State<RecentPage> {
                 ),
               ],
             ),
-            const SizedBox(width: 14),
+            SizedBox(width: 14.w),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(right: 8.0),
@@ -108,13 +110,16 @@ class _RecentPageState extends State<RecentPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      (_callHistory[index].name == "" || _callHistory[index].name == "null")
-                          ? "Unknown"
-                          : _callHistory[index].name!,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w400),
-                    ),
-                    const SizedBox(height: 2),
+                        (_callHistory[index].name == "" || _callHistory[index].name == "null")
+                            ? "Unknown"
+                            : _callHistory[index].name!,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 18.sp,
+                            fontFamily: kSfproDisplayFontFamily,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400)),
+                    SizedBox(height: 2.h),
                     Row(
                       children: [
                         _callHistory[index].callType.toString() != "CallType.missed" &&
@@ -122,24 +127,24 @@ class _RecentPageState extends State<RecentPage> {
                             ? _callHistory[index].callType.toString() == "CallType.incoming"
                                 ? Image.asset(
                                     "assets/icons/ic_incoming_call.png",
-                                    width: 10,
+                                    width: 10.w,
                                   )
                                 : Image.asset(
                                     "assets/icons/ic_outcoming_call.png",
-                                    width: 10,
+                                    width: 10.w,
                                   )
                             : Image.asset(
                                 "assets/icons/ic_missed_call.png",
-                                width: 14,
+                                width: 14.w,
                               ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8.w),
                         Text(
                           _callHistory[index].number ?? "",
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
+                          style: TextStyle(
+                            color: AppColor.gray30Color,
+                            fontWeight: FontWeight.w400,
+                          ),
                         )
                       ],
                     )
@@ -147,7 +152,7 @@ class _RecentPageState extends State<RecentPage> {
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10.w),
             Text(
               timeFormat(_callHistory[index].timestamp),
               overflow: TextOverflow.ellipsis,
@@ -263,9 +268,9 @@ class _RecentPageState extends State<RecentPage> {
                           }
                           return Center(
                             child: Container(
-                              margin: const EdgeInsets.only(top: 5, bottom: 5),
-                              height: 30,
-                              width: 30,
+                              margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                              height: 30.h,
+                              width: 30.h,
                               child: const CircularProgressIndicator(
                                 color: AppColor.primaryColor,
                                 backgroundColor: AppColor.whiteColor,
@@ -297,13 +302,15 @@ class _RecentPageState extends State<RecentPage> {
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
-        elevation: 0.0,
-        title: const KonetLogo(
-          logoHeight: 24,
-          fontSize: 19,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
+        leadingWidth: 80.w,
+        title: KonetLogo(
+          logoHeight: 24.h,
+          fontSize: 19.sp,
           textPadding: 9,
           spacing: 9,
         ),
+        elevation: 0.0,
         actions: [
           IconButton(
             icon: SvgPicture.asset(
@@ -336,15 +343,14 @@ class _RecentPageState extends State<RecentPage> {
       ),
       body: Column(
         children: [
-          Container(color: AppColor.primaryColor, height: 20),
           Container(
-            padding: const EdgeInsets.only(left: 16, right: 16),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
             color: AppColor.primaryColor,
             child: Row(
               children: <Widget>[
                 Flexible(
-                  child: SizedBox(
-                    height: 36,
+                  child: Container(
+                    height: 36.h,
                     child: TextField(
                       controller: _textEditingController,
                       onChanged: (value) {
@@ -356,7 +362,13 @@ class _RecentPageState extends State<RecentPage> {
                       maxLines: 1,
                       minLines: 1,
                       textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.headline3,
+                      style: TextStyle(
+                        fontFamily: kSfproDisplayFontFamily,
+                        color: AppColor.placeholder,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        fontSize: 18.sp,
+                      ),
                       textInputAction: TextInputAction.search,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(vertical: -5),
@@ -364,12 +376,18 @@ class _RecentPageState extends State<RecentPage> {
                         hintText: "Search",
                         fillColor: Colors.white,
                         filled: true,
-                        hintStyle: Theme.of(context).textTheme.headline3?.apply(color: AppColor.gray30Color),
+                        hintStyle: TextStyle(
+                          fontFamily: kSfproDisplayFontFamily,
+                          color: AppColor.gray30Color,
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 18.sp,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
                           borderSide: BorderSide.none,
                         ),
-                        prefixIconConstraints: const BoxConstraints(maxHeight: 20),
+                        prefixIconConstraints: BoxConstraints(maxHeight: 20.h),
                         prefixIcon: InkWell(
                           onTap: () {
                             if (_showCancelIcon == true) {
@@ -377,19 +395,19 @@ class _RecentPageState extends State<RecentPage> {
                             }
                           },
                           child: Padding(
-                            padding: EdgeInsets.only(left: 11, right: 11),
+                            padding: EdgeInsets.only(left: 11.w, right: 11.w),
                             child: Icon(
                               _showCancelIcon ? Icons.close : Icons.search,
-                              color: AppColor.gray30Color,
-                              size: 18,
+                              color: AppColor.gray30Color.withOpacity(0.5),
+                              size: 20.w,
                             ),
                           ),
                         ),
                         suffixIcon: IconButton(
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.qr_code,
                             color: AppColor.gray30Color,
-                            size: 18,
+                            size: 20.w,
                           ),
                           onPressed: () {
                             _checkQRPermission();
@@ -399,10 +417,10 @@ class _RecentPageState extends State<RecentPage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 8.w),
                 Container(
-                  width: 32,
-                  height: 32,
+                  width: 36.w,
+                  height: 36.w,
                   alignment: Alignment.center,
                   child: FloatingActionButton(
                     heroTag: null,
@@ -413,9 +431,9 @@ class _RecentPageState extends State<RecentPage> {
                       ),
                     ),
                     backgroundColor: AppColor.secondaryColor,
-                    child: const Icon(
+                    child: Icon(
                       Icons.add,
-                      size: 18,
+                      size: 18.h,
                       color: AppColor.whiteColor,
                     ),
                     onPressed: () {
@@ -429,10 +447,10 @@ class _RecentPageState extends State<RecentPage> {
                     },
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 8.h),
                 Container(
-                  width: 32,
-                  height: 32,
+                  width: 36.w,
+                  height: 36.w,
                   alignment: Alignment.center,
                   child: FloatingActionButton(
                     heroTag: null,
@@ -445,7 +463,7 @@ class _RecentPageState extends State<RecentPage> {
                     backgroundColor: AppColor.accentColor,
                     child: SvgPicture.asset(
                       "assets/icons/ic_businesscard.svg",
-                      height: 18,
+                      height: 18.h,
                     ),
                     onPressed: () {
                       print("Cliked");
@@ -461,7 +479,6 @@ class _RecentPageState extends State<RecentPage> {
               ],
             ),
           ),
-          Container(color: AppColor.primaryColor, height: 20),
           contactsList()
         ],
       ),

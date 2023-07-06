@@ -10,8 +10,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NewConetUsers extends StatefulWidget {
+  const NewConetUsers({super.key});
+
   @override
-  _NewConetUsersState createState() => _NewConetUsersState();
+  State<NewConetUsers> createState() => _NewConetUsersState();
 }
 
 class _NewConetUsersState extends State<NewConetUsers> {
@@ -76,7 +78,7 @@ class _NewConetUsersState extends State<NewConetUsers> {
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation(AppColor.primaryColor),
                   ),
@@ -84,115 +86,109 @@ class _NewConetUsersState extends State<NewConetUsers> {
               ),
             )
           : _contacts.isNotEmpty
-              ? Container(
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: _contacts.length,
-                    primary: false,
-                    scrollDirection: Axis.vertical,
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        height: 1,
-                        color: Colors.grey.shade200,
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        splashColor: Theme.of(context).primaryColorLight,
-                        onTap: () {
-                          if (_contacts[index].userId != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NonConetContactProfile(
-                                  _contacts[index].name,
-                                  _contacts[index].phone,
-                                  _contacts[index].email,
-                                ),
+              ? ListView.separated(
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  itemCount: _contacts.length,
+                  primary: false,
+                  scrollDirection: Axis.vertical,
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      height: 1,
+                      color: Colors.grey.shade200,
+                    );
+                  },
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      splashColor: Theme.of(context).primaryColorLight,
+                      onTap: () {
+                        if (_contacts[index].userId != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NonConetContactProfile(
+                                _contacts[index].name,
+                                _contacts[index].phone,
+                                _contacts[index].email,
                               ),
-                            );
-                          } else {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ContactProfile(
-                                  _contacts[index].phone,
-                                  _contacts[index].contactMetaId,
-                                  _contacts[index].contactMetaType,
-                                  _contacts[index].fromContactMetaType,
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        child: ListTile(
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                getDateFormat(_contacts[index].contactMetaType),
-                                overflow: TextOverflow.ellipsis,
-                                // style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                                //       color: AppColor.gray30Color,
-                                //       fontWeight: FontWeight.w400,
-                                // ),
-                                style: TextStyle(
-                                  fontFamily: kSfproRoundedFontFamily,
-                                  color: AppColor.grey2.withOpacity(0.60),
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FontStyle.normal,
-                                  letterSpacing: 0.16,
-                                ),
-                              ),
-                              Text(
-                                _contacts[index].name ?? "",
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontFamily: kSfproDisplayFontFamily,
-                                  color: AppColor.blackColor,
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w600,
-                                  fontStyle: FontStyle.normal,
-                                  letterSpacing: -0.24,
-                                ),
-                              )
-                            ],
-                          ),
-                          subtitle: Text(
-                            "${_contacts[index].name ?? ""} joined KoNet!",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: kSfproDisplayFontFamily,
-                              color: AppColor.secondaryColor,
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w400,
-                              fontStyle: FontStyle.normal,
-                              letterSpacing: -0.08,
                             ),
+                          );
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ContactProfile(
+                                _contacts[index].phone,
+                                _contacts[index].contactMetaId,
+                                _contacts[index].contactMetaType,
+                                _contacts[index].fromContactMetaType,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      child: ListTile(
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              getDateFormat(_contacts[index].contactMetaType),
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: kSfproRoundedFontFamily,
+                                color: AppColor.grey2.withOpacity(0.60),
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.normal,
+                                letterSpacing: 0.16,
+                              ),
+                            ),
+                            Text(
+                              _contacts[index].name ?? "",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: kSfproDisplayFontFamily,
+                                color: AppColor.blackColor,
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.normal,
+                                letterSpacing: -0.24,
+                              ),
+                            )
+                          ],
+                        ),
+                        subtitle: Text(
+                          "${_contacts[index].name ?? ""} joined KoNet!",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: kSfproDisplayFontFamily,
+                            color: AppColor.secondaryColor,
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            letterSpacing: -0.08,
                           ),
-                          leading: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Container(
-                              width: 46.w,
-                              height: 46.w,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                    'assets/images/profile_placeholder.png',
-                                  ),
+                        ),
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Container(
+                            width: 46.w,
+                            height: 46.w,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage(
+                                  'assets/images/profile_placeholder.png',
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 )
               : Center(
                   child: Column(

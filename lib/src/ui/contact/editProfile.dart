@@ -157,8 +157,10 @@ class _EditProfileState extends State<EditProfile> {
     Widget selectButton() {
       return Row(
         children: [
-          SizedBox(width: 22),
-          Expanded(
+          SizedBox(width: 22.w),
+          Container(
+            height: 37.h,
+            width: 158.w,
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
@@ -166,7 +168,7 @@ class _EditProfileState extends State<EditProfile> {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     side: BorderSide(
-                      color: AppColor.accentColor,
+                      color: professionalTab ? AppColor.accentColor : AppColor.secondaryColor,
                       width: 1,
                     ),
                     borderRadius: BorderRadius.circular(8),
@@ -180,15 +182,18 @@ class _EditProfileState extends State<EditProfile> {
               },
               child: Text(
                 'Personal',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: professionalTab ? AppColor.whiteColor : AppColor.accentColor),
+                style: TextStyle(
+                    color: professionalTab ? AppColor.whiteColor : AppColor.secondaryColor,
+                    fontSize: 15.sp,
+                    fontFamily: kSfCompactDisplayFontFamily,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),
-          SizedBox(width: 15),
-          Expanded(
+          SizedBox(width: 15.w),
+          Container(
+            height: 37.h,
+            width: 158.w,
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
@@ -213,14 +218,15 @@ class _EditProfileState extends State<EditProfile> {
               },
               child: Text(
                 'Professional',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    ?.apply(color: professionalTab ? AppColor.secondaryColor : AppColor.whiteColor),
+                style: TextStyle(
+                    color: professionalTab ? AppColor.secondaryColor : AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontFamily: kSfCompactDisplayFontFamily,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),
-          SizedBox(width: 22),
+          SizedBox(width: 22.w),
         ],
       );
     }
@@ -273,7 +279,7 @@ class _EditProfileState extends State<EditProfile> {
         },
         margin: 22.0,
         enable: true,
-        readonly: true,
+        readonly: false,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
@@ -303,9 +309,10 @@ class _EditProfileState extends State<EditProfile> {
 
     Widget _buildDob() {
       return Container(
-        height: 48,
-        margin: EdgeInsets.only(left: 22.0, right: 22.0),
-        padding: EdgeInsets.only(left: 14.0, right: 14.0),
+        height: 48.h,
+        width: 331.w,
+        margin: EdgeInsets.only(left: 22.0.w, right: 22.0.w),
+        padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
         decoration: BoxDecoration(
           border: Border.all(
             color: Color.fromRGBO(232, 232, 232, 1),
@@ -318,14 +325,25 @@ class _EditProfileState extends State<EditProfile> {
               _valuesChanged = true;
             });
           },
-          style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+          style: TextStyle(
+              fontSize: 15.sp,
+              fontFamily: kSfproRoundedFontFamily,
+              fontWeight: FontWeight.w300,
+              color: AppColor.secondaryColor),
           readOnly: true,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
             labelText: "DOB",
-            labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                  color: Color.fromRGBO(135, 139, 149, 1),
-                ),
+            hintStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder),
+            labelStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder),
             filled: true,
             fillColor: AppColor.whiteColor,
             errorBorder: OutlineInputBorder(
@@ -353,11 +371,12 @@ class _EditProfileState extends State<EditProfile> {
 
     Widget _buildAddress() {
       return Container(
-        height: 48,
-        padding: EdgeInsets.only(left: 14.0, right: 14.0),
+        height: 48.h,
+        width: 331.w,
+        padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
         margin: EdgeInsets.only(
-          left: 22.0,
-          right: 22.0,
+          left: 22.0.w,
+          right: 22.0.w,
         ),
         decoration: BoxDecoration(
           border: Border.all(
@@ -371,12 +390,25 @@ class _EditProfileState extends State<EditProfile> {
               _valuesChanged = true;
             });
           },
-          style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+          style: TextStyle(
+              fontSize: 15.sp,
+              fontFamily: kSfproRoundedFontFamily,
+              fontWeight: FontWeight.w300,
+              color: AppColor.secondaryColor),
           readOnly: true,
           decoration: InputDecoration(
             labelText: "Address",
-            contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
-            labelStyle: Theme.of(context).textTheme.headline6?.apply(color: Color.fromRGBO(135, 139, 149, 1)),
+            contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
+            hintStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder),
+            labelStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder),
             filled: true,
             fillColor: AppColor.whiteColor,
             errorBorder: OutlineInputBorder(
@@ -488,7 +520,7 @@ class _EditProfileState extends State<EditProfile> {
 
     Widget _buildKeyword() {
       return Container(
-        margin: EdgeInsets.only(left: 22.0, right: 22.0),
+        margin: EdgeInsets.only(left: 22.0.w, right: 22.0.w),
         decoration: BoxDecoration(
           border: Border.all(
             color: Color.fromRGBO(232, 232, 232, 1),
@@ -496,18 +528,26 @@ class _EditProfileState extends State<EditProfile> {
           borderRadius: BorderRadius.circular(7),
         ),
         child: TextFormField(
-          style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+          style: TextStyle(
+              fontSize: 15.sp,
+              fontFamily: kSfproRoundedFontFamily,
+              fontWeight: FontWeight.w300,
+              color: AppColor.secondaryColor),
           decoration: InputDecoration(
             labelText: "Keyword",
             filled: true,
             fillColor: AppColor.whiteColor,
             focusedBorder: InputBorder.none,
-            hintStyle: Theme.of(context).textTheme.bodyText2?.apply(
-                  color: Color(0xFF878B95),
-                ),
-            labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                  color: Color.fromRGBO(135, 139, 149, 1),
-                ),
+            hintStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder),
+            labelStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder),
           ),
           cursorColor: AppColor.secondaryColor,
           validator: (value) {
@@ -559,14 +599,16 @@ class _EditProfileState extends State<EditProfile> {
           },
           child: Container(
             constraints: BoxConstraints(
-              minHeight: 50.0,
+              minHeight: 50.0.h,
             ),
             alignment: Alignment.center,
-            child: Text(
-              "Next",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
-            ),
+            child: Text("Next",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 18.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w500)),
           ),
         ),
       );
@@ -575,7 +617,7 @@ class _EditProfileState extends State<EditProfile> {
     //Professional
     Widget _buildProfessionlUpdateButton() {
       return Container(
-        margin: EdgeInsets.only(left: 22, right: 22),
+        margin: EdgeInsets.only(left: 22.w, right: 22.w),
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -589,14 +631,16 @@ class _EditProfileState extends State<EditProfile> {
           },
           child: Container(
             constraints: BoxConstraints(
-              minHeight: 50.0,
+              minHeight: 50.0.h,
             ),
             alignment: Alignment.center,
-            child: Text(
-              "Update",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
-            ),
+            child: Text("Update",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 18.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w500)),
           ),
         ),
       );
@@ -604,11 +648,12 @@ class _EditProfileState extends State<EditProfile> {
 
     Widget _buildOccupation() {
       return Container(
-        height: 48,
+        height: 48.h,
+        width: 331.w,
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        margin: EdgeInsets.only(left: 22, right: 22),
+        margin: EdgeInsets.only(left: 22.w, right: 22.w),
         child: DropdownButtonFormField(
-          style: TextStyle(color: AppColor.secondaryColor, fontSize: 13),
+          style: TextStyle(color: AppColor.secondaryColor, fontSize: 13.sp),
           icon: Icon(
             Icons.arrow_drop_down,
             color: Color(0xFF878B95),
@@ -959,7 +1004,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 Visibility(
                   visible: _studentSchoolVisible,
-                  child: SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _studentSchoolVisible,
@@ -967,7 +1012,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 Visibility(
                   visible: _studentGradeVisible,
-                  child: SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _studentGradeVisible,
@@ -997,14 +1042,14 @@ class _EditProfileState extends State<EditProfile> {
                 _buildworkTwitter(),
                 SizedBox(height: 16.h),
                 _buildworkSkype(),
-                SizedBox(height: 16.h),
-                _buildKeyword(),
-                SizedBox(height: 16.h),
+                //SizedBox(height: 16.h),
+                //_buildKeyword(),
+                //SizedBox(height: 16.h),
                 SingleChildScrollView(child: buildChips()),
                 Container(
-                  height: 48,
-                  padding: EdgeInsets.only(left: 14.0, right: 14.0),
-                  margin: EdgeInsets.only(top: 20, left: 22.0, right: 22.0),
+                  height: 48.h,
+                  padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
+                  margin: EdgeInsets.only(top: 20.h, left: 22.0.w, right: 22.0.w),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: Color.fromRGBO(232, 232, 232, 1),
@@ -1012,13 +1057,17 @@ class _EditProfileState extends State<EditProfile> {
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: TextFormField(
-                    style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+                    style: TextStyle(
+                        fontSize: 15.sp,
+                        fontFamily: kSfproRoundedFontFamily,
+                        fontWeight: FontWeight.w300,
+                        color: AppColor.secondaryColor),
                     controller: _textEditingController,
                     inputFormatters: [
                       FilteringTextInputFormatter.deny(RegExp(r'\s')),
                     ],
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
+                      contentPadding: EdgeInsets.only(top: 6.0.w, bottom: 3.0.w),
                       labelText: "Keyword",
                       labelStyle: Theme.of(context).textTheme.headline6?.apply(
                             color: Color.fromRGBO(135, 139, 149, 1),
@@ -1032,8 +1081,8 @@ class _EditProfileState extends State<EditProfile> {
                       suffixIcon: IconButton(
                         icon: Image.asset(
                           "assets/icons/rightarrow.png",
-                          height: 34,
-                          width: 34,
+                          height: 34.h,
+                          width: 34.h,
                         ),
                         onPressed: () {
                           if (_textEditingController.text.isEmpty) {
@@ -1075,17 +1124,19 @@ class _EditProfileState extends State<EditProfile> {
                 Visibility(
                   visible: _enterpreneurForms,
                   child: Container(
-                    padding: EdgeInsets.only(left: 25.0, right: 20),
+                    padding: EdgeInsets.only(left: 20.0.w, right: 20.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Add Company Details",
-                          style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.blackColor),
-                        ),
+                        Text("Add Company Details",
+                            style: TextStyle(
+                                fontSize: 15.sp,
+                                fontFamily: kSfproRoundedFontFamily,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w300)),
                         Container(
-                          width: 32,
-                          height: 32,
+                          width: 32.w,
+                          height: 32.h,
                           alignment: Alignment.centerRight,
                           child: FloatingActionButton(
                             heroTag: null,
@@ -1099,7 +1150,7 @@ class _EditProfileState extends State<EditProfile> {
                             onPressed: onAddForm,
                             child: Icon(
                               Icons.add,
-                              size: 18,
+                              size: 18.h,
                               color: AppColor.whiteColor,
                             ),
                           ),
@@ -1122,9 +1173,9 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildProfessionlUpdateButton(),
-                SizedBox(height: 30),
+                SizedBox(height: 30.h),
               ],
       );
     }
@@ -1132,8 +1183,11 @@ class _EditProfileState extends State<EditProfile> {
     Widget bodyContent() {
       return Column(
         children: [
-          SizedBox(height: 80),
+          SizedBox(height: 80.h),
           selectButton(),
+          SizedBox(
+            height: 20.h,
+          ),
           _buildformBody(),
         ],
       );
@@ -1146,7 +1200,7 @@ class _EditProfileState extends State<EditProfile> {
           Column(
             children: <Widget>[
               Container(
-                height: 60.0,
+                height: 56.h,
                 color: AppColor.primaryColor,
               ),
               bodyContent()
@@ -1160,8 +1214,8 @@ class _EditProfileState extends State<EditProfile> {
                 alignment: Alignment.center,
                 children: [
                   Container(
-                    width: 120,
-                    height: 120,
+                    width: 120.w,
+                    height: 120.w,
                     padding: EdgeInsets.all(8),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100.0),
@@ -1180,8 +1234,8 @@ class _EditProfileState extends State<EditProfile> {
                   Positioned(
                     bottom: 0,
                     child: Container(
-                      height: 24,
-                      width: 24,
+                      height: 19.w,
+                      width: 19.w,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppColor.secondaryColor,
@@ -1189,7 +1243,7 @@ class _EditProfileState extends State<EditProfile> {
                       child: Icon(
                         Icons.edit,
                         color: Colors.white,
-                        size: 12,
+                        size: 12.w,
                       ),
                     ),
                   )
@@ -1206,6 +1260,7 @@ class _EditProfileState extends State<EditProfile> {
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
         systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
+        leadingWidth: 80.w,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
@@ -1216,13 +1271,15 @@ class _EditProfileState extends State<EditProfile> {
                     return AlertDialog(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0.w))),
                       backgroundColor: Colors.white,
-                      title: Text(
-                        "Changes not saved",
-                        style: TextStyle(
-                            color: Color(0xff3F3D56),
-                            fontFamily: kSfproDisplayFontFamily,
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500),
+                      title: Center(
+                        child: Text(
+                          "Changes not saved",
+                          style: TextStyle(
+                              color: Color(0xff3F3D56),
+                              fontFamily: kSfproDisplayFontFamily,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500),
+                        ),
                       ),
                       content: Text("Are you sure  want to Exit without Saving ?",
                           style: TextStyle(
@@ -1231,44 +1288,58 @@ class _EditProfileState extends State<EditProfile> {
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w300)),
                       actions: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              child: Text("Yes",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: kSfproRoundedFontFamily,
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w500)),
-                              onPressed: () {
-                                setState(() {
-                                  _valuesChanged = false;
-                                });
-                                Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-                                  )),
-                              child: Text("Cancel",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: kSfproRoundedFontFamily,
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w500)),
-                              onPressed: () {
-                                Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
-                              },
-                            ),
-                          ],
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 8.0.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                constraints: BoxConstraints(minWidth: 110.w, minHeight: 42.h),
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                      )),
+                                  child: Text("Yes",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: kSfproRoundedFontFamily,
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w500)),
+                                  onPressed: () {
+                                    setState(() {
+                                      _valuesChanged = false;
+                                    });
+                                    Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20.w,
+                              ),
+                              Container(
+                                constraints: BoxConstraints(minWidth: 110.w, minHeight: 42.h),
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                      )),
+                                  child: Text("Cancel",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: kSfproRoundedFontFamily,
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w500)),
+                                  onPressed: () {
+                                    Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         )
                       ],
                     );
@@ -1298,10 +1369,13 @@ class _EditProfileState extends State<EditProfile> {
           ),
         ),
         centerTitle: true,
-        title: Text(
-          "Edit Profile",
-          style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.whiteColor),
-        ),
+        title: Text("Edit Profile",
+            style: TextStyle(
+                fontSize: 18.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w500,
+                color: AppColor.whiteColor)),
       ),
       body: _loader
           ? Center(
@@ -1438,7 +1512,7 @@ class _EditProfileState extends State<EditProfile> {
   entreprenerurItemNew(int i) {
     return Padding(
       // padding: EdgeInsets.all(16),
-      padding: EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
+      padding: EdgeInsets.only(left: 25.0.w, right: 20.w, top: 30.h, bottom: 16),
       child: Material(
         color: AppColor.whiteColor,
         clipBehavior: Clip.antiAlias,
@@ -1449,13 +1523,16 @@ class _EditProfileState extends State<EditProfile> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Company Profile ${i + 1}",
-                  style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.bottomUnselectItemColor),
-                ),
+                Text("Company Profile ${i + 1}",
+                    style: TextStyle(
+                        color: AppColor.Companyprofilenumber,
+                        fontSize: 15.sp,
+                        fontFamily: kSfCompactDisplayFontFamily,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w600)),
                 Container(
-                  width: 32,
-                  height: 32,
+                  width: 32.w,
+                  height: 32.w,
                   alignment: Alignment.centerRight,
                   child: FloatingActionButton(
                     heroTag: null,
@@ -1479,9 +1556,10 @@ class _EditProfileState extends State<EditProfile> {
               ],
             ),
             Container(
-              height: 48,
-              padding: EdgeInsets.only(left: 14.0, right: 14.0),
-              margin: EdgeInsets.only(top: 20, left: 10.0, right: 10.0),
+              height: 48.h,
+              width: 331.w,
+              padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
+              margin: EdgeInsets.only(top: 20.h, left: 5.0.w, right: 5.0.w),
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Color.fromRGBO(232, 232, 232, 1),
@@ -1489,13 +1567,24 @@ class _EditProfileState extends State<EditProfile> {
                 borderRadius: BorderRadius.circular(7),
               ),
               child: TextFormField(
-                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w300,
+                    color: AppColor.secondaryColor),
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
+                  contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
                   labelText: "Company",
-                  labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                        color: Color.fromRGBO(135, 139, 149, 1),
-                      ),
+                  hintStyle: TextStyle(
+                      fontSize: 13.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.placeholder),
+                  labelStyle: TextStyle(
+                      fontSize: 13.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.placeholder),
                   filled: true,
                   fillColor: AppColor.whiteColor,
                   errorBorder: OutlineInputBorder(
@@ -1514,11 +1603,12 @@ class _EditProfileState extends State<EditProfile> {
                 },
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 10.h),
             Container(
-              height: 48,
-              padding: EdgeInsets.only(left: 14.0, right: 14.0),
-              margin: EdgeInsets.only(left: 10.0, right: 10.0),
+              height: 48.h,
+              width: 331.w,
+              padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
+              margin: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Color.fromRGBO(232, 232, 232, 1),
@@ -1526,13 +1616,19 @@ class _EditProfileState extends State<EditProfile> {
                 borderRadius: BorderRadius.circular(7),
               ),
               child: TextFormField(
-                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w300,
+                    color: AppColor.secondaryColor),
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: "Website",
-                  labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                        color: Color.fromRGBO(135, 139, 149, 1),
-                      ),
+                  labelStyle: TextStyle(
+                      fontSize: 13.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.placeholder),
                   filled: true,
                   fillColor: AppColor.whiteColor,
                   errorBorder: OutlineInputBorder(
@@ -1551,11 +1647,12 @@ class _EditProfileState extends State<EditProfile> {
                 },
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 10.h),
             Container(
-              height: 48,
-              padding: EdgeInsets.only(left: 14.0, right: 14.0),
-              margin: EdgeInsets.only(left: 10.0, right: 10.0),
+              height: 48.h,
+              width: 331.w,
+              padding: EdgeInsets.only(left: 14.0.w, right: 14.w),
+              margin: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Color.fromRGBO(232, 232, 232, 1),
@@ -1563,13 +1660,19 @@ class _EditProfileState extends State<EditProfile> {
                 borderRadius: BorderRadius.circular(7),
               ),
               child: TextFormField(
-                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w300,
+                    color: AppColor.secondaryColor),
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: 'Work Nature',
-                  labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                        color: Color.fromRGBO(135, 139, 149, 1),
-                      ),
+                  labelStyle: TextStyle(
+                      fontSize: 13.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.placeholder),
                   filled: true,
                   fillColor: AppColor.whiteColor,
                   errorBorder: OutlineInputBorder(
@@ -1588,17 +1691,19 @@ class _EditProfileState extends State<EditProfile> {
                 },
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 10.h),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.only(left: 2),
+                padding: EdgeInsets.only(left: 2.w),
                 child: Text(
                   "Add Images",
                   style: TextStyle(
-                    color: AppColor.secondaryColor,
-                    fontFamily: 'Segoe-Ui',
-                  ),
+                      color: AppColor.secondaryColor,
+                      fontSize: 14.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w300),
                 ),
               ),
             ),
@@ -1612,9 +1717,9 @@ class _EditProfileState extends State<EditProfile> {
                       loadImages(i);
                     },
                     child: Container(
-                      height: 88,
-                      width: 100,
-                      margin: EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                      height: 88.h,
+                      width: 100.w,
+                      margin: EdgeInsets.only(top: 10.h, bottom: 10.h, right: 10.w),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: AppColor.secondaryColor,
@@ -1626,7 +1731,7 @@ class _EditProfileState extends State<EditProfile> {
                       alignment: Alignment.center,
                       child: SvgPicture.asset(
                         "assets/icons/upload_image.svg",
-                        height: 24,
+                        height: 24.h,
                       ),
                     ),
                   ),
@@ -1638,8 +1743,8 @@ class _EditProfileState extends State<EditProfile> {
                       children: [
                         Container(
                           padding: EdgeInsets.all(8),
-                          width: 114,
-                          height: 102,
+                          width: 114.w,
+                          height: 102.h,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
                             child: (entreprenerurList[i].images!.isNotEmpty
@@ -1670,8 +1775,8 @@ class _EditProfileState extends State<EditProfile> {
                                         height: 102,
                                       )
                                     : SizedBox(
-                                        width: 114,
-                                        height: 102,
+                                        width: 114.w,
+                                        height: 102.h,
                                       )),
                           ),
                         ),
@@ -1700,8 +1805,8 @@ class _EditProfileState extends State<EditProfile> {
                       children: [
                         Container(
                           padding: EdgeInsets.all(8),
-                          width: 114,
-                          height: 102,
+                          width: 114.w,
+                          height: 102.h,
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: (entreprenerurList[i].images!.length >= 2
@@ -1728,8 +1833,8 @@ class _EditProfileState extends State<EditProfile> {
                                           height: 102,
                                         )
                                       : SizedBox(
-                                          width: 114,
-                                          height: 102,
+                                          width: 114.w,
+                                          height: 102.h,
                                         ))),
                         ),
                         Positioned(
@@ -1785,8 +1890,8 @@ class _EditProfileState extends State<EditProfile> {
                                           height: 102,
                                         )
                                       : SizedBox(
-                                          width: 114,
-                                          height: 102,
+                                          width: 114.w,
+                                          height: 102.h,
                                         ))),
                         ),
                         Positioned(
@@ -1838,17 +1943,22 @@ class _EditProfileState extends State<EditProfile> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
+              padding: EdgeInsets.only(left: 16.w, right: 16.w),
               child: TextFormField(
-                style: Theme.of(context).textTheme.bodyText2,
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w300,
+                    color: AppColor.secondaryColor),
                 decoration: InputDecoration(
-                  hintText: "Company",
-                  filled: true,
-                  fillColor: Color(0xFFF6F6F6),
-                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(
-                        color: Color(0xFF878B95),
-                      ),
-                ),
+                    hintText: "Company",
+                    filled: true,
+                    fillColor: Color(0xFFF6F6F6),
+                    hintStyle: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: kSfproRoundedFontFamily,
+                        fontWeight: FontWeight.w300,
+                        color: AppColor.placeholder)),
                 cursorColor: AppColor.secondaryColor,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
@@ -1860,16 +1970,24 @@ class _EditProfileState extends State<EditProfile> {
                 },
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 10.h),
             Padding(
               padding: EdgeInsets.only(left: 16, right: 16),
               child: TextFormField(
-                style: Theme.of(context).textTheme.bodyText2,
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w300,
+                    color: AppColor.secondaryColor),
                 decoration: InputDecoration(
                   hintText: "Website",
                   filled: true,
-                  fillColor: Color(0xFFF6F6F6),
-                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: Color(0xFF878B95)),
+                  fillColor: AppColor.whiteColor,
+                  hintStyle: TextStyle(
+                      fontSize: 13.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.placeholder),
                 ),
                 cursorColor: AppColor.secondaryColor,
                 keyboardType: TextInputType.text,
@@ -1886,7 +2004,11 @@ class _EditProfileState extends State<EditProfile> {
             Padding(
               padding: EdgeInsets.only(left: 16, right: 16),
               child: TextFormField(
-                style: Theme.of(context).textTheme.bodyText2,
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w300,
+                    color: AppColor.secondaryColor),
                 decoration: InputDecoration(
                   hintText: 'Work Nature',
                   filled: true,
@@ -1906,7 +2028,7 @@ class _EditProfileState extends State<EditProfile> {
             ),
             SizedBox(height: 8),
             Container(
-              margin: EdgeInsets.only(right: 16),
+              margin: EdgeInsets.only(right: 16.w),
               child: Column(
                 children: [
                   Align(
@@ -1931,7 +2053,8 @@ class _EditProfileState extends State<EditProfile> {
                         "Add pictures",
                         style: TextStyle(
                           color: AppColor.whiteColor,
-                          fontFamily: 'Segoe-Ui',
+                          fontSize: 14.sp,
+                          fontFamily: kSfproRoundedFontFamily,
                         ),
                       ),
                     ),
@@ -1944,15 +2067,15 @@ class _EditProfileState extends State<EditProfile> {
                           : '(Added Image ${entreprenerurList[i].images!.length})',
                       style: TextStyle(
                         color: AppColor.gray30Color,
-                        fontSize: 10,
-                        fontFamily: 'Segoe-Ui',
+                        fontSize: 10.sp,
+                        fontFamily: kSfproDisplayFontFamily,
                       ),
                     ),
                   )
                 ],
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 10.h),
           ],
         ),
       ),

@@ -287,7 +287,7 @@ class _SettingsState extends State<Settings> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ConetWebPage(),
+                        builder: (context) => const ConetWebPage(),
                       ),
                     );
                   },
@@ -320,7 +320,7 @@ class _SettingsState extends State<Settings> {
                           title: Center(
                             child: Text("Logout",
                                 style: TextStyle(
-                                    color: Color(0xff3F3D56),
+                                    color: AppColor.logoutcolor,
                                     fontFamily: kSfproDisplayFontFamily,
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.w500)),
@@ -328,7 +328,7 @@ class _SettingsState extends State<Settings> {
                           content: Text(
                             "Are you sure you want to logout ?",
                             style: TextStyle(
-                                color: Color(0xff878B95),
+                                color: AppColor.logoutheadingcolor,
                                 fontFamily: kSfproRoundedFontFamily,
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w300),
@@ -393,16 +393,11 @@ class _SettingsState extends State<Settings> {
                           fontFamily: kSfproDisplayFontFamily,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
-                  leading: Container(
-                    height: 34.w,
-                    width: 34.w,
-                    child: SvgPicture.asset(
-                      "assets/icons/ic_settings_logout.svg",
-                      height: 24.w,
-                      width: 24.w,
-                    ),
+                  leading: SvgPicture.asset(
+                    "assets/icons/ic_settings_logout.svg",
+                    height: 24.w,
+                    width: 24.w,
                   )),
-              SizedBox(height: 10.h),
               Center(
                 child: Text(
                   "v.$version",
@@ -423,7 +418,9 @@ class _SettingsState extends State<Settings> {
                     fontSize: 15.sp,
                     fontStyle: FontStyle.normal,
                   )),
-              SizedBox(height: 10.h),
+              SizedBox(
+                height: 10.h,
+              ),
               Container(
                 padding: EdgeInsets.only(left: 33.w, right: 33.w),
                 child: Text("With your $totalContact contacts, you have $totalConnection connections",
@@ -436,7 +433,6 @@ class _SettingsState extends State<Settings> {
                       fontStyle: FontStyle.normal,
                     )),
               ),
-              SizedBox(height: 20.h),
             ],
           ),
         ),

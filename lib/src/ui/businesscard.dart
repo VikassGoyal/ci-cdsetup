@@ -60,135 +60,213 @@ class _BussinessCardState extends State<BussinessCard> {
     }
 
     _renderContent(context) {
+      //   return Card(
+      //     elevation: 18.h,
+      //     margin: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0, bottom: 0.0),
+      //     color: const Color(0x00000000),
+      //     child: FlipCard(
+      //       direction: FlipDirection.HORIZONTAL,
+      //       speed: 700,
+      //       onFlipDone: (status) {
+      //         print(status);
+      //       },
+      //       front: Container(
+      //         padding: const EdgeInsets.only(right: 16, left: 16),
+      //         decoration: BoxDecoration(
+      //           color: currentColor,
+      //           borderRadius: const BorderRadius.all(Radius.circular(18.0)),
+      //         ),
+      //         child: Column(
+      //           children: <Widget>[
+      //             Expanded(
+      //               flex: 8,
+      //               child: Container(
+      //                 child: CachedNetworkImage(
+      //                   width: MediaQuery.of(context).size.width / 2,
+      //                   imageUrl: imageName != "" ? AppConstant.businessimageBaseUrl + imageName : "",
+      //                   placeholder: (context, url) => SvgPicture.asset("assets/logo.svg"),
+      //                   errorWidget: (context, url, error) => Center(
+      //                     child: KonetLogo(
+      //                       logoHeight: 24,
+      //                       fontSize: 19,
+      //                       textPadding: 9,
+      //                       spacing: 9,
+      //                     ),
+      //                   ),
+      //                   fit: BoxFit.contain,
+      //                 ),
+      //               ),
+      //             ),
+
+      //           ],
+      //         ),
+      //       ),
+      //       back: Container(
+      //         padding: const EdgeInsets.only(right: 40, left: 40),
+      //         decoration: BoxDecoration(
+      //           color: currentColor,
+      //           borderRadius: const BorderRadius.all(Radius.circular(18.0)),
+      //         ),
+      //         child: Column(
+      //           mainAxisAlignment: MainAxisAlignment.center,
+      //           children: <Widget>[
+      //             Expanded(
+      //                 flex: 1,
+      //                 child: CachedNetworkImage(
+      //                   width: MediaQuery.of(context).size.width / 2,
+      //                   imageUrl: imageName != "" ? AppConstant.businessimageBaseUrl + imageName : "",
+      //                   placeholder: (context, url) => SvgPicture.asset("assets/logo.svg"),
+      //                   errorWidget: (context, url, error) => Center(
+      //                     child: KonetLogo(
+      //                       logoHeight: 24,
+      //                       fontSize: 19,
+      //                       textPadding: 9,
+      //                       spacing: 9,
+      //                     ),
+      //                   ),
+      //                   fit: BoxFit.contain,
+      //                 )
+      //                 // SvgPicture.asset("assets/logo.svg"),
+      //                 ),
+      //             Container(
+      //               decoration: BoxDecoration(
+      //                 borderRadius: BorderRadius.circular(10),
+      //                 //color: Colors.white,
+      //               ),
+      //               margin: const EdgeInsets.only(left: 15.0, top: 25.0, right: 15.0),
+      //               padding: const EdgeInsets.all(10),
+      //               child: _showQr
+      //                   ? const CircularProgressIndicator(
+      //                       valueColor: AlwaysStoppedAnimation<Color>(
+      //                         AppColor.primaryColor,
+      //                       ),
+      //                     )
+      //                   : _qrImage == ''
+      //                       ? const Center(
+      //                           child: Text(
+      //                             'NO QR CODE',
+      //                             style: TextStyle(
+      //                               color: AppColor.primaryColor,
+      //                             ),
+      //                           ),
+      //                         )
+      //                       : SvgPicture.network(
+      //                           "https://www.svgrepo.com/show/76016/qr-code.svg",
+      //                           width: 150,
+      //                           height: 150,
+      //                         ),
+      //             ),
+      //             const SizedBox(height: 20),
+      //             Text(
+      //               'Point your camera at the QR code, to fetch Business card details',
+      //               textAlign: TextAlign.center,
+      //               style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
+      //             ),
+      //             Expanded(
+      //               flex: 1,
+      //               child: Container(),
+      //             ),
+      //             Expanded(
+      //               flex: 1,
+      //               child: Visibility(
+      //                 visible: imageName != null ? true : false,
+      //                 child: const KonetLogo(
+      //                   logoHeight: 24,
+      //                   fontSize: 19,
+      //                   textPadding: 9,
+      //                   spacing: 9,
+      //                 ),
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     ),
+      //   );
       return Card(
         elevation: 18.h,
-        margin: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0, bottom: 0.0),
+        margin: EdgeInsets.only(left: 16.0.w, right: 16.0.w, top: 20.0.h, bottom: 0.0.h),
         color: const Color(0x00000000),
-        child: FlipCard(
-          direction: FlipDirection.HORIZONTAL,
-          speed: 700,
-          onFlipDone: (status) {
-            print(status);
-          },
-          front: Container(
-            padding: const EdgeInsets.only(right: 16, left: 16),
-            decoration: BoxDecoration(
-              color: currentColor,
-              borderRadius: const BorderRadius.all(Radius.circular(18.0)),
-            ),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 8,
-                  child: Container(
-                    child: CachedNetworkImage(
-                      width: MediaQuery.of(context).size.width / 2,
-                      imageUrl: imageName != "" ? AppConstant.businessimageBaseUrl + imageName : "",
-                      placeholder: (context, url) => SvgPicture.asset("assets/logo.svg"),
-                      errorWidget: (context, url, error) => Center(
-                        child: KonetLogo(
-                          logoHeight: 24,
-                          fontSize: 19,
-                          textPadding: 9,
-                          spacing: 9,
-                        ),
-                      ),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      'Click here to flip back',
-                      style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+        child: Container(
+          padding: EdgeInsets.only(right: 40.w, left: 40.w),
+          decoration: BoxDecoration(
+            color: currentColor,
+            borderRadius: const BorderRadius.all(Radius.circular(18.0)),
           ),
-          back: Container(
-            padding: const EdgeInsets.only(right: 40, left: 40),
-            decoration: BoxDecoration(
-              color: currentColor,
-              borderRadius: const BorderRadius.all(Radius.circular(18.0)),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                    flex: 1,
-                    child: CachedNetworkImage(
-                      width: MediaQuery.of(context).size.width / 2,
-                      imageUrl: imageName != "" ? AppConstant.businessimageBaseUrl + imageName : "",
-                      placeholder: (context, url) => SvgPicture.asset("assets/logo.svg"),
-                      errorWidget: (context, url, error) => Center(
-                        child: KonetLogo(
-                          logoHeight: 24,
-                          fontSize: 19,
-                          textPadding: 9,
-                          spacing: 9,
-                        ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                height: 34.h,
+              ),
+              Expanded(
+                  flex: 1,
+                  child: CachedNetworkImage(
+                    width: MediaQuery.of(context).size.width / 2,
+                    imageUrl: imageName != "" ? AppConstant.businessimageBaseUrl + imageName : "",
+                    placeholder: (context, url) => SvgPicture.asset("assets/logo.svg"),
+                    errorWidget: (context, url, error) => Center(
+                      child: KonetLogo(
+                        logoHeight: 24,
+                        fontSize: 19,
+                        textPadding: 9,
+                        spacing: 9,
                       ),
-                      fit: BoxFit.contain,
-                    )
-                    // SvgPicture.asset("assets/logo.svg"),
                     ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    //color: Colors.white,
+                    fit: BoxFit.contain,
+                  )
+                  // SvgPicture.asset("assets/logo.svg"),
                   ),
-                  margin: const EdgeInsets.only(left: 15.0, top: 25.0, right: 15.0),
-                  padding: const EdgeInsets.all(10),
-                  child: _showQr
-                      ? const CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            AppColor.primaryColor,
-                          ),
-                        )
-                      : _qrImage == ''
-                          ? const Center(
-                              child: Text(
-                                'NO QR CODE',
-                                style: TextStyle(
-                                  color: AppColor.primaryColor,
-                                ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  //color: Colors.white,
+                ),
+                margin: EdgeInsets.only(left: 15.0.w, top: 25.0.h, right: 15.0.w),
+                padding: const EdgeInsets.all(10),
+                child: _showQr
+                    ? const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          AppColor.primaryColor,
+                        ),
+                      )
+                    : _qrImage == ''
+                        ? const Center(
+                            child: Text(
+                              'NO QR CODE',
+                              style: TextStyle(
+                                color: AppColor.primaryColor,
                               ),
-                            )
-                          : SvgPicture.network(
-                              "https://www.svgrepo.com/show/76016/qr-code.svg",
-                              width: 150,
-                              height: 150,
                             ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Point your camera at the QR code, to fetch Business card details',
+                          )
+                        : SvgPicture.network(
+                            "https://www.svgrepo.com/show/76016/qr-code.svg",
+                            width: 150,
+                            height: 150,
+                          ),
+              ),
+              SizedBox(height: 34.h),
+              Text('Point your camera at the QR code, to fetch Business card details',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Visibility(
-                    visible: imageName != null ? true : false,
-                    child: const KonetLogo(
-                      logoHeight: 24,
-                      fontSize: 19,
-                      textPadding: 9,
-                      spacing: 9,
-                    ),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      color: AppColor.whiteColor,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w300)),
+              Expanded(
+                flex: 1,
+                child: Visibility(
+                  visible: imageName != null ? true : false,
+                  child: const KonetLogo(
+                    logoHeight: 24,
+                    fontSize: 19,
+                    textPadding: 9,
+                    spacing: 9,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );
@@ -271,7 +349,6 @@ class _BussinessCardState extends State<BussinessCard> {
                           pickerAreaHeightPercent: 0.7,
                           enableAlpha: true,
                           displayThumbColor: true,
-                          showLabel: true,
                           paletteType: PaletteType.hsv,
                           pickerAreaBorderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(2.0),

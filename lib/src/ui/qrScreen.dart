@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRScreen extends StatefulWidget {
@@ -33,32 +35,43 @@ class _QRScreenState extends State<QRScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
         elevation: 0.0,
+        leadingWidth: 80.w,
         leading: InkWell(
           onTap: () {
             Navigator.of(context).pop();
           },
-          child: Row(
-            children: [
-              const Icon(
-                Icons.arrow_back_sharp,
-                color: AppColor.whiteColor,
-              ),
-              const SizedBox(
-                width: 2,
-              ),
-              Text(
-                "Back",
-                style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.whiteColor),
-              )
-            ],
+          child: Container(
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: const Icon(Icons.arrow_back, color: Colors.white),
+                ),
+                SizedBox(width: 6.w),
+                Text(
+                  'Back',
+                  style: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         centerTitle: true,
-        title: Text(
-          "Social Connect",
-          style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.whiteColor),
-        ),
+        title: Text("QR Scanner",
+            style: TextStyle(
+                fontSize: 18.sp,
+                color: Colors.white,
+                fontFamily: kSfproRoundedFontFamily,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w500)),
       ),
       body: Column(
         children: <Widget>[

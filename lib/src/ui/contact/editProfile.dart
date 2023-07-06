@@ -1271,13 +1271,15 @@ class _EditProfileState extends State<EditProfile> {
                     return AlertDialog(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0.w))),
                       backgroundColor: Colors.white,
-                      title: Text(
-                        "Changes not saved",
-                        style: TextStyle(
-                            color: Color(0xff3F3D56),
-                            fontFamily: kSfproDisplayFontFamily,
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500),
+                      title: Center(
+                        child: Text(
+                          "Changes not saved",
+                          style: TextStyle(
+                              color: Color(0xff3F3D56),
+                              fontFamily: kSfproDisplayFontFamily,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500),
+                        ),
                       ),
                       content: Text("Are you sure  want to Exit without Saving ?",
                           style: TextStyle(
@@ -1286,44 +1288,58 @@ class _EditProfileState extends State<EditProfile> {
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w300)),
                       actions: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              child: Text("Yes",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: kSfproRoundedFontFamily,
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w500)),
-                              onPressed: () {
-                                setState(() {
-                                  _valuesChanged = false;
-                                });
-                                Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-                                  )),
-                              child: Text("Cancel",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: kSfproRoundedFontFamily,
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w500)),
-                              onPressed: () {
-                                Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
-                              },
-                            ),
-                          ],
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 8.0.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                constraints: BoxConstraints(minWidth: 110.w, minHeight: 42.h),
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                      )),
+                                  child: Text("Yes",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: kSfproRoundedFontFamily,
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w500)),
+                                  onPressed: () {
+                                    setState(() {
+                                      _valuesChanged = false;
+                                    });
+                                    Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20.w,
+                              ),
+                              Container(
+                                constraints: BoxConstraints(minWidth: 110.w, minHeight: 42.h),
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                      )),
+                                  child: Text("Cancel",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: kSfproRoundedFontFamily,
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w500)),
+                                  onPressed: () {
+                                    Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         )
                       ],
                     );

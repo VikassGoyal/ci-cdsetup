@@ -321,7 +321,7 @@ class _SettingsState extends State<Settings> {
                           title: Center(
                             child: Text("Logout",
                                 style: TextStyle(
-                                    color: Color(0xff3F3D56),
+                                    color: AppColor.logoutcolor,
                                     fontFamily: kSfproDisplayFontFamily,
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.w500)),
@@ -329,7 +329,7 @@ class _SettingsState extends State<Settings> {
                           content: Text(
                             "Are you sure you want to logout ?",
                             style: TextStyle(
-                                color: Color(0xff878B95),
+                                color: AppColor.logoutheadingcolor,
                                 fontFamily: kSfproRoundedFontFamily,
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.w300),

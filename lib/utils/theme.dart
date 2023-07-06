@@ -25,6 +25,8 @@ class AppColor {
   static const Alertheadingcolor = Color(0xFF3F3D56);
   static const Alertsubtitlecolor = Color(0xFF878B95);
   static const Companyprofilenumber = Color(0xff757575);
+  static const logoutcolor = Color(0xff3F3D56);
+  static const logoutheadingcolor = Color(0xff878B95);
 }
 
 class StatusBarTheme {

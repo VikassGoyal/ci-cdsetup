@@ -45,6 +45,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5))),
       padding: EdgeInsets.only(left: widget.padding!, right: widget.padding!),
       child: TextFormField(
         style: TextStyle(
@@ -63,6 +64,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         },
         decoration: InputDecoration(
           hintText: widget.hintText,
+          contentPadding: EdgeInsets.symmetric(vertical: 18.0.h, horizontal: 10.w),
           filled: true,
           border: InputBorder.none,
           fillColor: AppColor.whiteColor.withOpacity(0.15),

@@ -829,35 +829,74 @@ class _ContactsPageState extends State<ContactsPage> {
 
   _showDialog() async {
     await Future.delayed(const Duration(milliseconds: 50));
+    // ignore: use_build_context_synchronously
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
           backgroundColor: AppColor.whiteColor,
-          title: Text(
-            'Confirmation',
-            style: Theme.of(context).textTheme.headline5,
+          title: Center(
+            child: Text(
+              'Confirmation',
+              style: TextStyle(
+                  color: AppColor.logoutcolor,
+                  fontFamily: kSfproDisplayFontFamily,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w500),
+            ),
           ),
           content: Text(
-            'Do you want to import contacts to conet?',
-            style: Theme.of(context).textTheme.headline3,
+            'Do you want to import contacts to konet?',
+            style: TextStyle(
+                color: AppColor.logoutheadingcolor,
+                fontFamily: kSfproRoundedFontFamily,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w300),
           ),
           actions: <Widget>[
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: Text(
-                'No',
-                style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: Text(
-                'Yes',
-                style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
-              ),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  constraints: BoxConstraints(minWidth: 100.0.w),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                        )),
+                    onPressed: () => Navigator.pop(context, true),
+                    child: Text('Yes',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: kSfproRoundedFontFamily,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500)),
+                  ),
+                ),
+                SizedBox(
+                  width: 20.w,
+                ),
+                Container(
+                  constraints: BoxConstraints(minWidth: 100.0.w),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                        )),
+                    onPressed: () => Navigator.pop(context, false),
+                    child: Text('No',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: kSfproRoundedFontFamily,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500)),
+                  ),
+                ),
+              ],
+            )
           ],
         );
       },

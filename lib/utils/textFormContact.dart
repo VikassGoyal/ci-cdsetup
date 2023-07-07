@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextFormFieldContact extends StatefulWidget {
   final TextInputType? textInputType;
+
   final String? hintText;
   final Widget? prefixIcon;
   final String? defaultText;

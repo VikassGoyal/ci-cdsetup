@@ -99,16 +99,17 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/
     - assets/images/
     - assets/images/profile.png
     - assets/icons/
+    - assets/fonts/
     - assets/json/
     - assets/json/images/
     - assets/json/report/
     - assets/json/standalone/
     - assets/json/standalone/images/
     - assets/data/
-    - assets/
   fonts:
     - family: Dreadnoughtus
       fonts:

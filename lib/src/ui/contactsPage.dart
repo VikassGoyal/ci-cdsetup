@@ -196,7 +196,6 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                 ),
               ).then((value) {
-                print("value : $value");
                 _updateContact();
               });
             } else {
@@ -226,20 +225,24 @@ class _ContactsPageState extends State<ContactsPage> {
                     width: 40.w,
                     height: 40.w,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100.0),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: "assets/images/profile.png",
-                        image: _contacts[index].profileImage != null
-                            ? AppConstant.profileImageBaseUrl + _contacts[index].profileImage!
-                            : "",
-                        fit: BoxFit.cover,
-                        imageErrorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            "assets/images/profile.png",
-                          );
-                        },
-                      ),
-                    ),
+                        borderRadius: BorderRadius.circular(100.0),
+                        child: _contacts[index].profileImage != null
+                            ? FadeInImage.assetNetwork(
+                                placeholder: "assets/images/profile.png",
+                                image: _contacts[index].profileImage != null
+                                    ? AppConstant.profileImageBaseUrl + _contacts[index].profileImage!
+                                    : "",
+                                fit: BoxFit.cover,
+                                imageErrorBuilder: (context, error, stackTrace) {
+                                  print(error);
+                                  return Image.asset(
+                                    "assets/images/profile.png",
+                                  );
+                                },
+                              )
+                            : Image.asset(
+                                "assets/images/profile.png",
+                              )),
                   ),
                   Visibility(
                     visible: _contacts[index].userId != null,
@@ -352,7 +355,6 @@ class _ContactsPageState extends State<ContactsPage> {
                       "assets/icons/ic_list_chat.svg",
                     ),
                     onPressed: () {
-                      print("Cliked");
                       callChatMessenger(_contacts[index].phone);
                     },
                   ),
@@ -373,7 +375,6 @@ class _ContactsPageState extends State<ContactsPage> {
                       "assets/icons/ic_list_call.svg",
                     ),
                     onPressed: () {
-                      print("Cliked");
                       _callNumber(_contacts[index].phone!);
                     },
                   ),
@@ -1000,7 +1001,6 @@ class _ContactsPageState extends State<ContactsPage> {
 
 //QRscanner Start
   _checkQRPermission() async {
-    print("coming");
     var status = await Permission.camera.status;
     print(status);
     if (status.isGranted) {

@@ -19,6 +19,7 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
       required this.settingsPageRepository})
       : super(PageLoading()) {
     on<AppStarted>((event, emit) {
+      currentIndex = 0;
       add(PageTapped(index: currentIndex));
     });
 

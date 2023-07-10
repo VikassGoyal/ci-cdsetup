@@ -288,7 +288,7 @@ class _SettingsState extends State<Settings> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ConetWebPage(),
+                        builder: (context) => ConetWebPage(backcheck: true),
                       ),
                     );
                   },
@@ -450,7 +450,7 @@ class _SettingsState extends State<Settings> {
       await databaseHelper.trancateAllContacts();
       await databaseHelper.trancateRecentContacts();
 
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => Login(),

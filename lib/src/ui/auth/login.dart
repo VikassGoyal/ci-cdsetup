@@ -1,4 +1,5 @@
 import 'package:conet/blocs/userBloc.dart';
+import 'package:conet/bottomNavigation/bottomNavigationBloc.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/localdb/database_helper.dart';
@@ -8,6 +9,7 @@ import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/textFormWidget.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -147,6 +149,7 @@ class _LoginState extends State<Login> {
               });
 
               if (response['message'] == 'success') {
+                context.read<BottomNavigationBloc>().currentIndex = 0;
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => HomeScreen()),

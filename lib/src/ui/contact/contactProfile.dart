@@ -1341,13 +1341,10 @@ class _ContactProfileState extends State<ContactProfile> {
                   borderRadius: BorderRadius.circular(100.0),
                   child: FadeInImage.assetNetwork(
                     placeholder: "assets/images/profile.png",
-                    image: userImage != ""
-                        ? AppConstant.profileImageBaseUrl + userImage
-                        : "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png",
+                    image:
+                        userImage != null ? AppConstant.profileImageBaseUrl + userImage : "assets/images/profile.png",
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
-                      print("error");
-                      print(error);
                       return Image.asset(
                         "assets/images/profile.png",
                       );

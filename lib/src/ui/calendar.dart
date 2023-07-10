@@ -24,7 +24,7 @@ class _CalendarState extends State<Calendar> {
           ),
           SfDateRangePicker(
             selectionMode: DateRangePickerSelectionMode.range,
-            todayHighlightColor: AppColor.secondaryColor,
+            //todayHighlightColor: AppColor.secondaryColor,
             yearCellStyle: DateRangePickerYearCellStyle(
                 textStyle: TextStyle(
                     fontSize: 15.sp,

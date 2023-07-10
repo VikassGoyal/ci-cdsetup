@@ -1,6 +1,8 @@
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:path/path.dart';
 
 class TextFormFieldWidget extends StatefulWidget {
@@ -43,9 +45,16 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5))),
       padding: EdgeInsets.only(left: widget.padding!, right: widget.padding!),
       child: TextFormField(
-        style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
+        style: TextStyle(
+          fontFamily: kSfCompactDisplayFontFamily,
+          color: AppColor.whiteColor,
+          fontSize: 15.sp,
+          fontWeight: FontWeight.w600,
+          fontStyle: FontStyle.normal,
+        ),
         inputFormatters: [
           FilteringTextInputFormatter.allow(widget.regexp == null ? RegExp('.*') : widget.regexp!),
           FilteringTextInputFormatter.deny(RegExp(r'\s')),
@@ -55,9 +64,10 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         },
         decoration: InputDecoration(
           hintText: widget.hintText,
+          contentPadding: EdgeInsets.symmetric(vertical: 18.0.h, horizontal: 10.w),
           filled: true,
           border: InputBorder.none,
-          fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
+          fillColor: AppColor.whiteColor.withOpacity(0.15),
           //errorStyle: const TextStyle(color: Colors.red,fontSize: 15.0),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
@@ -68,16 +78,15 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
           errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: AppColor.redColor),
           ),
-          // focusedErrorBorder: const OutlineInputBorder(
-          //   borderSide: BorderSide(
-          //     color: Colors.transparent,
-          //   ),
-          // ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+          focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+          hintStyle: TextStyle(
+            fontFamily: kSfCompactDisplayFontFamily,
+            color: AppColor.whiteColor.withOpacity(0.75),
+            fontSize: 15.sp,
+            fontWeight: FontWeight.w600,
+            fontStyle: FontStyle.normal,
           ),
-          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-          hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
         ),
         cursorColor: AppColor.whiteColor,
         keyboardType: widget.textInputType,

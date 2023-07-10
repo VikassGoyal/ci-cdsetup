@@ -2,9 +2,11 @@ import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/blocs/contactRequest.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -45,8 +47,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       placeholder: "assets/images/profile.png",
                       // image: "",
                       image: notification[index].profileImage != null
-                          ? AppConstant.profileImageBaseUrl +
-                              notification[index].profileImage!
+                          ? AppConstant.profileImageBaseUrl + notification[index].profileImage!
                           : "",
                       fit: BoxFit.cover,
                       imageErrorBuilder: (context, error, stackTrace) {
@@ -93,8 +94,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   width: 37,
                 ),
                 onPressed: () {
-                  requestContactResponse(
-                      index, 'declined', notification[index].fromContactId);
+                  requestContactResponse(index, 'declined', notification[index].fromContactId);
                 },
               ),
             ),
@@ -112,8 +112,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ),
                 onPressed: () {
                   print("Cliked");
-                  requestContactResponse(
-                      index, 'accept', notification[index].fromContactId);
+                  requestContactResponse(index, 'accept', notification[index].fromContactId);
                 },
               ),
             ),
@@ -147,8 +146,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       child: FadeInImage.assetNetwork(
                         placeholder: "assets/images/profile.png",
                         image: notification[index].profileImage != null
-                            ? AppConstant.profileImageBaseUrl +
-                                notification[index].profileImage!
+                            ? AppConstant.profileImageBaseUrl + notification[index].profileImage!
                             : "",
                         fit: BoxFit.cover,
                         imageErrorBuilder: (context, error, stackTrace) {
@@ -189,9 +187,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       Text(
                         notification[index].phone ?? "Unknown Number",
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
-                            color: AppColor.gray30Color,
-                            fontWeight: FontWeight.w400),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
                       )
                     ],
                   ),
@@ -211,10 +210,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     ),
                     onPressed: () {
                       print("Cliked");
-                      Uri emailLaunchUri = Uri(
-                          scheme: 'mailto',
-                          path: notification[index].email,
-                          queryParameters: {'subject': null});
+                      Uri emailLaunchUri =
+                          Uri(scheme: 'mailto', path: notification[index].email, queryParameters: {'subject': null});
                       launch(emailLaunchUri.toString());
                     },
                   ),
@@ -318,36 +315,40 @@ class _NotificationScreenState extends State<NotificationScreen> {
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
+        leadingWidth: 80.w,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context);
           },
           child: Row(
             children: [
-              const Icon(
-                Icons.arrow_back_sharp,
-                color: AppColor.whiteColor,
+              Padding(
+                padding: EdgeInsets.only(left: 16.w),
+                child: const Icon(Icons.arrow_back, color: Colors.white),
               ),
-              const SizedBox(
-                width: 2,
-              ),
+              SizedBox(width: 6.w),
               Text(
-                "Back",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    !.apply(color: AppColor.whiteColor),
-              )
+                'Back',
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.whiteColor,
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
             ],
           ),
         ),
         centerTitle: true,
-        title: Text(
-          "Notifications",
-          style: Theme.of(context).textTheme.headline3!.copyWith(
-              color: AppColor.whiteColor, fontWeight: FontWeight.w400),
-        ),
+        title: Text("Notifications",
+            style: TextStyle(
+                fontSize: 18.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w500,
+                color: Colors.white)),
       ),
       body: Container(
         child: _loader
@@ -369,16 +370,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     primary: false,
                     scrollDirection: Axis.vertical,
                     separatorBuilder: (context, index) {
-                      return const Divider(
-                        height: 1,
+                      return Divider(
+                        height: 1.h,
                         color: Color(0xFF757575),
                       );
                     },
                     itemBuilder: (context, index) {
                       return notification[index].type != 'Birthday'
-                          ? (notification[index].type == 'Request'
-                              ? requestedViaContact(index)
-                              : requestItem(index))
+                          ? (notification[index].type == 'Request' ? requestedViaContact(index) : requestItem(index))
                           : birdayItem(index);
                     },
                   )
@@ -388,15 +387,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       children: [
                         SvgPicture.asset(
                           "assets/icons/no_data.svg",
-                          height: 200,
+                          height: 200.h,
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         Text(
                           "No Data",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline4
-                              !.apply(color: AppColor.blackColor),
+                          style: TextStyle(
+                              fontSize: 18.sp,
+                              fontFamily: kSfproRoundedFontFamily,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff3F3D56)),
                         )
                       ],
                     ),

@@ -1,7 +1,6 @@
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/deviceContactData.dart';
-import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/login.dart';
 import 'package:conet/src/ui/addContactUserProfilePage.dart';
@@ -13,10 +12,12 @@ import 'package:conet/src/ui/settings/myprofile.dart';
 import 'package:conet/src/ui/settings/socialContact.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -61,257 +62,380 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
-        centerTitle: false,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
+        centerTitle: true,
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
-        title: KonetLogo(
-          logoHeight: 24,
-          fontSize: 19,
-          textPadding: 9,
-          spacing: 9,
+        title: Text(
+          "Settings",
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontFamily: kSfproRoundedFontFamily,
+            color: AppColor.whiteColor,
+            fontWeight: FontWeight.w500,
+            fontStyle: FontStyle.normal,
+          ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ListTile(
-              onTap: () async {
-                SharedPreferences preferences = await SharedPreferences.getInstance();
+      body: Container(
+        child: Padding(
+          padding: EdgeInsets.only(left: 21.w),
+          child: Column(
+            children: [
+              Container(
+                height: 75.sp,
+                child: ListTile(
+                    contentPadding: EdgeInsets.only(left: 0, top: 10.h),
+                    onTap: () async {
+                      SharedPreferences preferences = await SharedPreferences.getInstance();
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => MyProfile(preferences.getString("phone")),
-                  ),
-                );
-              },
-              title: Text("My Profile", style: Theme.of(context).textTheme.headline3),
-              subtitle: RichText(
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: "Business, ",
-                        style: Theme.of(context).textTheme.headline3!.apply(color: AppColor.accentColor)),
-                    TextSpan(
-                      text: "Personal",
-                      style: Theme.of(context).textTheme.headline3!.apply(color: AppColor.primaryColor),
-                    ),
-                  ],
-                ),
-              ),
-              leading: SvgPicture.asset(
-                "assets/icons/ic_settings_profile.svg",
-                height: 40,
-              ),
-            ),
-            // Divider(height: 1, color: Colors.grey.shade200),
-            // ListTile(
-            //   onTap: () {},
-            //   title: Text(
-            //     "Contact List",
-            //     style: TextStyle(
-            //         fontSize: 18.0,
-            //         fontFamily: "Sf-Regular",
-            //         color: AppColor.blackColor),
-            //   ),
-            //   leading: SvgPicture.asset(
-            //     "assets/icons/ic_settings_contactlist.svg",
-            //     height: 40,
-            //   ),
-            // ),
-            Divider(height: 1, color: Colors.grey.shade200),
-            ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ChangePassword(),
-                  ),
-                );
-              },
-              title: Text(
-                "Change Password",
-                style: Theme.of(context).textTheme.headline3,
-              ),
-              leading: SvgPicture.asset(
-                "assets/icons/ic_settings_changepsw.svg",
-                height: 40,
-              ),
-            ),
-            Divider(height: 1, color: Colors.grey.shade200),
-            ListTile(
-              onTap: () {
-                _showDialog();
-              },
-              title: Text("Import Contacts", style: Theme.of(context).textTheme.headline3),
-              leading: SvgPicture.asset(
-                "assets/icons/ic_settings_contactlist.svg",
-                height: 40,
-              ),
-            ),
-
-            Divider(height: 1, color: Colors.grey.shade200),
-            ListTile(
-              onTap: () {
-                _checkPermission();
-              },
-              title: Text("QR Code Scanner", style: Theme.of(context).textTheme.headline3),
-              leading: SvgPicture.asset(
-                "assets/icons/ic_settings_qrscan.svg",
-                height: 40,
-              ),
-            ),
-            Divider(height: 1, color: Colors.grey.shade200),
-            ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SocialContact(),
-                  ),
-                );
-              },
-              title: Text("Social Connect", style: Theme.of(context).textTheme.headline3),
-              leading: SvgPicture.asset(
-                "assets/icons/ic_settings_socialconnect.svg",
-                height: 40,
-              ),
-            ),
-            Divider(height: 1, color: Colors.grey.shade200),
-            ListTile(
-              onTap: () {
-                Uri emailLaunchUri =
-                    Uri(scheme: 'mailto', path: "thekonetapp@gmail.com", queryParameters: {'subject': null});
-                launch(emailLaunchUri.toString());
-              },
-              title: Text("Contact us", style: Theme.of(context).textTheme.headline3),
-              leading: SvgPicture.asset(
-                "assets/icons/ic_settings_contactus.svg",
-                height: 40,
-              ),
-            ),
-            Divider(height: 1, color: Colors.grey.shade200),
-            ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NotificationScreen(),
-                  ),
-                );
-              },
-              title: Text(
-                "Notifications",
-                style: Theme.of(context).textTheme.headline3,
-              ),
-              leading: SvgPicture.asset(
-                "assets/icons/ic_settings_notification.svg",
-                height: 40,
-              ),
-            ),
-            Divider(height: 1, color: Colors.grey.shade200),
-            ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ConetWebPage(),
-                  ),
-                );
-              },
-              title: Text(
-                "Invite to KONET app",
-                style: Theme.of(context).textTheme.headline3,
-              ),
-              leading: SvgPicture.asset(
-                "assets/icons/ic_settings_invite.svg",
-                height: 40,
-              ),
-            ),
-            Divider(height: 1, color: Colors.grey.shade200),
-            ListTile(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
-                      backgroundColor: Colors.white,
-                      title: Text(
-                        "Logout",
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                      content: Text(
-                        "Are you sure you want to logout ?",
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text(
-                            "Cancel",
-                            style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => MyProfile(preferences.getString("phone")),
+                        ),
+                      );
+                    },
+                    title: Text("My Profile",
+                        style: TextStyle(
+                            color: AppColor.blackColor,
+                            fontSize: 17.sp,
+                            fontFamily: kSfproDisplayFontFamily,
+                            fontWeight: FontWeight.w400)),
+                    subtitle: RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: "Business, ",
+                              style: TextStyle(
+                                  color: AppColor.accentColor,
+                                  fontSize: 13.sp,
+                                  fontFamily: kSfproRoundedFontFamily,
+                                  fontWeight: FontWeight.w300)),
+                          TextSpan(
+                            text: "Personal",
+                            style: TextStyle(
+                                color: AppColor.SettingprofileIconColor,
+                                fontSize: 13.sp,
+                                fontFamily: kSfproRoundedFontFamily,
+                                fontWeight: FontWeight.w300),
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        TextButton(
-                          child: Text("Yes",
-                              style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor)),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            logoutFun();
-                          },
-                        ),
-                      ],
+                        ],
+                      ),
+                    ),
+                    leading: Container(
+                      height: 34.w,
+                      width: 34.w,
+                      child: SvgPicture.asset(
+                        "assets/icons/ic_settings_profile.svg",
+                        height: 24.w,
+                        width: 24.w,
+                      ),
+                    )),
+              ),
+              Divider(height: 0, color: Colors.grey.shade200),
+              ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ChangePassword(),
+                      ),
                     );
                   },
-                );
-              },
-              title: Text("Logout", style: Theme.of(context).textTheme.headline3),
-              leading: SvgPicture.asset(
-                "assets/icons/ic_settings_logout.svg",
-                height: 40,
+                  title: Text("Change Password",
+                      style: TextStyle(
+                          color: AppColor.blackColor,
+                          fontSize: 17.sp,
+                          fontFamily: kSfproDisplayFontFamily,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400)),
+                  leading: Container(
+                    height: 34.w,
+                    width: 34.w,
+                    child: SvgPicture.asset(
+                      "assets/icons/ic_settings_changepsw.svg",
+                      height: 24.w,
+                      width: 24.w,
+                    ),
+                  )),
+              Divider(height: 1, color: Colors.grey.shade200),
+              ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  onTap: () {
+                    _showDialog();
+                  },
+                  title: Text("Import Contacts",
+                      style: TextStyle(
+                          color: AppColor.blackColor,
+                          fontSize: 17.sp,
+                          fontFamily: kSfproDisplayFontFamily,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400)),
+                  leading: Container(
+                    height: 34.w,
+                    width: 34.w,
+                    child: SvgPicture.asset(
+                      "assets/icons/ic_settings_contactlist.svg",
+                      height: 24.w,
+                      width: 24.w,
+                    ),
+                  )),
+              ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  onTap: () {
+                    _checkPermission();
+                  },
+                  title: Text("QR Code Scanner",
+                      style: TextStyle(
+                          color: AppColor.blackColor,
+                          fontSize: 17.sp,
+                          fontFamily: kSfproDisplayFontFamily,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400)),
+                  leading: Container(
+                    height: 34.w,
+                    width: 34.w,
+                    child: SvgPicture.asset(
+                      "assets/icons/ic_settings_qrscan.svg",
+                      height: 24.w,
+                      width: 24.w,
+                    ),
+                  )),
+              Divider(height: 1.h, color: Colors.grey.shade200),
+              ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SocialContact(),
+                      ),
+                    );
+                  },
+                  title: Text("Social Connect",
+                      style: TextStyle(
+                          color: AppColor.blackColor,
+                          fontSize: 17.sp,
+                          fontFamily: kSfproDisplayFontFamily,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400)),
+                  leading: Container(
+                    height: 34.w,
+                    width: 34.w,
+                    child: SvgPicture.asset(
+                      "assets/icons/ic_settings_socialconnect.svg",
+                      height: 24.h,
+                      width: 24.w,
+                    ),
+                  )),
+              Divider(height: 1, color: Colors.grey.shade200),
+              ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  onTap: () {
+                    Uri emailLaunchUri =
+                        Uri(scheme: 'mailto', path: "thekonetapp@gmail.com", queryParameters: {'subject': null});
+                    launch(emailLaunchUri.toString());
+                  },
+                  title: Text("Contact us",
+                      style: TextStyle(
+                          color: AppColor.blackColor,
+                          fontSize: 17.sp,
+                          fontFamily: kSfproDisplayFontFamily,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400)),
+                  leading: Container(
+                    height: 34.w,
+                    width: 34.w,
+                    child: SvgPicture.asset(
+                      "assets/icons/ic_settings_contactus.svg",
+                      height: 24.w,
+                      width: 24.w,
+                    ),
+                  )),
+              Divider(height: 1.h, color: Colors.grey.shade200),
+              ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NotificationScreen(),
+                      ),
+                    );
+                  },
+                  title: Text("Notifications",
+                      style: TextStyle(
+                          color: AppColor.blackColor,
+                          fontSize: 17.sp,
+                          fontFamily: kSfproDisplayFontFamily,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400)),
+                  leading: Container(
+                    height: 34.w,
+                    width: 34.w,
+                    child: SvgPicture.asset(
+                      "assets/icons/ic_settings_notification.svg",
+                      height: 24.w,
+                      width: 24.w,
+                    ),
+                  )),
+              Divider(height: 1.h, color: Colors.grey.shade200),
+              ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ConetWebPage(),
+                      ),
+                    );
+                  },
+                  title: Text("Invite to KONET app",
+                      style: TextStyle(
+                          color: AppColor.blackColor,
+                          fontSize: 17.sp,
+                          fontFamily: kSfproDisplayFontFamily,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400)),
+                  leading: Container(
+                    height: 34.w,
+                    width: 34.w,
+                    child: SvgPicture.asset(
+                      "assets/icons/ic_settings_invite.svg",
+                      height: 24.w,
+                      width: 24.w,
+                    ),
+                  )),
+              Divider(height: 1.h, color: Colors.grey.shade200),
+              ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
+                          backgroundColor: Colors.white,
+                          title: Center(
+                            child: Text("Logout",
+                                style: TextStyle(
+                                    color: AppColor.logoutcolor,
+                                    fontFamily: kSfproDisplayFontFamily,
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w500)),
+                          ),
+                          content: Text(
+                            "Are you sure you want to logout ?",
+                            style: TextStyle(
+                                color: AppColor.logoutheadingcolor,
+                                fontFamily: kSfproRoundedFontFamily,
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w300),
+                          ),
+                          actions: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  constraints: BoxConstraints(minWidth: 100.0.w),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                        )),
+                                    child: Text("Yes",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: kSfproRoundedFontFamily,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w500)),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      logoutFun();
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Container(
+                                  constraints: BoxConstraints(minWidth: 100.0.w),
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.w)),
+                                        )),
+                                    child: Text("Cancel",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: kSfproRoundedFontFamily,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w500)),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  title: Text("Logout",
+                      style: TextStyle(
+                          color: AppColor.blackColor,
+                          fontSize: 17.sp,
+                          fontFamily: kSfproDisplayFontFamily,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400)),
+                  leading: SvgPicture.asset(
+                    "assets/icons/ic_settings_logout.svg",
+                    height: 24.w,
+                    width: 24.w,
+                  )),
+              Center(
+                child: Text(
+                  "v.$version",
+                  style: TextStyle(fontSize: 11.sp, fontFamily: kSfproRoundedFontFamily, fontWeight: FontWeight.w400),
+                ),
               ),
-            ),
-            Divider(height: 1, color: Colors.grey.shade200),
-            const SizedBox(height: 10),
-            Center(
-              child: Text(
-                "v.$version",
-                style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: 14),
+              SizedBox(height: 10.h),
+              SvgPicture.asset(
+                "assets/logo_orange.svg",
+                height: 22.h,
               ),
-            ),
-            const SizedBox(height: 10),
-            SvgPicture.asset(
-              "assets/logo_orange.svg",
-              height: 30,
-            ),
-
-            const SizedBox(height: 10),
-            Text("$totalUsers users Worldwide",
-                style: const TextStyle(
-                  color: AppColor.secondaryColor,
-                  fontFamily: 'Sfpro-Rounded-Medium',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
-                  fontStyle: FontStyle.normal,
-                )),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.only(left: 30, right: 30),
-              child: Text("With your $totalContact contacts, you have $totalConnection connections",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: AppColor.accentColor,
-                    fontFamily: 'Sfpro-Rounded-Semibold',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
+              SizedBox(height: 10.h),
+              Text("$totalUsers+ users Worldwide",
+                  style: TextStyle(
+                    color: AppColor.secondaryColor,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15.sp,
                     fontStyle: FontStyle.normal,
                   )),
-            ),
-            const SizedBox(height: 20),
-          ],
+              SizedBox(
+                height: 10.h,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 33.w, right: 33.w),
+                child: Text("With your $totalContact contacts, you have $totalConnection connections",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppColor.accentColor,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 11.sp,
+                      fontStyle: FontStyle.normal,
+                    )),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -434,31 +558,78 @@ class _SettingsState extends State<Settings> {
 
   _showDialog() async {
     await Future.delayed(const Duration(milliseconds: 50));
+    // ignore: use_build_context_synchronously
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: AppColor.whiteColor,
-          title: Text(
-            'Confirmation',
-            style: Theme.of(context).textTheme.headline5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.w), // Set the desired border radius
+          ),
+          title: Center(
+            child: Text(
+              'Confirmation',
+              style: TextStyle(
+                  color: Color(0xff3F3D56),
+                  fontFamily: kSfproDisplayFontFamily,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w500),
+            ),
           ),
           content: Text(
             'Do you want to import contacts to konet?',
-            style: Theme.of(context).textTheme.headline3,
+            style: TextStyle(
+                color: Color(0xff878B95),
+                fontFamily: kSfproRoundedFontFamily,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w300),
           ),
           actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: Text(
-                'No',
-                style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: Text('Yes', style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor)),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  constraints: BoxConstraints(minWidth: 100.0.w),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.w)),
+                        )),
+                    onPressed: () => Navigator.pop(context, true),
+                    child: Text('Yes',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: kSfproRoundedFontFamily,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500)),
+                  ),
+                ),
+                SizedBox(
+                  width: 20.w,
+                ),
+                Container(
+                  constraints: BoxConstraints(minWidth: 100.0.w),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.w)),
+                        )),
+                    onPressed: () => Navigator.pop(context, false),
+                    child: Text(
+                      'No',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: kSfproRoundedFontFamily,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
         );
       },

@@ -79,6 +79,7 @@ dependencies:
   url_launcher: ^6.1.11
   firebase_messaging: ^14.6.1
   path: ^1.8.3
+  flutter_screenutil: ^5.8.4
 
 dependency_overrides:
   http: ^1.0.0
@@ -98,34 +99,76 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/
     - assets/images/
+    - assets/images/profile.png
     - assets/icons/
+    - assets/fonts/
     - assets/json/
     - assets/json/images/
     - assets/json/report/
     - assets/json/standalone/
     - assets/json/standalone/images/
     - assets/data/
-    - assets/
   fonts:
     - family: Dreadnoughtus
       fonts:
-        - asset: fonts/DreadnoughtusMedium.ttf
-    - family: Sfpro-Rounded-Bold
+        - asset: assets/fonts/DreadnoughtusMedium.ttf
+
+    # In this font-family, weights are not accurate according to file name but as per figma looks
+    - family: SfproRounded
       fonts:
-        - asset: fonts/sfpro_rounded_bold.ttf
-    - family: Sfpro-Rounded-Light
+        - asset: assets/fonts/sfpro_rounded_thin.ttf
+        - weight: 300
+        - asset: assets/fonts/sfpro_rounded_light.ttf
+        - weight: 400
+        - asset: assets/fonts/sfpro_rounded_regular.ttf
+        - weight: 500
+        - asset: assets/fonts/sfpro_rounded_medium.ttf
+        - weight: 600
+        - asset: assets/fonts/sfpro_rounded_semibold.ttf
+        - weight: 700
+        - asset: assets/fonts/sfpro_rounded_bold.ttf
+        - weight: 800
+
+    - family: SfproDisplay
       fonts:
-        - asset: fonts/sfpro_rounded_light.ttf
-    - family: Sfpro-Rounded-Medium
+        - asset: assets/fonts/SF-Pro-Display-Ultralight.ttf
+        - weight: 100
+        - asset: assets/fonts/SF-Pro-Display-Thin.ttf
+        - weight: 200
+        - asset: assets/fonts/SF-Pro-Display-Light.ttf
+        - weight: 300
+        - asset: assets/fonts/SF-Pro-Display-Regular.ttf
+        - weight: 400
+        - asset: assets/fonts/SF-Pro-Display-Medium.ttf
+        - weight: 500
+        - asset: assets/fonts/SF-Pro-Display-Semibold.ttf
+        - weight: 600
+        - asset: assets/fonts/SF-Pro-Display-Bold.ttf
+        - weight: 700
+        - asset: assets/fonts/SF-Pro-Display-Heavy.ttf
+        - weight: 800
+        - asset: assets/fonts/SF-Pro-Display-Black.ttf
+        - weight: 900
+
+    - family: SfCompactDisplay
       fonts:
-        - asset: fonts/sfpro_rounded_medium.ttf
-    - family: Sfpro-Rounded-Regular
-      fonts:
-        - asset: fonts/sfpro_rounded_regular.ttf
-    - family: Sfpro-Rounded-Semibold
-      fonts:
-        - asset: fonts/sfpro_rounded_semibold.ttf
-    - family: Sfpro-Rounded-Thin
-      fonts:
-        - asset: fonts/sfpro_rounded_thin.ttf
+        - asset: assets/fonts/SF-Compact-Display-Ultralight.ttf
+        - weight: 100
+        - asset: assets/fonts/SF-Compact-Display-Thin.ttf
+        - weight: 200
+        - asset: assets/fonts/SF-Compact-Display-Light.ttf
+        - weight: 300
+        - asset: assets/fonts/SF-Compact-Display-Regular.ttf
+        - weight: 400
+        - asset: assets/fonts/SF-Compact-Display-Medium.ttf
+        - weight: 500
+        - asset: assets/fonts/SF-Compact-Display-Semibold.ttf
+        - weight: 600
+        - asset: assets/fonts/SF-Compact-Display-Bold.ttf
+        - weight: 700
+        - asset: assets/fonts/SF-Compact-Display-Heavy.ttf
+        - weight: 800
+        - asset: assets/fonts/SF-Compact-Display-Black.ttf
+        - weight: 900

@@ -1,18 +1,26 @@
+// ignore_for_file: file_names
+
+import 'package:conet/src/ui/auth/privacyPolicy.dart';
+import 'package:conet/src/ui/auth/termsofuse.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:conet/src/ui/auth/validateMobileNumberVerified.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import 'login.dart';
 
 class ValidateMobileNumber extends StatefulWidget {
+  const ValidateMobileNumber({super.key});
+
   @override
   _ValidateMobileNumberState createState() => _ValidateMobileNumberState();
 }
 
 class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
-  final _signupFormKey = GlobalKey<FormState>();
+  final _validateMobileFormKey = GlobalKey<FormState>();
   final bool _loader = false;
 
   @override
@@ -20,8 +28,7 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
     Widget _buildMissedCall() {
       return ElevatedButton(
         style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+          backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
           ),
@@ -30,17 +37,18 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
           print("clicked");
         },
         child: Container(
-          constraints: const BoxConstraints(
-            minHeight: 50.0,
-          ),
+          constraints: BoxConstraints(minHeight: 50.h),
           alignment: Alignment.center,
           child: Text(
             "Give  Missed Call",
             textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .button
-                ?.apply(color: AppColor.whiteColor),
+            style: TextStyle(
+              fontFamily: kSfproRoundedFontFamily,
+              color: AppColor.whiteColor,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.normal,
+            ),
           ),
         ),
       );
@@ -53,47 +61,56 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
 
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-                builder: (context) => ValidateMobileNumberVerified()),
+            MaterialPageRoute(builder: (context) => ValidateMobileNumberVerified()),
           );
         },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Use SMS to generate OTP  ",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline3
-                  ?.apply(color: AppColor.whiteColor),
-            ),
-            Text(
-              "Click here",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5
-                  ?.apply(color: AppColor.secondaryColor),
-            ),
-          ],
+        child: Container(
+          padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Use SMS to generate OTP  ",
+                style: TextStyle(
+                  fontFamily: kSfproDisplayFontFamily,
+                  color: AppColor.whiteColor,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 16.sp,
+                ),
+              ),
+              Text(
+                "Click here",
+                style: TextStyle(
+                  fontFamily: kSfproDisplayFontFamily,
+                  color: AppColor.secondaryColor,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 16.sp,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
 
     Widget termAndCondition() {
-      TextStyle defaultStyle = const TextStyle(
+      TextStyle defaultStyle = TextStyle(
         color: Colors.white,
-        fontSize: 15.0,
-        fontFamily: "Sf-Regular",
+        fontSize: 15.sp,
+        fontFamily: kSfproRoundedFontFamily,
+        fontWeight: FontWeight.w300,
         letterSpacing: 0.2,
       );
-      TextStyle linkStyle = const TextStyle(
+      TextStyle linkStyle = TextStyle(
         color: AppColor.secondaryColor,
-        fontSize: 15.0,
-        fontFamily: "Sf-Bold",
+        fontSize: 15.sp,
+        fontFamily: kSfproRoundedFontFamily,
+        fontWeight: FontWeight.w300,
         letterSpacing: 0.2,
       );
-      return Padding(
-        padding: const EdgeInsets.only(left: 60, right: 60),
+      return Center(
         child: RichText(
           text: TextSpan(
             style: defaultStyle,
@@ -104,6 +121,7 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     print('Terms of Service"');
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TermsOfUse()));
                   },
               ),
               const TextSpan(text: ' and '),
@@ -113,6 +131,7 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     print('Privacy Policy"');
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacyPolicy()));
                   },
               ),
             ],
@@ -124,26 +143,33 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
     return Scaffold(
         backgroundColor: AppColor.primaryColor,
         appBar: AppBar(
+          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => Login()),
-              );
+          leadingWidth: 80.w,
+          leading: InkWell(
+            onTap: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
             },
-            icon: const Icon(
-              Icons.arrow_back_sharp,
-              color: AppColor.whiteColor,
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: const Icon(Icons.arrow_back, color: Colors.white),
+                ),
+                SizedBox(width: 6.w),
+                Text(
+                  'Back',
+                  style: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ],
             ),
-          ),
-          title: Text(
-            "Back",
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1
-                ?.apply(color: AppColor.whiteColor),
           ),
         ),
         body: LoadingOverlay(
@@ -153,44 +179,58 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
             valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
           ),
           child: Container(
-            padding: const EdgeInsets.only(left: 20, right: 20),
+            padding: EdgeInsets.only(left: 16.w, right: 16.w),
             child: SingleChildScrollView(
               child: Form(
-                key: _signupFormKey,
+                key: _validateMobileFormKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
                     Text(
                       "Validate your",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline1
-                          ?.apply(color: AppColor.whiteColor),
+                      style: TextStyle(
+                        fontFamily: kSfproRoundedFontFamily,
+                        color: AppColor.whiteColor,
+                        fontSize: 34.sp,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                      ),
                     ),
                     Text(
                       "Mobile Number",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline1
-                          ?.apply(color: AppColor.whiteColor),
+                      style: TextStyle(
+                        fontFamily: kSfproRoundedFontFamily,
+                        color: AppColor.whiteColor,
+                        fontSize: 34.sp,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                      ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 20.h),
                     Text(
                       "We will verify your phone number via missed call;",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          ?.apply(color: AppColor.whiteColor),
+                      style: TextStyle(
+                        fontFamily: kSfproRoundedFontFamily,
+                        color: AppColor.whiteColor,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: -0.5,
+                      ),
                     ),
                     Text(
                       "click the button to begin the verification process.",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          ?.apply(color: AppColor.whiteColor),
+                      style: TextStyle(
+                        fontFamily: kSfproRoundedFontFamily,
+                        color: AppColor.whiteColor,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: -0.5,
+                      ),
                     ),
-                    const SizedBox(height: 50),
+                    SizedBox(height: 50.h),
                     Center(
                       child: GestureDetector(
                         child: Image.asset(
@@ -200,22 +240,34 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 50),
-                    _buildMissedCall(),
-                    const SizedBox(height: 20),
-                    Center(
-                      child: Text(
-                        "By signing up, you're agree to our  ",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline3
-                            ?.apply(color: AppColor.whiteColor),
+                    SizedBox(height: 50.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildMissedCall(),
+                          SizedBox(height: 16.h),
+                          Center(
+                            child: Text(
+                              "By signing up, you're agree to our",
+                              style: TextStyle(
+                                fontFamily: kSfproRoundedFontFamily,
+                                color: AppColor.whiteColor,
+                                fontWeight: FontWeight.w300,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 14.sp,
+                                letterSpacing: -0.5,
+                              ),
+                            ),
+                          ),
+                          termAndCondition(),
+                          SizedBox(height: 42.h),
+                          _buildGenerateOTP(),
+                          const SizedBox(height: 30),
+                        ],
                       ),
                     ),
-                    termAndCondition(),
-                    const SizedBox(height: 30),
-                    _buildGenerateOTP(),
-                    const SizedBox(height: 30),
                   ],
                 ),
               ),

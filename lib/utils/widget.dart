@@ -1,32 +1,22 @@
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 
-ButtonTheme raisedButton(
-    {VoidCallback? onClick,
-    String? text,
-    Color? bgColor,
-    double? padding,
-    context}) {
+ButtonTheme raisedButton({VoidCallback? onClick, String? text, Color? bgColor, double? padding, context}) {
   return ButtonTheme(
     child: Container(
       height: 48,
-      padding: EdgeInsets.only(
-          left: padding ?? 16,
-          right: padding ?? 16),
+      padding: EdgeInsets.only(left: padding ?? 16, right: padding ?? 16),
       width: double.infinity,
       child: ElevatedButton(
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(bgColor!)),
+        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(bgColor!)),
         onPressed: () {
           return onClick!();
         },
         child: Text(
           text ?? '',
           textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .button
-              ?.apply(color: AppColor.whiteColor),
+          style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
         ),
       ),
     ),
@@ -62,8 +52,7 @@ ButtonTheme blueButton({
 }) {
   return ButtonTheme(
     child: ElevatedButton(
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(bgColor!)),
+      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(bgColor!)),
       onPressed: () {
         return onClick!();
       },
@@ -75,7 +64,7 @@ ButtonTheme blueButton({
           text ?? '',
           textAlign: TextAlign.center,
           style: const TextStyle(
-            fontFamily: 'Sfpro-Rounded-Medium',
+            fontFamily: kSfproRoundedFontFamily,
             inherit: true,
             color: AppColor.blackColor,
             fontSize: 18,

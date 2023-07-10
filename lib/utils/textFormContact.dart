@@ -1,9 +1,12 @@
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextFormFieldContact extends StatefulWidget {
   final TextInputType? textInputType;
+
   final String? hintText;
   final Widget? prefixIcon;
   final String? defaultText;
@@ -23,6 +26,7 @@ class TextFormFieldContact extends StatefulWidget {
   final RegExp? regexexp;
   final Function(dynamic)? onChanged;
   final String? Function(String?)? validator;
+  final Color textColor;
 
   const TextFormFieldContact(
       {super.key,
@@ -44,6 +48,7 @@ class TextFormFieldContact extends StatefulWidget {
       this.onFieldTap,
       this.prefixIcon,
       this.maxLength = 1000,
+      this.textColor = AppColor.secondaryColor,
       this.regexexp,
       this.validator});
 
@@ -58,25 +63,26 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
     return Column(
       children: [
         Container(
-          height: 48,
-          padding: EdgeInsets.only(left: widget.padding!, right: widget.padding!),
-          margin: EdgeInsets.only(
-            left: widget.margin ?? 0,
-            right: widget.margin ?? 0,
-          ),
+          height: 48.h,
+          width: 331.w,
+          padding: widget.padding != null ? EdgeInsets.only(left: widget.padding!.w, right: widget.padding!.w) : null,
+          margin: EdgeInsets.only(left: widget.margin ?? 0, right: widget.margin ?? 0),
           decoration: BoxDecoration(
-            border: Border.all(
-              color: const Color(0xFFE8E8E8),
-            ),
-            borderRadius: BorderRadius.circular(7),
+            border: Border.all(color: const Color(0xFFE8E8E8)),
+            borderRadius: BorderRadius.circular(5),
           ),
           child: TextFormField(
             onChanged: (value) {
               if (widget.onChanged != null) widget.onChanged!(value);
             },
+
             readOnly: widget.readonly!,
             validator: widget.validator,
-            style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.secondaryColor),
+            style: TextStyle(
+                fontSize: 15.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: widget.textColor),
             maxLength: widget.maxLength,
             inputFormatters: [
               FilteringTextInputFormatter.allow(widget.regexexp == null ? RegExp('.*') : widget.regexexp!),
@@ -88,12 +94,19 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
             //       ]
             //     : [FilteringTextInputFormatter.allow(RegExp(r'^[^\s]+$')!)],
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+              contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.w),
               labelText: widget.hintText,
               counterText: "",
-              labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                    color: const Color.fromRGBO(135, 139, 149, 1),
-                  ),
+              hintStyle: TextStyle(
+                  fontSize: 13.sp,
+                  fontFamily: kSfproRoundedFontFamily,
+                  fontWeight: FontWeight.w300,
+                  color: AppColor.placeholder),
+              labelStyle: TextStyle(
+                  fontSize: 13.sp,
+                  fontFamily: kSfproRoundedFontFamily,
+                  fontWeight: FontWeight.w300,
+                  color: AppColor.placeholder),
               filled: true,
               fillColor: AppColor.whiteColor,
               errorBorder: const OutlineInputBorder(

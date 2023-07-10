@@ -15,12 +15,15 @@ import 'package:conet/src/ui/newInConet.dart';
 import 'package:conet/src/ui/qrScreen.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:lpinyin/lpinyin.dart';
@@ -57,7 +60,7 @@ class _ContactsPageState extends State<ContactsPage> {
   FocusNode _focusNode = FocusNode();
 
   Barcode? result;
-  QRViewController? controller;
+  // QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   bool _loader = false;
@@ -83,15 +86,14 @@ class _ContactsPageState extends State<ContactsPage> {
     _handleList(_contacts);
   }
 
-  //QR SCAN
-  @override
-  void reassemble() {
-    super.reassemble();
-    if (Platform.isAndroid) {
-      controller!.pauseCamera();
-    }
-    //controller!.resumeCamera();
-  }
+  // //QR SCAN
+  // @override
+  // void reassemble() {
+  //   super.reassemble();
+  //   if (Platform.isAndroid) {
+  //     qrViewController!.pauseCamera();
+  //   }
+  // }
 
   // Overridden this due to Error in AZListView
   void _sortListBySuspensionTag(List<ISuspensionBean>? list) {
@@ -178,7 +180,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
     Widget contactListItem(int index) {
       return Container(
-        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        padding: EdgeInsets.only(top: 11.h, bottom: 11.h),
         child: GestureDetector(
           onTap: () {
             _focusNode.unfocus();
@@ -202,10 +204,10 @@ class _ContactsPageState extends State<ContactsPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ContactProfile(
-                    _contacts[index].phone!,
-                    _contacts[index].contactMetaId!,
-                    _contacts[index].contactMetaType!,
-                    _contacts[index].fromContactMetaType!,
+                    _contacts[index].phone ?? "",
+                    _contacts[index].contactMetaId ?? 0,
+                    _contacts[index].contactMetaType ?? "",
+                    _contacts[index].fromContactMetaType ?? "",
                   ),
                 ),
               ).then((value) {
@@ -217,12 +219,12 @@ class _ContactsPageState extends State<ContactsPage> {
           behavior: HitTestBehavior.translucent,
           child: Row(
             children: [
-              const SizedBox(width: 16),
+              SizedBox(width: 16.w),
               Stack(
                 children: [
                   SizedBox(
-                    width: 40,
-                    height: 40,
+                    width: 40.w,
+                    height: 40.w,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100.0),
                       child: FadeInImage.assetNetwork(
@@ -259,10 +261,10 @@ class _ContactsPageState extends State<ContactsPage> {
                   )
                 ],
               ),
-              const SizedBox(width: 14),
+              SizedBox(width: 12.w),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: EdgeInsets.only(right: 8.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -271,19 +273,29 @@ class _ContactsPageState extends State<ContactsPage> {
                             ? _contacts[index].phone!
                             : _contacts[index].name!,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.headline3,
+                        style: TextStyle(
+                          fontFamily: kSfproDisplayFontFamily,
+                          color: AppColor.blackColor,
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 18.sp,
+                          // letterSpacing: 0.2,
+                        ),
                       ),
-                      const SizedBox(height: 2),
+                      SizedBox(height: 2.h),
                       _contacts[index].userId != null
                           ? Text(
                               (_contacts[index].username == null || _contacts[index].username == '')
                                   ? _contacts[index].phone!
                                   : _contacts[index].username!,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
+                              style: TextStyle(
+                                fontFamily: kSfproRoundedFontFamily,
+                                color: AppColor.gray30Color,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 13.sp,
+                              ),
                             )
                           : Text(
                               (_contacts[index].phone == null ||
@@ -292,10 +304,13 @@ class _ContactsPageState extends State<ContactsPage> {
                                   ? "Unknown Number"
                                   : _contacts[index].phone!,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
+                              style: TextStyle(
+                                fontFamily: kSfproRoundedFontFamily,
+                                color: AppColor.gray30Color,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 13.sp,
+                              ),
                             )
                     ],
                   ),
@@ -304,8 +319,8 @@ class _ContactsPageState extends State<ContactsPage> {
               Visibility(
                 visible: _contacts[index].email != null,
                 child: Container(
-                  width: 38,
-                  height: 38,
+                  width: 38.w,
+                  height: 38.w,
                   alignment: Alignment.center,
                   child: FloatingActionButton(
                     heroTag: null,
@@ -322,12 +337,12 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: 8.w),
               Visibility(
                 visible: _contacts[index].phone != null,
                 child: Container(
-                  width: 38,
-                  height: 38,
+                  width: 38.w,
+                  height: 38.w,
                   alignment: Alignment.center,
                   child: FloatingActionButton(
                     backgroundColor: Colors.transparent,
@@ -343,12 +358,12 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: 8.w),
               Visibility(
                 visible: _contacts[index].phone != null,
                 child: Container(
-                  width: 38,
-                  height: 38,
+                  width: 38.w,
+                  height: 38.w,
                   alignment: Alignment.center,
                   child: FloatingActionButton(
                     backgroundColor: Colors.transparent,
@@ -364,7 +379,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                 ),
               ),
-              const SizedBox(width: 30),
+              SizedBox(width: 25.w),
             ],
           ),
         ),
@@ -373,7 +388,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
     Widget _buildSusWidget(String susTag) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        padding: EdgeInsets.symmetric(horizontal: 15.w),
         height: susItemHeight,
         width: double.infinity,
         alignment: Alignment.centerLeft,
@@ -381,11 +396,13 @@ class _ContactsPageState extends State<ContactsPage> {
           children: <Widget>[
             Text(
               susTag,
-              textScaleFactor: 1.2,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline3
-                  ?.copyWith(color: AppColor.alphaHeaderTextColor, fontWeight: FontWeight.w400),
+              style: TextStyle(
+                fontFamily: kSfproDisplayFontFamily,
+                color: AppColor.placeholder,
+                fontWeight: FontWeight.w400,
+                fontStyle: FontStyle.normal,
+                fontSize: 18.sp,
+              ),
             ),
             const Expanded(
                 child: Divider(
@@ -407,7 +424,7 @@ class _ContactsPageState extends State<ContactsPage> {
           ),
           contactListItem(index),
           Container(
-            margin: const EdgeInsets.only(left: 16, right: 16),
+            margin: EdgeInsets.only(left: 16.w, right: 16.w),
             child: const Divider(height: 1, color: AppColor.dividerItemColor),
           )
         ],
@@ -453,6 +470,7 @@ class _ContactsPageState extends State<ContactsPage> {
       backgroundColor: AppColor.whiteColor,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
         title: const KonetLogo(
@@ -506,15 +524,14 @@ class _ContactsPageState extends State<ContactsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(color: AppColor.primaryColor, height: 20),
             Container(
-              padding: const EdgeInsets.only(left: 16, right: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
               color: AppColor.primaryColor,
               child: Row(
                 children: <Widget>[
                   Flexible(
                     child: Container(
-                      height: 36,
+                      height: 36.w,
                       color: AppColor.primaryColor,
                       child: TextField(
                         controller: _textEditingController,
@@ -530,7 +547,13 @@ class _ContactsPageState extends State<ContactsPage> {
                         maxLines: 1,
                         minLines: 1,
                         textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.headline3,
+                        style: TextStyle(
+                          fontFamily: kSfproDisplayFontFamily,
+                          color: AppColor.placeholder,
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 18.sp,
+                        ),
                         textInputAction: TextInputAction.search,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: -5),
@@ -538,7 +561,13 @@ class _ContactsPageState extends State<ContactsPage> {
                           hintText: "Search",
                           fillColor: Colors.white,
                           filled: true,
-                          hintStyle: Theme.of(context).textTheme.headline3!.apply(color: AppColor.gray30Color),
+                          hintStyle: TextStyle(
+                            fontFamily: kSfproDisplayFontFamily,
+                            color: AppColor.gray30Color,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 18.sp,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             borderSide: BorderSide.none,
@@ -552,19 +581,19 @@ class _ContactsPageState extends State<ContactsPage> {
                               }
                             },
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 11, right: 11),
+                              padding: EdgeInsets.only(left: 11.w, right: 11.w),
                               child: Icon(
                                 _showCancelIcon ? Icons.close : Icons.search,
-                                color: AppColor.gray30Color,
-                                size: 18,
+                                color: AppColor.gray30Color.withOpacity(0.5),
+                                size: 20.w,
                               ),
                             ),
                           ),
                           suffixIcon: IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.qr_code,
                               color: AppColor.gray30Color,
-                              size: 18,
+                              size: 20.w,
                             ),
                             onPressed: () {
                               _checkQRPermission();
@@ -574,23 +603,19 @@ class _ContactsPageState extends State<ContactsPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  SizedBox(width: 8.w),
                   Container(
-                    width: 32,
-                    height: 32,
+                    width: 36.w,
+                    height: 36.w,
                     alignment: Alignment.center,
                     child: FloatingActionButton(
                       heroTag: null,
                       elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                      ),
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
                       backgroundColor: AppColor.secondaryColor,
-                      child: const Icon(
+                      child: Icon(
                         Icons.add,
-                        size: 18,
+                        size: 18.h,
                         color: AppColor.whiteColor,
                       ),
                       onPressed: () {
@@ -598,7 +623,7 @@ class _ContactsPageState extends State<ContactsPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AddContact(),
+                            builder: (context) => const AddContact(),
                           ),
                         ).then((value) {
                           if (value != null && value == true) {
@@ -608,24 +633,17 @@ class _ContactsPageState extends State<ContactsPage> {
                       },
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  SizedBox(width: 8.w),
                   Container(
-                    width: 32,
-                    height: 32,
+                    width: 36.w,
+                    height: 36.w,
                     alignment: Alignment.center,
                     child: FloatingActionButton(
                       heroTag: null,
                       elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                      ),
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
                       backgroundColor: AppColor.accentColor,
-                      child: SvgPicture.asset(
-                        "assets/icons/ic_businesscard.svg",
-                        height: 18,
-                      ),
+                      child: SvgPicture.asset("assets/icons/ic_businesscard.svg", height: 18.h),
                       onPressed: () {
                         print("Cliked");
                         Navigator.push(
@@ -640,12 +658,11 @@ class _ContactsPageState extends State<ContactsPage> {
                 ],
               ),
             ),
-            Container(color: AppColor.primaryColor, height: 20),
             Visibility(
               visible: recentCalls.isNotEmpty,
               child: Container(
                 width: MediaQuery.of(context).size.width * 1.0,
-                constraints: const BoxConstraints(maxHeight: 110, minHeight: 110.0),
+                constraints: BoxConstraints(maxHeight: 110.h, minHeight: 110.h),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20.0),
@@ -674,8 +691,8 @@ class _ContactsPageState extends State<ContactsPage> {
                           _callNumber(recentCalls[i].number!);
                         },
                         child: Container(
-                          width: 80,
-                          margin: const EdgeInsets.only(top: 18),
+                          width: 80.w,
+                          margin: EdgeInsets.only(top: 18.h),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -685,16 +702,16 @@ class _ContactsPageState extends State<ContactsPage> {
                                 ),
                                 backgroundColor: AppColor.whiteColor,
                                 child: Container(
-                                  margin: const EdgeInsets.all(3),
-                                  child: const Image(
-                                    height: 38,
-                                    image: AssetImage(
+                                  margin: EdgeInsets.all(3.w),
+                                  child: Image(
+                                    height: 38.w,
+                                    image: const AssetImage(
                                       'assets/images/profile_placeholder.png',
                                     ),
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 3),
+                              SizedBox(height: 3.h),
                               Text(
                                 (recentCalls[i].name == "" || recentCalls[i].name == "null")
                                     ? "Unknown"
@@ -723,12 +740,18 @@ class _ContactsPageState extends State<ContactsPage> {
                         children: [
                           SvgPicture.asset(
                             "assets/icons/no_data.svg",
-                            height: 130,
+                            height: 130.h,
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 30.h),
                           Text(
                             "No Data",
-                            style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.blackColor),
+                            style: TextStyle(
+                              fontFamily: kSfproRoundedFontFamily,
+                              color: AppColor.black2,
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 18.sp,
+                            ),
                           )
                         ],
                       ),
@@ -806,35 +829,74 @@ class _ContactsPageState extends State<ContactsPage> {
 
   _showDialog() async {
     await Future.delayed(const Duration(milliseconds: 50));
+    // ignore: use_build_context_synchronously
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
           backgroundColor: AppColor.whiteColor,
-          title: Text(
-            'Confirmation',
-            style: Theme.of(context).textTheme.headline5,
+          title: Center(
+            child: Text(
+              'Confirmation',
+              style: TextStyle(
+                  color: AppColor.logoutcolor,
+                  fontFamily: kSfproDisplayFontFamily,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w500),
+            ),
           ),
           content: Text(
-            'Do you want to import contacts to conet?',
-            style: Theme.of(context).textTheme.headline3,
+            'Do you want to import contacts to konet?',
+            style: TextStyle(
+                color: AppColor.logoutheadingcolor,
+                fontFamily: kSfproRoundedFontFamily,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w300),
           ),
           actions: <Widget>[
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: Text(
-                'No',
-                style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: Text(
-                'Yes',
-                style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.primaryColor),
-              ),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  constraints: BoxConstraints(minWidth: 100.0.w),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                        )),
+                    onPressed: () => Navigator.pop(context, true),
+                    child: Text('Yes',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: kSfproRoundedFontFamily,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500)),
+                  ),
+                ),
+                SizedBox(
+                  width: 20.w,
+                ),
+                Container(
+                  constraints: BoxConstraints(minWidth: 100.0.w),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                        )),
+                    onPressed: () => Navigator.pop(context, false),
+                    child: Text('No',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: kSfproRoundedFontFamily,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500)),
+                  ),
+                ),
+              ],
+            )
           ],
         );
       },

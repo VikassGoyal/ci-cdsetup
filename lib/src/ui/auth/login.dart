@@ -4,9 +4,11 @@ import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/forgotPassword.dart';
 import 'package:conet/src/ui/auth/signup.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/textFormWidget.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:flutter/services.dart';
@@ -54,49 +56,63 @@ class _LoginState extends State<Login> {
     }
 
     Widget _buildPassword() {
-      return TextFormField(
-        controller: _passwordController,
-        focusNode: _passwordControllerFocus,
-        style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
-        inputFormatters: [
-          FilteringTextInputFormatter.deny(RegExp(r'\s')),
-        ],
-        decoration: InputDecoration(
-          hintText: "Password",
-          filled: true,
-          fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
-          border: InputBorder.none,
-          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: AppColor.redColor),
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(3),
+        child: TextFormField(
+          controller: _passwordController,
+          focusNode: _passwordControllerFocus,
+          style: TextStyle(
+            fontFamily: kSfproRoundedFontFamily,
+            color: AppColor.whiteColor,
+            fontSize: 15.sp,
+            fontWeight: FontWeight.w600,
+            fontStyle: FontStyle.normal,
           ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-          ),
-          suffixIcon: GestureDetector(
-            onTap: () {
-              setState(() {
-                _showPassword = !_showPassword;
-              });
-            },
-            child: Icon(
-              _showPassword ? Icons.visibility : Icons.visibility_off,
-              color: Colors.white54,
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(RegExp(r'\s')),
+          ],
+          decoration: InputDecoration(
+            hintText: "Password",
+            filled: true,
+            fillColor: AppColor.whiteColor.withOpacity(0.15),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(vertical: 18.0.h, horizontal: 10.w),
+            focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+            errorBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: AppColor.redColor),
+            ),
+            focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+            suffixIcon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _showPassword = !_showPassword;
+                });
+              },
+              child: Icon(
+                _showPassword ? Icons.visibility : Icons.visibility_off,
+                color: Colors.white54,
+              ),
+            ),
+            hintStyle: TextStyle(
+              fontFamily: kSfCompactDisplayFontFamily,
+              color: AppColor.whiteColor.withOpacity(0.75),
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w600,
+              fontStyle: FontStyle.normal,
             ),
           ),
-          hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
+          obscureText: !_showPassword,
+          cursorColor: AppColor.whiteColor,
+          enableSuggestions: false,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          validator: (value) {
+            if (value!.isEmpty) {
+              return "Please enter password";
+            }
+            return null;
+          },
         ),
-        obscureText: !_showPassword,
-        cursorColor: AppColor.whiteColor,
-        enableSuggestions: false,
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.done,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "Please enter password";
-          }
-          return null;
-        },
       );
     }
 
@@ -147,14 +163,20 @@ class _LoginState extends State<Login> {
           }
         },
         child: Container(
-          constraints: const BoxConstraints(
-            minHeight: 50.0,
+          constraints: BoxConstraints(
+            minHeight: 50.0.h,
           ),
           alignment: Alignment.center,
           child: Text(
             "Sign in",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
+            style: TextStyle(
+              fontFamily: kSfproRoundedFontFamily,
+              color: AppColor.whiteColor,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.normal,
+            ),
           ),
         ),
       );
@@ -183,11 +205,23 @@ class _LoginState extends State<Login> {
             children: [
               Text(
                 "Don't have an account?  ",
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor.withOpacity(0.7)),
+                style: TextStyle(
+                  fontFamily: kSfCompactDisplayFontFamily,
+                  color: AppColor.whiteColor.withOpacity(0.7),
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                ),
               ),
               Text(
                 "Sign Up",
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
+                style: TextStyle(
+                  fontFamily: kSfCompactDisplayFontFamily,
+                  color: AppColor.whiteColor,
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                ),
               ),
             ],
           ),
@@ -195,50 +229,60 @@ class _LoginState extends State<Login> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: AppColor.primaryColor,
-      body: LoadingOverlay(
-        isLoading: _loader,
-        opacity: 0.2,
-        progressIndicator: const CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _loginFormKey,
-              child: Container(
-                padding: const EdgeInsets.only(left: 22, right: 22),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const KonetLogo(),
-                    const SizedBox(height: 50),
-                    _buildMobile(),
-                    const SizedBox(height: 20),
-                    _buildPassword(),
-                    const SizedBox(height: 9),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        child: Text(
-                          "Forgot password?",
-                          style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light, //for status bar colors
+      //since there is no appBar used here so to give proper colors to the status bar, we used the AnnotatedRegion
+      child: Scaffold(
+        backgroundColor: AppColor.primaryColor,
+        body: LoadingOverlay(
+          isLoading: _loader,
+          opacity: 0.2,
+          progressIndicator: const CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _loginFormKey,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 22.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const KonetLogo(),
+                      const SizedBox(height: 50),
+                      _buildMobile(),
+                      const SizedBox(height: 20),
+                      _buildPassword(),
+                      const SizedBox(height: 9),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          child: Text(
+                            "Forgot password?",
+                            style: TextStyle(
+                              fontFamily: kSfproRoundedFontFamily,
+                              color: AppColor.whiteColor,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ForgotPassword()),
+                            );
+                          },
                         ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ForgotPassword()),
-                          );
-                        },
                       ),
-                    ),
-                    const SizedBox(height: 40),
-                    _buildSignInButton(),
-                    const SizedBox(height: 20),
-                    _buildDontAccount()
-                  ],
+                      const SizedBox(height: 40),
+                      _buildSignInButton(),
+                      const SizedBox(height: 20),
+                      _buildDontAccount()
+                    ],
+                  ),
                 ),
               ),
             ),

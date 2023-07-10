@@ -1,3 +1,4 @@
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -25,7 +26,7 @@ class KonetLogo extends StatelessWidget {
           child: Text(
             'KONET',
             style: TextStyle(
-              fontFamily: 'Dreadnoughtus',
+              fontFamily: kDreadnoughtusFontFamily,
               fontSize: fontSize,
               color: Colors.white,
             ),

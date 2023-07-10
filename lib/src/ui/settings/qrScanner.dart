@@ -1,5 +1,7 @@
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,6 +26,7 @@ class _QRScannerState extends State<QRScanner> {
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
+        leadingWidth: 80.w,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
@@ -31,51 +34,68 @@ class _QRScannerState extends State<QRScanner> {
           },
           child: Row(
             children: [
-              const Icon(
-                Icons.arrow_back_sharp,
-                color: AppColor.whiteColor,
+              Padding(
+                padding: EdgeInsets.only(left: 16.w),
+                child: const Icon(Icons.arrow_back, color: Colors.white),
               ),
-              const SizedBox(
-                width: 2,
-              ),
+              SizedBox(width: 6.w),
               Text(
-                "Back",
-                style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.whiteColor),
-              )
+                'Back',
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.whiteColor,
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
             ],
           ),
         ),
         centerTitle: true,
-        title: Text(
-          "QR Scanner",
-          style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.whiteColor),
-        ),
+        title: Text("QR Scanner",
+            style: TextStyle(
+                fontSize: 18.sp,
+                color: Colors.white,
+                fontFamily: kSfproRoundedFontFamily,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w500)),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 30),
+            SizedBox(height: 30.h),
             Align(
               alignment: Alignment.center,
               child: Text(
                 "Scan QR Code",
-                style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.whiteColor),
+                style: TextStyle(
+                    fontSize: 20.sp,
+                    color: Colors.white,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w600),
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30),
+              padding: EdgeInsets.only(left: 30.w, right: 30.w),
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
                   "Place qr code inside the frame to scan please avoid shake to get results quickly",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      color: Colors.white,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w300),
                 ),
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(left: 15.0, top: 25.0, right: 15.0),
+              margin: EdgeInsets.only(left: 15.0.w, top: 25.0.h, right: 15.0.h),
               padding: const EdgeInsets.all(15.0),
               child: _showQr
                   ? const CircularProgressIndicator(
@@ -94,16 +114,16 @@ class _QRScannerState extends State<QRScanner> {
                           children: [
                             SvgPicture.asset(
                               "assets/images/qrscannerbg.svg",
-                              height: 200,
+                              height: 200.h,
                             ),
                             Positioned(
                               left: 0,
                               right: 0,
-                              top: 25,
+                              top: 25.h,
                               child: SvgPicture.network(
                                 _qrImage,
-                                width: 150,
-                                height: 150,
+                                width: 150.w,
+                                height: 150.h,
                               ),
                             )
                           ],

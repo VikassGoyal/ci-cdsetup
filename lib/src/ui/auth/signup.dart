@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:flutter/services.dart';
 
 import 'package:conet/blocs/userBloc.dart';
@@ -11,6 +14,7 @@ import 'package:conet/utils/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import '../../../networking/apiBaseHelper.dart';
@@ -48,381 +52,6 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    Widget _buildName() {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: _nameError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(7),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              onTap: () {
-                _nameControllerFocus.requestFocus();
-              },
-              child: Container(
-                height: 58,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 0.15),
-                ),
-                padding: const EdgeInsets.only(left: 21, right: 0),
-                child: Center(
-                    child: RichText(
-                        text: TextSpan(
-                            text: "Name",
-                            style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.75), fontSize: 15, fontWeight: FontWeight.w600),
-                            children: [
-                      TextSpan(
-                          text: ' *',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ))
-                    ]))),
-              ),
-            ),
-            Expanded(
-              child: TextFormField(
-                controller: _nameController,
-                focusNode: _nameControllerFocus,
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
-                  errorStyle: const TextStyle(color: Colors.white, height: 0),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  errorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
-                ),
-                cursorColor: AppColor.whiteColor,
-                enableSuggestions: false,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    setState(() {
-                      _nameError = true;
-                      _errorMsg = 'Name cannot be empty';
-                    });
-                    return '';
-                  } else {
-                    setState(() {
-                      _nameError = false;
-                    });
-                  }
-                  return null;
-                },
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget _buildEmail() {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: _emailError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(7),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              onTap: () {
-                _emailControllerFocus.requestFocus();
-              },
-              child: Container(
-                height: 58,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 0.15),
-                ),
-                padding: const EdgeInsets.only(left: 21, right: 0),
-                child: Center(
-                    child: RichText(
-                        text: TextSpan(
-                            text: "Email",
-                            style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.75), fontSize: 15, fontWeight: FontWeight.w600),
-                            children: [
-                      TextSpan(
-                          text: ' *',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ))
-                    ]))),
-              ),
-            ),
-            Expanded(
-              child: TextFormField(
-                focusNode: _emailControllerFocus,
-                controller: _emailController,
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
-                  errorStyle: const TextStyle(color: Colors.white, height: 0),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  errorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
-                ),
-                cursorColor: AppColor.whiteColor,
-                enableSuggestions: false,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                validator: (value) {
-                  if (!value!.isValidEmail()) {
-                    setState(() {
-                      _emailError = true;
-                      _errorMsg = "Please enter a valid email ";
-                    });
-                    // return 'Invalid Email';
-                    return '';
-                  } else {
-                    setState(() {
-                      _emailError = false;
-                    });
-                  }
-                  return null;
-                },
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget _buildMobile() {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: _mobileError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(7),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              onTap: () {
-                _mobileControllerFocus.requestFocus();
-              },
-              child: Container(
-                height: 58,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 0.15),
-                ),
-                padding: const EdgeInsets.only(left: 21, right: 0),
-                child: Center(
-                    child: RichText(
-                        text: TextSpan(
-                            text: "Mobile",
-                            style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.75), fontSize: 15, fontWeight: FontWeight.w600),
-                            children: [
-                      TextSpan(
-                          text: ' *',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ))
-                    ]))),
-              ),
-            ),
-            Expanded(
-              child: TextFormField(
-                controller: _mobileController,
-                focusNode: _mobileControllerFocus,
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
-                  errorStyle: const TextStyle(color: Colors.white, height: 0),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  errorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
-                ),
-                cursorColor: AppColor.whiteColor,
-                enableSuggestions: false,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                ],
-                textInputAction: TextInputAction.next,
-                validator: (value) {
-                  if (!value!.isValidMobile()) {
-                    setState(() {
-                      _mobileError = true;
-                      _errorMsg = "Please enter a valid mobile number ";
-                    });
-                    // return 'Must have exactly 10 digits';
-                    return '';
-                  } else {
-                    setState(() {
-                      _mobileError = false;
-                    });
-                  }
-                  return null;
-                },
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    Widget _buildPassword() {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: _passwordError ? AppColor.whiteColor : Colors.transparent),
-          borderRadius: BorderRadius.circular(7),
-        ),
-        height: 58,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              onTap: () {
-                _passwordControllerFocus.requestFocus();
-              },
-              child: Container(
-                height: 58,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 0.15),
-                ),
-                padding: const EdgeInsets.only(left: 21, right: 0),
-                child: Center(
-                    child: RichText(
-                        text: TextSpan(
-                            text: "Password",
-                            style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.75), fontSize: 15, fontWeight: FontWeight.w600),
-                            children: [
-                      TextSpan(
-                          text: ' *',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ))
-                    ]))),
-              ),
-            ),
-            Expanded(
-              child: TextFormField(
-                controller: _passwordController,
-                focusNode: _passwordControllerFocus,
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color.fromRGBO(255, 255, 255, 0.15),
-                  errorStyle: const TextStyle(color: Colors.white, height: 0),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  errorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  hintStyle: Theme.of(context).textTheme.headline5?.apply(color: Colors.white54),
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _showPassword = !_showPassword;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 2, right: 10),
-                      child: Text(
-                        "Show",
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.button?.apply(color: AppColor.secondaryColor),
-                      ),
-                    ),
-                  ),
-                ),
-                obscureText: !_showPassword,
-                cursorColor: AppColor.whiteColor,
-                enableSuggestions: false,
-                keyboardType: TextInputType.visiblePassword,
-                textInputAction: TextInputAction.done,
-                validator: (value) {
-                  if (!value!.isValidPassword()) {
-                    setState(() {
-                      _passwordError = true;
-                      _errorMsg = "Please enter a valid password";
-                    });
-                    // return 'Must have exactly 10 digits';
-                    return '';
-                  } else {
-                    setState(() {
-                      _passwordError = false;
-                    });
-                  }
-                  return null;
-                },
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
     Widget buildSignUpButton() {
       return ElevatedButton(
         style: ButtonStyle(
@@ -480,14 +109,18 @@ class _SignUpState extends State<SignUp> {
           }
         },
         child: Container(
-          constraints: const BoxConstraints(
-            minHeight: 50.0,
-          ),
+          constraints: BoxConstraints(minHeight: 50.h),
           alignment: Alignment.center,
           child: Text(
             "Sign up",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
+            style: TextStyle(
+              fontFamily: kSfproRoundedFontFamily,
+              color: AppColor.whiteColor,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.normal,
+            ),
           ),
         ),
       );
@@ -504,17 +137,29 @@ class _SignUpState extends State<SignUp> {
           );
         },
         child: Container(
-          padding: const EdgeInsets.only(top: 10, bottom: 10),
+          padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "Already have an account?  ",
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor.withOpacity(0.7)),
+                style: TextStyle(
+                  fontFamily: kSfproDisplayFontFamily,
+                  color: AppColor.whiteColor,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 16.sp,
+                ),
               ),
               Text(
                 "Sign In",
-                style: Theme.of(context).textTheme.headline5?.apply(color: AppColor.whiteColor),
+                style: TextStyle(
+                  fontFamily: kSfproDisplayFontFamily,
+                  color: AppColor.secondaryColor,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 16.sp,
+                ),
               ),
             ],
           ),
@@ -523,20 +168,21 @@ class _SignUpState extends State<SignUp> {
     }
 
     Widget termAndCondition() {
-      TextStyle defaultStyle = const TextStyle(
+      TextStyle defaultStyle = TextStyle(
         color: Colors.white,
-        fontSize: 15.0,
-        fontFamily: "Sf-Regular",
+        fontSize: 15.sp,
+        fontFamily: kSfproRoundedFontFamily,
+        fontWeight: FontWeight.w300,
         letterSpacing: 0.2,
       );
-      TextStyle linkStyle = const TextStyle(
+      TextStyle linkStyle = TextStyle(
         color: AppColor.secondaryColor,
-        fontSize: 15.0,
-        fontFamily: "Sf-Bold",
+        fontSize: 15.sp,
+        fontFamily: kSfproRoundedFontFamily,
+        fontWeight: FontWeight.w300,
         letterSpacing: 0.2,
       );
-      return Padding(
-        padding: const EdgeInsets.only(left: 60, right: 60),
+      return Center(
         child: RichText(
           text: TextSpan(
             style: defaultStyle,
@@ -575,25 +221,30 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
         backgroundColor: AppColor.primaryColor,
         appBar: AppBar(
+          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
           backgroundColor: AppColor.primaryColor,
           elevation: 0.0,
-          leadingWidth: 150,
+          leadingWidth: 80.w,
           leading: InkWell(
             onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => Login()),
-              );
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
             },
             child: Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 20, right: 3),
-                  child: Icon(Icons.arrow_back, color: Colors.white),
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
+                SizedBox(width: 6.w),
                 Text(
                   'Back',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
+                  ),
                 ),
               ],
             ),
@@ -606,59 +257,170 @@ class _SignUpState extends State<SignUp> {
             valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor),
           ),
           child: Container(
-            padding: const EdgeInsets.only(left: 20, right: 20),
+            padding: EdgeInsets.only(left: 16.w, right: 16.w),
             child: SingleChildScrollView(
               child: Form(
                 key: _signupFormKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
                     Text(
                       "Sign Up",
-                      style: Theme.of(context).textTheme.headline1?.apply(color: AppColor.whiteColor),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      padding: const EdgeInsets.only(right: 36),
-                      child: Text(
-                        "Create an account so you can order your favorite food even faster",
-                        style: Theme.of(context).textTheme.bodyText1?.apply(color: AppColor.whiteColor),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    _buildName(),
-                    const SizedBox(height: 20),
-                    _buildEmail(),
-                    const SizedBox(height: 20),
-                    _buildMobile(),
-                    const SizedBox(height: 20),
-                    _buildPassword(),
-                    const SizedBox(height: 10),
-                    const Text(
-                      "Your password must be 8 to 16 characters long & contains mix of upper & lower case letters, numbers & symbols.",
                       style: TextStyle(
-                        fontFamily: 'Sfpro-Rounded-Light',
+                        fontFamily: kSfproRoundedFontFamily,
                         color: AppColor.whiteColor,
-                        fontWeight: FontWeight.w300,
+                        fontSize: 34.sp,
+                        fontWeight: FontWeight.w700,
                         fontStyle: FontStyle.normal,
-                        fontSize: 15,
-                        letterSpacing: -0.2,
                       ),
                     ),
-                    const SizedBox(height: 50),
-                    buildSignUpButton(),
-                    const SizedBox(height: 20),
-                    Center(
+                    SizedBox(height: 10.h),
+                    Container(
+                      padding: EdgeInsets.only(right: 15.w),
                       child: Text(
-                        "By signing up, you're agree to our  ",
-                        style: Theme.of(context).textTheme.headline3?.apply(color: AppColor.whiteColor),
+                        "Sign up for an account so you can do business like you never have before",
+                        style: TextStyle(
+                          fontFamily: kSfproRoundedFontFamily,
+                          color: AppColor.whiteColor,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w300,
+                          fontStyle: FontStyle.normal,
+                          letterSpacing: -0.5,
+                        ),
                       ),
                     ),
-                    termAndCondition(),
-                    const SizedBox(height: 30),
-                    _buildAlreadAccount(),
-                    const SizedBox(height: 30),
+                    SizedBox(height: 39.h),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomTextFormFieldBox(
+                            formFieldType: FormFieldType.name,
+                            focusNode: _nameControllerFocus,
+                            label: 'Name',
+                            textEditingController: _nameController,
+                            isError: _nameError,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                setState(() {
+                                  _nameError = true;
+                                  _errorMsg = 'Name cannot be empty';
+                                });
+                                return '';
+                              } else {
+                                setState(() {
+                                  _nameError = false;
+                                });
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 9.h),
+                          CustomTextFormFieldBox(
+                            formFieldType: FormFieldType.email,
+                            focusNode: _emailControllerFocus,
+                            label: 'Email',
+                            textEditingController: _emailController,
+                            isError: _emailError,
+                            validator: (value) {
+                              if (!value!.isValidEmail()) {
+                                setState(() {
+                                  _emailError = true;
+                                  _errorMsg = "Please enter a valid email ";
+                                });
+                                // return 'Invalid Email';
+                                return '';
+                              } else {
+                                setState(() {
+                                  _emailError = false;
+                                });
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 9.h),
+                          CustomTextFormFieldBox(
+                            formFieldType: FormFieldType.mobile,
+                            focusNode: _mobileControllerFocus,
+                            label: 'Mobile',
+                            textEditingController: _mobileController,
+                            isError: _mobileError,
+                            validator: (value) {
+                              if (!value!.isValidMobile()) {
+                                setState(() {
+                                  _mobileError = true;
+                                  _errorMsg = "Please enter a valid mobile number ";
+                                });
+                                // return 'Must have exactly 10 digits';
+                                return '';
+                              } else {
+                                setState(() {
+                                  _mobileError = false;
+                                });
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 9.h),
+                          CustomTextFormFieldBox(
+                            formFieldType: FormFieldType.password,
+                            focusNode: _passwordControllerFocus,
+                            label: 'Password',
+                            textEditingController: _passwordController,
+                            isError: _passwordError,
+                            validator: (value) {
+                              if (!value!.isValidPassword()) {
+                                setState(() {
+                                  _passwordError = true;
+                                  _errorMsg = "Please enter a valid password";
+                                });
+                                // return 'Must have exactly 10 digits';
+                                return '';
+                              } else {
+                                setState(() {
+                                  _passwordError = false;
+                                });
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 13.h),
+                          Text(
+                            "Your password must be 8 to 16 characters long & contains mix of upper & lower case letters, numbers & symbols.",
+                            style: TextStyle(
+                              fontFamily: kSfproRoundedFontFamily,
+                              color: AppColor.whiteColor,
+                              fontWeight: FontWeight.w300,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 13.sp,
+                              letterSpacing: -0.2,
+                            ),
+                          ),
+                          SizedBox(height: 49.h),
+                          buildSignUpButton(),
+                          SizedBox(height: 16.h),
+                          Center(
+                            child: Text(
+                              "By signing up, you're agree to our",
+                              style: TextStyle(
+                                fontFamily: kSfproRoundedFontFamily,
+                                color: AppColor.whiteColor,
+                                fontWeight: FontWeight.w300,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 14.sp,
+                                letterSpacing: -0.5,
+                              ),
+                            ),
+                          ),
+                          termAndCondition(),
+                          SizedBox(height: 33.h),
+                          _buildAlreadAccount(),
+                          const SizedBox(height: 30),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -791,3 +553,168 @@ class _SignUpState extends State<SignUp> {
   }
 }
 // keytool -list -v -keystore ~/.android/debug.keystore
+
+enum FormFieldType { name, email, mobile, password }
+
+class CustomTextFormFieldBox extends StatefulWidget {
+  final FormFieldType formFieldType;
+  final bool isError;
+  final FocusNode focusNode;
+  final String label;
+  final TextEditingController textEditingController;
+  final String? Function(String?)? validator;
+  const CustomTextFormFieldBox({
+    super.key,
+    required this.formFieldType,
+    required this.focusNode,
+    required this.label,
+    required this.textEditingController,
+    required this.isError,
+    required this.validator,
+  });
+
+  @override
+  State<CustomTextFormFieldBox> createState() => _CustomTextFormFieldBoxState();
+}
+
+class _CustomTextFormFieldBoxState extends State<CustomTextFormFieldBox> {
+  late bool _showPassword;
+
+  @override
+  void initState() {
+    super.initState();
+    _showPassword = false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: widget.isError ? AppColor.whiteColor : Colors.transparent),
+        borderRadius: BorderRadius.circular(5),
+        color: AppColor.whiteColor.withOpacity(0.25),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            onTap: () {
+              widget.focusNode.requestFocus();
+            },
+            child: Container(
+              height: 58,
+              padding: EdgeInsets.only(
+                left: 15.w,
+                right: widget.formFieldType == FormFieldType.email
+                    ? 35.w
+                    : widget.formFieldType == FormFieldType.mobile
+                        ? 27.w
+                        : widget.formFieldType == FormFieldType.password
+                            ? 9.w
+                            : 33.w,
+              ),
+              child: Center(
+                child: RichText(
+                    text: TextSpan(
+                        text: widget.label,
+                        style: TextStyle(
+                          color: AppColor.whiteColor.withOpacity(0.75),
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: kSfproRoundedFontFamily,
+                        ),
+                        children: const [
+                      TextSpan(
+                          text: ' *',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ))
+                    ])),
+              ),
+            ),
+          ),
+          Expanded(
+            child: TextFormField(
+              controller: widget.textEditingController,
+              focusNode: widget.focusNode,
+              style: TextStyle(
+                fontFamily: kSfproRoundedFontFamily,
+                color: AppColor.whiteColor,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.normal,
+              ),
+              decoration: InputDecoration(
+                errorStyle: const TextStyle(color: Colors.white, height: 0),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.transparent,
+                  ),
+                ),
+                errorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.transparent,
+                  ),
+                ),
+                focusedErrorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.transparent,
+                  ),
+                ),
+                hintStyle: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: Colors.white54,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                ),
+                suffixIcon: widget.formFieldType == FormFieldType.password
+                    ? GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _showPassword = !_showPassword;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 14, bottom: 2, right: 10),
+                          child: Text(
+                            "Show",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: kSfproRoundedFontFamily,
+                              color: AppColor.secondaryColor,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                        ),
+                      )
+                    : null,
+              ),
+              cursorColor: AppColor.whiteColor,
+              enableSuggestions: false,
+              obscureText: widget.formFieldType == FormFieldType.password ? !_showPassword : false,
+              keyboardType: widget.formFieldType == FormFieldType.email
+                  ? TextInputType.emailAddress
+                  : widget.formFieldType == FormFieldType.mobile
+                      ? TextInputType.number
+                      : widget.formFieldType == FormFieldType.password
+                          ? TextInputType.visiblePassword
+                          : TextInputType.text,
+              inputFormatters: widget.formFieldType == FormFieldType.mobile
+                  ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))]
+                  : null,
+              textInputAction:
+                  widget.formFieldType == FormFieldType.password ? TextInputAction.done : TextInputAction.next,
+              validator: widget.validator,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

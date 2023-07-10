@@ -1,7 +1,10 @@
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:conet/src/ui/auth/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IntroVerify extends StatefulWidget {
   const IntroVerify({super.key});
@@ -13,26 +16,30 @@ class IntroVerify extends StatefulWidget {
 class _IntroVerifyState extends State<IntroVerify> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.primaryColor,
-      body: Column(
-        children: [
-          const Spacer(),
-          Center(
-            child: GestureDetector(
-              child: Image.asset(
-                "assets/images/screen4.png",
-                fit: BoxFit.cover,
-                width: displayWidth(context) * 0.84,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light, //for status bar colors
+      //since there is no appBar used here so to give proper colors to the status bar, we used the AnnotatedRegion
+      child: Scaffold(
+        backgroundColor: AppColor.primaryColor,
+        body: Column(
+          children: [
+            const Spacer(flex: 2),
+            Center(
+              child: GestureDetector(
+                child: Image.asset(
+                  "assets/images/screen4.png",
+                  fit: BoxFit.cover,
+                  width: displayWidth(context) * 0.84,
+                ),
               ),
             ),
-          ),
-          const Spacer(),
-          introverifyBody(context),
-          SizedBox(height: MediaQuery.of(context).padding.bottom + 20),
-          verifyBtn(context),
-          SizedBox(height: MediaQuery.of(context).padding.bottom + 20),
-        ],
+            const Spacer(flex: 1),
+            introverifyBody(context),
+            const Spacer(flex: 1),
+            verifyBtn(context),
+            SizedBox(height: MediaQuery.of(context).padding.bottom + 30),
+          ],
+        ),
       ),
     );
   }
@@ -55,14 +62,20 @@ Widget verifyBtn(BuildContext context) {
         );
       },
       child: Container(
-        constraints: const BoxConstraints(
-          minHeight: 50.0,
+        constraints: BoxConstraints(
+          minHeight: 50.0.h,
         ),
         alignment: Alignment.center,
         child: Text(
-          "Continue",
+          "Verify Now",
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.button!.apply(color: AppColor.whiteColor),
+          style: TextStyle(
+            fontFamily: kSfproRoundedFontFamily,
+            color: AppColor.whiteColor,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w500,
+            fontStyle: FontStyle.normal,
+          ),
         ),
       ),
     ),
@@ -75,16 +88,29 @@ Widget introverifyBody(context) {
       Center(
         child: Text(
           "Welcome to the KONET App",
-          style: Theme.of(context).textTheme.headline2!.apply(color: AppColor.whiteColor),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: kSfproRoundedFontFamily,
+            color: AppColor.whiteColor,
+            fontSize: 20.sp,
+            fontWeight: FontWeight.w700,
+            fontStyle: FontStyle.normal,
+          ),
         ),
       ),
-      const SizedBox(height: 16),
-      SizedBox(
-        width: displayWidth(context) * 0.8,
-        child: const Text(
-            "Connect with your contacts through our KONET WEB feature and conduct business like never before",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 15.0, color: AppColor.whiteColor)),
+      SizedBox(height: 14.h),
+      Center(
+        child: Text(
+          "Connect with your contacts through\n our KONET WEB feature and conduct\n business like never before",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: kSfproDisplayFontFamily,
+            color: AppColor.whiteColor,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w400,
+            fontStyle: FontStyle.normal,
+          ),
+        ),
       )
     ],
   );

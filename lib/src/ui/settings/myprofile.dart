@@ -7,9 +7,11 @@ import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/models/imageUploadModel.dart';
 import 'package:conet/src/ui/contact/editProfile.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
@@ -18,12 +20,12 @@ import 'package:another_carousel_pro/another_carousel_pro.dart';
 import '../utils.dart';
 
 class MyProfile extends StatefulWidget {
-  String? phoneNumber;
+  final String? phoneNumber;
 
-  MyProfile(this.phoneNumber, {Key? key}) : super(key: key);
+  const MyProfile(this.phoneNumber, {Key? key}) : super(key: key);
 
   @override
-  _MyProfileState createState() => _MyProfileState();
+  State<MyProfile> createState() => _MyProfileState();
 }
 
 class _MyProfileState extends State<MyProfile> {
@@ -170,7 +172,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget keywordbody() {
       return Container(
         width: double.infinity,
-        margin: const EdgeInsets.only(left: 22.0, right: 22.0),
+        margin: EdgeInsets.only(left: 22.0.w, right: 22.0.w),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           border: Border.all(
@@ -182,9 +184,14 @@ class _MyProfileState extends State<MyProfile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Keywords",
+              "Keyword",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText2!.apply(color: const Color.fromRGBO(135, 139, 149, 1)),
+              style: TextStyle(
+                  fontSize: 13.sp,
+                  color: AppColor.placeholder,
+                  fontFamily: kSfproRoundedFontFamily,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w300),
             ),
             buildChips(),
           ],
@@ -195,18 +202,17 @@ class _MyProfileState extends State<MyProfile> {
     Widget selectButton() {
       return Row(
         children: [
-          const SizedBox(width: 22),
-          Expanded(
+          SizedBox(width: 22.w),
+          Container(
+            height: 37.h,
+            width: 158.w,
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all<Color>(personalTab ? AppColor.accentColor : AppColor.whiteColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                    side: const BorderSide(
-                      color: AppColor.accentColor,
-                      width: 1,
-                    ),
+                    side: BorderSide(color: personalTab ? AppColor.accentColor : AppColor.secondaryColor),
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
@@ -218,15 +224,18 @@ class _MyProfileState extends State<MyProfile> {
               },
               child: Text(
                 'Personal',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .apply(color: personalTab ? AppColor.whiteColor : AppColor.accentColor),
+                style: TextStyle(
+                    color: personalTab ? AppColor.whiteColor : AppColor.secondaryColor,
+                    fontSize: 15.sp,
+                    fontFamily: kSfCompactDisplayFontFamily,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),
-          const SizedBox(width: 15),
-          Expanded(
+          SizedBox(width: 15.w),
+          Container(
+            height: 37.h,
+            width: 158.w,
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
@@ -251,23 +260,25 @@ class _MyProfileState extends State<MyProfile> {
               },
               child: Text(
                 'Professional',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .apply(color: personalTab ? AppColor.secondaryColor : AppColor.whiteColor),
+                style: TextStyle(
+                    color: personalTab ? AppColor.secondaryColor : AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontFamily: kSfCompactDisplayFontFamily,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),
-          const SizedBox(width: 22),
+          SizedBox(width: 21.w),
         ],
       );
     }
 
     Widget _buildMobileNumber() {
       return TextFormFieldContact(
-        hintText: "Mobile number",
-        padding: 14.0,
-        margin: 22.0,
+        textColor: AppColor.blackColor,
+        hintText: " Phone Number",
+        padding: 16.0.w,
+        margin: 22.0.w,
         readonly: true,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -279,8 +290,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildSecondaryPhoneNumber() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Secondary Phone Number",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         enable: false,
@@ -294,8 +306,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildEmailId() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Email",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -308,8 +321,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildDob() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "DOB",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -321,8 +335,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildAddress() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Address",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -335,8 +350,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildCountry() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Country",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -349,8 +365,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildState() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "State",
-        padding: 14.0,
+        padding: 16.0,
         readonly: true,
         margin: 22.0,
         textInputType: TextInputType.text,
@@ -363,8 +380,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildCity() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "City",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -377,8 +395,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildPincode() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Pincode",
-        padding: 14.0,
+        padding: 16.0,
         readonly: true,
         margin: 22.0,
         textInputType: TextInputType.phone,
@@ -389,48 +408,49 @@ class _MyProfileState extends State<MyProfile> {
       );
     }
 
-    // Widget _buildKeyword() {
-    //   return Container(
-    //     margin: EdgeInsets.only(left: 22.0, right: 22.0),
-    //     decoration: BoxDecoration(
-    //       border: Border.all(
-    //         color: Color.fromRGBO(232, 232, 232, 1),
-    //       ),
-    //       borderRadius: BorderRadius.circular(7),
-    //     ),
-    //     child: TextFormField(
-    //       style: Theme.of(context).textTheme.bodyText2!.apply(
-    //             color: AppColor.secondaryColor,
-    //           ),
-    //       decoration: InputDecoration(
-    //         labelText: "Keyword",
-    //         filled: true,
-    //         fillColor: AppColor.whiteColor,
-    //         focusedBorder: InputBorder.none,
-    //         hintStyle: Theme.of(context).textTheme.bodyText2!.apply(
-    //               color: Color(0xFF878B95),
-    //             ),
-    //         labelStyle: Theme.of(context).textTheme.headline6!.apply(
-    //               color: Color.fromRGBO(135, 139, 149, 1),
-    //             ),
-    //       ),
-    //       readOnly: true,
-    //       cursorColor: AppColor.secondaryColor,
-    //       validator: (value) {
-    //         return null;
-    //       },
-    //       controller: _personalKeyword,
-    //       keyboardType: TextInputType.multiline,
-    //       minLines: 2,
-    //       maxLines: 5,
-    //     ),
-    //   );
-    // }
+    Widget _buildKeyword() {
+      return Container(
+        margin: EdgeInsets.only(left: 22.0, right: 22.0),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Color.fromRGBO(232, 232, 232, 1),
+          ),
+          borderRadius: BorderRadius.circular(7),
+        ),
+        child: TextFormField(
+          style: Theme.of(context).textTheme.bodyText2!.apply(
+                color: AppColor.secondaryColor,
+              ),
+          decoration: InputDecoration(
+            labelText: "Keyword",
+            filled: true,
+            fillColor: AppColor.whiteColor,
+            focusedBorder: InputBorder.none,
+            hintStyle: Theme.of(context).textTheme.bodyText2!.apply(
+                  color: Color(0xFF878B95),
+                ),
+            labelStyle: Theme.of(context).textTheme.headline6!.apply(
+                  color: Color.fromRGBO(135, 139, 149, 1),
+                ),
+          ),
+          readOnly: true,
+          cursorColor: AppColor.secondaryColor,
+          validator: (value) {
+            return null;
+          },
+          controller: _personalKeyword,
+          keyboardType: TextInputType.multiline,
+          minLines: 2,
+          maxLines: 5,
+        ),
+      );
+    }
 
     Widget _buildLandLine() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Landline Number",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.number,
@@ -460,8 +480,8 @@ class _MyProfileState extends State<MyProfile> {
             );
           },
           child: Container(
-            constraints: const BoxConstraints(
-              minHeight: 50.0,
+            constraints: BoxConstraints(
+              minHeight: 50.0.h,
             ),
             alignment: Alignment.center,
             child: Text(
@@ -477,8 +497,9 @@ class _MyProfileState extends State<MyProfile> {
     //Professional
     Widget _buildOccupation() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Occupation",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -491,8 +512,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildCompany() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Company",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -505,8 +527,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildCompanyWebsite() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Company Website",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -519,8 +542,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildProfessionalSchool() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "School / University",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -533,8 +557,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildGrade() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Grade",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -546,8 +571,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildworknature() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Work Nature",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -559,8 +585,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildDesignation() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Designation",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -572,8 +599,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildworkFacebook() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Facebook",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -585,8 +613,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildworkInstagram() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Instagram",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -598,8 +627,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildworkTwitter() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Twitter",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -611,8 +641,9 @@ class _MyProfileState extends State<MyProfile> {
 
     Widget _buildworkSkype() {
       return TextFormFieldContact(
+        textColor: AppColor.blackColor,
         hintText: "Skype",
-        padding: 14.0,
+        padding: 16.0,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -625,7 +656,7 @@ class _MyProfileState extends State<MyProfile> {
     entreprenerurItemNew(int i) {
       return Padding(
         // padding: EdgeInsets.all(16),
-        padding: const EdgeInsets.only(left: 25.0, right: 20, top: 30, bottom: 16),
+        padding: EdgeInsets.only(left: 25.0.w, right: 20.w, top: 30.h, bottom: 16.h),
         child: Material(
           color: AppColor.whiteColor,
           clipBehavior: Clip.antiAlias,
@@ -636,16 +667,20 @@ class _MyProfileState extends State<MyProfile> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Company Profile ${i + 1}",
-                    style: Theme.of(context).textTheme.headline5!.apply(color: AppColor.bottomUnselectItemColor),
-                  ),
+                  Text("Company Profile ${i + 1}",
+                      style: TextStyle(
+                          color: AppColor.Companyprofilenumber,
+                          fontSize: 15.sp,
+                          fontFamily: kSfCompactDisplayFontFamily,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w600)),
                 ],
               ),
               Container(
-                height: 48,
-                padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-                margin: const EdgeInsets.only(top: 20, left: 10.0, right: 10.0),
+                height: 48.h,
+                width: 331.w,
+                padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
+                margin: EdgeInsets.only(top: 20.h, left: 5.0.w, right: 5.0.w),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: const Color.fromRGBO(232, 232, 232, 1),
@@ -654,13 +689,19 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 child: TextFormField(
                   enabled: false,
-                  style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.secondaryColor),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.secondaryColor),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Company",
-                    labelStyle: Theme.of(context).textTheme.headline6!.apply(
-                          color: const Color.fromRGBO(135, 139, 149, 1),
-                        ),
+                    labelStyle: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: kSfproRoundedFontFamily,
+                        fontWeight: FontWeight.w300,
+                        color: AppColor.placeholder),
                     filled: true,
                     fillColor: AppColor.whiteColor,
                     errorBorder: const OutlineInputBorder(
@@ -679,11 +720,12 @@ class _MyProfileState extends State<MyProfile> {
                   },
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 10.h),
               Container(
-                height: 48,
-                padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-                margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                height: 48.h,
+                width: 331.w,
+                padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
+                margin: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: const Color.fromRGBO(232, 232, 232, 1),
@@ -692,13 +734,19 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 child: TextFormField(
                   enabled: false,
-                  style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.secondaryColor),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.secondaryColor),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
                     labelText: "Website",
-                    labelStyle: Theme.of(context).textTheme.headline6!.apply(
-                          color: const Color.fromRGBO(135, 139, 149, 1),
-                        ),
+                    labelStyle: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: kSfproRoundedFontFamily,
+                        fontWeight: FontWeight.w300,
+                        color: AppColor.placeholder),
                     filled: true,
                     fillColor: AppColor.whiteColor,
                     errorBorder: const OutlineInputBorder(
@@ -717,11 +765,12 @@ class _MyProfileState extends State<MyProfile> {
                   },
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 10.h),
               Container(
-                height: 48,
-                padding: const EdgeInsets.only(left: 14.0, right: 14.0),
-                margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                height: 48.h,
+                width: 331.w,
+                padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
+                margin: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: const Color.fromRGBO(232, 232, 232, 1),
@@ -729,14 +778,20 @@ class _MyProfileState extends State<MyProfile> {
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: TextFormField(
-                  style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.secondaryColor),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.secondaryColor),
                   enabled: false,
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+                    contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
                     labelText: 'Work Nature',
-                    labelStyle: Theme.of(context).textTheme.headline6!.apply(
-                          color: const Color.fromRGBO(135, 139, 149, 1),
-                        ),
+                    labelStyle: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: kSfproRoundedFontFamily,
+                        fontWeight: FontWeight.w300,
+                        color: AppColor.placeholder),
                     filled: true,
                     fillColor: AppColor.whiteColor,
                     errorBorder: const OutlineInputBorder(
@@ -755,7 +810,7 @@ class _MyProfileState extends State<MyProfile> {
                   },
                 ),
               ),
-              const SizedBox(height: 18),
+              SizedBox(height: 18.h),
               Row(
                 children: [
                   Visibility(
@@ -765,8 +820,8 @@ class _MyProfileState extends State<MyProfile> {
                         children: [
                           Container(
                             padding: const EdgeInsets.all(8),
-                            width: 114,
-                            height: 102,
+                            width: 114.w,
+                            height: 102.h,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: (entreprenerurList[i].images!.isNotEmpty
@@ -823,9 +878,9 @@ class _MyProfileState extends State<MyProfile> {
                                           width: 114,
                                           height: 102,
                                         )
-                                      : const SizedBox(
-                                          width: 114,
-                                          height: 102,
+                                      : SizedBox(
+                                          width: 114.w,
+                                          height: 102.h,
                                         )),
                             ),
                           )
@@ -840,8 +895,8 @@ class _MyProfileState extends State<MyProfile> {
                         children: [
                           Container(
                             padding: const EdgeInsets.all(8),
-                            width: 114,
-                            height: 102,
+                            width: 114.w,
+                            height: 102.h,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: (entreprenerurList[i].images!.length >= 2
@@ -894,9 +949,9 @@ class _MyProfileState extends State<MyProfile> {
                                           width: 114,
                                           height: 102,
                                         )
-                                      : const SizedBox(
-                                          width: 114,
-                                          height: 102,
+                                      : SizedBox(
+                                          width: 114.w,
+                                          height: 102.h,
                                         )),
                             ),
                           ),
@@ -965,9 +1020,9 @@ class _MyProfileState extends State<MyProfile> {
                                           width: 114,
                                           height: 102,
                                         )
-                                      : const SizedBox(
-                                          width: 114,
-                                          height: 102,
+                                      : SizedBox(
+                                          width: 114.w,
+                                          height: 102.h,
                                         )),
                             ),
                           ),
@@ -977,7 +1032,7 @@ class _MyProfileState extends State<MyProfile> {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 10.h),
             ],
           ),
         ),
@@ -988,38 +1043,41 @@ class _MyProfileState extends State<MyProfile> {
       return Column(
         children: personalTab
             ? [
-                const SizedBox(height: 26),
+                SizedBox(height: 26.h),
                 _buildMobileNumber(),
-                _personalSecondaryNumber.text != "" ? const SizedBox(height: 16) : Container(),
+                _personalSecondaryNumber.text != "" ? SizedBox(height: 16.h) : Container(),
                 _personalSecondaryNumber.text != "" ? _buildSecondaryPhoneNumber() : Container(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildEmailId(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildDob(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildAddress(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildCity(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildState(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildCountry(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildPincode(),
-                // SizedBox(height: 16),
-                // _buildKeyword(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
+                Visibility(
+                  visible: _values.isNotEmpty,
+                  child: keywordbody(),
+                ),
+                SizedBox(height: 16.h),
                 _buildLandLine(),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
                 _buildPersonalUpdateButton(),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
               ]
             : [
-                const SizedBox(height: 26),
+                SizedBox(height: 26),
                 _buildOccupation(),
                 Visibility(
                   visible: _companyVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _companyVisible,
@@ -1027,7 +1085,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 Visibility(
                   visible: _companyWebsiteVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _companyWebsiteVisible,
@@ -1035,7 +1093,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 Visibility(
                   visible: _studentSchoolVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _studentSchoolVisible,
@@ -1043,7 +1101,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 Visibility(
                   visible: _studentGradeVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _studentGradeVisible,
@@ -1051,7 +1109,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 Visibility(
                   visible: _companyWorkNatureVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _companyWorkNatureVisible,
@@ -1059,35 +1117,35 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 Visibility(
                   visible: _designationVisible,
-                  child: const SizedBox(height: 16),
+                  child: SizedBox(height: 16.h),
                 ),
                 Visibility(
                   visible: _designationVisible,
                   child: _buildDesignation(),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildworkFacebook(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildworkInstagram(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildworkTwitter(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildworkSkype(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 Visibility(
                   visible: _enterpreneurForms,
                   child: Container(
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics: NeverScrollableScrollPhysics(),
                       addAutomaticKeepAlives: true,
                       itemCount: entreprenerurList.length,
                       itemBuilder: (BuildContext ctxt, int i) => entreprenerurItemNew(i),
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: 30.h),
               ],
       );
     }
@@ -1095,14 +1153,14 @@ class _MyProfileState extends State<MyProfile> {
     Widget bodyContent() {
       return Column(
         children: [
-          const SizedBox(height: 80),
-          Text(_personalName.text ?? "Unknown Number", style: Theme.of(context).textTheme.headline2),
-          const SizedBox(height: 22),
-          Visibility(
-            visible: _values.isNotEmpty,
-            child: keywordbody(),
+          Padding(
+            padding: EdgeInsets.only(top: 77.h, bottom: 24.h),
+            child: Text(_personalName.text ?? "Unknown Number",
+                style: TextStyle(fontSize: 20.sp, fontFamily: kSfproRoundedFontFamily, fontWeight: FontWeight.w600)),
           ),
-          const SizedBox(height: 16),
+          SizedBox(
+            height: 10.h,
+          ),
           selectButton(),
           _buildformBody(),
         ],
@@ -1116,22 +1174,24 @@ class _MyProfileState extends State<MyProfile> {
           Column(
             children: <Widget>[
               Container(
-                height: 100.0,
-                color: AppColor.primaryColor,
+                decoration: BoxDecoration(
+                  color: AppColor.primaryColor,
+                ),
+                height: 56.h,
               ),
               bodyContent()
             ],
           ),
           Positioned(
-            top: 50.0,
+            top: 0.h,
             child: Stack(
               alignment: Alignment.center,
               children: [
                 SizedBox(
-                  width: 100,
-                  height: 100,
+                  width: 110.w,
+                  height: 110.w,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100.0),
+                    borderRadius: BorderRadius.circular(100.0.w),
                     child: FadeInImage.assetNetwork(
                       placeholder: "assets/images/profile.png",
                       image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
@@ -1155,32 +1215,42 @@ class _MyProfileState extends State<MyProfile> {
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
+        leadingWidth: 80.w,
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context);
           },
-          child: Row(
-            children: [
-              const Icon(
-                Icons.arrow_back_sharp,
-                color: AppColor.whiteColor,
-              ),
-              const SizedBox(
-                width: 2,
-              ),
-              Text(
-                "Back",
-                style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.whiteColor),
-              )
-            ],
+          child: Container(
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: const Icon(Icons.arrow_back, color: Colors.white),
+                ),
+                SizedBox(width: 6.w),
+                Text(
+                  'Back',
+                  style: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         centerTitle: true,
-        title: Text(
-          "Contact",
-          style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.whiteColor),
-        ),
+        title: Text("Contact",
+            style: TextStyle(
+                fontSize: 17.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w500,
+                color: Colors.white)),
         actions: [
           TextButton(
             // style: ButtonStyle(
@@ -1201,10 +1271,12 @@ class _MyProfileState extends State<MyProfile> {
                 setState(() {});
               });
             },
-            child: Text(
-              "Edit",
-              style: Theme.of(context).textTheme.bodyText1!.apply(color: AppColor.whiteColor),
-            ),
+            child: Text("Edit",
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white)),
           ),
         ],
       ),

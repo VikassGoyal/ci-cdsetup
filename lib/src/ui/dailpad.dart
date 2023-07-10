@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
+import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -140,9 +141,10 @@ class _DialPadCustomState extends State<DialPadCustom> {
               scrollPhysics: const BouncingScrollPhysics(),
               readOnly: true,
               style: TextStyle(
-                fontFamily: 'Sfpro-Rounded-Semibold',
+                fontFamily: kSfproRoundedFontFamily,
                 inherit: true,
                 color: AppColor.secondaryColor,
+                fontWeight: FontWeight.w600,
                 fontSize: sizeFactor / 2,
               ),
               keyboardType: TextInputType.phone,
@@ -157,9 +159,10 @@ class _DialPadCustomState extends State<DialPadCustom> {
                   child: Text(
                     _contactName,
                     style: const TextStyle(
-                      fontFamily: 'Sfpro-Rounded-Medium',
+                      fontFamily: kSfproRoundedFontFamily,
                       inherit: true,
                       fontSize: 16,
+                      fontWeight: FontWeight.w500,
                       color: AppColor.blackColor,
                     ),
                   ),
@@ -408,17 +411,19 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
                               child: Text(
                                 "${widget.title}",
                                 style: TextStyle(
-                                    fontFamily: 'Sfpro-Rounded-Medium',
+                                    fontFamily: kSfproRoundedFontFamily,
                                     inherit: true,
                                     fontSize: sizeFactor / 3,
+                                    fontWeight: FontWeight.w500,
                                     color: widget.textColor ?? Colors.white),
                               ),
                             ),
                             Text(
                               "${widget.subtitle}",
                               style: TextStyle(
-                                  fontFamily: 'Sfpro-Rounded-Medium',
+                                  fontFamily: kSfproRoundedFontFamily,
                                   inherit: true,
+                                  fontWeight: FontWeight.w500,
                                   color: widget.textColor ?? Colors.white),
                             )
                           ],
@@ -428,11 +433,12 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
                           child: Text(
                             "${widget.title}",
                             style: TextStyle(
-                              fontFamily: 'Sfpro-Rounded-Medium',
+                              fontFamily: kSfproRoundedFontFamily,
                               inherit: true,
                               fontSize: widget.title == "*" || widget.title == "#" && widget.subtitle == null
                                   ? screenSize.height * 0.0762069
                                   : sizeFactor / 2,
+                              fontWeight: FontWeight.w500,
                               color: widget.textColor ?? Colors.white,
                             ),
                           ),

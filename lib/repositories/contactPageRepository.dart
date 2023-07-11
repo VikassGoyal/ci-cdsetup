@@ -39,12 +39,14 @@ class ContactPageRepository {
     allContacts = [];
     await databaseHelper.trancateAllContacts();
     var response = await _apiClient.getallcontact();
+    print('is getallcontact response data null : ${response['data'] == null}');
+    if (response['data'] != null) {
+      allContacts = List<AllContacts>.from(response['data'].map((item) => AllContacts.fromJson(item)));
 
-    allContacts = List<AllContacts>.from(response['data'].map((item) => AllContacts.fromJson(item)));
-
-    allContacts.forEach((element) async {
-      await databaseHelper.insertallContact(element);
-    });
+      allContacts.forEach((element) async {
+        await databaseHelper.insertallContact(element);
+      });
+    }
   }
 
   getLocalData() async {

@@ -56,59 +56,63 @@ class _LoginState extends State<Login> {
     }
 
     Widget _buildPassword() {
-      return TextFormField(
-        controller: _passwordController,
-        focusNode: _passwordControllerFocus,
-        style: TextStyle(
-          fontFamily: kSfproRoundedFontFamily,
-          color: AppColor.whiteColor,
-          fontSize: 15.sp,
-          fontWeight: FontWeight.w600,
-          fontStyle: FontStyle.normal,
-        ),
-        inputFormatters: [
-          FilteringTextInputFormatter.deny(RegExp(r'\s')),
-        ],
-        decoration: InputDecoration(
-          hintText: "Password",
-          filled: true,
-          fillColor: AppColor.whiteColor.withOpacity(0.15),
-          border: InputBorder.none,
-          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: AppColor.redColor),
-          ),
-          focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-          suffixIcon: GestureDetector(
-            onTap: () {
-              setState(() {
-                _showPassword = !_showPassword;
-              });
-            },
-            child: Icon(
-              _showPassword ? Icons.visibility : Icons.visibility_off,
-              color: Colors.white54,
-            ),
-          ),
-          hintStyle: TextStyle(
-            fontFamily: kSfCompactDisplayFontFamily,
-            color: AppColor.whiteColor.withOpacity(0.75),
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(3),
+        child: TextFormField(
+          controller: _passwordController,
+          focusNode: _passwordControllerFocus,
+          style: TextStyle(
+            fontFamily: kSfproRoundedFontFamily,
+            color: AppColor.whiteColor,
             fontSize: 15.sp,
             fontWeight: FontWeight.w600,
             fontStyle: FontStyle.normal,
           ),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(RegExp(r'\s')),
+          ],
+          decoration: InputDecoration(
+            hintText: "Password",
+            filled: true,
+            fillColor: AppColor.whiteColor.withOpacity(0.15),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(vertical: 18.0.h, horizontal: 10.w),
+            focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+            errorBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: AppColor.redColor),
+            ),
+            focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+            suffixIcon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _showPassword = !_showPassword;
+                });
+              },
+              child: Icon(
+                _showPassword ? Icons.visibility : Icons.visibility_off,
+                color: Colors.white54,
+              ),
+            ),
+            hintStyle: TextStyle(
+              fontFamily: kSfCompactDisplayFontFamily,
+              color: AppColor.whiteColor.withOpacity(0.75),
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w600,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          obscureText: !_showPassword,
+          cursorColor: AppColor.whiteColor,
+          enableSuggestions: false,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          validator: (value) {
+            if (value!.isEmpty) {
+              return "Please enter password";
+            }
+            return null;
+          },
         ),
-        obscureText: !_showPassword,
-        cursorColor: AppColor.whiteColor,
-        enableSuggestions: false,
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.done,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "Please enter password";
-          }
-          return null;
-        },
       );
     }
 

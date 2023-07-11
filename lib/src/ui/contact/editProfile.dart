@@ -945,11 +945,14 @@ class _EditProfileState extends State<EditProfile> {
         chips.add(actionChip);
       }
 
-      return Wrap(
-        alignment: WrapAlignment.start,
-        spacing: 6.0,
-        runSpacing: 6.0,
-        children: chips,
+      return Padding(
+        padding: EdgeInsets.only(left: 22.w, right: 22.w, top: 10.h),
+        child: Wrap(
+          alignment: WrapAlignment.start,
+          spacing: 7.0,
+          runSpacing: 6.0,
+          children: chips,
+        ),
       );
     }
 
@@ -1048,15 +1051,17 @@ class _EditProfileState extends State<EditProfile> {
                 SingleChildScrollView(child: buildChips()),
                 Container(
                   height: 48.h,
-                  padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
+                  width: 331.w,
+                  padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w, top: 14.h),
                   margin: EdgeInsets.only(top: 20.h, left: 22.0.w, right: 22.0.w),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Color.fromRGBO(232, 232, 232, 1),
+                      color: const Color.fromRGBO(232, 232, 232, 1),
                     ),
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: TextFormField(
+                    maxLength: 10,
                     style: TextStyle(
                         fontSize: 15.sp,
                         fontFamily: kSfproRoundedFontFamily,
@@ -1068,21 +1073,24 @@ class _EditProfileState extends State<EditProfile> {
                     ],
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(top: 6.0.w, bottom: 3.0.w),
-                      labelText: "Keyword",
-                      labelStyle: Theme.of(context).textTheme.headline6?.apply(
-                            color: Color.fromRGBO(135, 139, 149, 1),
-                          ),
+                      hintText: "Keyword",
+                      hintStyle: TextStyle(
+                          fontSize: 13.sp,
+                          fontFamily: kSfproRoundedFontFamily,
+                          fontWeight: FontWeight.w300,
+                          color: AppColor.placeholder),
                       filled: true,
                       fillColor: AppColor.whiteColor,
-                      errorBorder: OutlineInputBorder(
+                      errorBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.transparent),
                       ),
                       focusedBorder: InputBorder.none,
                       suffixIcon: IconButton(
+                        iconSize: 50.w,
                         icon: Image.asset(
                           "assets/icons/rightarrow.png",
-                          height: 34.h,
-                          width: 34.h,
+                          height: 40.w,
+                          width: 40.w,
                         ),
                         onPressed: () {
                           if (_textEditingController.text.isEmpty) {
@@ -1095,7 +1103,7 @@ class _EditProfileState extends State<EditProfile> {
                             _textEditingController.clear();
                             return;
                           }
-                          if (_values!.length != 10) {
+                          if (_values!.length <= 10) {
                             _values!.add(_textEditingController.text);
                             _selected.add(true);
                             _textEditingController.clear();
@@ -1120,7 +1128,7 @@ class _EditProfileState extends State<EditProfile> {
                     },
                   ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 40.h),
                 Visibility(
                   visible: _enterpreneurForms,
                   child: Container(
@@ -1141,7 +1149,7 @@ class _EditProfileState extends State<EditProfile> {
                           child: FloatingActionButton(
                             heroTag: null,
                             elevation: 0,
-                            shape: RoundedRectangleBorder(
+                            shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10.0),
                               ),
@@ -1707,7 +1715,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 10.h),
             Row(
               children: [
                 Visibility(
@@ -1781,17 +1789,32 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                         ),
                         Positioned(
-                          right: -14,
-                          top: -14,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.cancel,
-                              color: AppColor.removeIconColor,
-                              size: 24,
-                            ),
-                            onPressed: () {
+                          right: 0,
+                          top: 0,
+                          child: InkWell(
+                            onTap: () {
                               removeImageFromCompanyProfile(i, 0);
                             },
+                            child: Container(
+                              height: 18.w,
+                              width: 18.w,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                color: AppColor.removeIconColor,
+                              ),
+                              //child: IconButton(
+                              child: Center(
+                                child: Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 15.w,
+                                ),
+                              ),
+                              // onPressed: () {
+                              //   removeImageFromCompanyProfile(i, 0);
+                              // },
+                              // ),
+                            ),
                           ),
                         )
                       ],
@@ -1838,17 +1861,32 @@ class _EditProfileState extends State<EditProfile> {
                                         ))),
                         ),
                         Positioned(
-                          right: -14,
-                          top: -14,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.cancel,
-                              color: AppColor.removeIconColor,
-                              size: 24,
-                            ),
-                            onPressed: () => setState(() {
+                          right: 0,
+                          top: 0,
+                          child: InkWell(
+                            onTap: () {
                               removeImageFromCompanyProfile(i, 1);
-                            }),
+                            },
+                            child: Container(
+                              height: 18.w,
+                              width: 18.w,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                color: AppColor.removeIconColor,
+                              ),
+                              //child: IconButton(
+                              child: Center(
+                                child: Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 15.w,
+                                ),
+                              ),
+                              // onPressed: () {
+                              //   removeImageFromCompanyProfile(i, 0);
+                              // },
+                              // ),
+                            ),
                           ),
                         )
                       ],
@@ -1862,8 +1900,8 @@ class _EditProfileState extends State<EditProfile> {
                       children: [
                         Container(
                           padding: EdgeInsets.all(8),
-                          width: 114,
-                          height: 102,
+                          width: 114.w,
+                          height: 102.h,
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: (entreprenerurList[i].images!.length == 3
@@ -1895,17 +1933,32 @@ class _EditProfileState extends State<EditProfile> {
                                         ))),
                         ),
                         Positioned(
-                          right: -14,
-                          top: -14,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.cancel,
-                              color: AppColor.removeIconColor,
-                              size: 24,
-                            ),
-                            onPressed: () => setState(() {
+                          right: 0,
+                          top: 0,
+                          child: InkWell(
+                            onTap: () {
                               removeImageFromCompanyProfile(i, 2);
-                            }),
+                            },
+                            child: Container(
+                              height: 18.w,
+                              width: 18.w,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                color: AppColor.removeIconColor,
+                              ),
+                              //child: IconButton(
+                              child: Center(
+                                child: Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 15.w,
+                                ),
+                              ),
+                              // onPressed: () {
+                              //   removeImageFromCompanyProfile(i, 0);
+                              // },
+                              // ),
+                            ),
                           ),
                         )
                       ],
@@ -1914,7 +1967,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ],
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 8.h),
           ],
         ),
       ),
@@ -1972,7 +2025,7 @@ class _EditProfileState extends State<EditProfile> {
             ),
             SizedBox(height: 10.h),
             Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
+              padding: EdgeInsets.only(left: 16.w, right: 16.w),
               child: TextFormField(
                 style: TextStyle(
                     fontSize: 15.sp,
@@ -2026,7 +2079,7 @@ class _EditProfileState extends State<EditProfile> {
                 },
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Container(
               margin: EdgeInsets.only(right: 16.w),
               child: Column(
@@ -2221,8 +2274,11 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       _loaderoverflow = false;
     });
+    print("response");
+    print(response);
     if (response['status'] == true) {
       Utils.displayToast(response['message'].toString());
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -2246,8 +2302,8 @@ class _EditProfileState extends State<EditProfile> {
         maxImages: 3,
         enableCamera: true,
         selectedAssets: images,
-        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: MaterialOptions(
+        cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: const MaterialOptions(
           actionBarColor: "#FF931E",
           statusBarColor: "#FF931E",
           actionBarTitle: "Company Image",
@@ -2261,7 +2317,7 @@ class _EditProfileState extends State<EditProfile> {
     }
 
     List<Asset> assets = resultList;
-    entreprenerurList[index].images = [];
+    // entreprenerurList[index].images = [];
 
     for (Asset asset in assets) {
       var bytes = await asset.getByteData();

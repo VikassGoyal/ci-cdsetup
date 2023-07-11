@@ -166,11 +166,10 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   void dispose() {
+    super.dispose();
     _textEditingController!.dispose();
     _outputController!.dispose();
     _focusNode.dispose();
-
-    super.dispose();
   }
 
   @override
@@ -197,7 +196,10 @@ class _ContactsPageState extends State<ContactsPage> {
                 ),
               ).then((value) {
                 print("value : $value");
-                _updateContact();
+                if (value) {
+                  _updateContact();
+                } else
+                  return null;
               });
             } else {
               Navigator.push(
@@ -212,7 +214,10 @@ class _ContactsPageState extends State<ContactsPage> {
                 ),
               ).then((value) {
                 print("value : $value");
-                _updateContact();
+                if (value) {
+                  _updateContact();
+                } else
+                  return null;
               });
             }
           },
@@ -226,20 +231,24 @@ class _ContactsPageState extends State<ContactsPage> {
                     width: 40.w,
                     height: 40.w,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100.0),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: "assets/images/profile.png",
-                        image: _contacts[index].profileImage != null
-                            ? AppConstant.profileImageBaseUrl + _contacts[index].profileImage!
-                            : "",
-                        fit: BoxFit.cover,
-                        imageErrorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            "assets/images/profile.png",
-                          );
-                        },
-                      ),
-                    ),
+                        borderRadius: BorderRadius.circular(100.0),
+                        child: _contacts[index].profileImage != null
+                            ? FadeInImage.assetNetwork(
+                                placeholder: "assets/images/profile.png",
+                                image: _contacts[index].profileImage != null
+                                    ? AppConstant.profileImageBaseUrl + _contacts[index].profileImage!
+                                    : "",
+                                fit: BoxFit.cover,
+                                imageErrorBuilder: (context, error, stackTrace) {
+                                  print(error);
+                                  return Image.asset(
+                                    "assets/images/profile.png",
+                                  );
+                                },
+                              )
+                            : Image.asset(
+                                "assets/images/profile.png",
+                              )),
                   ),
                   Visibility(
                     visible: _contacts[index].userId != null,
@@ -902,7 +911,6 @@ class _ContactsPageState extends State<ContactsPage> {
       },
     ).then((value) async {
       if (value == null) return;
-
       if (value) {
         print(value);
         SchedulerBinding.instance.addPostFrameCallback((_) => _checkPermission());

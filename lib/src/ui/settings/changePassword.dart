@@ -115,6 +115,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         backgroundColor: AppColor.whiteColor,
         appBar: AppBar(
           backgroundColor: AppColor.primaryColor,
+          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
           leadingWidth: 80.w,
           elevation: 0.0,
           leading: InkWell(

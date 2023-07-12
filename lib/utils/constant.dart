@@ -10,9 +10,9 @@ class AppConstant {
   // static String url = 'http://192.168.1.2/conet/public/';
 
   static String baseUrl = '$url/api/';
-  static String imageBaseUrl = '$url/uploads/';
-  static String businessimageBaseUrl = '$url/businesscardlogo/';
-  static String profileImageBaseUrl = '$url/profileimages/';
+  static String imageBaseUrl = '$url/storage/uploads/';
+  static String businessimageBaseUrl = '$url/storage/businesscardlogo/';
+  static String profileImageBaseUrl = '$url/storage/profileimages/';
   static String serverHost = url;
 }
 

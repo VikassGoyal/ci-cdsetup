@@ -2176,7 +2176,7 @@ class _EditProfileState extends State<EditProfile> {
         );
       },
     );
-    if (picked != selectedDate) {
+    if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
         dynamic d = formatDate(selectedDate!, [dd, '-', mm, '-', yyyy]);

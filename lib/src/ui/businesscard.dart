@@ -240,7 +240,7 @@ class _BussinessCardState extends State<BussinessCard> {
                             ),
                           )
                         : SvgPicture.network(
-                            "https://www.svgrepo.com/show/76016/qr-code.svg",
+                            _qrImage,
                             width: 150,
                             height: 150,
                           ),
@@ -458,7 +458,7 @@ class _BussinessCardState extends State<BussinessCard> {
     }
 
     setState(() {
-      _qrImage = "${locator<AppConfig>().baseApiUrl}/$qrimage";
+      _qrImage = "${locator<AppConfig>().baseApiUrl}$qrimage";
       _showQr = false;
     });
   }

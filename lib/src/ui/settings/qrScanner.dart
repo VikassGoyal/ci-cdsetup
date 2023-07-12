@@ -141,7 +141,7 @@ class _QRScannerState extends State<QRScanner> {
     SharedPreferences? preferences = await SharedPreferences.getInstance();
     String? qrimage = preferences.getString('image');
     setState(() {
-      _qrImage = "${locator<AppConfig>().baseApiUrl}/$qrimage";
+      _qrImage = "${locator<AppConfig>().baseApiUrl}$qrimage";
       _showQr = false;
     });
   }

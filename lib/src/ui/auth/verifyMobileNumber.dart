@@ -689,15 +689,19 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
     const onsec = Duration(seconds: 1);
     Timer timer = Timer.periodic(onsec, (timer) {
       if (start == 0) {
-        setState(() {
-          wait = true;
-          timer.cancel();
-        });
+        if (mounted) {
+          setState(() {
+            wait = true;
+            timer.cancel();
+          });
+        }
       } else {
-        setState(() {
-          wait = false;
-          start--;
-        });
+        if (mounted) {
+          setState(() {
+            wait = false;
+            start--;
+          });
+        }
       }
     });
   }

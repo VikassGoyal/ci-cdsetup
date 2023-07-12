@@ -2,7 +2,6 @@ import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 class AnimatedToggle extends StatefulWidget {
   final List<String> values;

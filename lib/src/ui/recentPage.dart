@@ -1,5 +1,3 @@
-// ignore_for_file: file_names
-
 import 'dart:io';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';

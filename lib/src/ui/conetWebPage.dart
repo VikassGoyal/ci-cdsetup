@@ -25,8 +25,9 @@ import 'utils.dart';
 
 class ConetWebPage extends StatefulWidget {
   //var contactsData;
+  bool backcheck;
 
-  const ConetWebPage({super.key});
+  ConetWebPage({required this.backcheck}) : super();
 
   @override
   State<ConetWebPage> createState() => _ConetWebPageState();
@@ -753,15 +754,55 @@ class _ConetWebPageState extends State<ConetWebPage> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
+            leadingWidth: widget.backcheck ? 80.w : 155.w,
+            centerTitle: widget.backcheck ? true : false,
             backgroundColor: AppColor.primaryColor,
             automaticallyImplyLeading: false,
             elevation: 0.0,
-            title: KonetLogo(
-              logoHeight: 24.h,
-              fontSize: 19.sp,
-              textPadding: 9.w,
-              spacing: 9,
-            ),
+            title: widget.backcheck
+                ? KonetLogo(
+                    logoHeight: 24.h,
+                    fontSize: 19.sp,
+                    textPadding: 9.w,
+                    spacing: 9,
+                  )
+                : SizedBox(),
+            leading: widget.backcheck
+                ? InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 16.w),
+                            child: const Icon(Icons.arrow_back, color: Colors.white),
+                          ),
+                          SizedBox(width: 6.w),
+                          Text(
+                            'Back',
+                            style: TextStyle(
+                              fontFamily: kSfproRoundedFontFamily,
+                              color: AppColor.whiteColor,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w300,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : Padding(
+                    padding: EdgeInsets.only(left: 16.0.w),
+                    child: KonetLogo(
+                      logoHeight: 24.h,
+                      fontSize: 19.sp,
+                      textPadding: 9.w,
+                      spacing: 9,
+                    ),
+                  ),
             actions: [
               IconButton(
                 icon: SvgPicture.asset(
@@ -796,15 +837,15 @@ class _ConetWebPageState extends State<ConetWebPage> {
             physics: const ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
             child: Column(
               children: [
-                Container(color: AppColor.primaryColor, height: 20),
+                Container(color: AppColor.primaryColor, height: 20.h),
                 Container(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  padding: EdgeInsets.only(left: 16.w, right: 16.w),
                   color: AppColor.primaryColor,
                   child: Row(
                     children: <Widget>[
                       Flexible(
                         child: SizedBox(
-                          height: 36,
+                          height: 36.h,
                           child: GestureDetector(
                             onTap: () async {
                               print("success");

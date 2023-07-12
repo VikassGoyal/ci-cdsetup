@@ -12,8 +12,22 @@ import 'ui/contactsPage.dart';
 import 'ui/keypadPage.dart';
 import 'ui/settings/settings.dart';
 
-class AppScreen extends StatelessWidget {
+class AppScreen extends StatefulWidget {
   const AppScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AppScreen> createState() => _AppScreenState();
+}
+
+class _AppScreenState extends State<AppScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //final currentIndex = context.read<BottomNavigationBloc>().currentIndex;
+
+    BlocProvider.of<BottomNavigationBloc>(context).add(AppStarted());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +56,9 @@ class AppScreen extends StatelessWidget {
           }
           if (state is CoNetWebPageLoaded) {
             //return ConetWebPage(contactsData: state.conetContactObject);
-            return const ConetWebPage();
+            return ConetWebPage(
+              backcheck: false,
+            );
           }
           if (state is SettingsPageLoaded) {
             return Settings(totalcount: state.totalcountData);

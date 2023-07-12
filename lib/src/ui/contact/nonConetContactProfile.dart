@@ -27,6 +27,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
   final _personalNumber = TextEditingController();
   final _personalEmail = TextEditingController();
   final _personalName = TextEditingController();
+  bool _updatepage = false;
 
   ContactDetail? contactDetail;
 
@@ -40,6 +41,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
     _personalName.text = widget.name!;
     _personalNumber.text = widget.phoneNumber!;
     _personalEmail.text = widget.email!;
+    _updatepage = false;
   }
 
   @override
@@ -267,7 +269,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
           leadingWidth: 80.w,
           leading: InkWell(
             onTap: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(_updatepage);
             },
             child: Row(
               children: [
@@ -316,6 +318,11 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                   String phoneNumber = _personalNumber.text;
                   String message = 'Name: $contactName\nPhone: $phoneNumber';
                   Share.share(message);
+                }
+                if (value == 1) {
+                  //   Add the delete contact  api call functionality . i have created updatepage bool by default value false . if contact delete successfully make it true else false
+
+                  _updatepage = true;
                 }
               },
               itemBuilder: (context) => [

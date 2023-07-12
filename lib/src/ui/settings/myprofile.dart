@@ -17,6 +17,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 
+import '../../../utils/customScrollBehavior.dart';
 import '../utils.dart';
 
 class MyProfile extends StatefulWidget {
@@ -693,7 +694,7 @@ class _MyProfileState extends State<MyProfile> {
                       fontSize: 15.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
-                      color: AppColor.secondaryColor),
+                      color: AppColor.blackColor),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Company",
@@ -738,7 +739,7 @@ class _MyProfileState extends State<MyProfile> {
                       fontSize: 15.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
-                      color: AppColor.secondaryColor),
+                      color: AppColor.blackColor),
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
                     labelText: "Website",
@@ -782,7 +783,7 @@ class _MyProfileState extends State<MyProfile> {
                       fontSize: 15.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
-                      color: AppColor.secondaryColor),
+                      color: AppColor.blackColor),
                   enabled: false,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
@@ -1177,7 +1178,7 @@ class _MyProfileState extends State<MyProfile> {
                 decoration: BoxDecoration(
                   color: AppColor.primaryColor,
                 ),
-                height: 56.h,
+                height: 60.h,
               ),
               bodyContent()
             ],
@@ -1287,11 +1288,15 @@ class _MyProfileState extends State<MyProfile> {
               progressIndicator: const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
-              child: SizedBox(
+              child: Container(
+                decoration: BoxDecoration(color: Colors.white),
                 height: double.infinity,
-                child: SingleChildScrollView(
-                  physics: ClampingScrollPhysics(),
-                  child: stackContainer(),
+                child: ScrollConfiguration(
+                  behavior: CustomScrollBehavior(),
+                  child: SingleChildScrollView(
+                    //physics: const ClampingScrollPhysics(),
+                    child: stackContainer(),
+                  ),
                 ),
               ),
             )

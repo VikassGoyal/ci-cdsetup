@@ -36,6 +36,11 @@ class ContactProfile extends StatefulWidget {
 }
 
 class _ContactProfileState extends State<ContactProfile> {
+  @override
+  initstate() {
+    _updatepage = false;
+  }
+
   final _personalName = TextEditingController();
   final _personalNumber = TextEditingController();
   final _personalSecondaryNumber = TextEditingController();
@@ -71,6 +76,7 @@ class _ContactProfileState extends State<ContactProfile> {
   ContactDetail? contactDetail;
   String? _occupationValue;
   DateTime? selectedDate;
+  bool _updatepage = false;
 
   bool _loader = false;
   bool _loaderoverflow = false;
@@ -1341,7 +1347,7 @@ class _ContactProfileState extends State<ContactProfile> {
                   borderRadius: BorderRadius.circular(100.0),
                   child: FadeInImage.assetNetwork(
                     placeholder: "assets/images/profile.png",
-                    image: userImage != ""
+                    image: userImage != null
                         ? AppConstant.profileImageBaseUrl + userImage
                         : "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png",
                     fit: BoxFit.cover,
@@ -1370,7 +1376,7 @@ class _ContactProfileState extends State<ContactProfile> {
         leadingWidth: 80.w,
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(_updatepage);
           },
           child: Row(
             children: [

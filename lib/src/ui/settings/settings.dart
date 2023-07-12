@@ -288,7 +288,7 @@ class _SettingsState extends State<Settings> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ConetWebPage(),
+                        builder: (context) => ConetWebPage(backcheck: true),
                       ),
                     );
                   },
@@ -359,7 +359,7 @@ class _SettingsState extends State<Settings> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 10.w,
+                                  width: 20.w,
                                 ),
                                 Container(
                                   constraints: BoxConstraints(minWidth: 100.0.w),

@@ -78,12 +78,13 @@ class _SettingsState extends State<Settings> {
         ),
       ),
       body: Container(
+        height: MediaQuery.of(context).size.height,
         child: Padding(
           padding: EdgeInsets.only(left: 21.w),
           child: Column(
             children: [
               Container(
-                height: 75.sp,
+                height: 75.h,
                 child: ListTile(
                     contentPadding: EdgeInsets.only(left: 0, top: 10.h),
                     onTap: () async {

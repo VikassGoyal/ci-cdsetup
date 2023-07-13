@@ -58,8 +58,11 @@ class TextFormFieldContact extends StatefulWidget {
 
 class _TextFormFieldContactState extends State<TextFormFieldContact> {
   String message = "";
+
   @override
   Widget build(BuildContext context) {
+    double _width = MediaQuery.of(context).size.width;
+
     return Column(
       children: [
         Container(
@@ -79,7 +82,7 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
             readOnly: widget.readonly!,
             validator: widget.validator,
             style: TextStyle(
-                fontSize: 15.sp,
+                fontSize: _width < 430 ? 15.sp : 12.sp,
                 fontFamily: kSfproRoundedFontFamily,
                 fontWeight: FontWeight.w300,
                 color: widget.textColor),
@@ -98,12 +101,12 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
               labelText: widget.hintText,
               counterText: "",
               hintStyle: TextStyle(
-                  fontSize: 13.sp,
+                  fontSize: _width < 430 ? 14.sp : 11.sp,
                   fontFamily: kSfproRoundedFontFamily,
                   fontWeight: FontWeight.w300,
                   color: AppColor.placeholder),
               labelStyle: TextStyle(
-                  fontSize: 13.sp,
+                  fontSize: _width < 430 ? 14.sp : 11.sp,
                   fontFamily: kSfproRoundedFontFamily,
                   fontWeight: FontWeight.w300,
                   color: AppColor.placeholder),

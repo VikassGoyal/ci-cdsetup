@@ -1069,12 +1069,12 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 SizedBox(height: 16.h),
                 _buildLandLine(),
-                SizedBox(height: 30),
+                SizedBox(height: 30.h),
                 _buildPersonalUpdateButton(),
-                SizedBox(height: 30),
+                SizedBox(height: 30.h),
               ]
             : [
-                SizedBox(height: 26),
+                SizedBox(height: 26.h),
                 _buildOccupation(),
                 Visibility(
                   visible: _companyVisible,

@@ -21,16 +21,21 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _loader = false;
+  double _width = 430;
 
   @override
   Widget build(BuildContext context) {
+    final double _width = MediaQuery.of(context).size.width;
     Widget buildUpdateButton() {
       return Container(
         constraints: BoxConstraints(minWidth: 331.0.w, minHeight: 48.h),
         child: ElevatedButton(
           child: Text(
             "Update",
-            style: TextStyle(fontSize: 18.sp, fontFamily: kSfproRoundedFontFamily, fontWeight: FontWeight.w500),
+            style: TextStyle(
+                fontSize: _width < 430 ? 18.sp : 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w500),
           ),
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -99,7 +104,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       return TextFormFieldContact(
         hintText: "Confirm New Password",
         obscureText: true,
-        padding: 12.0.w,
+        padding: 14.0,
         controller: _confirmPasswordController,
         textInputType: TextInputType.visiblePassword,
         maxLength: 16,
@@ -134,7 +139,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   style: TextStyle(
                     fontFamily: kSfproRoundedFontFamily,
                     color: AppColor.whiteColor,
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 10.sp,
                     fontWeight: FontWeight.w300,
                     fontStyle: FontStyle.normal,
                   ),
@@ -145,7 +150,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           centerTitle: true,
           title: Text("Change Password",
               style: TextStyle(
-                  fontSize: 18.sp,
+                  fontSize: _width < 430 ? 18.sp : 13.sp,
                   fontFamily: kSfproRoundedFontFamily,
                   color: Colors.white,
                   fontWeight: FontWeight.w500)),

@@ -36,6 +36,8 @@ class _RecentPageState extends State<RecentPage> {
   List<RecentCalls> _searchResult = [];
   List<RecentCalls> _callHistory = [];
   TextEditingController? _outputController;
+  double _width = 430;
+
   bool _loader = false;
   bool _showCancelIcon = false;
   // final TextEditingController _textEditingController = TextEditingController();
@@ -77,6 +79,7 @@ class _RecentPageState extends State<RecentPage> {
 
   @override
   Widget build(BuildContext context) {
+    _width = MediaQuery.of(context).size.width;
     Widget contactListItem(int index) {
       return Container(
         padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
@@ -103,7 +106,7 @@ class _RecentPageState extends State<RecentPage> {
             SizedBox(width: 14.w),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: EdgeInsets.only(right: 8.0.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -162,8 +165,8 @@ class _RecentPageState extends State<RecentPage> {
             Visibility(
               visible: _callHistory[index].number != null,
               child: Container(
-                width: 38,
-                height: 38,
+                width: 38.w,
+                height: 38.w,
                 alignment: Alignment.center,
                 child: FloatingActionButton(
                   backgroundColor: Colors.transparent,
@@ -188,7 +191,7 @@ class _RecentPageState extends State<RecentPage> {
                 ),
               ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
           ],
         ),
       );

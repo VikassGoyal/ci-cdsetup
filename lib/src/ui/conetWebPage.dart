@@ -33,6 +33,7 @@ class ConetWebPage extends StatefulWidget {
 
 class _ConetWebPageState extends State<ConetWebPage> {
   final FocusNode _focus = FocusNode();
+  double _width = 430;
 
   final List<AllContacts> _loadedcontacts = [];
   List<AllContacts> _contacts = [];
@@ -67,6 +68,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
   @override
   Widget build(BuildContext context) {
+    _width = MediaQuery.of(context).size.width;
     _showPopup() async {
       showGeneralDialog(
         barrierLabel: "",
@@ -760,7 +762,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
             title: widget.backcheck
                 ? KonetLogo(
                     logoHeight: 24.h,
-                    fontSize: 19.sp,
+                    fontSize: _width < 430 ? 19.sp : 1.sp,
                     textPadding: 9.w,
                     spacing: 9,
                   )
@@ -783,7 +785,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                             style: TextStyle(
                               fontFamily: kSfproRoundedFontFamily,
                               color: AppColor.whiteColor,
-                              fontSize: 15.sp,
+                              fontSize: _width < 430 ? 15.sp : 12.sp,
                               fontWeight: FontWeight.w300,
                               fontStyle: FontStyle.normal,
                             ),
@@ -796,7 +798,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     padding: EdgeInsets.only(left: 16.0.w),
                     child: KonetLogo(
                       logoHeight: 24.h,
-                      fontSize: 19.sp,
+                      fontSize: _width < 430 ? 19.sp : 16.sp,
                       textPadding: 9.w,
                       spacing: 9,
                     ),
@@ -881,7 +883,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                 color: AppColor.placeholder,
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,
-                                fontSize: 18.sp,
+                                fontSize: _width < 430 ? 18.sp : 15.sp,
                               ),
                               textInputAction: TextInputAction.search,
                               decoration: InputDecoration(
@@ -895,10 +897,10 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                   color: AppColor.gray30Color,
                                   fontWeight: FontWeight.w400,
                                   fontStyle: FontStyle.normal,
-                                  fontSize: 18.sp,
+                                  fontSize: _width < 430 ? 18.sp : 15.sp,
                                 ),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(8.r),
                                   borderSide: BorderSide.none,
                                 ),
                                 prefixIcon: InkWell(
@@ -912,7 +914,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                     child: Icon(
                                       _showCancelIcon ? Icons.close : Icons.search,
                                       color: AppColor.gray30Color,
-                                      size: 18,
+                                      size: _width < 430 ? 18.w : 15.w,
                                     ),
                                   ),
                                 ),
@@ -920,7 +922,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                   icon: Icon(
                                     Icons.qr_code,
                                     color: AppColor.gray30Color,
-                                    size: 20.w,
+                                    size: _width < 430 ? 20.w : 17.w,
                                   ),
                                   onPressed: () {
                                     _checkQRPermission();
@@ -947,7 +949,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           backgroundColor: AppColor.secondaryColor,
                           child: Icon(
                             Icons.add,
-                            size: 18,
+                            size: _width < 430 ? 18.w : 15.w,
                             color: AppColor.whiteColor,
                           ),
                           onPressed: () {
@@ -974,7 +976,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           backgroundColor: AppColor.accentColor,
                           child: SvgPicture.asset(
                             "assets/icons/ic_businesscard.svg",
-                            height: 18,
+                            height: _width < 430 ? 18.w : 15.w,
                           ),
                           onPressed: () {
                             print("Cliked");
@@ -992,7 +994,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     ],
                   ),
                 ),
-                Container(color: AppColor.primaryColor, height: 20),
+                Container(color: AppColor.primaryColor, height: 20.h),
                 _searchvisible! ? searchConetwebList() : conetWebSearchDefault(),
               ],
             ),

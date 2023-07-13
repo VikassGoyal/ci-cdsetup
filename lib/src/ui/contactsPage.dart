@@ -66,6 +66,7 @@ class _ContactsPageState extends State<ContactsPage> {
   bool _loader = false;
   bool _showCancelIcon = false;
   double susItemHeight = 40;
+  double _width = 430;
 
   @override
   void initState() {
@@ -176,6 +177,7 @@ class _ContactsPageState extends State<ContactsPage> {
   Widget build(BuildContext context) {
     var scanArea =
         (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400) ? 180.0 : 300.0;
+    _width = MediaQuery.of(context).size.width;
 
     Widget contactListItem(int index) {
       return Container(
@@ -287,7 +289,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           color: AppColor.blackColor,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
-                          fontSize: 18.sp,
+                          fontSize: _width < 450 ? 18.sp : 15.sp,
                           // letterSpacing: 0.2,
                         ),
                       ),
@@ -303,7 +305,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                 color: AppColor.gray30Color,
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,
-                                fontSize: 13.sp,
+                                fontSize: _width < 450 ? 13.sp : 11.sp,
                               ),
                             )
                           : Text(
@@ -318,7 +320,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                 color: AppColor.gray30Color,
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,
-                                fontSize: 13.sp,
+                                fontSize: _width < 450 ? 13.sp : 11.sp,
                               ),
                             )
                     ],
@@ -410,7 +412,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 color: AppColor.placeholder,
                 fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.normal,
-                fontSize: 18.sp,
+                fontSize: _width < 450 ? 18.sp : 15.sp,
               ),
             ),
             const Expanded(
@@ -561,7 +563,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           color: AppColor.placeholder,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
-                          fontSize: 18.sp,
+                          fontSize: _width < 450 ? 18.sp : 15.sp,
                         ),
                         textInputAction: TextInputAction.search,
                         decoration: InputDecoration(
@@ -575,7 +577,7 @@ class _ContactsPageState extends State<ContactsPage> {
                             color: AppColor.gray30Color,
                             fontWeight: FontWeight.w400,
                             fontStyle: FontStyle.normal,
-                            fontSize: 18.sp,
+                            fontSize: _width < 450 ? 18.sp : 15.sp,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
@@ -594,7 +596,7 @@ class _ContactsPageState extends State<ContactsPage> {
                               child: Icon(
                                 _showCancelIcon ? Icons.close : Icons.search,
                                 color: AppColor.gray30Color.withOpacity(0.5),
-                                size: 20.w,
+                                size: _width < 450 ? 20.w : 15.w,
                               ),
                             ),
                           ),
@@ -602,7 +604,7 @@ class _ContactsPageState extends State<ContactsPage> {
                             icon: Icon(
                               Icons.qr_code,
                               color: AppColor.gray30Color,
-                              size: 20.w,
+                              size: _width < 450 ? 20.w : 15.w,
                             ),
                             onPressed: () {
                               _checkQRPermission();
@@ -624,7 +626,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       backgroundColor: AppColor.secondaryColor,
                       child: Icon(
                         Icons.add,
-                        size: 18.h,
+                        size: _width < 450 ? 18.w : 15.w,
                         color: AppColor.whiteColor,
                       ),
                       onPressed: () {
@@ -652,7 +654,10 @@ class _ContactsPageState extends State<ContactsPage> {
                       elevation: 0,
                       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
                       backgroundColor: AppColor.accentColor,
-                      child: SvgPicture.asset("assets/icons/ic_businesscard.svg", height: 18.h),
+                      child: SvgPicture.asset(
+                        "assets/icons/ic_businesscard.svg",
+                        height: _width < 450 ? 18.w : 15.w,
+                      ),
                       onPressed: () {
                         print("Cliked");
                         Navigator.push(
@@ -759,7 +764,7 @@ class _ContactsPageState extends State<ContactsPage> {
                               color: AppColor.black2,
                               fontWeight: FontWeight.w500,
                               fontStyle: FontStyle.normal,
-                              fontSize: 18.sp,
+                              fontSize: _width < 450 ? 18.sp : 15.sp,
                             ),
                           )
                         ],
@@ -860,7 +865,7 @@ class _ContactsPageState extends State<ContactsPage> {
             style: TextStyle(
                 color: AppColor.logoutheadingcolor,
                 fontFamily: kSfproRoundedFontFamily,
-                fontSize: 15.sp,
+                fontSize: _width < 450 ? 15.sp : 12.sp,
                 fontWeight: FontWeight.w300),
           ),
           actions: <Widget>[
@@ -880,7 +885,7 @@ class _ContactsPageState extends State<ContactsPage> {
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: kSfproRoundedFontFamily,
-                            fontSize: 18.sp,
+                            fontSize: _width < 450 ? 18.sp : 15.sp,
                             fontWeight: FontWeight.w500)),
                   ),
                 ),
@@ -900,7 +905,7 @@ class _ContactsPageState extends State<ContactsPage> {
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: kSfproRoundedFontFamily,
-                            fontSize: 18.sp,
+                            fontSize: _width < 450 ? 18.sp : 15.sp,
                             fontWeight: FontWeight.w500)),
                   ),
                 ),

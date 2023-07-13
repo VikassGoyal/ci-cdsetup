@@ -47,6 +47,7 @@ class _SettingsState extends State<Settings> {
   int totalConnection = 0;
   int totalContact = 0;
   var version = "";
+  double _width = 430;
 
   @override
   void initState() {
@@ -59,6 +60,8 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+    final double _width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
@@ -69,7 +72,7 @@ class _SettingsState extends State<Settings> {
         title: Text(
           "Settings",
           style: TextStyle(
-            fontSize: 18.sp,
+            fontSize: _width < 430 ? 18.sp : 15.sp,
             fontFamily: kSfproRoundedFontFamily,
             color: AppColor.whiteColor,
             fontWeight: FontWeight.w500,
@@ -83,7 +86,7 @@ class _SettingsState extends State<Settings> {
           child: Column(
             children: [
               Container(
-                height: 75.sp,
+                height: 75.h,
                 child: ListTile(
                     contentPadding: EdgeInsets.only(left: 0, top: 10.h),
                     onTap: () async {
@@ -99,7 +102,7 @@ class _SettingsState extends State<Settings> {
                     title: Text("My Profile",
                         style: TextStyle(
                             color: AppColor.blackColor,
-                            fontSize: 17.sp,
+                            fontSize: _width < 430 ? 18.sp : 13.sp,
                             fontFamily: kSfproDisplayFontFamily,
                             fontWeight: FontWeight.w400)),
                     subtitle: RichText(
@@ -109,14 +112,14 @@ class _SettingsState extends State<Settings> {
                               text: "Business, ",
                               style: TextStyle(
                                   color: AppColor.accentColor,
-                                  fontSize: 13.sp,
+                                  fontSize: _width < 430 ? 13.sp : 9.sp,
                                   fontFamily: kSfproRoundedFontFamily,
                                   fontWeight: FontWeight.w300)),
                           TextSpan(
                             text: "Personal",
                             style: TextStyle(
                                 color: AppColor.SettingprofileIconColor,
-                                fontSize: 13.sp,
+                                fontSize: _width < 430 ? 13.sp : 9.sp,
                                 fontFamily: kSfproRoundedFontFamily,
                                 fontWeight: FontWeight.w300),
                           ),
@@ -124,12 +127,12 @@ class _SettingsState extends State<Settings> {
                       ),
                     ),
                     leading: Container(
-                      height: 34.w,
-                      width: 34.w,
+                      height: _width < 430 ? 34.w : 19.w,
+                      width: _width < 430 ? 34.w : 19.w,
                       child: SvgPicture.asset(
                         "assets/icons/ic_settings_profile.svg",
-                        height: 24.w,
-                        width: 24.w,
+                        height: _width < 430 ? 24.w : 14.w,
+                        width: _width < 430 ? 24.w : 14.w,
                       ),
                     )),
               ),
@@ -147,17 +150,17 @@ class _SettingsState extends State<Settings> {
                   title: Text("Change Password",
                       style: TextStyle(
                           color: AppColor.blackColor,
-                          fontSize: 17.sp,
+                          fontSize: _width < 430 ? 17.sp : 13.sp,
                           fontFamily: kSfproDisplayFontFamily,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.w,
-                    width: 34.w,
+                    height: _width < 430 ? 34.w : 19.w,
+                    width: _width < 430 ? 34.w : 19.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_changepsw.svg",
-                      height: 24.w,
-                      width: 24.w,
+                      height: _width < 430 ? 24.w : 14.w,
+                      width: _width < 430 ? 24.w : 14.w,
                     ),
                   )),
               Divider(height: 1, color: Colors.grey.shade200),
@@ -169,17 +172,17 @@ class _SettingsState extends State<Settings> {
                   title: Text("Import Contacts",
                       style: TextStyle(
                           color: AppColor.blackColor,
-                          fontSize: 17.sp,
+                          fontSize: _width < 430 ? 17.sp : 13.sp,
                           fontFamily: kSfproDisplayFontFamily,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.w,
-                    width: 34.w,
+                    height: _width < 430 ? 34.w : 19.w,
+                    width: _width < 430 ? 34.w : 19.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_contactlist.svg",
-                      height: 24.w,
-                      width: 24.w,
+                      height: _width < 430 ? 24.w : 14.w,
+                      width: _width < 430 ? 24.w : 14.w,
                     ),
                   )),
               ListTile(
@@ -190,17 +193,17 @@ class _SettingsState extends State<Settings> {
                   title: Text("QR Code Scanner",
                       style: TextStyle(
                           color: AppColor.blackColor,
-                          fontSize: 17.sp,
+                          fontSize: _width < 430 ? 17.sp : 13.sp,
                           fontFamily: kSfproDisplayFontFamily,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.w,
-                    width: 34.w,
+                    height: _width < 430 ? 34.w : 19.w,
+                    width: _width < 430 ? 34.w : 19.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_qrscan.svg",
-                      height: 24.w,
-                      width: 24.w,
+                      height: _width < 430 ? 24.w : 14.w,
+                      width: _width < 430 ? 24.w : 14.w,
                     ),
                   )),
               Divider(height: 1.h, color: Colors.grey.shade200),
@@ -217,17 +220,17 @@ class _SettingsState extends State<Settings> {
                   title: Text("Social Connect",
                       style: TextStyle(
                           color: AppColor.blackColor,
-                          fontSize: 17.sp,
+                          fontSize: _width < 430 ? 17.sp : 13.sp,
                           fontFamily: kSfproDisplayFontFamily,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.w,
-                    width: 34.w,
+                    height: _width < 430 ? 34.w : 19.w,
+                    width: _width < 430 ? 34.w : 19.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_socialconnect.svg",
-                      height: 24.h,
-                      width: 24.w,
+                      height: _width < 430 ? 34.w : 14.w,
+                      width: _width < 430 ? 34.w : 14.w,
                     ),
                   )),
               Divider(height: 1, color: Colors.grey.shade200),
@@ -241,17 +244,17 @@ class _SettingsState extends State<Settings> {
                   title: Text("Contact us",
                       style: TextStyle(
                           color: AppColor.blackColor,
-                          fontSize: 17.sp,
+                          fontSize: _width < 430 ? 17.sp : 13.sp,
                           fontFamily: kSfproDisplayFontFamily,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.w,
-                    width: 34.w,
+                    height: _width < 430 ? 34.w : 19.w,
+                    width: _width < 430 ? 34.w : 19.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_contactus.svg",
-                      height: 24.w,
-                      width: 24.w,
+                      height: _width < 430 ? 24.w : 14.w,
+                      width: _width < 430 ? 24.w : 14.w,
                     ),
                   )),
               Divider(height: 1.h, color: Colors.grey.shade200),
@@ -268,17 +271,17 @@ class _SettingsState extends State<Settings> {
                   title: Text("Notifications",
                       style: TextStyle(
                           color: AppColor.blackColor,
-                          fontSize: 17.sp,
+                          fontSize: _width < 430 ? 17.sp : 13.sp,
                           fontFamily: kSfproDisplayFontFamily,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.w,
-                    width: 34.w,
+                    height: _width < 430 ? 34.w : 19.w,
+                    width: _width < 430 ? 34.w : 19.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_notification.svg",
-                      height: 24.w,
-                      width: 24.w,
+                      height: _width < 430 ? 24.w : 14.w,
+                      width: _width < 430 ? 24.w : 14.w,
                     ),
                   )),
               Divider(height: 1.h, color: Colors.grey.shade200),
@@ -295,17 +298,17 @@ class _SettingsState extends State<Settings> {
                   title: Text("Invite to KONET app",
                       style: TextStyle(
                           color: AppColor.blackColor,
-                          fontSize: 17.sp,
+                          fontSize: _width < 430 ? 17.sp : 13.sp,
                           fontFamily: kSfproDisplayFontFamily,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
                   leading: Container(
-                    height: 34.w,
-                    width: 34.w,
+                    height: _width < 430 ? 34.w : 19.w,
+                    width: _width < 430 ? 34.w : 19.w,
                     child: SvgPicture.asset(
                       "assets/icons/ic_settings_invite.svg",
-                      height: 24.w,
-                      width: 24.w,
+                      height: _width < 430 ? 24.w : 14.w,
+                      width: _width < 430 ? 24.w : 14.w,
                     ),
                   )),
               Divider(height: 1.h, color: Colors.grey.shade200),
@@ -315,74 +318,77 @@ class _SettingsState extends State<Settings> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
-                          backgroundColor: Colors.white,
-                          title: Center(
-                            child: Text("Logout",
-                                style: TextStyle(
-                                    color: AppColor.logoutcolor,
-                                    fontFamily: kSfproDisplayFontFamily,
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.w500)),
-                          ),
-                          content: Text(
-                            "Are you sure you want to logout ?",
-                            style: TextStyle(
-                                color: AppColor.logoutheadingcolor,
-                                fontFamily: kSfproRoundedFontFamily,
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.w300),
-                          ),
-                          actions: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  constraints: BoxConstraints(minWidth: 100.0.w),
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
-                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-                                        )),
-                                    child: Text("Yes",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: kSfproRoundedFontFamily,
-                                            fontSize: 18.sp,
-                                            fontWeight: FontWeight.w500)),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      logoutFun();
-                                    },
+                        var height = MediaQuery.of(context).size.height;
+                        var width = MediaQuery.of(context).size.width;
+                        return Container(
+                          alignment: Alignment.center,
+                          child: AlertDialog(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
+                            backgroundColor: Colors.white,
+                            title: Center(
+                              child: Text("Logout",
+                                  style: TextStyle(
+                                      color: AppColor.logoutcolor,
+                                      fontFamily: kSfproDisplayFontFamily,
+                                      fontSize: _width < 430 ? 18.sp : 13.sp,
+                                      fontWeight: FontWeight.w500)),
+                            ),
+                            content: Text(
+                              "Are you sure you want to logout ?",
+                              style: TextStyle(
+                                  color: AppColor.logoutheadingcolor,
+                                  fontFamily: kSfproRoundedFontFamily,
+                                  fontSize: _width < 430 ? 15.sp : 12.sp,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                            actions: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    constraints: BoxConstraints(minWidth: _width < 430 ? 100.0 : 60.w),
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.w)),
+                                          )),
+                                      child: Text("Yes",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: kSfproRoundedFontFamily,
+                                              fontSize: _width < 430 ? 18.sp : 14.sp,
+                                              fontWeight: FontWeight.w500)),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        logoutFun();
+                                      },
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 20.w,
-                                ),
-                                Container(
-                                  constraints: BoxConstraints(minWidth: 100.0.w),
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
-                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.w)),
-                                        )),
-                                    child: Text("Cancel",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: kSfproRoundedFontFamily,
-                                            fontSize: 18.sp,
-                                            fontWeight: FontWeight.w500)),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
+                                  SizedBox(width: _width < 430 ? 20.0 : 10.w),
+                                  Container(
+                                    constraints: BoxConstraints(minWidth: _width < 430 ? 100.0 : 50.w),
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.w)),
+                                          )),
+                                      child: Text("Cancel",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: kSfproRoundedFontFamily,
+                                              fontSize: _width < 430 ? 18.sp : 14.sp,
+                                              fontWeight: FontWeight.w500)),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )
-                          ],
+                                ],
+                              )
+                            ],
+                          ),
                         );
                       },
                     );
@@ -390,19 +396,26 @@ class _SettingsState extends State<Settings> {
                   title: Text("Logout",
                       style: TextStyle(
                           color: AppColor.blackColor,
-                          fontSize: 17.sp,
+                          fontSize: _width < 430 ? 17.sp : 14.sp,
                           fontFamily: kSfproDisplayFontFamily,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400)),
-                  leading: SvgPicture.asset(
-                    "assets/icons/ic_settings_logout.svg",
-                    height: 24.w,
-                    width: 24.w,
+                  leading: Container(
+                    height: _width < 430 ? 34.w : 19.w,
+                    width: _width < 430 ? 34.w : 19.w,
+                    child: SvgPicture.asset(
+                      "assets/icons/ic_settings_logout.svg",
+                      height: _width < 430 ? 24.w : 14.w,
+                      width: _width < 430 ? 24.w : 14.w,
+                    ),
                   )),
               Center(
                 child: Text(
                   "v.$version",
-                  style: TextStyle(fontSize: 11.sp, fontFamily: kSfproRoundedFontFamily, fontWeight: FontWeight.w400),
+                  style: TextStyle(
+                      fontSize: _width < 430 ? 11.sp : 9.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      fontWeight: FontWeight.w400),
                 ),
               ),
               SizedBox(height: 10.h),
@@ -416,7 +429,7 @@ class _SettingsState extends State<Settings> {
                     color: AppColor.secondaryColor,
                     fontFamily: kSfproRoundedFontFamily,
                     fontWeight: FontWeight.w500,
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontStyle: FontStyle.normal,
                   )),
               SizedBox(
@@ -430,7 +443,7 @@ class _SettingsState extends State<Settings> {
                       color: AppColor.accentColor,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w600,
-                      fontSize: 11.sp,
+                      fontSize: _width < 430 ? 11.sp : 9.sp,
                       fontStyle: FontStyle.normal,
                     )),
               ),
@@ -565,24 +578,24 @@ class _SettingsState extends State<Settings> {
         return AlertDialog(
           backgroundColor: AppColor.whiteColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.w), // Set the desired border radius
+            borderRadius: BorderRadius.circular(20), // Set the desired border radius
           ),
           title: Center(
             child: Text(
               'Confirmation',
               style: TextStyle(
-                  color: Color(0xff3F3D56),
+                  color: AppColor.black2,
                   fontFamily: kSfproDisplayFontFamily,
-                  fontSize: 18.sp,
+                  fontSize: _width < 430 ? 18.sp : 15.sp,
                   fontWeight: FontWeight.w500),
             ),
           ),
           content: Text(
             'Do you want to import contacts to konet?',
             style: TextStyle(
-                color: Color(0xff878B95),
+                color: AppColor.placeholder,
                 fontFamily: kSfproRoundedFontFamily,
-                fontSize: 15.sp,
+                fontSize: _width < 430 ? 15.sp : 12.sp,
                 fontWeight: FontWeight.w300),
           ),
           actions: <Widget>[
@@ -590,7 +603,7 @@ class _SettingsState extends State<Settings> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  constraints: BoxConstraints(minWidth: 100.0.w),
+                  constraints: BoxConstraints(minWidth: _width < 430 ? 100.0.w : 60.w),
                   child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -602,15 +615,15 @@ class _SettingsState extends State<Settings> {
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: kSfproRoundedFontFamily,
-                            fontSize: 18.sp,
+                            fontSize: _width < 430 ? 18.sp : 15.sp,
                             fontWeight: FontWeight.w500)),
                   ),
                 ),
                 SizedBox(
-                  width: 20.w,
+                  width: _width < 430 ? 20.w : 10.w,
                 ),
                 Container(
-                  constraints: BoxConstraints(minWidth: 100.0.w),
+                  constraints: BoxConstraints(minWidth: _width < 430 ? 100.0.w : 60.w),
                   child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -623,7 +636,7 @@ class _SettingsState extends State<Settings> {
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: kSfproRoundedFontFamily,
-                          fontSize: 18.sp,
+                          fontSize: _width < 430 ? 18.sp : 15.sp,
                           fontWeight: FontWeight.w500),
                     ),
                   ),

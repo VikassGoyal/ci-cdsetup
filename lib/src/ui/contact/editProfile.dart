@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/settings/myprofile.dart';
 import 'package:flutter/services.dart';
 
@@ -1399,9 +1400,12 @@ class _EditProfileState extends State<EditProfile> {
               ),
               child: SizedBox(
                 height: double.infinity,
-                child: SingleChildScrollView(
-                  physics: ClampingScrollPhysics(),
-                  child: stackContainer(),
+                child: ScrollConfiguration(
+                  behavior: RemoveScrollGlow(),
+                  child: SingleChildScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    child: stackContainer(),
+                  ),
                 ),
               ),
             ),
@@ -1639,7 +1643,7 @@ class _EditProfileState extends State<EditProfile> {
                       color: AppColor.placeholder),
                   filled: true,
                   fillColor: AppColor.whiteColor,
-                  errorBorder: OutlineInputBorder(
+                  errorBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
                   focusedBorder: InputBorder.none,
@@ -2053,7 +2057,7 @@ class _EditProfileState extends State<EditProfile> {
                 },
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Padding(
               padding: EdgeInsets.only(left: 16, right: 16),
               child: TextFormField(
@@ -2234,7 +2238,19 @@ class _EditProfileState extends State<EditProfile> {
         imageUpload.imageUrl = element.imageUrl;
         entreprenerurResquest.images!.add(imageUpload);
       }
-      entreprenerurListResquest.add(entreprenerurResquest);
+
+      if (entreprenerurResquest.id == null &&
+          entreprenerurResquest.company == "" &&
+          entreprenerurResquest.website == "" &&
+          entreprenerurResquest.workNature == "" &&
+          entreprenerurResquest.images!.isEmpty) {
+      } else if (entreprenerurResquest.id != null && entreprenerurResquest.company == "" ||
+          entreprenerurResquest.company == null && entreprenerurResquest.website == "" ||
+          entreprenerurResquest.website == null && entreprenerurResquest.workNature == "" ||
+          entreprenerurResquest.workNature == null && entreprenerurResquest.images!.length == 0) {
+      } else {
+        entreprenerurListResquest.add(entreprenerurResquest);
+      }
     }
 
     var requestBody = {
@@ -2275,8 +2291,7 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       _loaderoverflow = false;
     });
-    print("response");
-    print(response);
+
     if (response['status'] == true) {
       Utils.displayToast(response['message'].toString());
 

@@ -5,6 +5,7 @@ import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/models/imageUploadModel.dart';
+import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/contact/editProfile.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
@@ -1292,9 +1293,9 @@ class _MyProfileState extends State<MyProfile> {
                 decoration: BoxDecoration(color: Colors.white),
                 height: double.infinity,
                 child: ScrollConfiguration(
-                  behavior: CustomScrollBehavior(),
+                  behavior: RemoveScrollGlow(),
                   child: SingleChildScrollView(
-                    //physics: const ClampingScrollPhysics(),
+                    physics: const ClampingScrollPhysics(),
                     child: stackContainer(),
                   ),
                 ),

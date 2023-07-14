@@ -2240,6 +2240,7 @@ class _EditProfileState extends State<EditProfile> {
     var requestBody = {
       "per_name": _personalName.text,
       "per_num": _personalNumber.text,
+      "per_secondary_num": _personalSecondaryNumber.text ?? '',
       "per_email": _personalEmail.text,
       "per_dob": _personalDob.text,
       "per_add": _personalAddress.text,
@@ -2247,7 +2248,7 @@ class _EditProfileState extends State<EditProfile> {
       "per_state": _personalState.text,
       "per_country": _personalCountry.text,
       "per_pincode": _personalPincode.text,
-      "per_lan": _personalLandline.text == null ? '' : _personalLandline.text,
+      "per_lan": _personalLandline.text ?? '',
       "per_keyword": _values!.join(', '),
       "pro_occ": _professionalOccupation.text,
       "pro_ind": _professionalIndustry.text,

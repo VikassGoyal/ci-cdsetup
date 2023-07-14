@@ -9,8 +9,11 @@ class ApiConstants {
   static const String signup = '/api/user/signup';
   static const String profile = '/api/user/profile';
   static const String uploadprofileimage = '/api/user/uploadprofileimage';
+  static const String deleteprofileimage = '/api/user/deleteprofileimage';
   static const String businesscardLogo = '/api/user/businesscardLogo';
+  static const String deleteBusinesscardLogo = '/api/user/businesscardLogo/{id}';
   static const String addnewcontact = '/api/user/addnewcontact';
+  static const String deleteContact = '/api/user/contacts/{id}';
   static const String importcontacts = '/api/user/importcontacts';
   static const String getallcontact = '/api/user/getallcontact';
   static const String editContact = '/api/user/editContact';

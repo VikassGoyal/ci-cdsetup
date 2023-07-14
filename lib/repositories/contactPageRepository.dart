@@ -82,6 +82,10 @@ class ContactPageRepository {
     return response;
   }
 
+  Future<void> deleteprofileimage() async {
+    await _apiClient.deleteprofileimage();
+  }
+
   //UpdateProfile
   updateProfileDetails(requestBody) async {
     var response = await _apiClient.profile(requestBody);
@@ -100,10 +104,18 @@ class ContactPageRepository {
     return response;
   }
 
+  Future<void> deleteBusinessCard(int id) async {
+    await _apiClient.deleteBusinesscardLogo(id.toString());
+  }
+
   //AddNewContact
   addNewContact(requestBody) async {
     var response = await _apiClient.addnewcontact(requestBody);
     return response;
+  }
+
+  Future<void> deleteContact(int id) async {
+    await _apiClient.deleteContact(id.toString());
   }
 
   //importContacts

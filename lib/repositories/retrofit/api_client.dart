@@ -43,13 +43,25 @@ abstract class ApiClient {
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
   Future<dynamic> uploadprofileimage(@Body() Map<String, dynamic> body);
 
+  @DELETE(ApiConstants.deleteprofileimage)
+  @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
+  Future<void> deleteprofileimage();
+
   @POST(ApiConstants.businesscardLogo)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
   Future<dynamic> businesscardLogo(@Body() Map<String, dynamic> body);
 
+  @DELETE(ApiConstants.deleteBusinesscardLogo)
+  @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
+  Future<dynamic> deleteBusinesscardLogo(@Path('id') String id);
+
   @POST(ApiConstants.addnewcontact)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
   Future<dynamic> addnewcontact(@Body() Map<String, dynamic> body);
+
+  @DELETE(ApiConstants.deleteContact)
+  @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
+  Future<dynamic> deleteContact(@Path('id') String id);
 
   @POST(ApiConstants.importcontacts)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})

@@ -1,4 +1,6 @@
 import 'package:conet/constants/constants.dart';
+import 'package:conet/repositories/api_models/login_request_body.dart';
+import 'package:conet/repositories/api_models/signup_request_body.dart';
 import 'package:conet/repositories/userRepository.dart';
 import 'package:conet/services/storage_service.dart';
 import 'package:conet/utils/get_it.dart';
@@ -10,9 +12,9 @@ class UserBloc {
     userRepository = UserRepository();
   }
 
-  login(requestBody) async {
+  login({required String email, required String password}) async {
     try {
-      var response = await userRepository?.login(requestBody);
+      var response = await userRepository?.login(LoginRequestBody(email: email, password: password));
 
       print(response['message']);
       if (response['message'] == "success") {
@@ -32,9 +34,10 @@ class UserBloc {
     }
   }
 
-  signup(requestBody) async {
+  signup({required String username, required String email, required String phone, required String password}) async {
     try {
-      var response = await userRepository?.signup(requestBody);
+      var response = await userRepository
+          ?.signup(SignupRequestBody(username: username, email: email, phone: phone, password: password));
       print(response.toString());
       if (response['status'] == true) {
         final prefs = locator<StorageService>();

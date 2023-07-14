@@ -640,15 +640,13 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
   }
 
   signupFunction() async {
-    var requestBody = {
-      "username": widget.username,
-      "email": widget.email,
-      "phone": widget.phone,
-      "password": widget.password
-    };
+    String username = widget.username!;
+    String email = widget.email!;
+    String phone = widget.phone!;
+    String password = widget.password!;
 
     try {
-      var response = await UserBloc().signup(requestBody);
+      var response = await UserBloc().signup(username: username, email: email, phone: phone, password: password);
       var res = response["status"];
       print("response : $res");
       setState(() {

@@ -136,13 +136,11 @@ class _LoginState extends State<Login> {
             setState(() {
               _loader = true;
             });
-            var requestBody = {
-              "email": _mobileEmailController.text,
-              "password": _passwordController.text,
-            };
+            String email = _mobileEmailController.text;
+            String password = _passwordController.text;
 
             try {
-              var response = await UserBloc().login(requestBody);
+              var response = await UserBloc().login(email: email, password: password);
 
               setState(() {
                 _loader = false;

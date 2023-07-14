@@ -507,15 +507,13 @@ class _SignUpState extends State<SignUp> {
   }
 
   signupFunction() async {
-    var requestBody = {
-      "username": _nameController.text,
-      "email": _emailController.text,
-      "phone": _mobileController.text,
-      "password": _passwordController.text
-    };
+    String username = _nameController.text;
+    String email = _emailController.text;
+    String phone = _mobileController.text;
+    String password = _passwordController.text;
 
     try {
-      var response = await UserBloc().signup(requestBody);
+      var response = await UserBloc().signup(username: username, email: email, phone: phone, password: password);
       var res = response["status"];
       print("response : $res");
       setState(() {

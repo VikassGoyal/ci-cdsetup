@@ -1,5 +1,7 @@
 import 'package:conet/constants/constants.dart';
 import 'package:conet/models/deviceContactData.dart';
+import 'package:conet/repositories/api_models/login_request_body.dart';
+import 'package:conet/repositories/api_models/signup_request_body.dart';
 import 'package:conet/repositories/retrofit/api_constants.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
@@ -15,7 +17,7 @@ abstract class ApiClient {
   ///
 
   @POST(ApiConstants.login)
-  Future<dynamic> login(@Body() Map<String, dynamic> body);
+  Future<dynamic> login(@Body() LoginRequestBody loginRequestBody);
 
   @POST(ApiConstants.logout)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
@@ -33,7 +35,7 @@ abstract class ApiClient {
   ///
 
   @POST(ApiConstants.signup)
-  Future<dynamic> signup(@Body() Map<String, dynamic> body);
+  Future<dynamic> signup(@Body() SignupRequestBody signupRequestBody);
 
   @POST(ApiConstants.profile)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})

@@ -1,7 +1,7 @@
 import 'package:conet/constants/constants.dart';
 import 'package:conet/models/deviceContactData.dart';
-import 'package:conet/repositories/api_models/login_request_body.dart';
-import 'package:conet/repositories/api_models/signup_request_body.dart';
+import 'package:conet/repositories/api_models/login_request_body/login_request_body.dart';
+import 'package:conet/repositories/api_models/signup_request_body/signup_request_body.dart';
 import 'package:conet/repositories/retrofit/api_constants.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';

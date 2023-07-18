@@ -1,7 +1,7 @@
 import 'package:conet/config/app_config.dart';
 import 'package:conet/constants/enums.dart';
-import 'package:conet/repositories/api_models/login_request_body.dart';
-import 'package:conet/repositories/api_models/signup_request_body.dart';
+import 'package:conet/repositories/api_models/login_request_body/login_request_body.dart';
+import 'package:conet/repositories/api_models/signup_request_body/signup_request_body.dart';
 import 'package:conet/repositories/interceptors/token_interceptor.dart';
 import 'package:conet/repositories/retrofit/api_client.dart';
 import 'package:conet/utils/get_it.dart';

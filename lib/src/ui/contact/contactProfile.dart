@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:another_carousel_pro/another_carousel_pro.dart';
+import 'package:conet/api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
@@ -1597,12 +1598,13 @@ class _ContactProfileState extends State<ContactProfile> {
     print(typeStatus);
 
     try {
-      var requestBody = {
-        "id": widget.contactmetaid,
-        "type": typeStatus,
-      };
+      // var requestBody = {
+      //   "id": widget.contactmetaid,
+      //   "type": typeStatus,
+      // };
 
-      var response = await ContactBloc().updateTypeStatus(requestBody);
+      var response =
+          await ContactBloc().updateTypeStatus(UpdateTypeStatusRequestBody(id: widget.contactmetaid, type: typeStatus));
 
       setState(() {
         _loaderoverflow = false;

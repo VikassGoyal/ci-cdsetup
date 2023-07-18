@@ -182,13 +182,12 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> uploadprofileimage(Map<String, dynamic> body) async {
+  Future<dynamic> uploadprofileimage(UploadProfileImageRequestBody body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    final _data = body;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -235,13 +234,13 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> businesscardLogo(Map<String, dynamic> body) async {
+  Future<dynamic> businesscardLogo(
+      UploadbusinesslogoRequestBody uploadbusinesslogoequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    final _data = uploadbusinesslogoequestBody;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -511,13 +510,13 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> requestedcontactresponse(Map<String, dynamic> body) async {
+  Future<dynamic> requestedcontactresponse(
+      RequestContactResponseRequestBody body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    final _data = body;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -567,13 +566,12 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> qrvalue(Map<String, dynamic> body) async {
+  Future<dynamic> qrvalue(QrValueRequestBody qrValueRequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    final _data = qrValueRequestBody;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -623,13 +621,13 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> changetypestatus(Map<String, dynamic> body) async {
+  Future<dynamic> changetypestatus(
+      UpdateTypeStatusRequestBody updateTypeStatusRequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    final _data = updateTypeStatusRequestBody;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -732,13 +730,13 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> changePassword(Map<String, dynamic> body) async {
+  Future<dynamic> changePassword(
+      ChangePasswordRequestBody changePasswordrequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    final _data = changePasswordrequestBody;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,

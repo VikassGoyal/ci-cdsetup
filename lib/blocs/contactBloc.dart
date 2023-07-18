@@ -1,5 +1,10 @@
 import 'package:conet/repositories/repositories.dart';
 
+import '../api_models/qrValue_request_model/qrValue_request_body.dart';
+import '../api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
+import '../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
+import '../api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
+
 class ContactBloc {
   ContactPageRepository? contactPageRepository;
 
@@ -16,9 +21,9 @@ class ContactBloc {
     }
   }
 
-  contactRequestResponse(requestBody) async {
+  contactRequestResponse(RequestContactResponseRequestBody requestContactResponseRequestBody) async {
     try {
-      var response = await contactPageRepository?.contactRequestResponse(requestBody);
+      var response = await contactPageRepository?.contactRequestResponse(requestContactResponseRequestBody);
       return response;
     } catch (e) {
       print(e);
@@ -55,9 +60,9 @@ class ContactBloc {
   }
 
   //UpdateProfileImage
-  updateProfileImage(requestBody) async {
+  updateProfileImage(UploadProfileImageRequestBody uploadProfileImagrequestBody) async {
     try {
-      var response = await contactPageRepository?.updateProfileImage(requestBody);
+      var response = await contactPageRepository?.updateProfileImage(uploadProfileImagrequestBody);
       return response;
     } catch (e) {
       print(e.toString());
@@ -85,9 +90,9 @@ class ContactBloc {
   }
 
   //AddNewContact
-  sendQrValue(requestBody) async {
+  sendQrValue(QrValueRequestBody qrValueRequestBody) async {
     try {
-      var response = await contactPageRepository?.sendQrValue(requestBody);
+      var response = await contactPageRepository?.sendQrValue(qrValueRequestBody);
       return response;
     } catch (e) {
       print(e);
@@ -105,9 +110,9 @@ class ContactBloc {
   }
 
   //UpdateTypeStatus
-  updateTypeStatus(requestBody) async {
+  updateTypeStatus(UpdateTypeStatusRequestBody updateTypeStatusRequestBody) async {
     try {
-      var response = await contactPageRepository?.updateTypeStatus(requestBody);
+      var response = await contactPageRepository?.updateTypeStatus(updateTypeStatusRequestBody);
       return response;
     } catch (e) {
       print(e);

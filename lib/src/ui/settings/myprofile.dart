@@ -1194,16 +1194,20 @@ class _MyProfileState extends State<MyProfile> {
                   height: 110.w,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100.0.w),
-                    child: FadeInImage.assetNetwork(
-                      placeholder: "assets/images/profile.png",
-                      image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
-                      fit: BoxFit.cover,
-                      imageErrorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          "assets/images/profile.png",
-                        );
-                      },
-                    ),
+                    child: userImage != ""
+                        ? FadeInImage.assetNetwork(
+                            placeholder: "assets/images/profile.png",
+                            image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
+                            fit: BoxFit.cover,
+                            imageErrorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                "assets/images/profile.png",
+                              );
+                            },
+                          )
+                        : Image.asset(
+                            "assets/images/profile.png",
+                          ),
                   ),
                 ),
               ],

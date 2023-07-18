@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:conet/api_models/uploadbusinesslogo_request_%20model/uploadebusinesslogo_request_body.dart';
 import 'package:conet/config/app_config.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/repositories/contactPageRepository.dart';
@@ -517,16 +518,17 @@ class _BussinessCardState extends State<BussinessCard> {
   }
 
   void uploadebusinesslogo() async {
-    var jsonData = {
-      "base64data_logo": "data:image/png;base64,$uploadedImageLogo",
-    };
+    // var jsonData = {
+    //   "base64data_logo": "data:image/png;base64,$uploadedImageLogo",
+    // };
 
     setState(() {
       _loader = true;
     });
 
     try {
-      var response = await _contactPageRepository.updatebusinesslogo(jsonData);
+      var response = await _contactPageRepository.updatebusinesslogo(
+          UploadbusinesslogoRequestBody(base64data_logo: "data:image/png;base64,$uploadedImageLogo"));
       setState(() {
         _loader = false;
       });

@@ -8,6 +8,12 @@ import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/utils/get_it.dart';
 import 'package:dio/dio.dart';
 
+import '../api_models/qrValue_request_model/qrValue_request_body.dart';
+import '../api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
+import '../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
+import '../api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
+import '../api_models/uploadbusinesslogo_request_ model/uploadebusinesslogo_request_body.dart';
+
 class ContactPageRepository {
   ContactPageRepository() {
     final dio = Dio(BaseOptions(
@@ -65,8 +71,8 @@ class ContactPageRepository {
     return response;
   }
 
-  contactRequestResponse(requestBody) async {
-    var response = await _apiClient.requestedcontactresponse(requestBody);
+  contactRequestResponse(RequestContactResponseRequestBody requestContactResponseRequestBody) async {
+    var response = await _apiClient.requestedcontactresponse(requestContactResponseRequestBody);
     return response;
   }
 
@@ -93,14 +99,14 @@ class ContactPageRepository {
   }
 
   //UpdateProfileImage
-  updateProfileImage(requestBody) async {
-    var response = await _apiClient.uploadprofileimage(requestBody);
+  updateProfileImage(UploadProfileImageRequestBody uploadProfileImagrequestBody) async {
+    var response = await _apiClient.uploadprofileimage(uploadProfileImagrequestBody);
     return response;
   }
 
   //UpdateBusinessLogo
-  updatebusinesslogo(requestBody) async {
-    var response = await _apiClient.businesscardLogo(requestBody);
+  updatebusinesslogo(UploadbusinesslogoRequestBody uploadbusinesslogoequestBody) async {
+    var response = await _apiClient.businesscardLogo(uploadbusinesslogoequestBody);
     return response;
   }
 
@@ -125,8 +131,8 @@ class ContactPageRepository {
   }
 
   //sendQrValue
-  sendQrValue(requestBody) async {
-    var response = await _apiClient.qrvalue(requestBody);
+  sendQrValue(QrValueRequestBody qrValueRequestBody) async {
+    var response = await _apiClient.qrvalue(qrValueRequestBody);
     return response;
   }
 
@@ -137,8 +143,8 @@ class ContactPageRepository {
   }
 
   //UpdateTypeStatus
-  updateTypeStatus(requestBody) async {
-    var response = await _apiClient.changetypestatus(requestBody);
+  updateTypeStatus(UpdateTypeStatusRequestBody updateTypeStatusRequestBody) async {
+    var response = await _apiClient.changetypestatus(updateTypeStatusRequestBody);
     return response;
   }
 

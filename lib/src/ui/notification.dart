@@ -1,3 +1,4 @@
+import 'package:conet/api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/blocs/contactRequest.dart';
 import 'package:conet/src/ui/utils.dart';
@@ -434,11 +435,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   requestContactResponse(index, String type, requestContactId) async {
     try {
-      var requestBody = {
-        "type": type,
-        "responseid": requestContactId,
-      };
-      var response = await ContactBloc().contactRequestResponse(requestBody);
+      // var requestBody = {
+      //   "type": type,
+      //   "responseid": requestContactId,
+      // };
+      var response = await ContactBloc()
+          .contactRequestResponse(RequestContactResponseRequestBody(id: type, responseid: requestContactId));
       if (response["status"] == true) {
         setState(() {
           Utils.displayToast(response["message"]);

@@ -28,6 +28,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../../api_models/qrValue_request_model/qrValue_request_body.dart';
+
 class Settings extends StatefulWidget {
   var totalcount;
 
@@ -512,8 +514,11 @@ class _SettingsState extends State<Settings> {
 
   _sendQrApi() async {
     var contactDetail;
-    var requestBody = {"value": _outputController!.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(requestBody);
+    // var requestBody = {"value": _outputController!.text, "qrcode": true};
+    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+      value: _outputController?.text,
+      qrcode: false,
+    ));
     if (response['status'] == true) {
       Utils.displayToast("Scanned successfully");
       try {

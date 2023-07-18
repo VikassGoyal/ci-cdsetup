@@ -5,6 +5,8 @@ import 'package:conet/repositories/retrofit/api_client.dart';
 import 'package:conet/utils/get_it.dart';
 import 'package:dio/dio.dart';
 
+import '../api_models/changepassword_request_model/changepassword_request_body.dart';
+
 class UserRepository {
   UserRepository() {
     final dio = Dio(BaseOptions(
@@ -42,8 +44,8 @@ class UserRepository {
   //   return response;
   // }
 
-  changePassword(requestBody) async {
-    var response = await _apiClient.changePassword(requestBody);
+  changePassword(ChangePasswordRequestBody changePasswordrequestBody) async {
+    var response = await _apiClient.changePassword(changePasswordrequestBody);
     return response;
   }
 }

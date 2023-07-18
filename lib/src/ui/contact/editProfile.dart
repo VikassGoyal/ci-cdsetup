@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:conet/api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/settings/myprofile.dart';
 import 'package:flutter/services.dart';
@@ -201,7 +202,7 @@ class _EditProfileState extends State<EditProfile> {
                     MaterialStateProperty.all<Color>(professionalTab ? AppColor.whiteColor : AppColor.secondaryColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                    side: BorderSide(
+                    side: const BorderSide(
                       color: AppColor.secondaryColor,
                       width: 1,
                       style: BorderStyle.solid,
@@ -316,7 +317,7 @@ class _EditProfileState extends State<EditProfile> {
         padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
         decoration: BoxDecoration(
           border: Border.all(
-            color: Color.fromRGBO(232, 232, 232, 1),
+            color: const Color.fromRGBO(232, 232, 232, 1),
           ),
           borderRadius: BorderRadius.circular(7),
         ),
@@ -333,7 +334,7 @@ class _EditProfileState extends State<EditProfile> {
               color: AppColor.secondaryColor),
           readOnly: true,
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
+            contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
             labelText: "DOB",
             hintStyle: TextStyle(
                 fontSize: 13.sp,
@@ -347,7 +348,7 @@ class _EditProfileState extends State<EditProfile> {
                 color: AppColor.placeholder),
             filled: true,
             fillColor: AppColor.whiteColor,
-            errorBorder: OutlineInputBorder(
+            errorBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
             ),
             suffixIcon: GestureDetector(
@@ -355,7 +356,7 @@ class _EditProfileState extends State<EditProfile> {
                 _selectDate(context);
                 _valuesChanged = true;
               },
-              child: Icon(
+              child: const Icon(
                 Icons.date_range,
                 color: Color(0xFF878B95),
               ),
@@ -381,7 +382,7 @@ class _EditProfileState extends State<EditProfile> {
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: Color(0xFFE8E8E8),
+            color: const Color(0xFFE8E8E8),
           ),
           borderRadius: BorderRadius.circular(7),
         ),
@@ -412,7 +413,7 @@ class _EditProfileState extends State<EditProfile> {
                 color: AppColor.placeholder),
             filled: true,
             fillColor: AppColor.whiteColor,
-            errorBorder: OutlineInputBorder(
+            errorBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
             ),
             focusedBorder: InputBorder.none,
@@ -524,7 +525,7 @@ class _EditProfileState extends State<EditProfile> {
         margin: EdgeInsets.only(left: 22.0.w, right: 22.0.w),
         decoration: BoxDecoration(
           border: Border.all(
-            color: Color.fromRGBO(232, 232, 232, 1),
+            color: const Color.fromRGBO(232, 232, 232, 1),
           ),
           borderRadius: BorderRadius.circular(7),
         ),
@@ -582,7 +583,7 @@ class _EditProfileState extends State<EditProfile> {
 
     Widget _buildPersonalUpdateButton() {
       return Container(
-        margin: EdgeInsets.only(left: 22, right: 22),
+        margin: const EdgeInsets.only(left: 22, right: 22),
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -651,16 +652,16 @@ class _EditProfileState extends State<EditProfile> {
       return Container(
         height: 48.h,
         width: 331.w,
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         margin: EdgeInsets.only(left: 22.w, right: 22.w),
         child: DropdownButtonFormField(
           style: TextStyle(color: AppColor.secondaryColor, fontSize: 13.sp),
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_drop_down,
             color: Color(0xFF878B95),
           ),
           dropdownColor: AppColor.whiteColor,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             contentPadding: EdgeInsets.fromLTRB(18, 0, 0, 0),
             filled: true,
             fillColor: AppColor.whiteColor,
@@ -672,7 +673,7 @@ class _EditProfileState extends State<EditProfile> {
             ),
           ),
           value: _occupationValue,
-          items: [
+          items: const [
             DropdownMenuItem<String>(
               value: 'Entrepreneur',
               child: Text('Entrepreneur'),
@@ -690,7 +691,7 @@ class _EditProfileState extends State<EditProfile> {
               child: Text('Student'),
             ),
           ],
-          hint: Text(
+          hint: const Text(
             'Select Occupation',
             style: TextStyle(
               fontSize: 13,
@@ -702,7 +703,7 @@ class _EditProfileState extends State<EditProfile> {
           onChanged: (value) {
             setState(() {
               // _valuesChanged = true;
-              _occupationValue = value as String?;
+              _occupationValue = value ?? "";
               _professionalOccupation.text = value.toString();
 
               print(_occupationValue);
@@ -1174,7 +1175,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       addAutomaticKeepAlives: true,
                       itemCount: entreprenerurList.length,
                       // itemCount: 1 ,
@@ -1225,27 +1226,34 @@ class _EditProfileState extends State<EditProfile> {
                   Container(
                     width: 120.w,
                     height: 120.w,
-                    padding: EdgeInsets.all(8),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100.0),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: "assets/images/profile.png",
-                        image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
-                        fit: BoxFit.cover,
-                        imageErrorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            "assets/images/profile.png",
-                          );
-                        },
-                      ),
-                    ),
+                    padding: const EdgeInsets.all(8),
+                    child: userImage != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(100.0),
+                            child: FadeInImage.assetNetwork(
+                              placeholder: "assets/images/profile.png",
+                              image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
+                              fit: BoxFit.cover,
+                              imageErrorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  "assets/images/profile.png",
+                                );
+                              },
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(100.0),
+                            child: Image.asset(
+                              "assets/images/profile.png",
+                            ),
+                          ),
                   ),
                   Positioned(
                     bottom: 0,
                     child: Container(
                       height: 19.w,
                       width: 19.w,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppColor.secondaryColor,
                       ),
@@ -1284,7 +1292,7 @@ class _EditProfileState extends State<EditProfile> {
                         child: Text(
                           "Changes not saved",
                           style: TextStyle(
-                              color: Color(0xff3F3D56),
+                              color: const Color(0xff3F3D56),
                               fontFamily: kSfproDisplayFontFamily,
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w500),
@@ -1292,7 +1300,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                       content: Text("Are you sure  want to Exit without Saving ?",
                           style: TextStyle(
-                              color: Color(0xff878B95),
+                              color: const Color(0xff878B95),
                               fontFamily: kSfproRoundedFontFamily,
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w300)),
@@ -1387,7 +1395,7 @@ class _EditProfileState extends State<EditProfile> {
                 color: AppColor.whiteColor)),
       ),
       body: _loader
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
@@ -1395,7 +1403,7 @@ class _EditProfileState extends State<EditProfile> {
           : LoadingOverlay(
               isLoading: _loaderoverflow,
               opacity: 0.3,
-              progressIndicator: CircularProgressIndicator(
+              progressIndicator: const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
               child: SizedBox(
@@ -1549,13 +1557,13 @@ class _EditProfileState extends State<EditProfile> {
                   child: FloatingActionButton(
                     heroTag: null,
                     elevation: 0,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10.0),
                       ),
                     ),
                     backgroundColor: AppColor.removeIconColor,
-                    child: Icon(
+                    child: const Icon(
                       Icons.close,
                       size: 18,
                       color: AppColor.whiteColor,
@@ -1574,7 +1582,7 @@ class _EditProfileState extends State<EditProfile> {
               margin: EdgeInsets.only(top: 20.h, left: 5.0.w, right: 5.0.w),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Color.fromRGBO(232, 232, 232, 1),
+                  color: const Color.fromRGBO(232, 232, 232, 1),
                 ),
                 borderRadius: BorderRadius.circular(7),
               ),
@@ -1599,7 +1607,7 @@ class _EditProfileState extends State<EditProfile> {
                       color: AppColor.placeholder),
                   filled: true,
                   fillColor: AppColor.whiteColor,
-                  errorBorder: OutlineInputBorder(
+                  errorBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
                   focusedBorder: InputBorder.none,
@@ -1623,7 +1631,7 @@ class _EditProfileState extends State<EditProfile> {
               margin: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Color.fromRGBO(232, 232, 232, 1),
+                  color: const Color.fromRGBO(232, 232, 232, 1),
                 ),
                 borderRadius: BorderRadius.circular(7),
               ),
@@ -1634,7 +1642,7 @@ class _EditProfileState extends State<EditProfile> {
                     fontWeight: FontWeight.w300,
                     color: AppColor.secondaryColor),
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
+                  contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: "Website",
                   labelStyle: TextStyle(
                       fontSize: 13.sp,
@@ -1667,7 +1675,7 @@ class _EditProfileState extends State<EditProfile> {
               margin: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Color.fromRGBO(232, 232, 232, 1),
+                  color: const Color.fromRGBO(232, 232, 232, 1),
                 ),
                 borderRadius: BorderRadius.circular(7),
               ),
@@ -1678,7 +1686,7 @@ class _EditProfileState extends State<EditProfile> {
                     fontWeight: FontWeight.w300,
                     color: AppColor.secondaryColor),
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
+                  contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: 'Work Nature',
                   labelStyle: TextStyle(
                       fontSize: 13.sp,
@@ -1687,7 +1695,7 @@ class _EditProfileState extends State<EditProfile> {
                       color: AppColor.placeholder),
                   filled: true,
                   fillColor: AppColor.whiteColor,
-                  errorBorder: OutlineInputBorder(
+                  errorBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
                   focusedBorder: InputBorder.none,
@@ -1736,7 +1744,7 @@ class _EditProfileState extends State<EditProfile> {
                         border: Border.all(
                           color: AppColor.secondaryColor,
                         ),
-                        borderRadius: BorderRadius.all(
+                        borderRadius: const BorderRadius.all(
                           Radius.circular(10.0),
                         ),
                       ),
@@ -1754,7 +1762,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: Stack(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           width: 114.w,
                           height: 102.h,
                           child: ClipRRect(
@@ -1831,7 +1839,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: Stack(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           width: 114.w,
                           height: 102.h,
                           child: ClipRRect(
@@ -1851,7 +1859,7 @@ class _EditProfileState extends State<EditProfile> {
                                       placeholder: (context, url) => Image.asset(
                                         "assets/images/placeholderImage.jpg",
                                       ),
-                                      errorWidget: (context, url, error) => Icon(Icons.error),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
                                     )
                                   : (entreprenerurList[i].images!.length >= 2
                                       ? AssetThumb(
@@ -1903,7 +1911,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: Stack(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           width: 114.w,
                           height: 102.h,
                           child: ClipRRect(
@@ -1923,7 +1931,7 @@ class _EditProfileState extends State<EditProfile> {
                                       placeholder: (context, url) => Image.asset(
                                         "assets/images/placeholderImage.jpg",
                                       ),
-                                      errorWidget: (context, url, error) => Icon(Icons.error),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
                                     )
                                   : (entreprenerurList[i].images!.length == 3
                                       ? AssetThumb(
@@ -1980,7 +1988,7 @@ class _EditProfileState extends State<EditProfile> {
 
   entreprenerurItem(int i) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Material(
         color: AppColor.whiteColor,
         elevation: 2,
@@ -1995,7 +2003,7 @@ class _EditProfileState extends State<EditProfile> {
                 onPressed: () {
                   removeCompanyProfile(i);
                 },
-                icon: Icon(Icons.close),
+                icon: const Icon(Icons.close),
                 color: AppColor.primaryColor,
               ),
             ),
@@ -2010,7 +2018,7 @@ class _EditProfileState extends State<EditProfile> {
                 decoration: InputDecoration(
                     hintText: "Company",
                     filled: true,
-                    fillColor: Color(0xFFF6F6F6),
+                    fillColor: const Color(0xFFF6F6F6),
                     hintStyle: TextStyle(
                         fontSize: 13.sp,
                         fontFamily: kSfproRoundedFontFamily,
@@ -2059,7 +2067,7 @@ class _EditProfileState extends State<EditProfile> {
             ),
             SizedBox(height: 8.h),
             Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
+              padding: const EdgeInsets.only(left: 16, right: 16),
               child: TextFormField(
                 style: TextStyle(
                     fontSize: 15.sp,
@@ -2069,8 +2077,8 @@ class _EditProfileState extends State<EditProfile> {
                 decoration: InputDecoration(
                   hintText: 'Work Nature',
                   filled: true,
-                  fillColor: Color(0xFFF6F6F6),
-                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: Color(0xFF878B95)),
+                  fillColor: const Color(0xFFF6F6F6),
+                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: const Color(0xFF878B95)),
                 ),
                 cursorColor: AppColor.secondaryColor,
                 keyboardType: TextInputType.text,
@@ -2095,7 +2103,7 @@ class _EditProfileState extends State<EditProfile> {
                         backgroundColor: MaterialStateProperty.all<Color>(Colors.black45),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                            side: BorderSide(
+                            side: const BorderSide(
                               color: AppColor.accentColor,
                               width: 1,
                             ),
@@ -2359,8 +2367,8 @@ class _EditProfileState extends State<EditProfile> {
         maxImages: 1,
         enableCamera: true,
         selectedAssets: profileImage,
-        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: MaterialOptions(
+        cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: const MaterialOptions(
           actionBarColor: "#FF931E",
           statusBarColor: "#FF931E",
           actionBarTitle: "Profile Image",
@@ -2391,15 +2399,16 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   void uploadeProfileImage() async {
-    var jsonData = {
-      "base64data_profile": "data:image/png;base64,$uploadedProfileImage",
-    };
+    // var jsonData = {
+    //   "base64data_profile": "data:image/png;base64,$uploadedProfileImage",
+    // };
 
     setState(() {
       _loaderoverflow = true;
     });
 
-    var response = await ContactBloc().updateProfileImage(jsonData);
+    var response = await ContactBloc().updateProfileImage(
+        UploadProfileImageRequestBody(base64data_profile: "data:image/png;base64,$uploadedProfileImage"));
     print(response);
     setState(() {
       _loaderoverflow = false;

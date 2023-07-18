@@ -33,6 +33,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../api_models/qrValue_request_model/qrValue_request_body.dart';
 import '../../bottomNavigation/bottomNavigationBloc.dart';
 import 'contact/contactProfile.dart';
 
@@ -1058,8 +1059,11 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   _sendQrApi() async {
-    var requestBody = {"value": _outputController?.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(requestBody);
+    //var requestBody = {"value": _outputController?.text, "qrcode": true};
+    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+      value: _outputController?.text,
+      qrcode: false,
+    ));
 
     if (response['status'] == true) {
       Utils.displayToast("Scanned successfully");

@@ -1,3 +1,4 @@
+import 'package:conet/api_models/qrValue_request_model/qrValue_request_body.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/searchContacts.dart';
@@ -1039,13 +1040,17 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
   _sentRequest(index, mutindex, type) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    var requestBody = {
-      "value": _outputController?.text,
-      "qrcode": false,
-      "content": "${preferences.getString("name")} request to ${_searchResult[index].mutualList![mutindex].name}",
-      "viaid": _searchResult[index].viaId
-    };
-    var response = await ContactBloc().sendQrValue(requestBody);
+    // var requestBody = {
+    //   "value": _outputController?.text,
+    //   "qrcode": false,
+    //   "content": "${preferences.getString("name")} request to ${_searchResult[index].mutualList![mutindex].name}",
+    //   "viaid": _searchResult[index].viaId
+    // };
+    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+        value: _outputController?.text,
+        qrcode: false,
+        content: "${preferences.getString("name")} request to ${_searchResult[index].mutualList![mutindex].name}",
+        viaid: _searchResult[index].viaId));
 
     if (response['status'] == true) {
       Utils.displayToast("Request Sent successfully");
@@ -1123,8 +1128,11 @@ class _ConetWebPageState extends State<ConetWebPage> {
   }
 
   _sendQrApi() async {
-    var requestBody = {"value": _outputController!.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(requestBody);
+    //var requestBody = {"value": _outputController!.text, "qrcode": true};
+    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+      value: _outputController?.text,
+      qrcode: false,
+    ));
 
     if (response['status'] == true) {
       Utils.displayToast("Scanned successfully");

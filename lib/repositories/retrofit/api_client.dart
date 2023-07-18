@@ -4,6 +4,13 @@ import 'package:conet/repositories/retrofit/api_constants.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 
+import '../../api_models/changepassword_request_model/changepassword_request_body.dart';
+import '../../api_models/qrValue_request_model/qrValue_request_body.dart';
+import '../../api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
+import '../../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
+import '../../api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
+import '../../api_models/uploadbusinesslogo_request_ model/uploadebusinesslogo_request_body.dart';
+
 part 'api_client.g.dart';
 
 @RestApi(baseUrl: '')
@@ -41,7 +48,7 @@ abstract class ApiClient {
 
   @POST(ApiConstants.uploadprofileimage)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
-  Future<dynamic> uploadprofileimage(@Body() Map<String, dynamic> body);
+  Future<dynamic> uploadprofileimage(@Body() UploadProfileImageRequestBody body);
 
   @DELETE(ApiConstants.deleteprofileimage)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
@@ -49,7 +56,7 @@ abstract class ApiClient {
 
   @POST(ApiConstants.businesscardLogo)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
-  Future<dynamic> businesscardLogo(@Body() Map<String, dynamic> body);
+  Future<dynamic> businesscardLogo(@Body() UploadbusinesslogoRequestBody uploadbusinesslogoequestBody);
 
   @DELETE(ApiConstants.deleteBusinesscardLogo)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
@@ -89,7 +96,7 @@ abstract class ApiClient {
 
   @POST(ApiConstants.requestedcontactresponse)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
-  Future<dynamic> requestedcontactresponse(@Body() Map<String, dynamic> body);
+  Future<dynamic> requestedcontactresponse(@Body() RequestContactResponseRequestBody body);
 
   @POST(ApiConstants.mutualcontact)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
@@ -97,7 +104,7 @@ abstract class ApiClient {
 
   @POST(ApiConstants.qrvalue)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
-  Future<dynamic> qrvalue(@Body() Map<String, dynamic> body);
+  Future<dynamic> qrvalue(@Body() QrValueRequestBody qrValueRequestBody);
 
   @POST(ApiConstants.search)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
@@ -105,7 +112,7 @@ abstract class ApiClient {
 
   @POST(ApiConstants.changetypestatus)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
-  Future<dynamic> changetypestatus(@Body() Map<String, dynamic> body);
+  Future<dynamic> changetypestatus(@Body() UpdateTypeStatusRequestBody updateTypeStatusRequestBody);
 
   @GET(ApiConstants.notification)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
@@ -121,5 +128,5 @@ abstract class ApiClient {
 
   @POST(ApiConstants.changepassword)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
-  Future<dynamic> changePassword(@Body() Map<String, dynamic> body);
+  Future<dynamic> changePassword(@Body() ChangePasswordRequestBody changePasswordrequestBody);
 }

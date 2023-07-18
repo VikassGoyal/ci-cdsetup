@@ -17,10 +17,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';
+import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
 import '../utils.dart';
 
 class ContactProfile extends StatefulWidget {
@@ -28,8 +31,9 @@ class ContactProfile extends StatefulWidget {
   final int? contactmetaid;
   final String? contactMetaType;
   final String? fromContactMetaType;
+  final int? id;
 
-  const ContactProfile(this.phoneNumber, this.contactmetaid, this.contactMetaType, this.fromContactMetaType,
+  const ContactProfile(this.phoneNumber, this.contactmetaid, this.contactMetaType, this.fromContactMetaType, this.id,
       {super.key});
 
   @override
@@ -78,6 +82,7 @@ class _ContactProfileState extends State<ContactProfile> {
   String? _occupationValue;
   DateTime? selectedDate;
   bool _updatepage = false;
+  var _mutualcontact;
 
   bool _loader = false;
   bool _loaderoverflow = false;
@@ -100,6 +105,8 @@ class _ContactProfileState extends State<ContactProfile> {
     Future.delayed(Duration.zero, () {
       print(widget.phoneNumber);
       getProfileDetails(widget.phoneNumber!);
+      getMutualContacts(widget.contactmetaid);
+
       // getProfileDetails("9566664128");
     });
 
@@ -1226,7 +1233,7 @@ class _ContactProfileState extends State<ContactProfile> {
     Widget bodyContent() {
       return Column(
         children: [
-          SizedBox(height: 80.h),
+          SizedBox(height: 60.h),
           Text(_personalName.text ?? "Unknown Number",
               style: TextStyle(
                 fontFamily: kSfproRoundedFontFamily,
@@ -1235,12 +1242,23 @@ class _ContactProfileState extends State<ContactProfile> {
                 fontWeight: FontWeight.w600,
                 fontStyle: FontStyle.normal,
               )),
-          SizedBox(height: 12.h),
+          SizedBox(
+            height: 5.h,
+          ),
+          Text("$_mutualcontact Mutual Contacts" ?? "",
+              style: TextStyle(
+                color: AppColor.secondaryColor,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w400,
+              )),
+          SizedBox(height: 10.h),
           Visibility(
             visible: _values.isNotEmpty,
             child: keywordbody(),
           ),
-          SizedBox(height: 22.h),
+          SizedBox(height: 15.h),
+          selectButton(),
+          SizedBox(height: 25.h),
           Padding(
             padding: EdgeInsets.only(left: 14.w, right: 14.w),
             child: Row(
@@ -1318,8 +1336,7 @@ class _ContactProfileState extends State<ContactProfile> {
               ],
             ),
           ),
-          SizedBox(height: 16.h),
-          selectButton(),
+          SizedBox(height: 12.h),
           _buildformBody(),
         ],
       );
@@ -1456,12 +1473,32 @@ class _ContactProfileState extends State<ContactProfile> {
     }
   }
 
+  getMutualContacts(int? contactmetaid) async {
+    print("contactmetaid");
+    print(contactmetaid);
+    try {
+      var response = await ContactBloc().getMutualContacts(GetMutualsContactRequestBody(to_id: widget.id));
+      if (response["status"]) {
+        print("response");
+        // _mutualcontact = response['data'].length;
+        print(response["data"].length);
+
+        setState(() {
+          _mutualcontact = response["data"].length.toString();
+          print(_mutualcontact);
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   getProfileDetails(String phoneNumber) async {
     try {
-      var requestBody = {
-        "phone": phoneNumber,
-      };
-      var response = await ContactBloc().getProfileDetails(requestBody);
+      // var requestBody = {
+      //   "phone": phoneNumber,
+      // };
+      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phoneNumber));
 
       if (response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);

@@ -184,16 +184,17 @@ class _ContactsPageState extends State<ContactsPage> {
         child: GestureDetector(
           onTap: () {
             _focusNode.unfocus();
+
             _clearText();
             if (_contacts[index].userId == null) {
+              print(_contacts[index].id);
+              print(_contacts[index].contactMetaId);
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NonConetContactProfile(
-                    _contacts[index].name ?? "",
-                    _contacts[index].phone!,
-                    _contacts[index].email ?? "",
-                  ),
+                  builder: (context) => NonConetContactProfile(_contacts[index].name ?? "", _contacts[index].phone!,
+                      _contacts[index].email ?? "", _contacts[index].id),
                 ),
               ).then((value) {
                 print("value : $value");
@@ -207,11 +208,11 @@ class _ContactsPageState extends State<ContactsPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ContactProfile(
-                    _contacts[index].phone ?? "",
-                    _contacts[index].contactMetaId ?? 0,
-                    _contacts[index].contactMetaType ?? "",
-                    _contacts[index].fromContactMetaType ?? "",
-                  ),
+                      _contacts[index].phone ?? "",
+                      _contacts[index].contactMetaId ?? 0,
+                      _contacts[index].contactMetaType ?? "",
+                      _contacts[index].fromContactMetaType ?? "",
+                      _contacts[index].id ?? 0),
                 ),
               ).then((value) {
                 print("value : $value");

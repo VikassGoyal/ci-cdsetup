@@ -21,6 +21,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+
 class BussinessCard extends StatefulWidget {
   @override
   _BussinessCardState createState() => _BussinessCardState();
@@ -470,10 +472,11 @@ class _BussinessCardState extends State<BussinessCard> {
     });
 
     try {
-      var requestBody = {
-        "phone": locator<StorageService>().getPrefs('phone'),
-      };
-      var response = await _contactPageRepository.getProfileDetails(requestBody);
+      // var requestBody = {
+      //   "phone": locator<StorageService>().getPrefs('phone'),
+      // };
+      var response = await _contactPageRepository
+          .getProfileDetails(GetProfileDetailsRequestBody(phone: locator<StorageService>().getPrefs('phone')));
 
       setState(() {
         _loader = false;

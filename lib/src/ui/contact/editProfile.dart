@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:conet/api_models/addNewContact_request_model/addNewContact_request_body.dart';
 import 'package:conet/api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/settings/myprofile.dart';
@@ -29,6 +30,8 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+import '../../../api_models/updateProfileDetails_request_model/updateProfileDetails_request_body.dart';
 import '../../../utils/custom_fonts.dart';
 import '../settings/myprofile.dart';
 import '../utils.dart';
@@ -672,7 +675,6 @@ class _EditProfileState extends State<EditProfile> {
               borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
             ),
           ),
-          value: _occupationValue,
           items: const [
             DropdownMenuItem<String>(
               value: 'Entrepreneur',
@@ -691,6 +693,7 @@ class _EditProfileState extends State<EditProfile> {
               child: Text('Student'),
             ),
           ],
+          value: _occupationValue,
           hint: const Text(
             'Select Occupation',
             style: TextStyle(
@@ -1423,11 +1426,11 @@ class _EditProfileState extends State<EditProfile> {
   getProfileDetails() async {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      var phone = preferences.getString("phone");
-      var requestBody = {
-        "phone": phone,
-      };
-      var response = await ContactBloc().getProfileDetails(requestBody);
+      String phonenum = preferences.getString("phone") ?? "";
+      // var requestBody = {
+      //   "phone": phone,
+      // };
+      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phonenum));
 
       setState(() {
         _loader = false;
@@ -2261,41 +2264,66 @@ class _EditProfileState extends State<EditProfile> {
       }
     }
 
-    var requestBody = {
-      "per_name": _personalName.text,
-      "per_num": _personalNumber.text,
-      "per_secondary_num": _personalSecondaryNumber.text ?? '',
-      "per_email": _personalEmail.text,
-      "per_dob": _personalDob.text,
-      "per_add": _personalAddress.text,
-      "per_city": _personalCity.text,
-      "per_state": _personalState.text,
-      "per_country": _personalCountry.text,
-      "per_pincode": _personalPincode.text,
-      "per_lan": _personalLandline.text ?? '',
-      "per_keyword": _values!.join(', '),
-      "pro_occ": _professionalOccupation.text,
-      "pro_ind": _professionalIndustry.text,
-      "pro_com": _professionalCompany.text,
-      "pro_com_website": _professionalCompanyWebsite.text,
-      "pro_wn": _professionalWorkNature.text,
-      "pro_des": _professionalDesignation.text,
-      "pro_sch": _professionalSchool.text,
-      "pro_gra": _professionalGrade.text,
-      "fb": _socialFacebook.text,
-      "in": _socialInstagram.text,
-      "tt": _socialTwitter.text,
-      "sk": _socialSkype.text,
-      // "gp": _socialFacebook.text,
-      // "pt": _socialFacebook.text,
-      "entreprenerur_list": (entreprenerurListResquest.map((e) => e.toJson()).toList()),
-    };
+    // var requestBody = {
+    //   "per_name": _personalName.text,
+    //   "per_num": _personalNumber.text,
+    //   "per_secondary_num": _personalSecondaryNumber.text ?? '',
+    //   "per_email": _personalEmail.text,
+    //   "per_dob": _personalDob.text,
+    //   "per_add": _personalAddress.text,
+    //   "per_city": _personalCity.text,
+    //   "per_state": _personalState.text,
+    //   "per_country": _personalCountry.text,
+    //   "per_pincode": _personalPincode.text,
+    //   "per_lan": _personalLandline.text ?? '',
+    //   "per_keyword": _values!.join(', '),
+    //   "pro_occ": _professionalOccupation.text,
+    //   "pro_ind": _professionalIndustry.text,
+    //   "pro_com": _professionalCompany.text,
+    //   "pro_com_website": _professionalCompanyWebsite.text,
+    //   "pro_wn": _professionalWorkNature.text,
+    //   "pro_des": _professionalDesignation.text,
+    //   "pro_sch": _professionalSchool.text,
+    //   "pro_gra": _professionalGrade.text,
+    //   "fb": _socialFacebook.text,
+    //   "in": _socialInstagram.text,
+    //   "tt": _socialTwitter.text,
+    //   "sk": _socialSkype.text,
+    //   // "gp": _socialFacebook.text,
+    //   // "pt": _socialFacebook.text,
+    //   "entreprenerur_list": (entreprenerurListResquest.map((e) => e.toJson()).toList()),
+    // };
 
     setState(() {
       _loaderoverflow = true;
     });
-    var response = await ContactBloc().updateProfileDetails(requestBody);
-
+    var response = await ContactBloc().updateProfileDetails(UpdateProfileDetailsRequestBody(
+      per_name: _personalName.text,
+      per_num: _personalNumber.text,
+      per_secondary_num: _personalSecondaryNumber.text ?? '',
+      per_email: _personalEmail.text,
+      per_dob: _personalDob.text,
+      per_add: _personalAddress.text,
+      per_city: _personalCity.text,
+      per_state: _personalState.text,
+      per_country: _personalCountry.text,
+      per_pincode: _personalPincode.text,
+      per_lan: _personalLandline.text ?? '',
+      per_keyword: _values!.join(', '),
+      pro_occ: _professionalOccupation.text,
+      pro_ind: _professionalIndustry.text,
+      pro_com: _professionalCompany.text,
+      pro_com_website: _professionalCompanyWebsite.text,
+      pro_wn: _professionalWorkNature.text,
+      pro_des: _professionalDesignation.text,
+      pro_sch: _professionalSchool.text,
+      pro_gra: _professionalGrade.text,
+      fb: _socialFacebook.text,
+      inn: _socialInstagram.text,
+      tt: _socialTwitter.text,
+      sk: _socialSkype.text,
+      entreprenerur_list: (entreprenerurListResquest.map((e) => e.toJson()).toList()),
+    ));
     setState(() {
       _loaderoverflow = false;
     });
@@ -2306,7 +2334,7 @@ class _EditProfileState extends State<EditProfile> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => MyProfile(requestBody['per_num'] as String?),
+          builder: (BuildContext context) => MyProfile(_personalNumber.text.toString() as String?),
         ),
       );
     } else if (response['status'] == "Token is Expired") {

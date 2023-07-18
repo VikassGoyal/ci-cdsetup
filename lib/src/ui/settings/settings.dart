@@ -28,6 +28,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
 import '../../../api_models/qrValue_request_model/qrValue_request_body.dart';
 
 class Settings extends StatefulWidget {
@@ -522,10 +523,11 @@ class _SettingsState extends State<Settings> {
     if (response['status'] == true) {
       Utils.displayToast("Scanned successfully");
       try {
-        var requestBody = {
-          "phone": _outputController!.text,
-        };
-        var response = await ContactBloc().checkContactForAddNew(requestBody);
+        // var requestBody = {
+        //   "phone": _outputController!.text,
+        // };
+        var response =
+            await ContactBloc().checkContactForAddNew(CheckContactForAddNewRequestBody(phone: _outputController!.text));
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
           setState(() {

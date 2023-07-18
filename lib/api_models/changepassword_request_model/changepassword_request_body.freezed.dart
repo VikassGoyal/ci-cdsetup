@@ -119,10 +119,11 @@ class __$$_ChangePasswordRequestBodyCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(includeIfNull: false)
-class _$_ChangePasswordRequestBody implements _ChangePasswordRequestBody {
+class _$_ChangePasswordRequestBody extends _ChangePasswordRequestBody {
   const _$_ChangePasswordRequestBody(
       {@JsonKey(name: 'oldpassword') required this.oldpassword,
-      @JsonKey(name: ' newpassword') required this.newpassword});
+      @JsonKey(name: ' newpassword') required this.newpassword})
+      : super._();
 
   factory _$_ChangePasswordRequestBody.fromJson(Map<String, dynamic> json) =>
       _$$_ChangePasswordRequestBodyFromJson(json);
@@ -169,11 +170,12 @@ class _$_ChangePasswordRequestBody implements _ChangePasswordRequestBody {
   }
 }
 
-abstract class _ChangePasswordRequestBody implements ChangePasswordRequestBody {
+abstract class _ChangePasswordRequestBody extends ChangePasswordRequestBody {
   const factory _ChangePasswordRequestBody(
           {@JsonKey(name: 'oldpassword') required final String oldpassword,
           @JsonKey(name: ' newpassword') required final String newpassword}) =
       _$_ChangePasswordRequestBody;
+  const _ChangePasswordRequestBody._() : super._();
 
   factory _ChangePasswordRequestBody.fromJson(Map<String, dynamic> json) =
       _$_ChangePasswordRequestBody.fromJson;

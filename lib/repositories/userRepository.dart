@@ -1,11 +1,15 @@
 import 'package:conet/config/app_config.dart';
 import 'package:conet/constants/enums.dart';
+
 import 'package:conet/repositories/interceptors/token_interceptor.dart';
 import 'package:conet/repositories/retrofit/api_client.dart';
 import 'package:conet/utils/get_it.dart';
 import 'package:dio/dio.dart';
 
 import '../api_models/changepassword_request_model/changepassword_request_body.dart';
+import '../api_models/forgotpassword__request_model/forgotpassword_request_body.dart';
+import '../api_models/login_request_body/login_request_body.dart';
+import '../api_models/signup_request_body/signup_request_body.dart';
 
 class UserRepository {
   UserRepository() {
@@ -28,14 +32,14 @@ class UserRepository {
 
   late final ApiClient _apiClient;
 
-  login(requestBody) async {
-    var response = await _apiClient.login(requestBody);
+  login(LoginRequestBody loginRequestBody) async {
+    var response = await _apiClient.login(loginRequestBody);
 
     return response;
   }
 
-  signup(requestBody) async {
-    var response = await _apiClient.signup(requestBody);
+  signup(SignupRequestBody signupRequestBody) async {
+    var response = await _apiClient.signup(signupRequestBody);
     return response;
   }
 
@@ -46,6 +50,11 @@ class UserRepository {
 
   changePassword(ChangePasswordRequestBody changePasswordrequestBody) async {
     var response = await _apiClient.changePassword(changePasswordrequestBody);
+    return response;
+  }
+
+  forgotPassword(ForgotpasswordRequestBody forgotpasswordRequestBody) async {
+    var response = await _apiClient.forgotPassword(forgotpasswordRequestBody);
     return response;
   }
 }

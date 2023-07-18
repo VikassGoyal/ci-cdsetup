@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
+import '../../../api_models/forgotpassword__request_model/forgotpassword_request_body.dart';
+import '../../../blocs/userBloc.dart';
 import '../utils.dart';
 import 'login.dart';
 
@@ -149,12 +151,29 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             setState(() {
               _loader = true;
             });
-            var requestBody = {
-              "email": _emailController.text,
-            };
+            // var requestBody = {
+            //   "email": _emailController.text,
+            // };
 
             try {
-              // var response = await UserBloc().signup(requestBody);
+              var response = await UserBloc().forgotPassword(ForgotpasswordRequestBody(email: _emailController.text));
+              if (response['status'] == true) {
+                Utils.displayToast(response["message"]);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Login(),
+                  ),
+                );
+              } else {
+                Utils.displayToast(response["message"]);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Login(),
+                  ),
+                );
+              }
               // var res = response["status"];
               // print("response : $res");
               // setState(() {

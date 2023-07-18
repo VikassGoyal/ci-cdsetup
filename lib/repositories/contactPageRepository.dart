@@ -1,3 +1,4 @@
+import 'package:conet/api_models/updateProfileDetails_request_model/updateProfileDetails_request_body.dart';
 import 'package:conet/config/app_config.dart';
 import 'package:conet/constants/enums.dart';
 import 'package:conet/models/allContacts.dart';
@@ -8,6 +9,12 @@ import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/utils/get_it.dart';
 import 'package:dio/dio.dart';
 
+import '../api_models/ filterSearchResults_request_model/ filterSearchResults_request_body.dart';
+import '../api_models/addNewContact_request_model/addNewContact_request_body.dart';
+import '../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
+import '../api_models/deleteContact__request_model/deleteContact.dart';
+import '../api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';
+import '../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
 import '../api_models/qrValue_request_model/qrValue_request_body.dart';
 import '../api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
 import '../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
@@ -76,15 +83,26 @@ class ContactPageRepository {
     return response;
   }
 
-  //GetProfileDetails
-  checkContactForAddNew(requestBody) async {
-    var response = await _apiClient.checkcontact(requestBody);
+  //deleteContact
+  deleteContactResponse(int id) async {
+    var response = await _apiClient.deleteContact(id.toString());
     return response;
   }
 
   //GetProfileDetails
-  getProfileDetails(requestBody) async {
-    var response = await _apiClient.editContact(requestBody);
+  checkContactForAddNew(CheckContactForAddNewRequestBody checkContactForAddNewRequestBody) async {
+    var response = await _apiClient.checkcontact(checkContactForAddNewRequestBody);
+    return response;
+  }
+
+  //GetProfileDetails
+  getProfileDetails(GetProfileDetailsRequestBody getProfileDetailsRequestBody) async {
+    var response = await _apiClient.editContact(getProfileDetailsRequestBody);
+    return response;
+  }
+
+  getMutualContacts(GetMutualsContactRequestBody getMutualsContactRequestBody) async {
+    var response = await _apiClient.mutualcontact(getMutualsContactRequestBody);
     return response;
   }
 
@@ -93,8 +111,8 @@ class ContactPageRepository {
   }
 
   //UpdateProfile
-  updateProfileDetails(requestBody) async {
-    var response = await _apiClient.profile(requestBody);
+  updateProfileDetails(UpdateProfileDetailsRequestBody updateProfileDetailsRequestBody) async {
+    var response = await _apiClient.profile(updateProfileDetailsRequestBody);
     return response;
   }
 
@@ -115,8 +133,8 @@ class ContactPageRepository {
   }
 
   //AddNewContact
-  addNewContact(requestBody) async {
-    var response = await _apiClient.addnewcontact(requestBody);
+  addNewContact(AddNewContactRequestBody addNewContactRequestBody) async {
+    var response = await _apiClient.addnewcontact(addNewContactRequestBody);
     return response;
   }
 
@@ -137,8 +155,8 @@ class ContactPageRepository {
   }
 
   //SearchConetwebContact
-  searchConetwebContact(requestBody) async {
-    var response = await _apiClient.search(requestBody);
+  searchConetwebContact(FilterSearchResultsRequestBody filterSearchResultsRequestBody) async {
+    var response = await _apiClient.search(filterSearchResultsRequestBody);
     return response;
   }
 

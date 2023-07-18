@@ -21,6 +21,7 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../api_models/ filterSearchResults_request_model/ filterSearchResults_request_body.dart';
 import '../../utils/custom_fonts.dart';
 import 'utils.dart';
 
@@ -1012,10 +1013,11 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
   filterSearchResults() async {
     if (_searchController!.text.isNotEmpty) {
-      var requestBody = {
-        "filter": _searchController!.text,
-      };
-      var response = await ContactBloc().searchConetwebContact(requestBody);
+      // var requestBody = {
+      //   "filter": _searchController!.text,
+      // };
+      var response =
+          await ContactBloc().searchConetwebContact(FilterSearchResultsRequestBody(filter: _searchController!.text));
       var responseData = response['data'];
 
       if (response['status'] == true) {

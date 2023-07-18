@@ -10,14 +10,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../api_models/deleteContact__request_model/deleteContact.dart';
+import '../../../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
+import '../../../blocs/contactBloc.dart';
 import '../utils.dart';
 
 class NonConetContactProfile extends StatefulWidget {
   final String? name;
   final String? phoneNumber;
   final String? email;
+  final int? id;
 
-  const NonConetContactProfile(this.name, this.phoneNumber, this.email, {super.key});
+  const NonConetContactProfile(this.name, this.phoneNumber, this.email, this.id, {super.key});
 
   @override
   State<NonConetContactProfile> createState() => _NonConetContactProfileState();
@@ -311,7 +315,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                 child: const Center(child: Icon(Icons.more_horiz, color: AppColor.whiteColor)),
               ),
-              onSelected: (value) {
+              onSelected: (value) async {
                 print(value);
                 if (value == 2) {
                   String contactName = _personalName.text;
@@ -320,9 +324,24 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                   Share.share(message);
                 }
                 if (value == 1) {
+                  print(widget.id);
                   //   Add the delete contact  api call functionality . i have created updatepage bool by default value false . if contact delete successfully make it true else false
-
-                  _updatepage = true;
+                  try {
+                    var response = await ContactBloc().deleteContact(widget.id!);
+                    print("response");
+                    print(response);
+                    if (response['success'] == true) {
+                      Utils.displayToast(response["message"]);
+                      _updatepage = true;
+                      return;
+                    } else {
+                      Utils.displayToast(response["message"]);
+                      return;
+                    }
+                  } catch (e) {
+                    print(e);
+                    return;
+                  }
                 }
               },
               itemBuilder: (context) => [

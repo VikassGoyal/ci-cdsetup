@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
 import '../utils.dart';
 
 class CallHistroyProfile extends StatefulWidget {
@@ -145,9 +146,7 @@ class _CallHistroyProfileState extends State<CallHistroyProfile> {
         children: [
           const SizedBox(height: 110),
           Text(
-            (_personalName.text == "" || _personalName.text == "null")
-                ? "Unknown Number"
-                : _personalName.text,
+            (_personalName.text == "" || _personalName.text == "null") ? "Unknown Number" : _personalName.text,
             style: Theme.of(context).textTheme.headline2,
           ),
           const SizedBox(height: 22),
@@ -276,10 +275,7 @@ class _CallHistroyProfileState extends State<CallHistroyProfile> {
               ),
               Text(
                 "Back",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2!
-                    .apply(color: AppColor.whiteColor),
+                style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.whiteColor),
               )
             ],
           ),
@@ -287,10 +283,7 @@ class _CallHistroyProfileState extends State<CallHistroyProfile> {
         centerTitle: true,
         title: Text(
           "Contact",
-          style: Theme.of(context)
-              .textTheme
-              .headline4!
-              .apply(color: AppColor.whiteColor),
+          style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.whiteColor),
         ),
         actions: const [
           // PopupMenuButton(
@@ -357,8 +350,7 @@ class _CallHistroyProfileState extends State<CallHistroyProfile> {
             )
           : const Center(
               child: CircularProgressIndicator(
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
+                valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
             ),
     );
@@ -388,10 +380,10 @@ class _CallHistroyProfileState extends State<CallHistroyProfile> {
 
   getProfileDetails(String phoneNumber) async {
     try {
-      var requestBody = {
-        "phone": phoneNumber,
-      };
-      var response = await ContactBloc().getProfileDetails(requestBody);
+      // var requestBody = {
+      //   "phone": phoneNumber,
+      // };
+      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phoneNumber));
 
       if (response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);

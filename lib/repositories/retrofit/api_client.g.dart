@@ -19,12 +19,12 @@ class _ApiClient implements ApiClient {
   String? baseUrl;
 
   @override
-  Future<dynamic> login(Map<String, dynamic> body) async {
+  Future<dynamic> login(LoginRequestBody body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(body.toJson());
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -100,12 +100,12 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> forgotPassword(Map<String, dynamic> body) async {
+  Future<dynamic> forgotPassword(ForgotpasswordRequestBody forgotpasswordRequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(forgotpasswordRequestBody.toJson());
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -127,12 +127,12 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> signup(Map<String, dynamic> body) async {
+  Future<dynamic> signup(SignupRequestBody body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(body.toJson());
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -154,13 +154,13 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> profile(Map<String, dynamic> body) async {
+  Future<dynamic> profile(UpdateProfileDetailsRequestBody updateProfileDetailsRequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(updateProfileDetailsRequestBody.toJson());
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -234,8 +234,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> businesscardLogo(
-      UploadbusinesslogoRequestBody uploadbusinesslogoequestBody) async {
+  Future<dynamic> businesscardLogo(UploadbusinesslogoRequestBody uploadbusinesslogoequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
@@ -289,13 +288,13 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> addnewcontact(Map<String, dynamic> body) async {
+  Future<dynamic> addnewcontact(AddNewContactRequestBody addNewContactRequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(addNewContactRequestBody.toJson());
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -321,6 +320,7 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
+
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
@@ -398,13 +398,13 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> editContact(Map<String, dynamic> body) async {
+  Future<dynamic> editContact(GetProfileDetailsRequestBody getProfileDetailsRequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(getProfileDetailsRequestBody.toJson());
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -426,13 +426,13 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> checkcontact(Map<String, dynamic> body) async {
+  Future<dynamic> checkcontact(CheckContactForAddNewRequestBody checkContactForAddNewRequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(checkContactForAddNewRequestBody.toJson());
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -510,8 +510,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> requestedcontactresponse(
-      RequestContactResponseRequestBody body) async {
+  Future<dynamic> requestedcontactresponse(RequestContactResponseRequestBody body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
@@ -538,13 +537,13 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> mutualcontact(Map<String, dynamic> body) async {
+  Future<dynamic> mutualcontact(GetMutualsContactRequestBody getMutualsContactRequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(getMutualsContactRequestBody.toJson());
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -593,13 +592,13 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> search(Map<String, dynamic> body) async {
+  Future<dynamic> search(FilterSearchResultsRequestBody filterSearchResultsRequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    _data.addAll(body);
+    _data.addAll(filterSearchResultsRequestBody.toJson());
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -621,8 +620,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> changetypestatus(
-      UpdateTypeStatusRequestBody updateTypeStatusRequestBody) async {
+  Future<dynamic> changetypestatus(UpdateTypeStatusRequestBody updateTypeStatusRequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
@@ -730,8 +728,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> changePassword(
-      ChangePasswordRequestBody changePasswordrequestBody) async {
+  Future<dynamic> changePassword(ChangePasswordRequestBody changePasswordrequestBody) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
@@ -759,8 +756,7 @@ class _ApiClient implements ApiClient {
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
-        !(requestOptions.responseType == ResponseType.bytes ||
-            requestOptions.responseType == ResponseType.stream)) {
+        !(requestOptions.responseType == ResponseType.bytes || requestOptions.responseType == ResponseType.stream)) {
       if (T == String) {
         requestOptions.responseType = ResponseType.plain;
       } else {

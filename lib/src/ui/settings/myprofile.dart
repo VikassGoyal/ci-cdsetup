@@ -18,6 +18,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 
+import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
 import '../../../utils/customScrollBehavior.dart';
 import '../utils.dart';
 
@@ -1315,10 +1316,11 @@ class _MyProfileState extends State<MyProfile> {
 
   getProfileDetails(String phoneNumber) async {
     try {
-      var requestBody = {
-        "phone": phoneNumber,
-      };
-      var response = await ContactBloc().getProfileDetails(requestBody);
+      // var requestBody = {
+      //   "phone": phoneNumber,
+      // };
+
+      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phoneNumber));
 
       if (response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);

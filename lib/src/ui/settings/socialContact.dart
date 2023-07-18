@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
 import '../utils.dart';
 
 class SocialContact extends StatefulWidget {
@@ -384,11 +385,11 @@ class _SocialContactState extends State<SocialContact> {
   getProfileDetails() async {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      var phone = preferences.getString("phone");
-      var requestBody = {
-        "phone": phone,
-      };
-      var response = await ContactBloc().getProfileDetails(requestBody);
+      var phonenum = preferences.getString("phone") ?? "";
+      // var requestBody = {
+      //   "phone": phone,
+      // };
+      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phonenum));
       if (response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);
         setState(() {

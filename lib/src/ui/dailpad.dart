@@ -91,7 +91,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
     for (var i = 0; i < mainTitle.length; i++) {
       if (i % 3 == 0 && i > 0) {
         rows.add(Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
-        rows.add(SizedBox(height: 12.h));
+        rows.add(SizedBox(height: 9.h));
         items = <Widget>[];
       }
 
@@ -113,7 +113,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
     //To Do: Fix this workaround for last row
     rows.add(Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
     rows.add(
-      SizedBox(height: 12.h),
+      SizedBox(height: 9.h),
     );
 
     return rows;
@@ -351,7 +351,7 @@ class _DialButtonState extends State<DialButton> {
       child: widget.icon == null
           ? Container(
               color: widget.color,
-              height: 55.w,
+              height: 60.w,
               width: 65.w,
               child: Column(
                 children: <Widget>[

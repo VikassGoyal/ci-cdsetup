@@ -11,10 +11,10 @@ import 'dailpad.dart';
 class KeypadPage extends StatefulWidget {
   var contactsData;
 
-  KeypadPage({this.contactsData}) : super();
+  KeypadPage({super.key, this.contactsData});
 
   @override
-  _KeypadPageState createState() => _KeypadPageState();
+  State<KeypadPage> createState() => _KeypadPageState();
 }
 
 class _KeypadPageState extends State<KeypadPage> {
@@ -49,8 +49,8 @@ class _KeypadPageState extends State<KeypadPage> {
         child: DialPadCustom(
           enableDtmf: false,
           backspaceButtonIconColor: AppColor.primaryColor,
-          buttonTextColor: AppColor.whiteColor,
-          buttonColor: AppColor.primaryColor,
+          buttonTextColor: AppColor.primaryColor,
+          buttonColor: AppColor.whiteColor,
           dialButtonColor: AppColor.primaryColor,
           dialButtonIconColor: AppColor.primaryColor,
           contactList: widget.contactsData,

@@ -128,6 +128,11 @@ class ContactPageRepository {
     return response;
   }
 
+  removeBusinessCard(String id) async {
+    var response = await _apiClient.deleteBusinesscardLogo(id);
+    return response;
+  }
+
   Future<void> deleteBusinessCard(int id) async {
     await _apiClient.deleteBusinesscardLogo(id.toString());
   }

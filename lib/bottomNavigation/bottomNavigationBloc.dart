@@ -78,8 +78,10 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
         await contactPageRepository.getallContacts();
         data = await contactPageRepository.getLocalData();
         contacts.addAll(data);
+
         print("localData12 : $contacts");
       }
+
       print("localData1 : ${contacts.length}");
     } catch (e) {
       print("contactpage : $e");

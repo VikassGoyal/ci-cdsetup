@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:conet/models/contactDetails.dart';
+import 'package:conet/src/ui/contactsPage.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
@@ -327,12 +328,18 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                   print(widget.id);
                   //   Add the delete contact  api call functionality . i have created updatepage bool by default value false . if contact delete successfully make it true else false
                   try {
-                    var response = await ContactBloc().deleteContact(widget.id!);
-                    print("response");
-                    print(response);
+                    var response = await ContactBloc().deleteContact(widget.id ?? 0);
                     if (response['success'] == true) {
                       Utils.displayToast(response["message"]);
                       _updatepage = true;
+                      Navigator.of(context).pop(_updatepage);
+                      //     Navigator.pushReplacement(
+                      //     context,
+                      //      MaterialPageRoute(
+                      //       builder: (context) => ContactsPage(),
+                      //      ),
+
+                      // );
                       return;
                     } else {
                       Utils.displayToast(response["message"]);

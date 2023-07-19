@@ -133,9 +133,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
               readOnly: true,
               style: TextStyle(
                 fontFamily: kSfproRoundedFontFamily,
-                // color: AppColor.accentColor,
-                // color: AppColor.primaryColor,
-                color: AppColor.blackColor,
+                color: AppColor.accentColor,
                 fontWeight: FontWeight.w600,
                 fontSize: 34.sp,
               ),

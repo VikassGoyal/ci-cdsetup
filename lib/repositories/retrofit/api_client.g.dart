@@ -693,7 +693,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<dynamic> totalcount() async {
+  Future<TotalCountResponse> totalcount() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
@@ -715,7 +715,9 @@ class _ApiClient implements ApiClient {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data;
+    final value = TotalCountResponse.fromJson(_result.data);
+    print('response');
+    print(value);
     return value;
   }
 

@@ -463,7 +463,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
                   style: TextStyle(
                     fontFamily: kSfproRoundedFontFamily,
                     color: AppColor.whiteColor,
-                    fontSize: 15.sp,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w300,
                     fontStyle: FontStyle.normal,
                   ),
@@ -592,13 +592,13 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
                   ),
                 ),
                 SizedBox(
-                  height: 40,
-                  width: 20,
+                  height: 40.h,
+                  width: 20.w,
                 ),
                 _buildVerifyMobileNumberButton(),
                 SizedBox(
-                  height: 44.5,
-                  width: 20,
+                  height: 44.5.h,
+                  width: 20.w,
                 ),
                 _buildResend(),
               ],

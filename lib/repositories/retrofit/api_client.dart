@@ -17,6 +17,8 @@ import '../../api_models/login_request_body/login_request_body.dart';
 import '../../api_models/qrValue_request_model/qrValue_request_body.dart';
 import '../../api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
 import '../../api_models/signup_request_body/signup_request_body.dart';
+import '../../api_models/totalCount_response_model copy/totalCount_response_body.dart';
+
 import '../../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
 import '../../api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
 import '../../api_models/uploadbusinesslogo_request_ model/uploadebusinesslogo_request_body.dart';
@@ -135,7 +137,7 @@ abstract class ApiClient {
 
   @GET(ApiConstants.totalcount)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
-  Future<dynamic> totalcount();
+  Future<TotalCountResponse> totalcount();
 
   @POST(ApiConstants.changepassword)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})

@@ -106,6 +106,7 @@ class ContactPageRepository {
     return response;
   }
 
+// not implemented
   Future<void> deleteprofileimage() async {
     await _apiClient.deleteprofileimage();
   }

@@ -11,6 +11,7 @@ import '../../api_models/addNewContact_request_model/addNewContact_request_body.
 import '../../api_models/changepassword_request_model/changepassword_request_body.dart';
 import '../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
 import '../../api_models/forgotpassword__request_model/forgotpassword_request_body.dart';
+import '../../api_models/getAllContact_response_model/getAllContact_response_body.dart';
 import '../../api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';
 import '../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
 import '../../api_models/login_request_body/login_request_body.dart';

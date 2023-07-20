@@ -51,7 +51,7 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
         emit(CoNetWebPageLoaded(conetContactObject: data));
       }
       if (currentIndex == 4) {
-        List<TotalCountResponseData> data = await _getSettingsPageData();
+        List<TotalCountResponseData> data = await _getSettingsPageData() ?? [];
         emit(SettingsPageLoaded(totalcountData: data));
       }
     });
@@ -125,7 +125,7 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
       var response = await settingsPageRepository.fetchTotalcountData();
       print("_getSettingsPageData : ${response.data}");
 
-      if (response.status == true) {
+      if (response.status == "true") {
         data = response.data;
       } else {
         data = [];

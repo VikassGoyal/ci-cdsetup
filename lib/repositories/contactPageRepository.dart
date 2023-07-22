@@ -49,6 +49,7 @@ class ContactPageRepository {
   List<AllContacts> allContacts = [];
 
   getallContacts() async {
+    print("comming");
     allContacts = [];
     await databaseHelper.trancateAllContacts();
     var response = await _apiClient.getallcontact();

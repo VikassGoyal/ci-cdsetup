@@ -385,7 +385,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     visible: (_searchResult[index].status == 'accepted'),
                     child: Container(
                       height: 30.h,
-                      width: 90.w,
+                      width: 110.w,
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         style: ButtonStyle(
@@ -396,7 +396,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         ),
                         onPressed: () {},
                         child: Container(
-                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 84.0),
+                          // constraints: BoxConstraints(minHeight: 28.0.h, maxWidth: 104.0.w),
                           alignment: Alignment.center,
                           child: Text("Accepted",
                               textAlign: TextAlign.center,

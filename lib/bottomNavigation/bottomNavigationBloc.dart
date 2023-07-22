@@ -8,6 +8,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../api_models/getTotalCount_response_model/totalCount_response_body.dart';
+
 part 'bottomNavigationEvent.dart';
 part 'bottomNavigationState.dart';
 
@@ -116,16 +118,16 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
     return data;
   }
 
-  Future _getSettingsPageData() async {
-    var data;
+  Future<List<TotalCountResponseData>> _getSettingsPageData() async {
+    List<TotalCountResponseData> data = [];
     try {
-      var response = await settingsPageRepository.fetchTotalcountData();
-      print("_getSettingsPageData : ${response['data']}");
+      TotalCountResponse response = await settingsPageRepository.fetchTotalcountData();
+      print("_getSettingsPageData : ${response.data}");
 
-      if (response['status'] == true) {
-        data = response['data'];
+      if (response.status == true) {
+        data = response.data;
       } else {
-        data = null;
+        data = [];
       }
     } catch (e) {
       print("getMostDailedContacts : $e");

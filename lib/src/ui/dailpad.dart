@@ -1,15 +1,12 @@
 library flutter_dialpad;
 
-import 'dart:async';
-
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dtmf/dtmf.dart';
-import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DialPadCustom extends StatefulWidget {
   final ValueSetter<String>? makeCall;
@@ -23,6 +20,7 @@ class DialPadCustom extends StatefulWidget {
   final bool? enableDtmf;
 
   DialPadCustom({
+    super.key,
     this.makeCall,
     this.outputMask,
     this.buttonColor,
@@ -35,7 +33,7 @@ class DialPadCustom extends StatefulWidget {
   });
 
   @override
-  _DialPadCustomState createState() => _DialPadCustomState();
+  State<DialPadCustom> createState() => _DialPadCustomState();
 }
 
 class _DialPadCustomState extends State<DialPadCustom> {
@@ -93,9 +91,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
     for (var i = 0; i < mainTitle.length; i++) {
       if (i % 3 == 0 && i > 0) {
         rows.add(Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
-        rows.add(const SizedBox(
-          height: 12,
-        ));
+        rows.add(SizedBox(height: 9.h));
         items = <Widget>[];
       }
 
@@ -117,9 +113,7 @@ class _DialPadCustomState extends State<DialPadCustom> {
     //To Do: Fix this workaround for last row
     rows.add(Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: items));
     rows.add(
-      const SizedBox(
-        height: 12,
-      ),
+      SizedBox(height: 9.h),
     );
 
     return rows;
@@ -127,9 +121,6 @@ class _DialPadCustomState extends State<DialPadCustom> {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    var sizeFactor = screenSize.height * 0.08852217;
-
     return Center(
       child: Column(
         children: <Widget>[
@@ -142,10 +133,9 @@ class _DialPadCustomState extends State<DialPadCustom> {
               readOnly: true,
               style: TextStyle(
                 fontFamily: kSfproRoundedFontFamily,
-                inherit: true,
-                color: AppColor.secondaryColor,
+                color: AppColor.accentColor,
                 fontWeight: FontWeight.w600,
-                fontSize: sizeFactor / 2,
+                fontSize: 34.sp,
               ),
               keyboardType: TextInputType.phone,
               textAlign: TextAlign.center,
@@ -155,119 +145,98 @@ class _DialPadCustomState extends State<DialPadCustom> {
           ),
           _contactNameVisible
               ? SizedBox(
-                  height: 20,
+                  height: 20.h,
                   child: Text(
                     _contactName,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: kSfproRoundedFontFamily,
-                      inherit: true,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w400,
                       color: AppColor.blackColor,
                     ),
                   ),
                 )
-              : Container(
-                  height: 20,
-                ),
-          const SizedBox(
-            height: 44,
-          ),
+              : SizedBox(height: 20.h),
+          SizedBox(height: 44.h),
           ..._getDialerButtons(),
-          const SizedBox(
-            height: 15,
-          ),
+          SizedBox(height: 15.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: screenSize.height * 0.0385504),
-                  child: GestureDetector(
-                    onTap: _value.isEmpty
-                        ? null
-                        : () {
-                            if (_value.isNotEmpty) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AddContact(
-                                    phoneNumber: _value,
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                    child: Icon(
-                      Icons.person_add,
-                      size: sizeFactor / 2,
-                      color: _value.isNotEmpty ? (widget.backspaceButtonIconColor ?? Colors.white24) : Colors.white24,
-                    ),
-                  ),
+              GestureDetector(
+                onTap: _value.isEmpty
+                    ? null
+                    : () {
+                        if (_value.isNotEmpty) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddContact(
+                                phoneNumber: _value,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                child: Icon(
+                  Icons.person_add,
+                  size: 26.w,
+                  color: _value.isNotEmpty ? (widget.backspaceButtonIconColor ?? Colors.white24) : Colors.white24,
                 ),
               ),
-              Expanded(
-                child: Center(
-                  child: DialButton(
-                    icon: Icons.phone,
-                    title: textEditingController?.text ?? '',
-                    color: AppColor.secondaryColor,
-                    onTap: (value) {
-                      widget.makeCall!(_value);
-                    },
-                  ),
-                ),
+              DialButton(
+                icon: Icons.phone,
+                title: textEditingController?.text ?? '',
+                color: AppColor.accentColor,
+                onTap: (value) {
+                  widget.makeCall!(_value);
+                },
               ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(right: screenSize.height * 0.0685504),
-                  child: GestureDetector(
-                    onTap: _value.isEmpty
-                        ? null
-                        : () {
-                            if (_value.isNotEmpty) {
-                              setState(
-                                () {
-                                  _value = _value.substring(0, _value.length - 1);
-                                  textEditingController!.text = _value;
-                                  _contactNameVisible = false;
-                                },
-                              );
-                              getContactName();
-                            }
-                          },
-                    onLongPress: () {
-                      print("onLongPress");
-                      print(_value);
+              GestureDetector(
+                onTap: _value.isEmpty
+                    ? null
+                    : () {
+                        if (_value.isNotEmpty) {
+                          setState(
+                            () {
+                              _value = _value.substring(0, _value.length - 1);
+                              textEditingController!.text = _value;
+                              _contactNameVisible = false;
+                            },
+                          );
+                          getContactName();
+                        }
+                      },
+                onLongPress: () {
+                  print("onLongPress");
+                  print(_value);
 
-                      setState(
-                        () {
-                          _value = "";
-                          textEditingController!.text = _value;
-                          _contactNameVisible = false;
-                        },
-                      );
+                  setState(
+                    () {
+                      _value = "";
+                      textEditingController!.text = _value;
+                      _contactNameVisible = false;
                     },
-                    onLongPressStart: (_) async {
-                      print("onLongPressStart");
-                    },
-                    // onLongPressDown: (_) async {
-                    //   print("onLongPressDown");
-                    // },
-                    onForcePressStart: (_) async {
-                      print("onForcePressStart");
-                    },
-                    onSecondaryLongPress: () async {
-                      print("onSecondaryLongPress");
-                    },
-                    child: Icon(
-                      Icons.backspace,
-                      size: sizeFactor / 2,
-                      color: _value.isNotEmpty ? (widget.backspaceButtonIconColor ?? Colors.white24) : Colors.white24,
-                    ),
-                  ),
+                  );
+                },
+                onLongPressStart: (_) async {
+                  print("onLongPressStart");
+                },
+                // onLongPressDown: (_) async {
+                //   print("onLongPressDown");
+                // },
+                onForcePressStart: (_) async {
+                  print("onForcePressStart");
+                },
+                onSecondaryLongPress: () async {
+                  print("onSecondaryLongPress");
+                },
+                child: Icon(
+                  Icons.backspace,
+                  size: 26.w,
+                  color: _value.isNotEmpty ? (widget.backspaceButtonIconColor ?? Colors.white24) : Colors.white24,
                 ),
-              )
+              ),
             ],
           ),
           const SizedBox(height: 30)
@@ -332,8 +301,6 @@ class _DialPadCustomState extends State<DialPadCustom> {
 }
 
 class DialButton extends StatefulWidget {
-  @override
-  final Key? key;
   final String? title;
   final String? subtitle;
   final Color? color;
@@ -344,7 +311,7 @@ class DialButton extends StatefulWidget {
   final ValueSetter<String?>? onLongPress;
   final bool? shouldAnimate;
   const DialButton(
-      {this.key,
+      {super.key,
       this.title,
       this.subtitle,
       this.color,
@@ -356,33 +323,18 @@ class DialButton extends StatefulWidget {
       this.onTap});
 
   @override
-  _DialButtonState createState() => _DialButtonState();
+  State<DialButton> createState() => _DialButtonState();
 }
 
-class _DialButtonState extends State<DialButton> with SingleTickerProviderStateMixin {
-  AnimationController? _animationController;
-  Animation? _colorTween;
-  Timer? _timer;
-
+class _DialButtonState extends State<DialButton> {
   @override
   void initState() {
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
-    _colorTween = ColorTween(begin: widget.color ?? Colors.white24, end: Colors.white).animate(_animationController!);
-
+    //
     super.initState();
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    if (widget.shouldAnimate ?? false) _timer!.cancel();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    var sizeFactor = screenSize.height * 0.0852217;
-
     return GestureDetector(
       onTap: () {
         if (widget.title != null) {
@@ -390,68 +342,56 @@ class _DialButtonState extends State<DialButton> with SingleTickerProviderStateM
         }
       },
       onLongPress: () {
-        if (widget.title != null) {
+        if (widget.title != null && widget.onLongPress != null) {
           widget.onLongPress!(widget.title!);
         }
       },
-      child: ClipOval(
-        child: AnimatedBuilder(
-          animation: _colorTween!,
-          builder: (context, child) => Container(
-            color: _colorTween!.value,
-            height: sizeFactor,
-            width: sizeFactor,
-            child: Center(
-              child: widget.icon == null
-                  ? widget.subtitle != null
-                      ? Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(top: 16),
-                              child: Text(
-                                "${widget.title}",
-                                style: TextStyle(
-                                    fontFamily: kSfproRoundedFontFamily,
-                                    inherit: true,
-                                    fontSize: sizeFactor / 3,
-                                    fontWeight: FontWeight.w500,
-                                    color: widget.textColor ?? Colors.white),
-                              ),
-                            ),
+      child: widget.icon == null
+          ? Container(
+              color: widget.color,
+              height: 60.w,
+              width: 65.w,
+              child: Column(
+                children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 1.h),
+                        child: Text(
+                          "${widget.title}",
+                          style: TextStyle(
+                              fontFamily: kSfproRoundedFontFamily,
+                              fontSize: 28.sp,
+                              fontWeight: FontWeight.w500,
+                              color: widget.textColor ?? Colors.white),
+                        ),
+                      ),
+                    ] +
+                    (widget.subtitle != null
+                        ? [
                             Text(
                               "${widget.subtitle}",
                               style: TextStyle(
                                   fontFamily: kSfproRoundedFontFamily,
-                                  inherit: true,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: -0.4.sp,
                                   color: widget.textColor ?? Colors.white),
                             )
-                          ],
-                        )
-                      : Padding(
-                          padding: EdgeInsets.only(top: widget.title == "*" ? 9 : 0),
-                          child: Text(
-                            "${widget.title}",
-                            style: TextStyle(
-                              fontFamily: kSfproRoundedFontFamily,
-                              inherit: true,
-                              fontSize: widget.title == "*" || widget.title == "#" && widget.subtitle == null
-                                  ? screenSize.height * 0.0762069
-                                  : sizeFactor / 2,
-                              fontWeight: FontWeight.w500,
-                              color: widget.textColor ?? Colors.white,
-                            ),
-                          ),
-                        )
-                  : Icon(
-                      widget.icon,
-                      size: sizeFactor / 2,
-                      color: widget.iconColor ?? Colors.white,
-                    ),
+                          ]
+                        : []),
+              ),
+            )
+          : ClipOval(
+              child: Container(
+                height: 65.w,
+                width: 65.w,
+                color: Colors.green,
+                child: Icon(
+                  widget.icon,
+                  size: 34.w,
+                  color: widget.iconColor ?? Colors.white,
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

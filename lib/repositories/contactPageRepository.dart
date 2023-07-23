@@ -49,6 +49,7 @@ class ContactPageRepository {
   List<AllContacts> allContacts = [];
 
   getallContacts() async {
+    print("comming");
     allContacts = [];
     await databaseHelper.trancateAllContacts();
     var response = await _apiClient.getallcontact();
@@ -125,6 +126,11 @@ class ContactPageRepository {
   //UpdateBusinessLogo
   updatebusinesslogo(UploadbusinesslogoRequestBody uploadbusinesslogoequestBody) async {
     var response = await _apiClient.businesscardLogo(uploadbusinesslogoequestBody);
+    return response;
+  }
+
+  removeBusinessCard(String id) async {
+    var response = await _apiClient.deleteBusinesscardLogo(id);
     return response;
   }
 

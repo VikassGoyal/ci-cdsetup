@@ -325,25 +325,25 @@ class _AddContactState extends State<AddContact> {
     Utils.hideKeyboard(context);
 
     var response = await ContactBloc().addNewContact(AddNewContactRequestBody(
-      per_name: _personalName.text,
-      per_num: _personalNumber.text,
-      per_email: _personalEmail.text,
-      per_dob: _personalDob.text,
-      per_add: _personalAddress.text,
-      per_lan: _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
-      pro_wn: _professionalWorkNature.text,
-      pro_des: _professionalDesignation.text,
-      pro_sch: _professionalSchool.text,
-      pro_gra: _professionalGrade.text,
-      fb: _socialFacebook.text,
-      inn: _socialInstagram.text,
-      tt: _socialTwitter.text,
-      sk: _socialSkype.text,
+      personalName: _personalName.text,
+      personalNumber: _personalNumber.text,
+      personalEmail: _personalEmail.text,
+      personalDob: _personalDob.text,
+      personalAddress: _personalAddress.text,
+      personalLandline: _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
+      professionalWorkNature: _professionalWorkNature.text,
+      professionalDesignation: _professionalDesignation.text,
+      professionalSchool: _professionalSchool.text,
+      professionalGrade: _professionalGrade.text,
+      socialFacebook: _socialFacebook.text,
+      socialInstagram: _socialInstagram.text,
+      socialTwitter: _socialTwitter.text,
+      socialSkype: _socialSkype.text,
       entreprenerur_list: entreprenerurList.map((e) => e.toJson()).toList(),
-      per_com: _professionalCompany.text,
-      per_com_website: _professionalCompanyWebsite.text,
-      per_occ: _professionalOccupation.text,
-      per_ind: _professionalIndustry.text,
+      professionalCompany: _professionalCompany.text,
+      professionalCompanyWebsite: _professionalCompanyWebsite.text,
+      professionalOccupation: _professionalOccupation.text,
+      professionalIndustry: _professionalIndustry.text,
     ));
     setState(() {
       _loader = false;
@@ -352,10 +352,9 @@ class _AddContactState extends State<AddContact> {
       Utils.displayToast(response['message'].toString());
       await checkPermission();
 
-      Navigator.pushAndRemoveUntil(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
-        (route) => false,
       );
     } else if (response['status'] == "Token is Expired") {
       Utils.displayToast('Token is Expired');

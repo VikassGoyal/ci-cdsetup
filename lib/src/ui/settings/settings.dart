@@ -29,12 +29,13 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
+import '../../../api_models/getTotalCount_response_model/totalCount_response_body.dart';
 import '../../../api_models/qrValue_request_model/qrValue_request_body.dart';
 
 class Settings extends StatefulWidget {
-  var totalcount;
+  List<TotalCountResponseData> totalcount;
 
-  Settings({this.totalcount}) : super();
+  Settings({required this.totalcount}) : super();
   @override
   _SettingsState createState() => _SettingsState();
 }
@@ -719,9 +720,9 @@ class _SettingsState extends State<Settings> {
 
   Future<void> setValue() async {
     try {
-      totalUsers = widget.totalcount[0]['totalUsers'];
-      totalConnection = widget.totalcount[0]['totalConnection'];
-      totalContact = widget.totalcount[0]['totalContact'];
+      totalUsers = widget.totalcount[0].totalUsers ?? 0;
+      totalConnection = widget.totalcount[0].totalConnection ?? 0;
+      totalContact = widget.totalcount[0].totalContact ?? 0;
       PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
         setState(() {
           version = packageInfo.version;

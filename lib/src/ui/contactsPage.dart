@@ -80,6 +80,7 @@ class _ContactsPageState extends State<ContactsPage> {
     _contacts = responseData;
     _loadedcontacts = _contacts;
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
+    //_updateContact();
 
     SchedulerBinding.instance.addPostFrameCallback((_) => _checkShowDialog());
     _outputController = TextEditingController();
@@ -187,9 +188,6 @@ class _ContactsPageState extends State<ContactsPage> {
 
             _clearText();
             if (_contacts[index].userId == null) {
-              print(_contacts[index].id);
-              print(_contacts[index].contactMetaId);
-
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -212,7 +210,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       _contacts[index].contactMetaId ?? 0,
                       _contacts[index].contactMetaType ?? "",
                       _contacts[index].fromContactMetaType ?? "",
-                      _contacts[index].id ?? 0),
+                      _contacts[index].userId ?? 0),
                 ),
               ).then((value) {
                 print("value : $value");

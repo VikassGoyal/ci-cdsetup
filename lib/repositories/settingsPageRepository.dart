@@ -4,6 +4,7 @@ import 'package:conet/repositories/interceptors/token_interceptor.dart';
 import 'package:conet/repositories/retrofit/api_client.dart';
 import 'package:dio/dio.dart';
 
+import '../api_models/getTotalCount_response_model/totalCount_response_body.dart';
 import '../utils/get_it.dart';
 
 class SettingsPageRepository {
@@ -28,7 +29,7 @@ class SettingsPageRepository {
   late final ApiClient _apiClient;
 
   fetchTotalcountData() async {
-    var response = await _apiClient.totalcount();
+    TotalCountResponse response = await _apiClient.totalcount();
     return response;
   }
 }

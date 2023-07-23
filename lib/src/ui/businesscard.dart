@@ -40,6 +40,7 @@ class _BussinessCardState extends State<BussinessCard> {
   bool _showQr = true;
   bool _loader = true;
   Color? currentColor;
+  ContactDetail? contactDetail;
 
   void changeColor(Color color) {
     setState(() => currentColor = color);
@@ -327,13 +328,10 @@ class _BussinessCardState extends State<BussinessCard> {
                 child: const Icon(Icons.more_horiz, color: AppColor.black3)),
             onSelected: (value) {
               print(value);
-              // if (value == 3) {
-              //   print("val");
-
-              //   this.imageName = "";
-
-              //   setState(() {});
-              // }
+              if (value == 3) {
+                print("val");
+                if (contactDetail!.id != null) removeBusinessCard(contactDetail!.id!.toString());
+              }
 
               if (value == 1) {
                 loadbusinesslogo();
@@ -483,10 +481,10 @@ class _BussinessCardState extends State<BussinessCard> {
       });
 
       if (response['status'] == true) {
-        ContactDetail contactDetail = ContactDetail.fromJson(response["user"]);
+        contactDetail = ContactDetail.fromJson(response["user"]);
 
         setState(() {
-          imageName = contactDetail.businesscardLogo ?? "";
+          imageName = contactDetail!.businesscardLogo ?? "";
         });
       } else {
         Utils.displayToast(response["message"]);
@@ -499,6 +497,24 @@ class _BussinessCardState extends State<BussinessCard> {
   File? image;
   String imagePath = "";
   Uint8List? imageBytes;
+
+  removeBusinessCard(String id) async {
+    try {
+      Map<String, dynamic> response = await _contactPageRepository.removeBusinessCard(id);
+
+      if (response['status']) {
+        Utils.displayToast("Logo Removed");
+        setState(() {
+          imageName = "";
+        });
+      } else {
+        return;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> loadbusinesslogo() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);

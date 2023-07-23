@@ -22,7 +22,7 @@ UploadbusinesslogoRequestBody _$UploadbusinesslogoRequestBodyFromJson(
 /// @nodoc
 mixin _$UploadbusinesslogoRequestBody {
   @JsonKey(name: 'base64data_logo')
-  String get base64data_logo => throw _privateConstructorUsedError;
+  dynamic get base64data_logo => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,7 +38,7 @@ abstract class $UploadbusinesslogoRequestBodyCopyWith<$Res> {
       _$UploadbusinesslogoRequestBodyCopyWithImpl<$Res,
           UploadbusinesslogoRequestBody>;
   @useResult
-  $Res call({@JsonKey(name: 'base64data_logo') String base64data_logo});
+  $Res call({@JsonKey(name: 'base64data_logo') dynamic base64data_logo});
 }
 
 /// @nodoc
@@ -55,13 +55,13 @@ class _$UploadbusinesslogoRequestBodyCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? base64data_logo = null,
+    Object? base64data_logo = freezed,
   }) {
     return _then(_value.copyWith(
-      base64data_logo: null == base64data_logo
+      base64data_logo: freezed == base64data_logo
           ? _value.base64data_logo
           : base64data_logo // ignore: cast_nullable_to_non_nullable
-              as String,
+              as dynamic,
     ) as $Val);
   }
 }
@@ -75,7 +75,7 @@ abstract class _$$_UploadbusinesslogoRequestBodyCopyWith<$Res>
       __$$_UploadbusinesslogoRequestBodyCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: 'base64data_logo') String base64data_logo});
+  $Res call({@JsonKey(name: 'base64data_logo') dynamic base64data_logo});
 }
 
 /// @nodoc
@@ -91,13 +91,13 @@ class __$$_UploadbusinesslogoRequestBodyCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? base64data_logo = null,
+    Object? base64data_logo = freezed,
   }) {
     return _then(_$_UploadbusinesslogoRequestBody(
-      base64data_logo: null == base64data_logo
+      base64data_logo: freezed == base64data_logo
           ? _value.base64data_logo
           : base64data_logo // ignore: cast_nullable_to_non_nullable
-              as String,
+              as dynamic,
     ));
   }
 }
@@ -116,7 +116,7 @@ class _$_UploadbusinesslogoRequestBody
 
   @override
   @JsonKey(name: 'base64data_logo')
-  final String base64data_logo;
+  final dynamic base64data_logo;
 
   @override
   String toString() {
@@ -128,13 +128,14 @@ class _$_UploadbusinesslogoRequestBody
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UploadbusinesslogoRequestBody &&
-            (identical(other.base64data_logo, base64data_logo) ||
-                other.base64data_logo == base64data_logo));
+            const DeepCollectionEquality()
+                .equals(other.base64data_logo, base64data_logo));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, base64data_logo);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(base64data_logo));
 
   @JsonKey(ignore: true)
   @override
@@ -155,7 +156,7 @@ abstract class _UploadbusinesslogoRequestBody
     implements UploadbusinesslogoRequestBody {
   const factory _UploadbusinesslogoRequestBody(
           {@JsonKey(name: 'base64data_logo')
-          required final String base64data_logo}) =
+          required final dynamic base64data_logo}) =
       _$_UploadbusinesslogoRequestBody;
 
   factory _UploadbusinesslogoRequestBody.fromJson(Map<String, dynamic> json) =
@@ -163,7 +164,7 @@ abstract class _UploadbusinesslogoRequestBody
 
   @override
   @JsonKey(name: 'base64data_logo')
-  String get base64data_logo;
+  dynamic get base64data_logo;
   @override
   @JsonKey(ignore: true)
   _$$_UploadbusinesslogoRequestBodyCopyWith<_$_UploadbusinesslogoRequestBody>

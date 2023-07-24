@@ -31,7 +31,7 @@ class AppConfig {
   /// Initialize Dev.
   ///
   void _initDevelopment() {
-    baseApiUrl = 'http://192.168.1.3:8000';
+    baseApiUrl = 'http://192.168.1.2:8000';
   }
 
   ///

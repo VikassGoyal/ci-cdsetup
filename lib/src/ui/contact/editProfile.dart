@@ -693,7 +693,7 @@ class _EditProfileState extends State<EditProfile> {
               child: Text('Student'),
             ),
           ],
-          //value: _occupationValue,
+          value: _occupationValue,
           hint: const Text(
             'Select Occupation',
             style: TextStyle(

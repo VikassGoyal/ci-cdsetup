@@ -35,6 +35,7 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
 
       if (currentIndex == 0) {
         var data = await _getContactPageData();
+
         var mostDailedContactData = await getMostDailedContacts();
         emit(ContactPageLoaded(contactObject: data, mostDailedContacts: mostDailedContactData));
       }
@@ -50,7 +51,7 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
         emit(CoNetWebPageLoaded(conetContactObject: data));
       }
       if (currentIndex == 4) {
-        var data = await _getSettingsPageData();
+        List<TotalCountResponseData> data = await _getSettingsPageData() ?? [];
         emit(SettingsPageLoaded(totalcountData: data));
       }
     });

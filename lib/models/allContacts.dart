@@ -61,11 +61,9 @@ class AllContacts extends ISuspensionBean {
   int? get contactMetaId => _contactMetaId;
   set contactMetaId(int? contactMetaId) => _contactMetaId = contactMetaId;
   String? get contactMetaType => _contactMetaType;
-  set contactMetaType(String? contactMetaType) =>
-      _contactMetaType = contactMetaType;
+  set contactMetaType(String? contactMetaType) => _contactMetaType = contactMetaType;
   String? get fromContactMetaType => _fromContactMetaType;
-  set fromContactMetaType(String? fromContactMetaType) =>
-      _fromContactMetaType = fromContactMetaType;
+  set fromContactMetaType(String? fromContactMetaType) => _fromContactMetaType = fromContactMetaType;
   int? get personalAccess => _personalAccess;
   set personalAccess(int? personalAccess) => _personalAccess = personalAccess;
 

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/constants/enums.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/models/imageUploadModel.dart';
@@ -1416,7 +1417,7 @@ class _MyProfileState extends State<MyProfile> {
 
   checkOccupation() {
     print(_occupationValue);
-    if (_occupationValue == 'Entrepreneur') {
+    if (_occupationValue == OccupationType.entrepreneur.name) {
       _enterpreneurForms = true;
       _companyVisible = false;
       _companyWebsiteVisible = false;
@@ -1425,16 +1426,7 @@ class _MyProfileState extends State<MyProfile> {
       _studentSchoolVisible = false;
       _studentGradeVisible = false;
       _designationVisible = false;
-    } else if (_occupationValue == 'Employed') {
-      _enterpreneurForms = false;
-      _companyVisible = true;
-      _companyWebsiteVisible = true;
-      // _companyIndustryVisible = true;
-      _companyWorkNatureVisible = true;
-      _studentSchoolVisible = false;
-      _studentGradeVisible = false;
-      _designationVisible = true;
-    } else if (_occupationValue == 'Home maker') {
+    } else if (_occupationValue == OccupationType.homeMaker.name) {
       _enterpreneurForms = false;
       _companyVisible = false;
       _companyWebsiteVisible = false;
@@ -1443,7 +1435,8 @@ class _MyProfileState extends State<MyProfile> {
       _studentSchoolVisible = false;
       _studentGradeVisible = false;
       _designationVisible = false;
-    } else if (_occupationValue == 'Student') {
+    } else if (_occupationValue == OccupationType.schoolStudent.name ||
+        _occupationValue == OccupationType.collegeStudent.name) {
       _enterpreneurForms = false;
       _companyVisible = false;
       _companyWebsiteVisible = false;
@@ -1452,6 +1445,15 @@ class _MyProfileState extends State<MyProfile> {
       _studentSchoolVisible = true;
       _studentGradeVisible = true;
       _designationVisible = false;
+    } else {
+      _enterpreneurForms = false;
+      _companyVisible = true;
+      _companyWebsiteVisible = true;
+      // _companyIndustryVisible = true;
+      _companyWorkNatureVisible = true;
+      _studentSchoolVisible = false;
+      _studentGradeVisible = false;
+      _designationVisible = true;
     }
   }
 }

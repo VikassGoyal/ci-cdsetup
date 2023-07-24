@@ -1,3 +1,4 @@
+import 'package:conet/constants/enums.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,8 +47,7 @@ class Utils {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(
-                    primarycolor ? AppColor.primaryColor : AppColor.whiteColor),
+                valueColor: AlwaysStoppedAnimation(primarycolor ? AppColor.primaryColor : AppColor.whiteColor),
               ),
             ],
           ),
@@ -57,10 +57,7 @@ class Utils {
   }
 
   static SnackBar displaySnackBar(String message,
-      {String? actionMessage,
-      VoidCallback? onClick,
-      Color? backgroundColor,
-      Duration? duration}) {
+      {String? actionMessage, VoidCallback? onClick, Color? backgroundColor, Duration? duration}) {
     return SnackBar(
       content: Text(
         message,
@@ -82,5 +79,15 @@ class Utils {
 
   static hideKeyboard(context) {
     FocusScope.of(context).requestFocus(FocusNode());
+  }
+}
+
+extension EnumParser on String {
+  OccupationType? toOccupation() {
+    try {
+      return OccupationType.values.firstWhere((e) => e.name.toLowerCase() == toLowerCase());
+    } catch (err) {
+      return null;
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'dailpad.dart';
@@ -10,10 +11,10 @@ import 'dailpad.dart';
 class KeypadPage extends StatefulWidget {
   var contactsData;
 
-  KeypadPage({this.contactsData}) : super();
+  KeypadPage({super.key, this.contactsData});
 
   @override
-  _KeypadPageState createState() => _KeypadPageState();
+  State<KeypadPage> createState() => _KeypadPageState();
 }
 
 class _KeypadPageState extends State<KeypadPage> {
@@ -33,21 +34,23 @@ class _KeypadPageState extends State<KeypadPage> {
       appBar: AppBar(
         centerTitle: false,
         backgroundColor: AppColor.primaryColor,
-        elevation: 0.0,
-        title: const KonetLogo(
-          logoHeight: 24,
-          fontSize: 19,
+        systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
+        leadingWidth: 80.w,
+        title: KonetLogo(
+          logoHeight: 24.h,
+          fontSize: 19.sp,
           textPadding: 9,
           spacing: 9,
         ),
+        elevation: 0.0,
       ),
       body: Align(
         alignment: Alignment.bottomCenter,
         child: DialPadCustom(
           enableDtmf: false,
           backspaceButtonIconColor: AppColor.primaryColor,
-          buttonTextColor: AppColor.whiteColor,
-          buttonColor: AppColor.primaryColor,
+          buttonTextColor: AppColor.primaryColor,
+          buttonColor: AppColor.whiteColor,
           dialButtonColor: AppColor.primaryColor,
           dialButtonIconColor: AppColor.primaryColor,
           contactList: widget.contactsData,

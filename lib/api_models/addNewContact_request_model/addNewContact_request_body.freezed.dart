@@ -22,41 +22,41 @@ AddNewContactRequestBody _$AddNewContactRequestBodyFromJson(
 /// @nodoc
 mixin _$AddNewContactRequestBody {
   @JsonKey(name: "per_name")
-  String get per_name => throw _privateConstructorUsedError;
+  String get personalName => throw _privateConstructorUsedError;
   @JsonKey(name: "per_num")
-  String get per_num => throw _privateConstructorUsedError;
+  String get personalNumber => throw _privateConstructorUsedError;
   @JsonKey(name: 'per_email')
-  String get per_email => throw _privateConstructorUsedError;
+  String get personalEmail => throw _privateConstructorUsedError;
   @JsonKey(name: 'per_dob')
-  String get per_dob => throw _privateConstructorUsedError;
+  String get personalDob => throw _privateConstructorUsedError;
   @JsonKey(name: 'per_add')
-  String get per_add => throw _privateConstructorUsedError;
+  String get personalAddress => throw _privateConstructorUsedError;
   @JsonKey(name: 'per_lan')
-  int? get per_lan => throw _privateConstructorUsedError;
+  int? get personalLandline => throw _privateConstructorUsedError;
   @JsonKey(name: 'pro_occ')
-  String get per_occ => throw _privateConstructorUsedError;
+  String get professionalOccupation => throw _privateConstructorUsedError;
   @JsonKey(name: 'pro_ind')
-  String get per_ind => throw _privateConstructorUsedError;
+  String get professionalIndustry => throw _privateConstructorUsedError;
   @JsonKey(name: 'pro_com')
-  String get per_com => throw _privateConstructorUsedError;
+  String get professionalCompany => throw _privateConstructorUsedError;
   @JsonKey(name: 'pro_com_website')
-  String get per_com_website => throw _privateConstructorUsedError;
+  String get professionalCompanyWebsite => throw _privateConstructorUsedError;
   @JsonKey(name: 'pro_wn')
-  String get pro_wn => throw _privateConstructorUsedError;
+  String get professionalWorkNature => throw _privateConstructorUsedError;
   @JsonKey(name: 'pro_des')
-  String get pro_des => throw _privateConstructorUsedError;
+  String get professionalDesignation => throw _privateConstructorUsedError;
   @JsonKey(name: 'pro_sch')
-  String get pro_sch => throw _privateConstructorUsedError;
+  String get professionalSchool => throw _privateConstructorUsedError;
   @JsonKey(name: 'pro_gra')
-  String get pro_gra => throw _privateConstructorUsedError;
+  String get professionalGrade => throw _privateConstructorUsedError;
   @JsonKey(name: 'fb')
-  String get fb => throw _privateConstructorUsedError;
+  String get socialFacebook => throw _privateConstructorUsedError;
   @JsonKey(name: 'in')
-  String get inn => throw _privateConstructorUsedError;
+  String get socialInstagram => throw _privateConstructorUsedError;
   @JsonKey(name: 'tt')
-  String get tt => throw _privateConstructorUsedError;
+  String get socialTwitter => throw _privateConstructorUsedError;
   @JsonKey(name: 'sk')
-  String get sk => throw _privateConstructorUsedError;
+  String get socialSkype => throw _privateConstructorUsedError;
   @JsonKey(name: 'entreprenerur_list')
   List<Map<String, dynamic>> get entreprenerur_list =>
       throw _privateConstructorUsedError;
@@ -74,24 +74,24 @@ abstract class $AddNewContactRequestBodyCopyWith<$Res> {
       _$AddNewContactRequestBodyCopyWithImpl<$Res, AddNewContactRequestBody>;
   @useResult
   $Res call(
-      {@JsonKey(name: "per_name") String per_name,
-      @JsonKey(name: "per_num") String per_num,
-      @JsonKey(name: 'per_email') String per_email,
-      @JsonKey(name: 'per_dob') String per_dob,
-      @JsonKey(name: 'per_add') String per_add,
-      @JsonKey(name: 'per_lan') int? per_lan,
-      @JsonKey(name: 'pro_occ') String per_occ,
-      @JsonKey(name: 'pro_ind') String per_ind,
-      @JsonKey(name: 'pro_com') String per_com,
-      @JsonKey(name: 'pro_com_website') String per_com_website,
-      @JsonKey(name: 'pro_wn') String pro_wn,
-      @JsonKey(name: 'pro_des') String pro_des,
-      @JsonKey(name: 'pro_sch') String pro_sch,
-      @JsonKey(name: 'pro_gra') String pro_gra,
-      @JsonKey(name: 'fb') String fb,
-      @JsonKey(name: 'in') String inn,
-      @JsonKey(name: 'tt') String tt,
-      @JsonKey(name: 'sk') String sk,
+      {@JsonKey(name: "per_name") String personalName,
+      @JsonKey(name: "per_num") String personalNumber,
+      @JsonKey(name: 'per_email') String personalEmail,
+      @JsonKey(name: 'per_dob') String personalDob,
+      @JsonKey(name: 'per_add') String personalAddress,
+      @JsonKey(name: 'per_lan') int? personalLandline,
+      @JsonKey(name: 'pro_occ') String professionalOccupation,
+      @JsonKey(name: 'pro_ind') String professionalIndustry,
+      @JsonKey(name: 'pro_com') String professionalCompany,
+      @JsonKey(name: 'pro_com_website') String professionalCompanyWebsite,
+      @JsonKey(name: 'pro_wn') String professionalWorkNature,
+      @JsonKey(name: 'pro_des') String professionalDesignation,
+      @JsonKey(name: 'pro_sch') String professionalSchool,
+      @JsonKey(name: 'pro_gra') String professionalGrade,
+      @JsonKey(name: 'fb') String socialFacebook,
+      @JsonKey(name: 'in') String socialInstagram,
+      @JsonKey(name: 'tt') String socialTwitter,
+      @JsonKey(name: 'sk') String socialSkype,
       @JsonKey(name: 'entreprenerur_list')
       List<Map<String, dynamic>> entreprenerur_list});
 }
@@ -110,98 +110,98 @@ class _$AddNewContactRequestBodyCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? per_name = null,
-    Object? per_num = null,
-    Object? per_email = null,
-    Object? per_dob = null,
-    Object? per_add = null,
-    Object? per_lan = freezed,
-    Object? per_occ = null,
-    Object? per_ind = null,
-    Object? per_com = null,
-    Object? per_com_website = null,
-    Object? pro_wn = null,
-    Object? pro_des = null,
-    Object? pro_sch = null,
-    Object? pro_gra = null,
-    Object? fb = null,
-    Object? inn = null,
-    Object? tt = null,
-    Object? sk = null,
+    Object? personalName = null,
+    Object? personalNumber = null,
+    Object? personalEmail = null,
+    Object? personalDob = null,
+    Object? personalAddress = null,
+    Object? personalLandline = freezed,
+    Object? professionalOccupation = null,
+    Object? professionalIndustry = null,
+    Object? professionalCompany = null,
+    Object? professionalCompanyWebsite = null,
+    Object? professionalWorkNature = null,
+    Object? professionalDesignation = null,
+    Object? professionalSchool = null,
+    Object? professionalGrade = null,
+    Object? socialFacebook = null,
+    Object? socialInstagram = null,
+    Object? socialTwitter = null,
+    Object? socialSkype = null,
     Object? entreprenerur_list = null,
   }) {
     return _then(_value.copyWith(
-      per_name: null == per_name
-          ? _value.per_name
-          : per_name // ignore: cast_nullable_to_non_nullable
+      personalName: null == personalName
+          ? _value.personalName
+          : personalName // ignore: cast_nullable_to_non_nullable
               as String,
-      per_num: null == per_num
-          ? _value.per_num
-          : per_num // ignore: cast_nullable_to_non_nullable
+      personalNumber: null == personalNumber
+          ? _value.personalNumber
+          : personalNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      per_email: null == per_email
-          ? _value.per_email
-          : per_email // ignore: cast_nullable_to_non_nullable
+      personalEmail: null == personalEmail
+          ? _value.personalEmail
+          : personalEmail // ignore: cast_nullable_to_non_nullable
               as String,
-      per_dob: null == per_dob
-          ? _value.per_dob
-          : per_dob // ignore: cast_nullable_to_non_nullable
+      personalDob: null == personalDob
+          ? _value.personalDob
+          : personalDob // ignore: cast_nullable_to_non_nullable
               as String,
-      per_add: null == per_add
-          ? _value.per_add
-          : per_add // ignore: cast_nullable_to_non_nullable
+      personalAddress: null == personalAddress
+          ? _value.personalAddress
+          : personalAddress // ignore: cast_nullable_to_non_nullable
               as String,
-      per_lan: freezed == per_lan
-          ? _value.per_lan
-          : per_lan // ignore: cast_nullable_to_non_nullable
+      personalLandline: freezed == personalLandline
+          ? _value.personalLandline
+          : personalLandline // ignore: cast_nullable_to_non_nullable
               as int?,
-      per_occ: null == per_occ
-          ? _value.per_occ
-          : per_occ // ignore: cast_nullable_to_non_nullable
+      professionalOccupation: null == professionalOccupation
+          ? _value.professionalOccupation
+          : professionalOccupation // ignore: cast_nullable_to_non_nullable
               as String,
-      per_ind: null == per_ind
-          ? _value.per_ind
-          : per_ind // ignore: cast_nullable_to_non_nullable
+      professionalIndustry: null == professionalIndustry
+          ? _value.professionalIndustry
+          : professionalIndustry // ignore: cast_nullable_to_non_nullable
               as String,
-      per_com: null == per_com
-          ? _value.per_com
-          : per_com // ignore: cast_nullable_to_non_nullable
+      professionalCompany: null == professionalCompany
+          ? _value.professionalCompany
+          : professionalCompany // ignore: cast_nullable_to_non_nullable
               as String,
-      per_com_website: null == per_com_website
-          ? _value.per_com_website
-          : per_com_website // ignore: cast_nullable_to_non_nullable
+      professionalCompanyWebsite: null == professionalCompanyWebsite
+          ? _value.professionalCompanyWebsite
+          : professionalCompanyWebsite // ignore: cast_nullable_to_non_nullable
               as String,
-      pro_wn: null == pro_wn
-          ? _value.pro_wn
-          : pro_wn // ignore: cast_nullable_to_non_nullable
+      professionalWorkNature: null == professionalWorkNature
+          ? _value.professionalWorkNature
+          : professionalWorkNature // ignore: cast_nullable_to_non_nullable
               as String,
-      pro_des: null == pro_des
-          ? _value.pro_des
-          : pro_des // ignore: cast_nullable_to_non_nullable
+      professionalDesignation: null == professionalDesignation
+          ? _value.professionalDesignation
+          : professionalDesignation // ignore: cast_nullable_to_non_nullable
               as String,
-      pro_sch: null == pro_sch
-          ? _value.pro_sch
-          : pro_sch // ignore: cast_nullable_to_non_nullable
+      professionalSchool: null == professionalSchool
+          ? _value.professionalSchool
+          : professionalSchool // ignore: cast_nullable_to_non_nullable
               as String,
-      pro_gra: null == pro_gra
-          ? _value.pro_gra
-          : pro_gra // ignore: cast_nullable_to_non_nullable
+      professionalGrade: null == professionalGrade
+          ? _value.professionalGrade
+          : professionalGrade // ignore: cast_nullable_to_non_nullable
               as String,
-      fb: null == fb
-          ? _value.fb
-          : fb // ignore: cast_nullable_to_non_nullable
+      socialFacebook: null == socialFacebook
+          ? _value.socialFacebook
+          : socialFacebook // ignore: cast_nullable_to_non_nullable
               as String,
-      inn: null == inn
-          ? _value.inn
-          : inn // ignore: cast_nullable_to_non_nullable
+      socialInstagram: null == socialInstagram
+          ? _value.socialInstagram
+          : socialInstagram // ignore: cast_nullable_to_non_nullable
               as String,
-      tt: null == tt
-          ? _value.tt
-          : tt // ignore: cast_nullable_to_non_nullable
+      socialTwitter: null == socialTwitter
+          ? _value.socialTwitter
+          : socialTwitter // ignore: cast_nullable_to_non_nullable
               as String,
-      sk: null == sk
-          ? _value.sk
-          : sk // ignore: cast_nullable_to_non_nullable
+      socialSkype: null == socialSkype
+          ? _value.socialSkype
+          : socialSkype // ignore: cast_nullable_to_non_nullable
               as String,
       entreprenerur_list: null == entreprenerur_list
           ? _value.entreprenerur_list
@@ -221,24 +221,24 @@ abstract class _$$_AddNewContactRequestBodyCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "per_name") String per_name,
-      @JsonKey(name: "per_num") String per_num,
-      @JsonKey(name: 'per_email') String per_email,
-      @JsonKey(name: 'per_dob') String per_dob,
-      @JsonKey(name: 'per_add') String per_add,
-      @JsonKey(name: 'per_lan') int? per_lan,
-      @JsonKey(name: 'pro_occ') String per_occ,
-      @JsonKey(name: 'pro_ind') String per_ind,
-      @JsonKey(name: 'pro_com') String per_com,
-      @JsonKey(name: 'pro_com_website') String per_com_website,
-      @JsonKey(name: 'pro_wn') String pro_wn,
-      @JsonKey(name: 'pro_des') String pro_des,
-      @JsonKey(name: 'pro_sch') String pro_sch,
-      @JsonKey(name: 'pro_gra') String pro_gra,
-      @JsonKey(name: 'fb') String fb,
-      @JsonKey(name: 'in') String inn,
-      @JsonKey(name: 'tt') String tt,
-      @JsonKey(name: 'sk') String sk,
+      {@JsonKey(name: "per_name") String personalName,
+      @JsonKey(name: "per_num") String personalNumber,
+      @JsonKey(name: 'per_email') String personalEmail,
+      @JsonKey(name: 'per_dob') String personalDob,
+      @JsonKey(name: 'per_add') String personalAddress,
+      @JsonKey(name: 'per_lan') int? personalLandline,
+      @JsonKey(name: 'pro_occ') String professionalOccupation,
+      @JsonKey(name: 'pro_ind') String professionalIndustry,
+      @JsonKey(name: 'pro_com') String professionalCompany,
+      @JsonKey(name: 'pro_com_website') String professionalCompanyWebsite,
+      @JsonKey(name: 'pro_wn') String professionalWorkNature,
+      @JsonKey(name: 'pro_des') String professionalDesignation,
+      @JsonKey(name: 'pro_sch') String professionalSchool,
+      @JsonKey(name: 'pro_gra') String professionalGrade,
+      @JsonKey(name: 'fb') String socialFacebook,
+      @JsonKey(name: 'in') String socialInstagram,
+      @JsonKey(name: 'tt') String socialTwitter,
+      @JsonKey(name: 'sk') String socialSkype,
       @JsonKey(name: 'entreprenerur_list')
       List<Map<String, dynamic>> entreprenerur_list});
 }
@@ -255,98 +255,98 @@ class __$$_AddNewContactRequestBodyCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? per_name = null,
-    Object? per_num = null,
-    Object? per_email = null,
-    Object? per_dob = null,
-    Object? per_add = null,
-    Object? per_lan = freezed,
-    Object? per_occ = null,
-    Object? per_ind = null,
-    Object? per_com = null,
-    Object? per_com_website = null,
-    Object? pro_wn = null,
-    Object? pro_des = null,
-    Object? pro_sch = null,
-    Object? pro_gra = null,
-    Object? fb = null,
-    Object? inn = null,
-    Object? tt = null,
-    Object? sk = null,
+    Object? personalName = null,
+    Object? personalNumber = null,
+    Object? personalEmail = null,
+    Object? personalDob = null,
+    Object? personalAddress = null,
+    Object? personalLandline = freezed,
+    Object? professionalOccupation = null,
+    Object? professionalIndustry = null,
+    Object? professionalCompany = null,
+    Object? professionalCompanyWebsite = null,
+    Object? professionalWorkNature = null,
+    Object? professionalDesignation = null,
+    Object? professionalSchool = null,
+    Object? professionalGrade = null,
+    Object? socialFacebook = null,
+    Object? socialInstagram = null,
+    Object? socialTwitter = null,
+    Object? socialSkype = null,
     Object? entreprenerur_list = null,
   }) {
     return _then(_$_AddNewContactRequestBody(
-      per_name: null == per_name
-          ? _value.per_name
-          : per_name // ignore: cast_nullable_to_non_nullable
+      personalName: null == personalName
+          ? _value.personalName
+          : personalName // ignore: cast_nullable_to_non_nullable
               as String,
-      per_num: null == per_num
-          ? _value.per_num
-          : per_num // ignore: cast_nullable_to_non_nullable
+      personalNumber: null == personalNumber
+          ? _value.personalNumber
+          : personalNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      per_email: null == per_email
-          ? _value.per_email
-          : per_email // ignore: cast_nullable_to_non_nullable
+      personalEmail: null == personalEmail
+          ? _value.personalEmail
+          : personalEmail // ignore: cast_nullable_to_non_nullable
               as String,
-      per_dob: null == per_dob
-          ? _value.per_dob
-          : per_dob // ignore: cast_nullable_to_non_nullable
+      personalDob: null == personalDob
+          ? _value.personalDob
+          : personalDob // ignore: cast_nullable_to_non_nullable
               as String,
-      per_add: null == per_add
-          ? _value.per_add
-          : per_add // ignore: cast_nullable_to_non_nullable
+      personalAddress: null == personalAddress
+          ? _value.personalAddress
+          : personalAddress // ignore: cast_nullable_to_non_nullable
               as String,
-      per_lan: freezed == per_lan
-          ? _value.per_lan
-          : per_lan // ignore: cast_nullable_to_non_nullable
+      personalLandline: freezed == personalLandline
+          ? _value.personalLandline
+          : personalLandline // ignore: cast_nullable_to_non_nullable
               as int?,
-      per_occ: null == per_occ
-          ? _value.per_occ
-          : per_occ // ignore: cast_nullable_to_non_nullable
+      professionalOccupation: null == professionalOccupation
+          ? _value.professionalOccupation
+          : professionalOccupation // ignore: cast_nullable_to_non_nullable
               as String,
-      per_ind: null == per_ind
-          ? _value.per_ind
-          : per_ind // ignore: cast_nullable_to_non_nullable
+      professionalIndustry: null == professionalIndustry
+          ? _value.professionalIndustry
+          : professionalIndustry // ignore: cast_nullable_to_non_nullable
               as String,
-      per_com: null == per_com
-          ? _value.per_com
-          : per_com // ignore: cast_nullable_to_non_nullable
+      professionalCompany: null == professionalCompany
+          ? _value.professionalCompany
+          : professionalCompany // ignore: cast_nullable_to_non_nullable
               as String,
-      per_com_website: null == per_com_website
-          ? _value.per_com_website
-          : per_com_website // ignore: cast_nullable_to_non_nullable
+      professionalCompanyWebsite: null == professionalCompanyWebsite
+          ? _value.professionalCompanyWebsite
+          : professionalCompanyWebsite // ignore: cast_nullable_to_non_nullable
               as String,
-      pro_wn: null == pro_wn
-          ? _value.pro_wn
-          : pro_wn // ignore: cast_nullable_to_non_nullable
+      professionalWorkNature: null == professionalWorkNature
+          ? _value.professionalWorkNature
+          : professionalWorkNature // ignore: cast_nullable_to_non_nullable
               as String,
-      pro_des: null == pro_des
-          ? _value.pro_des
-          : pro_des // ignore: cast_nullable_to_non_nullable
+      professionalDesignation: null == professionalDesignation
+          ? _value.professionalDesignation
+          : professionalDesignation // ignore: cast_nullable_to_non_nullable
               as String,
-      pro_sch: null == pro_sch
-          ? _value.pro_sch
-          : pro_sch // ignore: cast_nullable_to_non_nullable
+      professionalSchool: null == professionalSchool
+          ? _value.professionalSchool
+          : professionalSchool // ignore: cast_nullable_to_non_nullable
               as String,
-      pro_gra: null == pro_gra
-          ? _value.pro_gra
-          : pro_gra // ignore: cast_nullable_to_non_nullable
+      professionalGrade: null == professionalGrade
+          ? _value.professionalGrade
+          : professionalGrade // ignore: cast_nullable_to_non_nullable
               as String,
-      fb: null == fb
-          ? _value.fb
-          : fb // ignore: cast_nullable_to_non_nullable
+      socialFacebook: null == socialFacebook
+          ? _value.socialFacebook
+          : socialFacebook // ignore: cast_nullable_to_non_nullable
               as String,
-      inn: null == inn
-          ? _value.inn
-          : inn // ignore: cast_nullable_to_non_nullable
+      socialInstagram: null == socialInstagram
+          ? _value.socialInstagram
+          : socialInstagram // ignore: cast_nullable_to_non_nullable
               as String,
-      tt: null == tt
-          ? _value.tt
-          : tt // ignore: cast_nullable_to_non_nullable
+      socialTwitter: null == socialTwitter
+          ? _value.socialTwitter
+          : socialTwitter // ignore: cast_nullable_to_non_nullable
               as String,
-      sk: null == sk
-          ? _value.sk
-          : sk // ignore: cast_nullable_to_non_nullable
+      socialSkype: null == socialSkype
+          ? _value.socialSkype
+          : socialSkype // ignore: cast_nullable_to_non_nullable
               as String,
       entreprenerur_list: null == entreprenerur_list
           ? _value._entreprenerur_list
@@ -361,24 +361,25 @@ class __$$_AddNewContactRequestBodyCopyWithImpl<$Res>
 @JsonSerializable(includeIfNull: false)
 class _$_AddNewContactRequestBody extends _AddNewContactRequestBody {
   const _$_AddNewContactRequestBody(
-      {@JsonKey(name: "per_name") required this.per_name,
-      @JsonKey(name: "per_num") required this.per_num,
-      @JsonKey(name: 'per_email') required this.per_email,
-      @JsonKey(name: 'per_dob') required this.per_dob,
-      @JsonKey(name: 'per_add') required this.per_add,
-      @JsonKey(name: 'per_lan') this.per_lan,
-      @JsonKey(name: 'pro_occ') required this.per_occ,
-      @JsonKey(name: 'pro_ind') required this.per_ind,
-      @JsonKey(name: 'pro_com') required this.per_com,
-      @JsonKey(name: 'pro_com_website') required this.per_com_website,
-      @JsonKey(name: 'pro_wn') required this.pro_wn,
-      @JsonKey(name: 'pro_des') required this.pro_des,
-      @JsonKey(name: 'pro_sch') required this.pro_sch,
-      @JsonKey(name: 'pro_gra') required this.pro_gra,
-      @JsonKey(name: 'fb') required this.fb,
-      @JsonKey(name: 'in') required this.inn,
-      @JsonKey(name: 'tt') required this.tt,
-      @JsonKey(name: 'sk') required this.sk,
+      {@JsonKey(name: "per_name") required this.personalName,
+      @JsonKey(name: "per_num") required this.personalNumber,
+      @JsonKey(name: 'per_email') required this.personalEmail,
+      @JsonKey(name: 'per_dob') required this.personalDob,
+      @JsonKey(name: 'per_add') required this.personalAddress,
+      @JsonKey(name: 'per_lan') this.personalLandline,
+      @JsonKey(name: 'pro_occ') required this.professionalOccupation,
+      @JsonKey(name: 'pro_ind') required this.professionalIndustry,
+      @JsonKey(name: 'pro_com') required this.professionalCompany,
+      @JsonKey(name: 'pro_com_website')
+      required this.professionalCompanyWebsite,
+      @JsonKey(name: 'pro_wn') required this.professionalWorkNature,
+      @JsonKey(name: 'pro_des') required this.professionalDesignation,
+      @JsonKey(name: 'pro_sch') required this.professionalSchool,
+      @JsonKey(name: 'pro_gra') required this.professionalGrade,
+      @JsonKey(name: 'fb') required this.socialFacebook,
+      @JsonKey(name: 'in') required this.socialInstagram,
+      @JsonKey(name: 'tt') required this.socialTwitter,
+      @JsonKey(name: 'sk') required this.socialSkype,
       @JsonKey(name: 'entreprenerur_list')
       required final List<Map<String, dynamic>> entreprenerur_list})
       : _entreprenerur_list = entreprenerur_list,
@@ -389,58 +390,58 @@ class _$_AddNewContactRequestBody extends _AddNewContactRequestBody {
 
   @override
   @JsonKey(name: "per_name")
-  final String per_name;
+  final String personalName;
   @override
   @JsonKey(name: "per_num")
-  final String per_num;
+  final String personalNumber;
   @override
   @JsonKey(name: 'per_email')
-  final String per_email;
+  final String personalEmail;
   @override
   @JsonKey(name: 'per_dob')
-  final String per_dob;
+  final String personalDob;
   @override
   @JsonKey(name: 'per_add')
-  final String per_add;
+  final String personalAddress;
   @override
   @JsonKey(name: 'per_lan')
-  final int? per_lan;
+  final int? personalLandline;
   @override
   @JsonKey(name: 'pro_occ')
-  final String per_occ;
+  final String professionalOccupation;
   @override
   @JsonKey(name: 'pro_ind')
-  final String per_ind;
+  final String professionalIndustry;
   @override
   @JsonKey(name: 'pro_com')
-  final String per_com;
+  final String professionalCompany;
   @override
   @JsonKey(name: 'pro_com_website')
-  final String per_com_website;
+  final String professionalCompanyWebsite;
   @override
   @JsonKey(name: 'pro_wn')
-  final String pro_wn;
+  final String professionalWorkNature;
   @override
   @JsonKey(name: 'pro_des')
-  final String pro_des;
+  final String professionalDesignation;
   @override
   @JsonKey(name: 'pro_sch')
-  final String pro_sch;
+  final String professionalSchool;
   @override
   @JsonKey(name: 'pro_gra')
-  final String pro_gra;
+  final String professionalGrade;
   @override
   @JsonKey(name: 'fb')
-  final String fb;
+  final String socialFacebook;
   @override
   @JsonKey(name: 'in')
-  final String inn;
+  final String socialInstagram;
   @override
   @JsonKey(name: 'tt')
-  final String tt;
+  final String socialTwitter;
   @override
   @JsonKey(name: 'sk')
-  final String sk;
+  final String socialSkype;
   final List<Map<String, dynamic>> _entreprenerur_list;
   @override
   @JsonKey(name: 'entreprenerur_list')
@@ -453,7 +454,7 @@ class _$_AddNewContactRequestBody extends _AddNewContactRequestBody {
 
   @override
   String toString() {
-    return 'AddNewContactRequestBody(per_name: $per_name, per_num: $per_num, per_email: $per_email, per_dob: $per_dob, per_add: $per_add, per_lan: $per_lan, per_occ: $per_occ, per_ind: $per_ind, per_com: $per_com, per_com_website: $per_com_website, pro_wn: $pro_wn, pro_des: $pro_des, pro_sch: $pro_sch, pro_gra: $pro_gra, fb: $fb, inn: $inn, tt: $tt, sk: $sk, entreprenerur_list: $entreprenerur_list)';
+    return 'AddNewContactRequestBody(personalName: $personalName, personalNumber: $personalNumber, personalEmail: $personalEmail, personalDob: $personalDob, personalAddress: $personalAddress, personalLandline: $personalLandline, professionalOccupation: $professionalOccupation, professionalIndustry: $professionalIndustry, professionalCompany: $professionalCompany, professionalCompanyWebsite: $professionalCompanyWebsite, professionalWorkNature: $professionalWorkNature, professionalDesignation: $professionalDesignation, professionalSchool: $professionalSchool, professionalGrade: $professionalGrade, socialFacebook: $socialFacebook, socialInstagram: $socialInstagram, socialTwitter: $socialTwitter, socialSkype: $socialSkype, entreprenerur_list: $entreprenerur_list)';
   }
 
   @override
@@ -461,27 +462,45 @@ class _$_AddNewContactRequestBody extends _AddNewContactRequestBody {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_AddNewContactRequestBody &&
-            (identical(other.per_name, per_name) ||
-                other.per_name == per_name) &&
-            (identical(other.per_num, per_num) || other.per_num == per_num) &&
-            (identical(other.per_email, per_email) ||
-                other.per_email == per_email) &&
-            (identical(other.per_dob, per_dob) || other.per_dob == per_dob) &&
-            (identical(other.per_add, per_add) || other.per_add == per_add) &&
-            (identical(other.per_lan, per_lan) || other.per_lan == per_lan) &&
-            (identical(other.per_occ, per_occ) || other.per_occ == per_occ) &&
-            (identical(other.per_ind, per_ind) || other.per_ind == per_ind) &&
-            (identical(other.per_com, per_com) || other.per_com == per_com) &&
-            (identical(other.per_com_website, per_com_website) ||
-                other.per_com_website == per_com_website) &&
-            (identical(other.pro_wn, pro_wn) || other.pro_wn == pro_wn) &&
-            (identical(other.pro_des, pro_des) || other.pro_des == pro_des) &&
-            (identical(other.pro_sch, pro_sch) || other.pro_sch == pro_sch) &&
-            (identical(other.pro_gra, pro_gra) || other.pro_gra == pro_gra) &&
-            (identical(other.fb, fb) || other.fb == fb) &&
-            (identical(other.inn, inn) || other.inn == inn) &&
-            (identical(other.tt, tt) || other.tt == tt) &&
-            (identical(other.sk, sk) || other.sk == sk) &&
+            (identical(other.personalName, personalName) ||
+                other.personalName == personalName) &&
+            (identical(other.personalNumber, personalNumber) ||
+                other.personalNumber == personalNumber) &&
+            (identical(other.personalEmail, personalEmail) ||
+                other.personalEmail == personalEmail) &&
+            (identical(other.personalDob, personalDob) ||
+                other.personalDob == personalDob) &&
+            (identical(other.personalAddress, personalAddress) ||
+                other.personalAddress == personalAddress) &&
+            (identical(other.personalLandline, personalLandline) ||
+                other.personalLandline == personalLandline) &&
+            (identical(other.professionalOccupation, professionalOccupation) ||
+                other.professionalOccupation == professionalOccupation) &&
+            (identical(other.professionalIndustry, professionalIndustry) ||
+                other.professionalIndustry == professionalIndustry) &&
+            (identical(other.professionalCompany, professionalCompany) ||
+                other.professionalCompany == professionalCompany) &&
+            (identical(other.professionalCompanyWebsite,
+                    professionalCompanyWebsite) ||
+                other.professionalCompanyWebsite ==
+                    professionalCompanyWebsite) &&
+            (identical(other.professionalWorkNature, professionalWorkNature) ||
+                other.professionalWorkNature == professionalWorkNature) &&
+            (identical(
+                    other.professionalDesignation, professionalDesignation) ||
+                other.professionalDesignation == professionalDesignation) &&
+            (identical(other.professionalSchool, professionalSchool) ||
+                other.professionalSchool == professionalSchool) &&
+            (identical(other.professionalGrade, professionalGrade) ||
+                other.professionalGrade == professionalGrade) &&
+            (identical(other.socialFacebook, socialFacebook) ||
+                other.socialFacebook == socialFacebook) &&
+            (identical(other.socialInstagram, socialInstagram) ||
+                other.socialInstagram == socialInstagram) &&
+            (identical(other.socialTwitter, socialTwitter) ||
+                other.socialTwitter == socialTwitter) &&
+            (identical(other.socialSkype, socialSkype) ||
+                other.socialSkype == socialSkype) &&
             const DeepCollectionEquality()
                 .equals(other._entreprenerur_list, _entreprenerur_list));
   }
@@ -490,24 +509,24 @@ class _$_AddNewContactRequestBody extends _AddNewContactRequestBody {
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
-        per_name,
-        per_num,
-        per_email,
-        per_dob,
-        per_add,
-        per_lan,
-        per_occ,
-        per_ind,
-        per_com,
-        per_com_website,
-        pro_wn,
-        pro_des,
-        pro_sch,
-        pro_gra,
-        fb,
-        inn,
-        tt,
-        sk,
+        personalName,
+        personalNumber,
+        personalEmail,
+        personalDob,
+        personalAddress,
+        personalLandline,
+        professionalOccupation,
+        professionalIndustry,
+        professionalCompany,
+        professionalCompanyWebsite,
+        professionalWorkNature,
+        professionalDesignation,
+        professionalSchool,
+        professionalGrade,
+        socialFacebook,
+        socialInstagram,
+        socialTwitter,
+        socialSkype,
         const DeepCollectionEquality().hash(_entreprenerur_list)
       ]);
 
@@ -528,24 +547,25 @@ class _$_AddNewContactRequestBody extends _AddNewContactRequestBody {
 
 abstract class _AddNewContactRequestBody extends AddNewContactRequestBody {
   const factory _AddNewContactRequestBody(
-      {@JsonKey(name: "per_name") required final String per_name,
-      @JsonKey(name: "per_num") required final String per_num,
-      @JsonKey(name: 'per_email') required final String per_email,
-      @JsonKey(name: 'per_dob') required final String per_dob,
-      @JsonKey(name: 'per_add') required final String per_add,
-      @JsonKey(name: 'per_lan') final int? per_lan,
-      @JsonKey(name: 'pro_occ') required final String per_occ,
-      @JsonKey(name: 'pro_ind') required final String per_ind,
-      @JsonKey(name: 'pro_com') required final String per_com,
-      @JsonKey(name: 'pro_com_website') required final String per_com_website,
-      @JsonKey(name: 'pro_wn') required final String pro_wn,
-      @JsonKey(name: 'pro_des') required final String pro_des,
-      @JsonKey(name: 'pro_sch') required final String pro_sch,
-      @JsonKey(name: 'pro_gra') required final String pro_gra,
-      @JsonKey(name: 'fb') required final String fb,
-      @JsonKey(name: 'in') required final String inn,
-      @JsonKey(name: 'tt') required final String tt,
-      @JsonKey(name: 'sk') required final String sk,
+      {@JsonKey(name: "per_name") required final String personalName,
+      @JsonKey(name: "per_num") required final String personalNumber,
+      @JsonKey(name: 'per_email') required final String personalEmail,
+      @JsonKey(name: 'per_dob') required final String personalDob,
+      @JsonKey(name: 'per_add') required final String personalAddress,
+      @JsonKey(name: 'per_lan') final int? personalLandline,
+      @JsonKey(name: 'pro_occ') required final String professionalOccupation,
+      @JsonKey(name: 'pro_ind') required final String professionalIndustry,
+      @JsonKey(name: 'pro_com') required final String professionalCompany,
+      @JsonKey(name: 'pro_com_website')
+      required final String professionalCompanyWebsite,
+      @JsonKey(name: 'pro_wn') required final String professionalWorkNature,
+      @JsonKey(name: 'pro_des') required final String professionalDesignation,
+      @JsonKey(name: 'pro_sch') required final String professionalSchool,
+      @JsonKey(name: 'pro_gra') required final String professionalGrade,
+      @JsonKey(name: 'fb') required final String socialFacebook,
+      @JsonKey(name: 'in') required final String socialInstagram,
+      @JsonKey(name: 'tt') required final String socialTwitter,
+      @JsonKey(name: 'sk') required final String socialSkype,
       @JsonKey(name: 'entreprenerur_list')
       required final List<Map<String, dynamic>>
           entreprenerur_list}) = _$_AddNewContactRequestBody;
@@ -556,58 +576,58 @@ abstract class _AddNewContactRequestBody extends AddNewContactRequestBody {
 
   @override
   @JsonKey(name: "per_name")
-  String get per_name;
+  String get personalName;
   @override
   @JsonKey(name: "per_num")
-  String get per_num;
+  String get personalNumber;
   @override
   @JsonKey(name: 'per_email')
-  String get per_email;
+  String get personalEmail;
   @override
   @JsonKey(name: 'per_dob')
-  String get per_dob;
+  String get personalDob;
   @override
   @JsonKey(name: 'per_add')
-  String get per_add;
+  String get personalAddress;
   @override
   @JsonKey(name: 'per_lan')
-  int? get per_lan;
+  int? get personalLandline;
   @override
   @JsonKey(name: 'pro_occ')
-  String get per_occ;
+  String get professionalOccupation;
   @override
   @JsonKey(name: 'pro_ind')
-  String get per_ind;
+  String get professionalIndustry;
   @override
   @JsonKey(name: 'pro_com')
-  String get per_com;
+  String get professionalCompany;
   @override
   @JsonKey(name: 'pro_com_website')
-  String get per_com_website;
+  String get professionalCompanyWebsite;
   @override
   @JsonKey(name: 'pro_wn')
-  String get pro_wn;
+  String get professionalWorkNature;
   @override
   @JsonKey(name: 'pro_des')
-  String get pro_des;
+  String get professionalDesignation;
   @override
   @JsonKey(name: 'pro_sch')
-  String get pro_sch;
+  String get professionalSchool;
   @override
   @JsonKey(name: 'pro_gra')
-  String get pro_gra;
+  String get professionalGrade;
   @override
   @JsonKey(name: 'fb')
-  String get fb;
+  String get socialFacebook;
   @override
   @JsonKey(name: 'in')
-  String get inn;
+  String get socialInstagram;
   @override
   @JsonKey(name: 'tt')
-  String get tt;
+  String get socialTwitter;
   @override
   @JsonKey(name: 'sk')
-  String get sk;
+  String get socialSkype;
   @override
   @JsonKey(name: 'entreprenerur_list')
   List<Map<String, dynamic>> get entreprenerur_list;

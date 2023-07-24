@@ -706,7 +706,7 @@ class _EditProfileState extends State<EditProfile> {
           onChanged: (value) {
             setState(() {
               // _valuesChanged = true;
-              _occupationValue = value ?? "";
+              _occupationValue = value;
               _professionalOccupation.text = value.toString();
 
               print(_occupationValue);
@@ -1066,16 +1066,17 @@ class _EditProfileState extends State<EditProfile> {
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: TextFormField(
-                    maxLength: 10,
+                    maxLength: 25,
                     style: TextStyle(
                         fontSize: 15.sp,
                         fontFamily: kSfproRoundedFontFamily,
                         fontWeight: FontWeight.w300,
                         color: AppColor.secondaryColor),
                     controller: _textEditingController,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                    ],
+
+                    // inputFormatters: [
+                    //   FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                    // ],
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(top: 6.0.w, bottom: 3.0.w),
                       hintText: "Keyword",
@@ -1102,6 +1103,7 @@ class _EditProfileState extends State<EditProfile> {
                             Utils.displayToastBottomError("Keyword cannot be empty");
                             return;
                           }
+                          print(_textEditingController.text.trim());
 
                           if (_values.toString().toLowerCase().contains(_textEditingController.text.toLowerCase())) {
                             Utils.displayToastBottomError("Keyword already added");
@@ -1109,7 +1111,7 @@ class _EditProfileState extends State<EditProfile> {
                             return;
                           }
                           if (_values!.length <= 10) {
-                            _values!.add(_textEditingController.text);
+                            _values!.add(_textEditingController.text.trim());
                             _selected.add(true);
                             _textEditingController.clear();
 
@@ -2437,6 +2439,7 @@ class _EditProfileState extends State<EditProfile> {
 
     var response = await ContactBloc().updateProfileImage(
         UploadProfileImageRequestBody(base64data_profile: "data:image/png;base64,$uploadedProfileImage"));
+    print("response");
     print(response);
     setState(() {
       _loaderoverflow = false;

@@ -34,6 +34,7 @@ class UserBloc {
       return response;
     } catch (e) {
       print("error");
+      print(e);
     }
   }
 

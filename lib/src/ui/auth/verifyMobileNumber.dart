@@ -10,8 +10,11 @@ import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
+
+import '../../../bottomNavigation/bottomNavigationBloc.dart';
 
 class VerifyMobileNumber extends StatefulWidget {
   final String? username;
@@ -665,6 +668,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
         Utils.displayToast(response["message"]);
       } else {
         Utils.displayToast(response["message"]);
+        context.read<BottomNavigationBloc>().currentIndex = 0;
 
         Navigator.pushReplacement(
           context,

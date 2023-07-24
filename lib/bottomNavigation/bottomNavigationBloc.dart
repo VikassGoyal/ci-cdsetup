@@ -8,7 +8,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../api_models/totalCount_response_model copy/totalCount_response_body.dart';
+import '../api_models/getTotalCount_response_model/totalCount_response_body.dart';
 
 part 'bottomNavigationEvent.dart';
 part 'bottomNavigationState.dart';
@@ -122,10 +122,10 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
   Future<List<TotalCountResponseData>> _getSettingsPageData() async {
     List<TotalCountResponseData> data = [];
     try {
-      var response = await settingsPageRepository.fetchTotalcountData();
+      TotalCountResponse response = await settingsPageRepository.fetchTotalcountData();
       print("_getSettingsPageData : ${response.data}");
 
-      if (response.status == "true") {
+      if (response.status == true) {
         data = response.data;
       } else {
         data = [];

@@ -45,7 +45,7 @@ class CoNetWebPageLoaded extends BottomNavigationState {
 }
 
 class SettingsPageLoaded extends BottomNavigationState {
-  List<TotalCountResponseData> totalcountData;
+  List<TotalCountResponseData> totalcountData = [];
 
   SettingsPageLoaded({required this.totalcountData});
 }

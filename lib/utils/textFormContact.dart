@@ -27,30 +27,33 @@ class TextFormFieldContact extends StatefulWidget {
   final Function(dynamic)? onChanged;
   final String? Function(String?)? validator;
   final Color textColor;
+  final bool enableFormatters;
 
-  const TextFormFieldContact(
-      {super.key,
-      required this.hintText,
-      this.focusNode,
-      this.padding,
-      this.onChanged,
-      this.margin,
-      this.textInputType,
-      this.defaultText,
-      this.obscureText = false,
-      this.readonly = false,
-      this.enable,
-      this.controller,
-      this.functionValidate,
-      this.parametersValidate,
-      this.actionKeyboard = TextInputAction.next,
-      this.onSubmitField,
-      this.onFieldTap,
-      this.prefixIcon,
-      this.maxLength = 1000,
-      this.textColor = AppColor.secondaryColor,
-      this.regexexp,
-      this.validator});
+  const TextFormFieldContact({
+    super.key,
+    required this.hintText,
+    this.focusNode,
+    this.padding,
+    this.onChanged,
+    this.margin,
+    this.textInputType,
+    this.defaultText,
+    this.obscureText = false,
+    this.readonly = false,
+    this.enable,
+    this.controller,
+    this.functionValidate,
+    this.parametersValidate,
+    this.actionKeyboard = TextInputAction.next,
+    this.onSubmitField,
+    this.onFieldTap,
+    this.prefixIcon,
+    this.maxLength = 1000,
+    this.textColor = AppColor.secondaryColor,
+    this.regexexp,
+    this.validator,
+    this.enableFormatters = true,
+  });
 
   @override
   _TextFormFieldContactState createState() => _TextFormFieldContactState();
@@ -85,8 +88,10 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
                 color: widget.textColor),
             maxLength: widget.maxLength,
             inputFormatters: [
-              FilteringTextInputFormatter.allow(widget.regexexp == null ? RegExp('.*') : widget.regexexp!),
-              FilteringTextInputFormatter.deny(RegExp(r'\s')),
+              if (widget.enableFormatters) ...[
+                FilteringTextInputFormatter.allow(widget.regexexp == null ? RegExp('.*') : widget.regexexp!),
+                FilteringTextInputFormatter.deny(RegExp(r'\s')),
+              ]
             ],
             // inputFormatters: widget.regexexp != null
             //     ? [

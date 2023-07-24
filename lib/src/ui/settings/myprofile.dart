@@ -158,7 +158,7 @@ class _MyProfileState extends State<MyProfile> {
           selectedColor: AppColor.primaryColor,
           shadowColor: AppColor.primaryColor,
           backgroundColor: AppColor.primaryColor,
-          label: Text(_values[i]),
+          label: Text(_values[i].trim()),
           pressElevation: 5,
           onPressed: () {},
         );

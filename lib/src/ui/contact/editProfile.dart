@@ -936,7 +936,7 @@ class _EditProfileState extends State<EditProfile> {
           selectedColor: AppColor.primaryColor,
           shadowColor: AppColor.primaryColor,
           backgroundColor: AppColor.primaryColor,
-          label: Text(_values![i]),
+          label: Text(_values![i].trim()),
           pressElevation: 5,
           onPressed: () {
             // setState(() {
@@ -2321,7 +2321,7 @@ class _EditProfileState extends State<EditProfile> {
       per_country: _personalCountry.text,
       per_pincode: _personalPincode.text,
       per_lan: _personalLandline.text ?? '',
-      per_keyword: _values!.join(', '),
+      per_keyword: _values!.join(','),
       pro_occ: _professionalOccupation.text,
       pro_ind: _professionalIndustry.text,
       pro_com: _professionalCompany.text,

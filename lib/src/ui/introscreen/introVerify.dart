@@ -13,6 +13,8 @@ class IntroVerify extends StatefulWidget {
   _IntroVerifyState createState() => _IntroVerifyState();
 }
 
+double _width = 430;
+
 class _IntroVerifyState extends State<IntroVerify> {
   @override
   Widget build(BuildContext context) {
@@ -72,7 +74,7 @@ Widget verifyBtn(BuildContext context) {
           style: TextStyle(
             fontFamily: kSfproRoundedFontFamily,
             color: AppColor.whiteColor,
-            fontSize: 18.sp,
+            fontSize: _width < 430 ? 18.sp : 14.sp,
             fontWeight: FontWeight.w500,
             fontStyle: FontStyle.normal,
           ),
@@ -92,7 +94,7 @@ Widget introverifyBody(context) {
           style: TextStyle(
             fontFamily: kSfproRoundedFontFamily,
             color: AppColor.whiteColor,
-            fontSize: 20.sp,
+            fontSize: _width < 430 ? 20.sp : 15.sp,
             fontWeight: FontWeight.w700,
             fontStyle: FontStyle.normal,
           ),
@@ -106,7 +108,7 @@ Widget introverifyBody(context) {
           style: TextStyle(
             fontFamily: kSfproDisplayFontFamily,
             color: AppColor.whiteColor,
-            fontSize: 18.sp,
+            fontSize: _width < 430 ? 18.sp : 14.sp,
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
           ),

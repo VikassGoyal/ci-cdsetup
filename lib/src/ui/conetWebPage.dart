@@ -109,7 +109,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                       fontWeight: FontWeight.w500,
                       fontStyle: FontStyle.normal,
                       decoration: TextDecoration.none,
-                      fontSize: 18.sp,
+                      fontSize: _width < 430 ? 18.sp : 15.sp,
 
                       // Remove the underline
                     ),
@@ -124,7 +124,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                       fontWeight: FontWeight.w300,
                       fontStyle: FontStyle.normal,
                       decoration: TextDecoration.none,
-                      fontSize: 15.sp,
+                      fontSize: _width < 430 ? 15.sp : 12.sp,
                     ),
                   ),
                   SizedBox(height: 40.h),
@@ -150,7 +150,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           color: AppColor.whiteColor,
                           fontWeight: FontWeight.w500,
                           fontStyle: FontStyle.normal,
-                          fontSize: 18.sp,
+                          fontSize: _width < 430 ? 18.sp : 15.sp,
                         ),
                       ),
                     ),
@@ -219,7 +219,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             color: AppColor.blackColor,
-                            fontSize: 13.sp,
+                            fontSize: _width < 430 ? 13.sp : 10.sp,
                             fontFamily: kSfproRoundedFontFamily,
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.w400)),
@@ -228,7 +228,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             color: AppColor.gray30Color,
-                            fontSize: 13.sp,
+                            fontSize: _width < 430 ? 13.sp : 10.sp,
                             fontFamily: kSfproRoundedFontFamily,
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.w400)),
@@ -355,7 +355,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                             children: [
                               SvgPicture.asset(
                                 "assets/icons/ic_contactlink.svg",
-                                height: 10,
+                                height: 10.h,
                               ),
                               const SizedBox(width: 8),
                               Text(
@@ -373,7 +373,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       color: AppColor.secondaryColor,
-                                      fontSize: 13.sp,
+                                      fontSize: _width < 430 ? 13.sp : 10.sp,
                                       fontFamily: kSfproRoundedFontFamily,
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w400)),
@@ -404,7 +404,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: AppColor.whiteColor,
-                                  fontSize: 18.sp,
+                                  fontSize: _width < 430 ? 18.sp : 15.sp,
                                   fontFamily: kSfproRoundedFontFamily,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500)),
@@ -433,7 +433,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: AppColor.whiteColor,
-                                  fontSize: 18.sp,
+                                  fontSize: _width < 430 ? 18.sp : 15.sp,
                                   fontFamily: kSfproRoundedFontFamily,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500)),
@@ -476,7 +476,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: AppColor.accentColor,
-                                  fontSize: 18.sp,
+                                  fontSize: _width < 430 ? 18.sp : 15.sp,
                                   fontFamily: kSfproRoundedFontFamily,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500)),
@@ -765,9 +765,9 @@ class _ConetWebPageState extends State<ConetWebPage> {
             elevation: 0.0,
             title: widget.backcheck
                 ? KonetLogo(
-                    logoHeight: 24.h,
-                    fontSize: _width < 430 ? 19.sp : 1.sp,
-                    textPadding: 9.w,
+                    logoHeight: 24,
+                    fontSize: 19,
+                    textPadding: 9,
                     spacing: 9,
                   )
                 : SizedBox(),
@@ -925,7 +925,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                   icon: Icon(
                                     Icons.qr_code,
                                     color: AppColor.gray30Color,
-                                    size: _width < 430 ? 20.w : 17.w,
+                                    size: _width < 430 ? 20.w : 15.w,
                                   ),
                                   onPressed: () {
                                     _checkQRPermission();
@@ -938,8 +938,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                       ),
                       SizedBox(width: 8.w),
                       Container(
-                        width: 36.w,
-                        height: 36.w,
+                        width: _width < 430 ? 36.w : 22.w,
+                        height: _width < 430 ? 36.w : 22.w,
                         alignment: Alignment.center,
                         child: FloatingActionButton(
                           heroTag: null,
@@ -967,8 +967,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                       ),
                       SizedBox(width: 8.w),
                       Container(
-                        width: 36.w,
-                        height: 36.w,
+                        width: _width < 430 ? 36.w : 22.w,
+                        height: _width < 430 ? 36.w : 22.w,
                         alignment: Alignment.center,
                         child: FloatingActionButton(
                           heroTag: null,

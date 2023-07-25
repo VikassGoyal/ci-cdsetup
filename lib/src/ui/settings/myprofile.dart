@@ -82,6 +82,7 @@ class _MyProfileState extends State<MyProfile> {
   String userImage = '';
   List<String> _values = [];
   List<NetworkImage> popupImages = <NetworkImage>[];
+  double _width = 430;
   // bool _showPreview = false;
 
   @override
@@ -97,6 +98,7 @@ class _MyProfileState extends State<MyProfile> {
 
   @override
   Widget build(BuildContext context) {
+    _width = MediaQuery.of(context).size.width;
     void displayImages() {
       showDialog(
           context: context,
@@ -177,7 +179,7 @@ class _MyProfileState extends State<MyProfile> {
       return Container(
         width: double.infinity,
         margin: EdgeInsets.only(left: 22.0.w, right: 22.0.w),
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.all(10.w),
         decoration: BoxDecoration(
           border: Border.all(
             color: const Color.fromRGBO(232, 232, 232, 1),
@@ -191,7 +193,7 @@ class _MyProfileState extends State<MyProfile> {
               "Keyword",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 13.sp,
+                  fontSize: _width < 430 ? 13.sp : 12.sp,
                   color: AppColor.placeholder,
                   fontFamily: kSfproRoundedFontFamily,
                   fontStyle: FontStyle.normal,
@@ -230,7 +232,7 @@ class _MyProfileState extends State<MyProfile> {
                 'Personal',
                 style: TextStyle(
                     color: personalTab ? AppColor.whiteColor : AppColor.secondaryColor,
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontFamily: kSfCompactDisplayFontFamily,
                     fontWeight: FontWeight.w600),
               ),
@@ -266,7 +268,7 @@ class _MyProfileState extends State<MyProfile> {
                 'Professional',
                 style: TextStyle(
                     color: personalTab ? AppColor.secondaryColor : AppColor.whiteColor,
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontFamily: kSfCompactDisplayFontFamily,
                     fontWeight: FontWeight.w600),
               ),
@@ -281,8 +283,8 @@ class _MyProfileState extends State<MyProfile> {
       return TextFormFieldContact(
         textColor: AppColor.blackColor,
         hintText: " Phone Number",
-        padding: 16.0.w,
-        margin: 22.0.w,
+        padding: 16.0,
+        margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -674,7 +676,7 @@ class _MyProfileState extends State<MyProfile> {
                   Text("Company Profile ${i + 1}",
                       style: TextStyle(
                           color: AppColor.Companyprofilenumber,
-                          fontSize: 15.sp,
+                          fontSize: _width < 430 ? 15.sp : 12.sp,
                           fontFamily: kSfCompactDisplayFontFamily,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w600)),
@@ -694,7 +696,7 @@ class _MyProfileState extends State<MyProfile> {
                 child: TextFormField(
                   enabled: false,
                   style: TextStyle(
-                      fontSize: 15.sp,
+                      fontSize: _width < 430 ? 15.sp : 12.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
                       color: AppColor.blackColor),
@@ -702,7 +704,7 @@ class _MyProfileState extends State<MyProfile> {
                     contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Company",
                     labelStyle: TextStyle(
-                        fontSize: 13.sp,
+                        fontSize: _width < 430 ? 13.sp : 10.sp,
                         fontFamily: kSfproRoundedFontFamily,
                         fontWeight: FontWeight.w300,
                         color: AppColor.placeholder),
@@ -739,7 +741,7 @@ class _MyProfileState extends State<MyProfile> {
                 child: TextFormField(
                   enabled: false,
                   style: TextStyle(
-                      fontSize: 15.sp,
+                      fontSize: _width < 430 ? 15.sp : 12.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
                       color: AppColor.blackColor),
@@ -747,7 +749,7 @@ class _MyProfileState extends State<MyProfile> {
                     contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
                     labelText: "Website",
                     labelStyle: TextStyle(
-                        fontSize: 13.sp,
+                        fontSize: _width < 430 ? 13.sp : 10.sp,
                         fontFamily: kSfproRoundedFontFamily,
                         fontWeight: FontWeight.w300,
                         color: AppColor.placeholder),
@@ -783,7 +785,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 child: TextFormField(
                   style: TextStyle(
-                      fontSize: 15.sp,
+                      fontSize: _width < 430 ? 15.sp : 12.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
                       color: AppColor.blackColor),
@@ -792,7 +794,7 @@ class _MyProfileState extends State<MyProfile> {
                     contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
                     labelText: 'Work Nature',
                     labelStyle: TextStyle(
-                        fontSize: 13.sp,
+                        fontSize: _width < 430 ? 13.sp : 10.sp,
                         fontFamily: kSfproRoundedFontFamily,
                         fontWeight: FontWeight.w300,
                         color: AppColor.placeholder),
@@ -1160,7 +1162,10 @@ class _MyProfileState extends State<MyProfile> {
           Padding(
             padding: EdgeInsets.only(top: 77.h, bottom: 24.h),
             child: Text(_personalName.text ?? "Unknown Number",
-                style: TextStyle(fontSize: 20.sp, fontFamily: kSfproRoundedFontFamily, fontWeight: FontWeight.w600)),
+                style: TextStyle(
+                    fontSize: _width < 430 ? 20.sp : 16.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w600)),
           ),
           SizedBox(
             height: 10.h,
@@ -1192,8 +1197,8 @@ class _MyProfileState extends State<MyProfile> {
               alignment: Alignment.center,
               children: [
                 SizedBox(
-                  width: 110.w,
-                  height: 110.w,
+                  width: _width < 430 ? 110.w : 70.w,
+                  height: _width < 430 ? 110.w : 70.w,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100.0.w),
                     child: userImage != ""
@@ -1243,7 +1248,7 @@ class _MyProfileState extends State<MyProfile> {
                   style: TextStyle(
                     fontFamily: kSfproRoundedFontFamily,
                     color: AppColor.whiteColor,
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontWeight: FontWeight.w300,
                     fontStyle: FontStyle.normal,
                   ),
@@ -1255,7 +1260,7 @@ class _MyProfileState extends State<MyProfile> {
         centerTitle: true,
         title: Text("Contact",
             style: TextStyle(
-                fontSize: 17.sp,
+                fontSize: _width < 430 ? 17.sp : 14.sp,
                 fontFamily: kSfproRoundedFontFamily,
                 fontWeight: FontWeight.w500,
                 color: Colors.white)),
@@ -1281,7 +1286,7 @@ class _MyProfileState extends State<MyProfile> {
             },
             child: Text("Edit",
                 style: TextStyle(
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontFamily: kSfproRoundedFontFamily,
                     fontWeight: FontWeight.w300,
                     color: Colors.white)),

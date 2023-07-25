@@ -26,6 +26,8 @@ class SignUp extends StatefulWidget {
   _SignUpState createState() => _SignUpState();
 }
 
+double _width = 430;
+
 class _SignUpState extends State<SignUp> {
   final _signupFormKey = GlobalKey<FormState>();
   bool _loader = false;
@@ -117,7 +119,7 @@ class _SignUpState extends State<SignUp> {
             style: TextStyle(
               fontFamily: kSfproRoundedFontFamily,
               color: AppColor.whiteColor,
-              fontSize: 18.sp,
+              fontSize: _width < 430 ? 18.sp : 15.sp,
               fontWeight: FontWeight.w500,
               fontStyle: FontStyle.normal,
             ),
@@ -148,7 +150,7 @@ class _SignUpState extends State<SignUp> {
                   color: AppColor.whiteColor,
                   fontWeight: FontWeight.w300,
                   fontStyle: FontStyle.normal,
-                  fontSize: 16.sp,
+                  fontSize: _width < 430 ? 16.sp : 13.sp,
                 ),
               ),
               Text(
@@ -158,7 +160,7 @@ class _SignUpState extends State<SignUp> {
                   color: AppColor.secondaryColor,
                   fontWeight: FontWeight.w300,
                   fontStyle: FontStyle.normal,
-                  fontSize: 16.sp,
+                  fontSize: _width < 430 ? 16.sp : 13.sp,
                 ),
               ),
             ],
@@ -170,14 +172,14 @@ class _SignUpState extends State<SignUp> {
     Widget termAndCondition() {
       TextStyle defaultStyle = TextStyle(
         color: Colors.white,
-        fontSize: 15.sp,
+        fontSize: _width < 430 ? 15.sp : 12.sp,
         fontFamily: kSfproRoundedFontFamily,
         fontWeight: FontWeight.w300,
         letterSpacing: 0.2,
       );
       TextStyle linkStyle = TextStyle(
         color: AppColor.secondaryColor,
-        fontSize: 15.sp,
+        fontSize: _width < 430 ? 15.sp : 12.sp,
         fontFamily: kSfproRoundedFontFamily,
         fontWeight: FontWeight.w300,
         letterSpacing: 0.2,
@@ -241,7 +243,7 @@ class _SignUpState extends State<SignUp> {
                   style: TextStyle(
                     fontFamily: kSfproRoundedFontFamily,
                     color: AppColor.whiteColor,
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontWeight: FontWeight.w300,
                     fontStyle: FontStyle.normal,
                   ),
@@ -270,7 +272,7 @@ class _SignUpState extends State<SignUp> {
                       style: TextStyle(
                         fontFamily: kSfproRoundedFontFamily,
                         color: AppColor.whiteColor,
-                        fontSize: 34.sp,
+                        fontSize: _width < 430 ? 34.sp : 25.sp,
                         fontWeight: FontWeight.w700,
                         fontStyle: FontStyle.normal,
                       ),
@@ -283,7 +285,7 @@ class _SignUpState extends State<SignUp> {
                         style: TextStyle(
                           fontFamily: kSfproRoundedFontFamily,
                           color: AppColor.whiteColor,
-                          fontSize: 15.sp,
+                          fontSize: _width < 430 ? 15.sp : 12.sp,
                           fontWeight: FontWeight.w300,
                           fontStyle: FontStyle.normal,
                           letterSpacing: -0.5,
@@ -394,7 +396,7 @@ class _SignUpState extends State<SignUp> {
                               color: AppColor.whiteColor,
                               fontWeight: FontWeight.w300,
                               fontStyle: FontStyle.normal,
-                              fontSize: 13.sp,
+                              fontSize: _width < 430 ? 13.sp : 10.sp,
                               letterSpacing: -0.2,
                             ),
                           ),
@@ -409,7 +411,7 @@ class _SignUpState extends State<SignUp> {
                                 color: AppColor.whiteColor,
                                 fontWeight: FontWeight.w300,
                                 fontStyle: FontStyle.normal,
-                                fontSize: 14.sp,
+                                fontSize: _width < 430 ? 14.sp : 10.sp,
                                 letterSpacing: -0.5,
                               ),
                             ),
@@ -417,7 +419,7 @@ class _SignUpState extends State<SignUp> {
                           termAndCondition(),
                           SizedBox(height: 33.h),
                           _buildAlreadAccount(),
-                          const SizedBox(height: 30),
+                          SizedBox(height: 30.h),
                         ],
                       ),
                     ),

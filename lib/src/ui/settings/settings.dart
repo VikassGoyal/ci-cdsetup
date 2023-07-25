@@ -1,3 +1,5 @@
+import 'package:conet/api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
+import 'package:conet/api_models/qrValue_request_model/qrValue_request_body.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/deviceContactData.dart';
@@ -11,7 +13,6 @@ import 'package:conet/src/ui/settings/changePassword.dart';
 import 'package:conet/src/ui/settings/myprofile.dart';
 import 'package:conet/src/ui/settings/socialContact.dart';
 import 'package:conet/src/ui/utils.dart';
-import 'package:conet/utils/check_internet_connection.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
@@ -31,11 +32,12 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
 import '../../../api_models/getTotalCount_response_model/totalCount_response_body.dart';
 import '../../../api_models/qrValue_request_model/qrValue_request_body.dart';
+import '../../../utils/check_internet_connection.dart';
 
 class Settings extends StatefulWidget {
-  List<TotalCountResponseData> totalcount;
+  var totalcount;
 
-  Settings({required this.totalcount}) : super();
+  Settings({this.totalcount}) : super();
   @override
   _SettingsState createState() => _SettingsState();
 }
@@ -530,10 +532,7 @@ class _SettingsState extends State<Settings> {
   _sendQrApi() async {
     var contactDetail;
     // var requestBody = {"value": _outputController!.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
-      value: _outputController?.text,
-      qrcode: false,
-    ));
+    var response = await ContactBloc().sendQrValue(QrValueRequestBody(value: _outputController!.text, qrcode: true));
     if (response['status'] == true) {
       Utils.displayToast("Scanned successfully");
       try {
@@ -733,9 +732,9 @@ class _SettingsState extends State<Settings> {
 
   Future<void> setValue() async {
     try {
-      totalUsers = widget.totalcount[0].totalUsers ?? 0;
-      totalConnection = widget.totalcount[0].totalConnection ?? 0;
-      totalContact = widget.totalcount[0].totalContact ?? 0;
+      totalUsers = widget.totalcount[0]['totalUsers'];
+      totalConnection = widget.totalcount[0]['totalConnection'];
+      totalContact = widget.totalcount[0]['totalContact'];
       PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
         setState(() {
           version = packageInfo.version;

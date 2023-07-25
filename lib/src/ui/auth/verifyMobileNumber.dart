@@ -43,6 +43,7 @@ class VerifyMobileNumber extends StatefulWidget {
 //     ?.apply(color: AppColor.whiteColor),
 
 class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
+  double _width = 430;
   final _otpVerifyFormKey = GlobalKey<FormState>();
   int start = 120;
 
@@ -94,7 +95,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
 
     Widget _buildVerifyMobileNumberButton() {
       return Padding(
-        padding: const EdgeInsets.only(left: 22.0, right: 22),
+        padding: EdgeInsets.only(left: 22.0.w, right: 22.w),
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -113,14 +114,12 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
             });
 
             try {
-              print("calling");
               await FirebaseAuth.instance
                   .signInWithCredential(
                       PhoneAuthProvider.credential(verificationId: _verificationCode!, smsCode: otpNumber!))
                   .then((value) async {
                 print(value.user!);
                 if (value.user != null) {
-                  print("value");
                   signupFunction();
                   print("verifynow : Sign up successfully...!");
                 }
@@ -196,7 +195,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
               style: TextStyle(
                 fontFamily: kSfproRoundedFontFamily,
                 color: AppColor.whiteColor,
-                fontSize: 18.sp,
+                fontSize: _width < 430 ? 18.sp : 15.sp,
                 fontWeight: FontWeight.w500,
                 fontStyle: FontStyle.normal,
               ),
@@ -407,7 +406,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
                   color: AppColor.whiteColor,
                   fontWeight: FontWeight.w300,
                   fontStyle: FontStyle.normal,
-                  fontSize: 16.sp,
+                  fontSize: _width < 430 ? 16.sp : 12.sp,
                 ),
               ),
               Text(
@@ -417,7 +416,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
                   color: AppColor.whiteColor,
                   fontWeight: FontWeight.w500,
                   fontStyle: FontStyle.normal,
-                  fontSize: 18.sp,
+                  fontSize: _width < 430 ? 18.sp : 14.sp,
                 ),
               ),
             ],
@@ -432,7 +431,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
       textStyle: TextStyle(
         fontFamily: kSfproRoundedFontFamily,
         fontWeight: FontWeight.w700,
-        fontSize: 35.sp,
+        fontSize: _width < 430 ? 35.sp : 30.sp,
         fontStyle: FontStyle.normal,
         color: AppColor.whiteColor,
       ),
@@ -466,7 +465,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
                   style: TextStyle(
                     fontFamily: kSfproRoundedFontFamily,
                     color: AppColor.whiteColor,
-                    fontSize: 14.sp,
+                    fontSize: _width < 430 ? 14.sp : 11.sp,
                     fontWeight: FontWeight.w300,
                     fontStyle: FontStyle.normal,
                   ),
@@ -475,138 +474,140 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
             ),
           ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.h),
-                  Text(
-                    "Verify OTP Received",
-                    style: TextStyle(
-                      fontFamily: kSfproRoundedFontFamily,
-                      color: AppColor.whiteColor,
-                      fontSize: 34.sp,
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10.h),
+                    Text(
+                      "Verify OTP Received",
+                      style: TextStyle(
+                        fontFamily: kSfproRoundedFontFamily,
+                        color: AppColor.whiteColor,
+                        fontSize: _width < 430 ? 34.sp : 27.sp,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "in your SMS",
-                    style: TextStyle(
-                      fontFamily: kSfproRoundedFontFamily,
-                      color: AppColor.whiteColor,
-                      fontSize: 34.sp,
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal,
+                    Text(
+                      "in your SMS",
+                      style: TextStyle(
+                        fontFamily: kSfproRoundedFontFamily,
+                        color: AppColor.whiteColor,
+                        fontSize: _width < 430 ? 34.sp : 27.sp,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    "We have sent code to ${widget.phone ?? ''}",
-                    style: TextStyle(
-                      fontFamily: kSfproRoundedFontFamily,
-                      color: AppColor.whiteColor,
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.normal,
-                      letterSpacing: -0.5,
+                    SizedBox(height: 16.h),
+                    Text(
+                      "We have sent code to ${widget.phone ?? ''}",
+                      style: TextStyle(
+                        fontFamily: kSfproRoundedFontFamily,
+                        color: AppColor.whiteColor,
+                        fontSize: _width < 430 ? 15.sp : 12.sp,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: -0.5,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "Enter the code below.",
-                    style: TextStyle(
-                      fontFamily: kSfproRoundedFontFamily,
-                      color: AppColor.whiteColor,
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.normal,
-                      letterSpacing: -0.5,
+                    Text(
+                      "Enter the code below.",
+                      style: TextStyle(
+                        fontFamily: kSfproRoundedFontFamily,
+                        color: AppColor.whiteColor,
+                        fontSize: _width < 430 ? 15.sp : 12.sp,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: -0.5,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 58.h),
-                ],
+                    SizedBox(height: 58.h),
+                  ],
+                ),
               ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 36.w, right: 34.w),
-                  child: Directionality(
-                    // Specify direction if desired
-                    textDirection: TextDirection.ltr,
-                    child: Pinput(
-                      length: 6,
-                      focusNode: _pinPutFocusNode,
-                      controller: _pinPutController,
-                      pinAnimationType: PinAnimationType.fade,
-                      defaultPinTheme: defaultPinTheme,
-                      submittedPinTheme: defaultPinTheme.copyWith(decoration: pinPutDecoration),
-                      focusedPinTheme: defaultPinTheme.copyWith(decoration: selectdpinPutDecoration),
-                      onChanged: (pin) {
-                        debugPrint('onCompleted: $pin');
-                        setState(() {
-                          otpNumber = pin;
-                        });
-                      },
-                      onCompleted: (pin) {
-                        debugPrint('onCompleted: $pin');
-                        setState(() {
-                          otpNumber = pin;
-                        });
-                        Utils.hideKeyboard(context);
-                        print(otpNumber!.length);
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 36.w, right: 34.w),
+                    child: Directionality(
+                      // Specify direction if desired
+                      textDirection: TextDirection.ltr,
+                      child: Pinput(
+                        length: 6,
+                        focusNode: _pinPutFocusNode,
+                        controller: _pinPutController,
+                        pinAnimationType: PinAnimationType.fade,
+                        defaultPinTheme: defaultPinTheme,
+                        submittedPinTheme: defaultPinTheme.copyWith(decoration: pinPutDecoration),
+                        focusedPinTheme: defaultPinTheme.copyWith(decoration: selectdpinPutDecoration),
+                        onChanged: (pin) {
+                          debugPrint('onCompleted: $pin');
+                          setState(() {
+                            otpNumber = pin;
+                          });
+                        },
+                        onCompleted: (pin) {
+                          debugPrint('onCompleted: $pin');
+                          setState(() {
+                            otpNumber = pin;
+                          });
+                          Utils.hideKeyboard(context);
+                          print(otpNumber!.length);
 
-                        try {
-                          _buildVerifyMobileNumberButton();
-                          print("pin : $pin");
-                        } catch (e) {
-                          FocusScope.of(context).unfocus();
-                          // _scaffoldkey.currentState.showSnackBar(
-                          //     SnackBar(content: Text('invalid OTP')));
-                        }
-                      },
-                      // fieldsCount: 6,
-                      // submittedFieldDecoration: pinPutDecoration,
-                      // selectedFieldDecoration: selectdpinPutDecoration,
-                      // followingFieldDecoration: pinPutDecoration,
-                      // eachFieldWidth: 40.0,
-                      // eachFieldHeight: 55.0,
-                      // onSubmit: (pin) async {
-                      //   setState(() {
-                      //     otpNumber = pin;
-                      //   });
-                      //   Utils.hideKeyboard(context);
-                      //   print(otpNumber.length);
+                          try {
+                            _buildVerifyMobileNumberButton();
+                            print("pin : $pin");
+                          } catch (e) {
+                            FocusScope.of(context).unfocus();
+                            // _scaffoldkey.currentState.showSnackBar(
+                            //     SnackBar(content: Text('invalid OTP')));
+                          }
+                        },
+                        // fieldsCount: 6,
+                        // submittedFieldDecoration: pinPutDecoration,
+                        // selectedFieldDecoration: selectdpinPutDecoration,
+                        // followingFieldDecoration: pinPutDecoration,
+                        // eachFieldWidth: 40.0,
+                        // eachFieldHeight: 55.0,
+                        // onSubmit: (pin) async {
+                        //   setState(() {
+                        //     otpNumber = pin;
+                        //   });
+                        //   Utils.hideKeyboard(context);
+                        //   print(otpNumber.length);
 
-                      //   try {
-                      //     print("pin : $pin");
-                      //   } catch (e) {
-                      //     FocusScope.of(context).unfocus();
-                      //     // _scaffoldkey.currentState.showSnackBar(
-                      //     //     SnackBar(content: Text('invalid OTP')));
-                      //   }
-                      // },
+                        //   try {
+                        //     print("pin : $pin");
+                        //   } catch (e) {
+                        //     FocusScope.of(context).unfocus();
+                        //     // _scaffoldkey.currentState.showSnackBar(
+                        //     //     SnackBar(content: Text('invalid OTP')));
+                        //   }
+                        // },
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 40.h,
-                  width: 20.w,
-                ),
-                _buildVerifyMobileNumberButton(),
-                SizedBox(
-                  height: 44.5.h,
-                  width: 20.w,
-                ),
-                _buildResend(),
-              ],
-            )
-          ],
+                  SizedBox(
+                    height: 40.h,
+                    width: 20.w,
+                  ),
+                  _buildVerifyMobileNumberButton(),
+                  SizedBox(
+                    height: 44.5.h,
+                    width: 20.w,
+                  ),
+                  _buildResend(),
+                ],
+              )
+            ],
+          ),
         ));
   }
 

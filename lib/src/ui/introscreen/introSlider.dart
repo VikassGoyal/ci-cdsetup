@@ -14,6 +14,8 @@ class IntroSliderScreen extends StatefulWidget {
   _IntroSliderScreenState createState() => _IntroSliderScreenState();
 }
 
+double _width = 430;
+
 class _IntroSliderScreenState extends State<IntroSliderScreen> {
   List<ContentConfig> slides = [];
 
@@ -22,7 +24,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
   @override
   void initState() {
     super.initState();
-
+    _width = MediaQuery.of(context).size.width;
     slides.add(
       const ContentConfig(
           title: "Welcome to the KONET App",
@@ -54,15 +56,15 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
   void onTabChangeCompleted(index) {}
 
   Widget? renderNextBtn() {
-    return const Icon(Icons.navigate_next, size: 25, color: AppColor.whiteColor);
+    return Icon(Icons.navigate_next, size: _width < 430 ? 25 : 22, color: AppColor.whiteColor);
   }
 
   Widget renderDoneBtn() {
-    return const Icon(Icons.done, size: 25, color: AppColor.whiteColor);
+    return Icon(Icons.done, size: _width < 430 ? 25 : 22, color: AppColor.whiteColor);
   }
 
   Widget renderSkipBtn() {
-    return const Icon(Icons.skip_next, size: 25, color: AppColor.whiteColor);
+    return Icon(Icons.skip_next, size: _width < 430 ? 25 : 22, color: AppColor.whiteColor);
   }
 
   List<Widget> renderListCustomTabs() {
@@ -86,7 +88,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
           child: i != 4
               ? Stack(
                   children: [
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40.h),
                     Positioned(
                       right: 0,
                       width: MediaQuery.of(context).size.width,
@@ -101,13 +103,13 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                             );
                           },
                           child: Padding(
-                            padding: const EdgeInsets.only(right: 16),
+                            padding: EdgeInsets.only(right: 16.w),
                             child: Text(
                               "Skip",
                               style: TextStyle(
                                 fontFamily: kSfproRoundedFontFamily,
                                 color: AppColor.whiteColor,
-                                fontSize: 15.sp,
+                                fontSize: _width < 430 ? 15.sp : 12.sp,
                                 fontWeight: FontWeight.w300,
                                 fontStyle: FontStyle.normal,
                               ),
@@ -127,7 +129,10 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                             width: widthImage,
                           ),
                         ),
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                        SizedBox(
+                            height: _width < 430
+                                ? MediaQuery.of(context).size.height * 0.05
+                                : MediaQuery.of(context).size.height * 0.01),
                         Center(
                           child: Text(
                             "${currentSlide.title}",
@@ -135,7 +140,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                             style: TextStyle(
                               fontFamily: kSfproRoundedFontFamily,
                               color: AppColor.whiteColor,
-                              fontSize: 20.sp,
+                              fontSize: _width < 430 ? 20.sp : 15.sp,
                               fontWeight: FontWeight.w700,
                               fontStyle: FontStyle.normal,
                             ),
@@ -149,7 +154,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                             style: TextStyle(
                               fontFamily: kSfproDisplayFontFamily,
                               color: AppColor.whiteColor,
-                              fontSize: 18.sp,
+                              fontSize: _width < 430 ? 18.sp : 10.sp,
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.normal,
                             ),
@@ -162,7 +167,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                 )
               : Stack(
                   children: [
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40.h),
                     Positioned(
                       right: 0,
                       width: MediaQuery.of(context).size.width,
@@ -177,7 +182,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                             );
                           },
                           child: Padding(
-                            padding: const EdgeInsets.only(right: 16),
+                            padding: EdgeInsets.only(right: 16.w),
                             child: Text("Skip",
                                 style: Theme.of(context).textTheme.bodyText1!.apply(color: AppColor.whiteColor)),
                           ),
@@ -204,7 +209,13 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                       child: Center(
                         child: Text(
                           "${currentSlide.title}",
-                          style: Theme.of(context).textTheme.headline2!.apply(color: AppColor.whiteColor),
+                          style: TextStyle(
+                            fontFamily: kSfproRoundedFontFamily,
+                            color: AppColor.whiteColor,
+                            fontSize: _width < 430 ? 20.sp : 17.sp,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                          ),
                         ),
                       ),
                     ),
@@ -214,14 +225,14 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                       bottom: MediaQuery.of(context).size.width * 0.3,
                       child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 40,
-                            right: 40,
+                          padding: EdgeInsets.only(
+                            left: 40.w,
+                            right: 40.w,
                           ),
                           child: Text(
                             "${currentSlide.description}",
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 15.0, color: AppColor.whiteColor),
+                            style: TextStyle(fontSize: _width < 430 ? 15.sp : 10.sp, color: AppColor.whiteColor),
                           ),
                         ),
                       ),
@@ -261,7 +272,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
         backgroundColor: AppColor.primaryColor,
         body: Container(
           width: screenWidth,
-          height: screenHeight - 40,
+          height: screenHeight - (_width < 430 ? 40 : 35),
           child: IntroSlider(
             renderSkipBtn: renderSkipBtn(),
             skipButtonStyle: myButtonStyle(),

@@ -97,6 +97,7 @@ class _EditProfileState extends State<EditProfile> {
   List<Asset> profileImage = <Asset>[];
   String uploadedProfileImage = '';
   String userImage = '';
+  double _width = 430;
 
   //Address
   Position? _currentPosition;
@@ -160,6 +161,7 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    _width = MediaQuery.of(context).size.width;
     Widget selectButton() {
       return Row(
         children: [
@@ -190,7 +192,7 @@ class _EditProfileState extends State<EditProfile> {
                 'Personal',
                 style: TextStyle(
                     color: professionalTab ? AppColor.whiteColor : AppColor.secondaryColor,
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontFamily: kSfCompactDisplayFontFamily,
                     fontWeight: FontWeight.w600),
               ),
@@ -226,7 +228,7 @@ class _EditProfileState extends State<EditProfile> {
                 'Professional',
                 style: TextStyle(
                     color: professionalTab ? AppColor.secondaryColor : AppColor.whiteColor,
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontFamily: kSfCompactDisplayFontFamily,
                     fontWeight: FontWeight.w600),
               ),
@@ -334,7 +336,7 @@ class _EditProfileState extends State<EditProfile> {
             });
           },
           style: TextStyle(
-              fontSize: 15.sp,
+              fontSize: _width < 430 ? 15.sp : 12.sp,
               fontFamily: kSfproRoundedFontFamily,
               fontWeight: FontWeight.w300,
               color: AppColor.secondaryColor),
@@ -343,12 +345,12 @@ class _EditProfileState extends State<EditProfile> {
             contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
             labelText: "DOB",
             hintStyle: TextStyle(
-                fontSize: 13.sp,
+                fontSize: _width < 430 ? 13.sp : 10.sp,
                 fontFamily: kSfproRoundedFontFamily,
                 fontWeight: FontWeight.w300,
                 color: AppColor.placeholder),
             labelStyle: TextStyle(
-                fontSize: 13.sp,
+                fontSize: _width < 430 ? 13.sp : 10.sp,
                 fontFamily: kSfproRoundedFontFamily,
                 fontWeight: FontWeight.w300,
                 color: AppColor.placeholder),
@@ -399,7 +401,7 @@ class _EditProfileState extends State<EditProfile> {
             });
           },
           style: TextStyle(
-              fontSize: 15.sp,
+              fontSize: _width < 430 ? 15.sp : 12.sp,
               fontFamily: kSfproRoundedFontFamily,
               fontWeight: FontWeight.w300,
               color: AppColor.secondaryColor),
@@ -408,12 +410,12 @@ class _EditProfileState extends State<EditProfile> {
             labelText: "Address",
             contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
             hintStyle: TextStyle(
-                fontSize: 13.sp,
+                fontSize: _width < 430 ? 13.sp : 10.sp,
                 fontFamily: kSfproRoundedFontFamily,
                 fontWeight: FontWeight.w300,
                 color: AppColor.placeholder),
             labelStyle: TextStyle(
-                fontSize: 13.sp,
+                fontSize: _width < 430 ? 13.sp : 10.sp,
                 fontFamily: kSfproRoundedFontFamily,
                 fontWeight: FontWeight.w300,
                 color: AppColor.placeholder),
@@ -540,7 +542,7 @@ class _EditProfileState extends State<EditProfile> {
         ),
         child: TextFormField(
           style: TextStyle(
-              fontSize: 15.sp,
+              fontSize: _width < 430 ? 15.sp : 12.sp,
               fontFamily: kSfproRoundedFontFamily,
               fontWeight: FontWeight.w300,
               color: AppColor.secondaryColor),
@@ -550,12 +552,12 @@ class _EditProfileState extends State<EditProfile> {
             fillColor: AppColor.whiteColor,
             focusedBorder: InputBorder.none,
             hintStyle: TextStyle(
-                fontSize: 13.sp,
+                fontSize: _width < 430 ? 13.sp : 10.sp,
                 fontFamily: kSfproRoundedFontFamily,
                 fontWeight: FontWeight.w300,
                 color: AppColor.placeholder),
             labelStyle: TextStyle(
-                fontSize: 13.sp,
+                fontSize: _width < 430 ? 13.sp : 10.sp,
                 fontFamily: kSfproRoundedFontFamily,
                 fontWeight: FontWeight.w300,
                 color: AppColor.placeholder),
@@ -616,7 +618,7 @@ class _EditProfileState extends State<EditProfile> {
             child: Text("Next",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 18.sp,
+                    fontSize: _width < 430 ? 18.sp : 15.sp,
                     fontFamily: kSfproRoundedFontFamily,
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w500)),
@@ -648,7 +650,7 @@ class _EditProfileState extends State<EditProfile> {
             child: Text("Update",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 18.sp,
+                    fontSize: _width < 430 ? 18.sp : 15.sp,
                     fontFamily: kSfproRoundedFontFamily,
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w500)),
@@ -689,11 +691,11 @@ class _EditProfileState extends State<EditProfile> {
               ),
           ],
           value: _occupationValue,
-          hint: const Text(
+          hint: Text(
             'Select Occupation',
             style: TextStyle(
-              fontSize: 13,
-              color: Color(
+              fontSize: _width < 430 ? 13.sp : 10.sp,
+              color: const Color(
                 0xFF878B95,
               ),
             ),
@@ -1073,7 +1075,7 @@ class _EditProfileState extends State<EditProfile> {
                   child: TextFormField(
                     maxLength: 25,
                     style: TextStyle(
-                        fontSize: 15.sp,
+                        fontSize: _width < 430 ? 15.sp : 12.sp,
                         fontFamily: kSfproRoundedFontFamily,
                         fontWeight: FontWeight.w300,
                         color: AppColor.secondaryColor),
@@ -1086,7 +1088,7 @@ class _EditProfileState extends State<EditProfile> {
                       contentPadding: EdgeInsets.only(top: 6.0.w, bottom: 3.0.w),
                       hintText: "Keyword",
                       hintStyle: TextStyle(
-                          fontSize: 13.sp,
+                          fontSize: _width < 430 ? 13.sp : 10.sp,
                           fontFamily: kSfproRoundedFontFamily,
                           fontWeight: FontWeight.w300,
                           color: AppColor.placeholder),
@@ -1150,7 +1152,7 @@ class _EditProfileState extends State<EditProfile> {
                       children: [
                         Text("Add Company Details",
                             style: TextStyle(
-                                fontSize: 15.sp,
+                                fontSize: _width < 430 ? 15.sp : 12.sp,
                                 fontFamily: kSfproRoundedFontFamily,
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w300)),
@@ -1234,8 +1236,8 @@ class _EditProfileState extends State<EditProfile> {
                 alignment: Alignment.center,
                 children: [
                   Container(
-                    width: 120.w,
-                    height: 120.w,
+                    width: _width < 430 ? 120.w : 70.w,
+                    height: _width < 430 ? 120.w : 70.w,
                     padding: const EdgeInsets.all(8),
                     child: userImage != null
                         ? ClipRRect(
@@ -1304,7 +1306,7 @@ class _EditProfileState extends State<EditProfile> {
                           style: TextStyle(
                               color: const Color(0xff3F3D56),
                               fontFamily: kSfproDisplayFontFamily,
-                              fontSize: 18.sp,
+                              fontSize: _width < 430 ? 18.sp : 15.sp,
                               fontWeight: FontWeight.w500),
                         ),
                       ),
@@ -1312,7 +1314,7 @@ class _EditProfileState extends State<EditProfile> {
                           style: TextStyle(
                               color: const Color(0xff878B95),
                               fontFamily: kSfproRoundedFontFamily,
-                              fontSize: 15.sp,
+                              fontSize: _width < 430 ? 15.sp : 12.sp,
                               fontWeight: FontWeight.w300)),
                       actions: <Widget>[
                         Padding(
@@ -1332,7 +1334,7 @@ class _EditProfileState extends State<EditProfile> {
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: kSfproRoundedFontFamily,
-                                          fontSize: 18.sp,
+                                          fontSize: _width < 430 ? 18.sp : 15.sp,
                                           fontWeight: FontWeight.w500)),
                                   onPressed: () {
                                     setState(() {
@@ -1358,7 +1360,7 @@ class _EditProfileState extends State<EditProfile> {
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: kSfproRoundedFontFamily,
-                                          fontSize: 18.sp,
+                                          fontSize: _width < 430 ? 18.sp : 15.sp,
                                           fontWeight: FontWeight.w500)),
                                   onPressed: () {
                                     Navigator.of(dialogContext, rootNavigator: true).pop('dialog');
@@ -1387,7 +1389,7 @@ class _EditProfileState extends State<EditProfile> {
                 style: TextStyle(
                   fontFamily: kSfproRoundedFontFamily,
                   color: AppColor.whiteColor,
-                  fontSize: 15.sp,
+                  fontSize: _width < 430 ? 15.sp : 12.sp,
                   fontWeight: FontWeight.w300,
                   fontStyle: FontStyle.normal,
                 ),
@@ -1398,7 +1400,7 @@ class _EditProfileState extends State<EditProfile> {
         centerTitle: true,
         title: Text("Edit Profile",
             style: TextStyle(
-                fontSize: 18.sp,
+                fontSize: _width < 430 ? 18.sp : 15.sp,
                 fontFamily: kSfproRoundedFontFamily,
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.w500,
@@ -1560,7 +1562,7 @@ class _EditProfileState extends State<EditProfile> {
                 Text("Company Profile ${i + 1}",
                     style: TextStyle(
                         color: AppColor.Companyprofilenumber,
-                        fontSize: 15.sp,
+                        fontSize: _width < 430 ? 15.sp : 12.sp,
                         fontFamily: kSfCompactDisplayFontFamily,
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.w600)),
@@ -1602,7 +1604,7 @@ class _EditProfileState extends State<EditProfile> {
               ),
               child: TextFormField(
                 style: TextStyle(
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontFamily: kSfproRoundedFontFamily,
                     fontWeight: FontWeight.w300,
                     color: AppColor.secondaryColor),
@@ -1610,12 +1612,12 @@ class _EditProfileState extends State<EditProfile> {
                   contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
                   labelText: "Company",
                   hintStyle: TextStyle(
-                      fontSize: 13.sp,
+                      fontSize: _width < 430 ? 13.sp : 10.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
                       color: AppColor.placeholder),
                   labelStyle: TextStyle(
-                      fontSize: 13.sp,
+                      fontSize: _width < 430 ? 13.sp : 10.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
                       color: AppColor.placeholder),
@@ -1651,7 +1653,7 @@ class _EditProfileState extends State<EditProfile> {
               ),
               child: TextFormField(
                 style: TextStyle(
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontFamily: kSfproRoundedFontFamily,
                     fontWeight: FontWeight.w300,
                     color: AppColor.secondaryColor),
@@ -1659,7 +1661,7 @@ class _EditProfileState extends State<EditProfile> {
                   contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: "Website",
                   labelStyle: TextStyle(
-                      fontSize: 13.sp,
+                      fontSize: _width < 430 ? 13.sp : 10.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
                       color: AppColor.placeholder),
@@ -1695,7 +1697,7 @@ class _EditProfileState extends State<EditProfile> {
               ),
               child: TextFormField(
                 style: TextStyle(
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontFamily: kSfproRoundedFontFamily,
                     fontWeight: FontWeight.w300,
                     color: AppColor.secondaryColor),
@@ -1703,7 +1705,7 @@ class _EditProfileState extends State<EditProfile> {
                   contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: 'Work Nature',
                   labelStyle: TextStyle(
-                      fontSize: 13.sp,
+                      fontSize: _width < 430 ? 13.sp : 10.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
                       color: AppColor.placeholder),
@@ -1734,7 +1736,7 @@ class _EditProfileState extends State<EditProfile> {
                   "Add Images",
                   style: TextStyle(
                       color: AppColor.secondaryColor,
-                      fontSize: 14.sp,
+                      fontSize: _width < 430 ? 14.sp : 11.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w300),
@@ -2025,7 +2027,7 @@ class _EditProfileState extends State<EditProfile> {
               padding: EdgeInsets.only(left: 16.w, right: 16.w),
               child: TextFormField(
                 style: TextStyle(
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontFamily: kSfproRoundedFontFamily,
                     fontWeight: FontWeight.w300,
                     color: AppColor.secondaryColor),
@@ -2034,7 +2036,7 @@ class _EditProfileState extends State<EditProfile> {
                     filled: true,
                     fillColor: const Color(0xFFF6F6F6),
                     hintStyle: TextStyle(
-                        fontSize: 13.sp,
+                        fontSize: _width < 430 ? 13.sp : 10.sp,
                         fontFamily: kSfproRoundedFontFamily,
                         fontWeight: FontWeight.w300,
                         color: AppColor.placeholder)),
@@ -2054,7 +2056,7 @@ class _EditProfileState extends State<EditProfile> {
               padding: EdgeInsets.only(left: 16.w, right: 16.w),
               child: TextFormField(
                 style: TextStyle(
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontFamily: kSfproRoundedFontFamily,
                     fontWeight: FontWeight.w300,
                     color: AppColor.secondaryColor),
@@ -2063,7 +2065,7 @@ class _EditProfileState extends State<EditProfile> {
                   filled: true,
                   fillColor: AppColor.whiteColor,
                   hintStyle: TextStyle(
-                      fontSize: 13.sp,
+                      fontSize: _width < 430 ? 13.sp : 10.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
                       color: AppColor.placeholder),
@@ -2084,7 +2086,7 @@ class _EditProfileState extends State<EditProfile> {
               padding: const EdgeInsets.only(left: 16, right: 16),
               child: TextFormField(
                 style: TextStyle(
-                    fontSize: 15.sp,
+                    fontSize: _width < 430 ? 15.sp : 12.sp,
                     fontFamily: kSfproRoundedFontFamily,
                     fontWeight: FontWeight.w300,
                     color: AppColor.secondaryColor),
@@ -2132,7 +2134,7 @@ class _EditProfileState extends State<EditProfile> {
                         "Add pictures",
                         style: TextStyle(
                           color: AppColor.whiteColor,
-                          fontSize: 14.sp,
+                          fontSize: _width < 430 ? 14.sp : 12.sp,
                           fontFamily: kSfproRoundedFontFamily,
                         ),
                       ),
@@ -2146,7 +2148,7 @@ class _EditProfileState extends State<EditProfile> {
                           : '(Added Image ${entreprenerurList[i].images!.length})',
                       style: TextStyle(
                         color: AppColor.gray30Color,
-                        fontSize: 10.sp,
+                        fontSize: _width < 430 ? 10.sp : 7.sp,
                         fontFamily: kSfproDisplayFontFamily,
                       ),
                     ),

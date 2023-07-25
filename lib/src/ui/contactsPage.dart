@@ -470,7 +470,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   color: Colors.blue[700]!.withAlpha(200),
                   shape: BoxShape.circle,
                 ),
-                child: Text(hint, style: const TextStyle(color: Colors.white, fontSize: 30.0)),
+                child: Text(hint, style: TextStyle(color: Colors.white, fontSize: _width < 450 ? 28.sp : 24.sp)),
               );
             },
             indexBarMargin: const EdgeInsets.all(0),
@@ -539,6 +539,7 @@ class _ContactsPageState extends State<ContactsPage> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
               color: AppColor.primaryColor,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Flexible(
                     child: Container(
@@ -616,8 +617,8 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                   SizedBox(width: 8.w),
                   Container(
-                    width: 36.w,
-                    height: 36.w,
+                    width: _width < 430 ? 36.w : 22.w,
+                    height: _width < 430 ? 36.w : 22.w,
                     alignment: Alignment.center,
                     child: FloatingActionButton(
                       heroTag: null,
@@ -646,8 +647,8 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                   SizedBox(width: 8.w),
                   Container(
-                    width: 36.w,
-                    height: 36.w,
+                    width: _width < 430 ? 36.w : 22.w,
+                    height: _width < 430 ? 36.w : 22.w,
                     alignment: Alignment.center,
                     child: FloatingActionButton(
                       heroTag: null,
@@ -856,7 +857,7 @@ class _ContactsPageState extends State<ContactsPage> {
               style: TextStyle(
                   color: AppColor.logoutcolor,
                   fontFamily: kSfproDisplayFontFamily,
-                  fontSize: 18.sp,
+                  fontSize: _width < 430 ? 18.sp : 15.sp,
                   fontWeight: FontWeight.w500),
             ),
           ),
@@ -873,7 +874,7 @@ class _ContactsPageState extends State<ContactsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  constraints: BoxConstraints(minWidth: 100.0.w),
+                  constraints: BoxConstraints(minWidth: _width < 430 ? 100.0.w : 60.w),
                   child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -893,7 +894,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   width: 20.w,
                 ),
                 Container(
-                  constraints: BoxConstraints(minWidth: 100.0.w),
+                  constraints: BoxConstraints(minWidth: _width < 430 ? 100.0.w : 60.w),
                   child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),

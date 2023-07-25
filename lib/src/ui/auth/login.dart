@@ -4,6 +4,7 @@ import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/forgotPassword.dart';
 import 'package:conet/src/ui/auth/signup.dart';
+import 'package:conet/utils/check_internet_connection.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/textFormWidget.dart';
 import 'package:conet/utils/theme.dart';
@@ -15,7 +16,6 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:flutter/services.dart';
 
 import '../../../bottomNavigation/bottomNavigationBloc.dart';
-import '../../../networking/apiBaseHelper.dart';
 import '../utils.dart';
 
 class Login extends StatefulWidget {
@@ -136,13 +136,11 @@ class _LoginState extends State<Login> {
             setState(() {
               _loader = true;
             });
-            var requestBody = {
-              "email": _mobileEmailController.text,
-              "password": _passwordController.text,
-            };
+            String email = _mobileEmailController.text;
+            String password = _passwordController.text;
 
             try {
-              var response = await UserBloc().login(requestBody);
+              var response = await UserBloc().login(email: email, password: password);
 
               setState(() {
                 _loader = false;

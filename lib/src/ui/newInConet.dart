@@ -110,6 +110,7 @@ class _NewConetUsersState extends State<NewConetUsers> {
                                 _contacts[index].name,
                                 _contacts[index].phone,
                                 _contacts[index].email,
+                                _contacts[index].id,
                               ),
                             ),
                           );
@@ -118,11 +119,11 @@ class _NewConetUsersState extends State<NewConetUsers> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ContactProfile(
-                                _contacts[index].phone,
-                                _contacts[index].contactMetaId,
-                                _contacts[index].contactMetaType,
-                                _contacts[index].fromContactMetaType,
-                              ),
+                                  _contacts[index].phone,
+                                  _contacts[index].contactMetaId,
+                                  _contacts[index].contactMetaType,
+                                  _contacts[index].fromContactMetaType,
+                                  _contacts[index].contactMetaId),
                             ),
                           );
                         }

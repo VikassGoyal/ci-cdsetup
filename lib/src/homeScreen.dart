@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'KoNet',
-      home: const AppScreen(),
+      home: AppScreen(),
       theme: ThemeData(
         primaryColor: AppColor.whiteColor,
         textTheme: Platform.isAndroid ? ConetTextTheme.androidTextTheme : ConetTextTheme.iosTextTheme,

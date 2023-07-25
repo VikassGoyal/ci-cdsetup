@@ -33,6 +33,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../api_models/qrValue_request_model/qrValue_request_body.dart';
 import '../../bottomNavigation/bottomNavigationBloc.dart';
 import 'contact/contactProfile.dart';
 
@@ -80,6 +81,7 @@ class _ContactsPageState extends State<ContactsPage> {
     _contacts = responseData;
     _loadedcontacts = _contacts;
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
+    //_updateContact();
 
     SchedulerBinding.instance.addPostFrameCallback((_) => _checkShowDialog());
     _outputController = TextEditingController();
@@ -185,16 +187,14 @@ class _ContactsPageState extends State<ContactsPage> {
         child: GestureDetector(
           onTap: () {
             _focusNode.unfocus();
+
             _clearText();
             if (_contacts[index].userId == null) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NonConetContactProfile(
-                    _contacts[index].name ?? "",
-                    _contacts[index].phone!,
-                    _contacts[index].email ?? "",
-                  ),
+                  builder: (context) => NonConetContactProfile(_contacts[index].name ?? "", _contacts[index].phone!,
+                      _contacts[index].email ?? "", _contacts[index].id),
                 ),
               ).then((value) {
                 print("value : $value");
@@ -208,11 +208,11 @@ class _ContactsPageState extends State<ContactsPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ContactProfile(
-                    _contacts[index].phone ?? "",
-                    _contacts[index].contactMetaId ?? 0,
-                    _contacts[index].contactMetaType ?? "",
-                    _contacts[index].fromContactMetaType ?? "",
-                  ),
+                      _contacts[index].phone ?? "",
+                      _contacts[index].contactMetaId ?? 0,
+                      _contacts[index].contactMetaType ?? "",
+                      _contacts[index].fromContactMetaType ?? "",
+                      _contacts[index].userId ?? 0),
                 ),
               ).then((value) {
                 print("value : $value");
@@ -1063,8 +1063,11 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   _sendQrApi() async {
-    var requestBody = {"value": _outputController?.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(requestBody);
+    //var requestBody = {"value": _outputController?.text, "qrcode": true};
+    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+      value: _outputController?.text,
+      qrcode: false,
+    ));
 
     if (response['status'] == true) {
       Utils.displayToast("Scanned successfully");

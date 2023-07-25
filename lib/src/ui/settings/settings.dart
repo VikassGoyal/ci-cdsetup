@@ -11,6 +11,7 @@ import 'package:conet/src/ui/settings/changePassword.dart';
 import 'package:conet/src/ui/settings/myprofile.dart';
 import 'package:conet/src/ui/settings/socialContact.dart';
 import 'package:conet/src/ui/utils.dart';
+import 'package:conet/utils/check_internet_connection.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
@@ -27,12 +28,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../../../networking/apiBaseHelper.dart';
+import '../../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
+import '../../../api_models/getTotalCount_response_model/totalCount_response_body.dart';
+import '../../../api_models/qrValue_request_model/qrValue_request_body.dart';
+import '../../../api_models/totalCount_response_model copy/totalCount_response_body.dart';
 
 class Settings extends StatefulWidget {
-  var totalcount;
+  List<TotalCountResponseData> totalcount;
 
-  Settings({this.totalcount}) : super();
+  Settings({required this.totalcount}) : super();
   @override
   _SettingsState createState() => _SettingsState();
 }
@@ -526,15 +530,19 @@ class _SettingsState extends State<Settings> {
 
   _sendQrApi() async {
     var contactDetail;
-    var requestBody = {"value": _outputController!.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(requestBody);
+    // var requestBody = {"value": _outputController!.text, "qrcode": true};
+    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+      value: _outputController?.text,
+      qrcode: false,
+    ));
     if (response['status'] == true) {
       Utils.displayToast("Scanned successfully");
       try {
-        var requestBody = {
-          "phone": _outputController!.text,
-        };
-        var response = await ContactBloc().checkContactForAddNew(requestBody);
+        // var requestBody = {
+        //   "phone": _outputController!.text,
+        // };
+        var response =
+            await ContactBloc().checkContactForAddNew(CheckContactForAddNewRequestBody(phone: _outputController!.text));
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
           setState(() {
@@ -726,9 +734,9 @@ class _SettingsState extends State<Settings> {
 
   Future<void> setValue() async {
     try {
-      totalUsers = widget.totalcount[0]['totalUsers'];
-      totalConnection = widget.totalcount[0]['totalConnection'];
-      totalContact = widget.totalcount[0]['totalContact'];
+      totalUsers = widget.totalcount[0].totalUsers ?? 0;
+      totalConnection = widget.totalcount[0].totalConnection ?? 0;
+      totalContact = widget.totalcount[0].totalContact ?? 0;
       PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
         setState(() {
           version = packageInfo.version;

@@ -10,8 +10,11 @@ import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
+
+import '../../../bottomNavigation/bottomNavigationBloc.dart';
 
 class VerifyMobileNumber extends StatefulWidget {
   final String? username;
@@ -463,7 +466,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
                   style: TextStyle(
                     fontFamily: kSfproRoundedFontFamily,
                     color: AppColor.whiteColor,
-                    fontSize: 15.sp,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w300,
                     fontStyle: FontStyle.normal,
                   ),
@@ -592,13 +595,13 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
                   ),
                 ),
                 SizedBox(
-                  height: 40,
-                  width: 20,
+                  height: 40.h,
+                  width: 20.w,
                 ),
                 _buildVerifyMobileNumberButton(),
                 SizedBox(
-                  height: 44.5,
-                  width: 20,
+                  height: 44.5.h,
+                  width: 20.w,
                 ),
                 _buildResend(),
               ],
@@ -640,15 +643,13 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
   }
 
   signupFunction() async {
-    var requestBody = {
-      "username": widget.username,
-      "email": widget.email,
-      "phone": widget.phone,
-      "password": widget.password
-    };
+    String username = widget.username!;
+    String email = widget.email!;
+    String phone = widget.phone!;
+    String password = widget.password!;
 
     try {
-      var response = await UserBloc().signup(requestBody);
+      var response = await UserBloc().signup(username: username, email: email, phone: phone, password: password);
       var res = response["status"];
       print("response : $res");
       setState(() {
@@ -667,6 +668,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
         Utils.displayToast(response["message"]);
       } else {
         Utils.displayToast(response["message"]);
+        context.read<BottomNavigationBloc>().currentIndex = 0;
 
         Navigator.pushReplacement(
           context,
@@ -689,15 +691,19 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
     const onsec = Duration(seconds: 1);
     Timer timer = Timer.periodic(onsec, (timer) {
       if (start == 0) {
-        setState(() {
-          wait = true;
-          timer.cancel();
-        });
+        if (mounted) {
+          setState(() {
+            wait = true;
+            timer.cancel();
+          });
+        }
       } else {
-        setState(() {
-          wait = false;
-          start--;
-        });
+        if (mounted) {
+          setState(() {
+            wait = false;
+            start--;
+          });
+        }
       }
     });
   }

@@ -2,12 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:conet/api_models/uploadbusinesslogo_request_%20model/uploadebusinesslogo_request_body.dart';
+import 'package:conet/config/app_config.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/repositories/contactPageRepository.dart';
+import 'package:conet/services/storage_service.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/get_it.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +20,8 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
 
 class BussinessCard extends StatefulWidget {
   @override
@@ -35,11 +40,11 @@ class _BussinessCardState extends State<BussinessCard> {
   bool _showQr = true;
   bool _loader = true;
   Color? currentColor;
+  ContactDetail? contactDetail;
 
-  SharedPreferences? preferences;
   void changeColor(Color color) {
     setState(() => currentColor = color);
-    preferences!.setString('businesscardcolor', color.toString());
+    locator<StorageService>().setPrefs<String>('businesscardcolor', color.toString());
   }
 
   @override
@@ -239,7 +244,7 @@ class _BussinessCardState extends State<BussinessCard> {
                             ),
                           )
                         : SvgPicture.network(
-                            "https://www.svgrepo.com/show/76016/qr-code.svg",
+                            _qrImage,
                             width: 150,
                             height: 150,
                           ),
@@ -323,13 +328,10 @@ class _BussinessCardState extends State<BussinessCard> {
                 child: const Icon(Icons.more_horiz, color: AppColor.black3)),
             onSelected: (value) {
               print(value);
-              // if (value == 3) {
-              //   print("val");
-
-              //   this.imageName = "";
-
-              //   setState(() {});
-              // }
+              if (value == 3) {
+                print("val");
+                if (contactDetail!.id != null) removeBusinessCard(contactDetail!.id!.toString());
+              }
 
               if (value == 1) {
                 loadbusinesslogo();
@@ -442,23 +444,22 @@ class _BussinessCardState extends State<BussinessCard> {
   }
 
   getQRImage() async {
-    preferences = await SharedPreferences.getInstance();
+    String? qrimage = locator<StorageService>().getPrefs('image');
 
-    String? qrimage = preferences!.getString('image');
-
-    if (preferences!.getString('businesscardcolor') != null) {
-      String? colorString = preferences?.getString('businesscardcolor');
+    if (locator<StorageService>().getPrefs('businesscardcolor') != null) {
+      String? colorString = locator<StorageService>().getPrefs('businesscardcolor');
       String? valueString = colorString?.split('(0x')[1].split(')')[0];
       int? value = int.parse(valueString!, radix: 16);
       Color colorvalue = Color(value);
 
-      currentColor = preferences?.getString('businesscardcolor') == null ? AppColor.primaryColor : colorvalue;
+      currentColor =
+          locator<StorageService>().getPrefs('businesscardcolor') == null ? AppColor.primaryColor : colorvalue;
     } else {
       currentColor = AppColor.primaryColor;
     }
 
     setState(() {
-      _qrImage = "http://conet.shade6.in/$qrimage";
+      _qrImage = "${locator<AppConfig>().baseApiUrl}$qrimage";
       _showQr = false;
     });
   }
@@ -467,23 +468,23 @@ class _BussinessCardState extends State<BussinessCard> {
     setState(() {
       _loader = true;
     });
-    preferences = await SharedPreferences.getInstance();
 
     try {
-      var requestBody = {
-        "phone": preferences?.getString('phone'),
-      };
-      var response = await _contactPageRepository.getProfileDetails(requestBody);
+      // var requestBody = {
+      //   "phone": locator<StorageService>().getPrefs('phone'),
+      // };
+      var response = await _contactPageRepository
+          .getProfileDetails(GetProfileDetailsRequestBody(phone: locator<StorageService>().getPrefs('phone')));
 
       setState(() {
         _loader = false;
       });
 
       if (response['status'] == true) {
-        ContactDetail contactDetail = ContactDetail.fromJson(response["user"]);
+        contactDetail = ContactDetail.fromJson(response["user"]);
 
         setState(() {
-          imageName = contactDetail.businesscardLogo ?? "";
+          imageName = contactDetail!.businesscardLogo ?? "";
         });
       } else {
         Utils.displayToast(response["message"]);
@@ -496,6 +497,24 @@ class _BussinessCardState extends State<BussinessCard> {
   File? image;
   String imagePath = "";
   Uint8List? imageBytes;
+
+  removeBusinessCard(String id) async {
+    try {
+      Map<String, dynamic> response = await _contactPageRepository.removeBusinessCard(id);
+
+      if (response['status']) {
+        Utils.displayToast("Logo Removed");
+        setState(() {
+          imageName = "";
+        });
+      } else {
+        return;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> loadbusinesslogo() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -518,16 +537,17 @@ class _BussinessCardState extends State<BussinessCard> {
   }
 
   void uploadebusinesslogo() async {
-    var jsonData = {
-      "base64data_logo": "data:image/png;base64,$uploadedImageLogo",
-    };
+    // var jsonData = {
+    //   "base64data_logo": "data:image/png;base64,$uploadedImageLogo",
+    // };
 
     setState(() {
       _loader = true;
     });
 
     try {
-      var response = await _contactPageRepository.updatebusinesslogo(jsonData);
+      var response = await _contactPageRepository.updatebusinesslogo(
+          UploadbusinesslogoRequestBody(base64data_logo: "data:image/png;base64,$uploadedImageLogo"));
       setState(() {
         _loader = false;
       });

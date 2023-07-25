@@ -1,3 +1,5 @@
+import 'package:conet/config/app_config.dart';
+import 'package:conet/utils/get_it.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +141,7 @@ class _QRScannerState extends State<QRScanner> {
     SharedPreferences? preferences = await SharedPreferences.getInstance();
     String? qrimage = preferences.getString('image');
     setState(() {
-      _qrImage = "http://conet.shade6.in/$qrimage";
+      _qrImage = "${locator<AppConfig>().baseApiUrl}$qrimage";
       _showQr = false;
     });
   }

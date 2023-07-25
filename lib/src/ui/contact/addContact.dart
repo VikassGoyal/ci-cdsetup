@@ -16,6 +16,8 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../api_models/addNewContact_request_model/addNewContact_request_body.dart';
+import '../../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
 import '../utils.dart';
 
 class AddContact extends StatefulWidget {
@@ -217,10 +219,11 @@ class _AddContactState extends State<AddContact> {
 
   getProfileDetails() async {
     try {
-      var requestBody = {
-        "phone": _personalNumber.text,
-      };
-      var response = await ContactBloc().checkContactForAddNew(requestBody);
+      // var requestBody = {
+      //   "phone": _personalNumber.text,
+      // };
+      var response =
+          await ContactBloc().checkContactForAddNew(CheckContactForAddNewRequestBody(phone: _personalNumber.text));
 
       setState(() {
         _loader = false;
@@ -293,35 +296,55 @@ class _AddContactState extends State<AddContact> {
       }
     });
 
-    var requestBody = {
-      "per_name": _personalName.text,
-      "per_num": _personalNumber.text,
-      "per_email": _personalEmail.text,
-      "per_dob": _personalDob.text,
-      "per_add": _personalAddress.text,
-      "per_lan": _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
-      "pro_occ": _professionalOccupation.text,
-      "pro_ind": _professionalIndustry.text,
-      "pro_com": _professionalCompany.text,
-      "pro_com_website": _professionalCompanyWebsite.text,
-      "pro_wn": _professionalWorkNature.text,
-      "pro_des": _professionalDesignation.text,
-      "pro_sch": _professionalSchool.text,
-      "pro_gra": _professionalGrade.text,
-      "fb": _socialFacebook.text,
-      "in": _socialInstagram.text,
-      "tt": _socialTwitter.text,
-      "sk": _socialSkype.text,
-      // "gp": _socialFacebook.text,
-      // "pt": _socialFacebook.text,
-      "entreprenerur_list": (entreprenerurList.map((e) => e.toJson()).toList()),
-    };
+    // var requestBody = {
+    //   "per_name": _personalName.text,
+    //   "per_num": _personalNumber.text,
+    //   "per_email": _personalEmail.text,
+    //   "per_dob": _personalDob.text,
+    //   "per_add": _personalAddress.text,
+    //   "per_lan": _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
+    //   "pro_occ": _professionalOccupation.text,
+    //   "pro_ind": _professionalIndustry.text,
+    //   "pro_com": _professionalCompany.text,
+    //   "pro_com_website": _professionalCompanyWebsite.text,
+    //   "pro_wn": _professionalWorkNature.text,
+    //   "pro_des": _professionalDesignation.text,
+    //   "pro_sch": _professionalSchool.text,
+    //   "pro_gra": _professionalGrade.text,
+    //   "fb": _socialFacebook.text,
+    //   "in": _socialInstagram.text,
+    //   "tt": _socialTwitter.text,
+    //   "sk": _socialSkype.text,
+    //   // "gp": _socialFacebook.text,
+    //   // "pt": _socialFacebook.text,
+    //   "entreprenerur_list": (entreprenerurList.map((e) => e.toJson()).toList()),
+    // };
 
-    print(jsonEncode(requestBody));
+    // print(jsonEncode(requestBody));
 
     Utils.hideKeyboard(context);
 
-    var response = await ContactBloc().addNewContact(requestBody);
+    var response = await ContactBloc().addNewContact(AddNewContactRequestBody(
+      personalName: _personalName.text,
+      personalNumber: _personalNumber.text,
+      personalEmail: _personalEmail.text,
+      personalDob: _personalDob.text,
+      personalAddress: _personalAddress.text,
+      personalLandline: _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
+      professionalWorkNature: _professionalWorkNature.text,
+      professionalDesignation: _professionalDesignation.text,
+      professionalSchool: _professionalSchool.text,
+      professionalGrade: _professionalGrade.text,
+      socialFacebook: _socialFacebook.text,
+      socialInstagram: _socialInstagram.text,
+      socialTwitter: _socialTwitter.text,
+      socialSkype: _socialSkype.text,
+      entreprenerur_list: entreprenerurList.map((e) => e.toJson()).toList(),
+      professionalCompany: _professionalCompany.text,
+      professionalCompanyWebsite: _professionalCompanyWebsite.text,
+      professionalOccupation: _professionalOccupation.text,
+      professionalIndustry: _professionalIndustry.text,
+    ));
     setState(() {
       _loader = false;
     });
@@ -329,10 +352,9 @@ class _AddContactState extends State<AddContact> {
       Utils.displayToast(response['message'].toString());
       await checkPermission();
 
-      Navigator.pushAndRemoveUntil(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
-        (route) => false,
       );
     } else if (response['status'] == "Token is Expired") {
       Utils.displayToast('Token is Expired');

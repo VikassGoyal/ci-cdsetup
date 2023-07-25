@@ -1,6 +1,8 @@
+import 'package:conet/api_models/qrValue_request_model/qrValue_request_body.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/searchContacts.dart';
+import 'package:conet/services/storage_service.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
@@ -8,6 +10,7 @@ import 'package:conet/src/ui/newInConet.dart';
 import 'package:conet/src/ui/notification.dart';
 import 'package:conet/src/ui/qrScreen.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/get_it.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +21,7 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../api_models/ filterSearchResults_request_model/ filterSearchResults_request_body.dart';
 import '../../utils/custom_fonts.dart';
 import 'utils.dart';
 
@@ -383,7 +387,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     visible: (_searchResult[index].status == 'accepted'),
                     child: Container(
                       height: 30.h,
-                      width: 90.w,
+                      width: 110.w,
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         style: ButtonStyle(
@@ -394,7 +398,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         ),
                         onPressed: () {},
                         child: Container(
-                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 84.0),
+                          // constraints: BoxConstraints(minHeight: 28.0.h, maxWidth: 104.0.w),
                           alignment: Alignment.center,
                           child: Text("Accepted",
                               textAlign: TextAlign.center,
@@ -849,15 +853,14 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           child: GestureDetector(
                             onTap: () async {
                               print("success");
-                              SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
                               setState(() {
                                 _searchEnabled = true;
                               });
 
-                              if (sharedPreferences.getBool("conetwebpopup") == null) {
+                              if (locator<StorageService>().getPrefs("conetwebpopup") == null) {
                                 _showPopup();
-                                sharedPreferences.setBool("conetwebpopup", true);
+                                locator<StorageService>().setPrefs<bool>("conetwebpopup", true);
                               }
                             },
                             child: TextField(
@@ -1012,10 +1015,11 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
   filterSearchResults() async {
     if (_searchController!.text.isNotEmpty) {
-      var requestBody = {
-        "filter": _searchController!.text,
-      };
-      var response = await ContactBloc().searchConetwebContact(requestBody);
+      // var requestBody = {
+      //   "filter": _searchController!.text,
+      // };
+      var response =
+          await ContactBloc().searchConetwebContact(FilterSearchResultsRequestBody(filter: _searchController!.text));
       var responseData = response['data'];
 
       if (response['status'] == true) {
@@ -1040,13 +1044,17 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
   _sentRequest(index, mutindex, type) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    var requestBody = {
-      "value": _outputController?.text,
-      "qrcode": false,
-      "content": "${preferences.getString("name")} request to ${_searchResult[index].mutualList![mutindex].name}",
-      "viaid": _searchResult[index].viaId
-    };
-    var response = await ContactBloc().sendQrValue(requestBody);
+    // var requestBody = {
+    //   "value": _outputController?.text,
+    //   "qrcode": false,
+    //   "content": "${preferences.getString("name")} request to ${_searchResult[index].mutualList![mutindex].name}",
+    //   "viaid": _searchResult[index].viaId
+    // };
+    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+        value: _outputController?.text,
+        qrcode: false,
+        content: "${preferences.getString("name")} request to ${_searchResult[index].mutualList![mutindex].name}",
+        viaid: _searchResult[index].viaId));
 
     if (response['status'] == true) {
       Utils.displayToast("Request Sent successfully");
@@ -1124,8 +1132,11 @@ class _ConetWebPageState extends State<ConetWebPage> {
   }
 
   _sendQrApi() async {
-    var requestBody = {"value": _outputController!.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(requestBody);
+    //var requestBody = {"value": _outputController!.text, "qrcode": true};
+    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+      value: _outputController?.text,
+      qrcode: false,
+    ));
 
     if (response['status'] == true) {
       Utils.displayToast("Scanned successfully");

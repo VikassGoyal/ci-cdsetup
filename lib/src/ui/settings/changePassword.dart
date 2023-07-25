@@ -1,3 +1,4 @@
+import 'package:conet/api_models/changepassword_request_model/changepassword_request_body.dart';
 import 'package:conet/blocs/userBloc.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/custom_fonts.dart';
@@ -201,13 +202,14 @@ class _ChangePasswordState extends State<ChangePassword> {
     setState(() {
       _loader = true;
     });
-    var requestBody = {
-      "oldpassword": _oldPasswordController.text,
-      "newpassword": _newPasswordController.text,
-    };
+    // var requestBody = {
+    //   "oldpassword": _oldPasswordController.text,
+    //   "newpassword": _newPasswordController.text,
+    // };
 
     try {
-      var response = await UserBloc().changePassword(requestBody);
+      var response = await UserBloc().changePassword(ChangePasswordRequestBody(
+          oldpassword: _oldPasswordController.text, newpassword: _newPasswordController.text));
 
       setState(() {
         _loader = false;

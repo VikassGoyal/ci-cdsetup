@@ -1,6 +1,12 @@
+import 'package:conet/constants/constants.dart';
+import 'package:conet/api_models/login_request_body/login_request_body.dart';
+import 'package:conet/api_models/signup_request_body/signup_request_body.dart';
 import 'package:conet/repositories/userRepository.dart';
-import 'package:get/get_connect/http/src/response/response.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:conet/services/storage_service.dart';
+import 'package:conet/utils/get_it.dart';
+
+import '../api_models/changepassword_request_model/changepassword_request_body.dart';
+import '../api_models/forgotpassword__request_model/forgotpassword_request_body.dart';
 
 class UserBloc {
   UserRepository? userRepository;
@@ -9,43 +15,44 @@ class UserBloc {
     userRepository = UserRepository();
   }
 
-  login(requestBody) async {
+  login({required String email, required String password}) async {
     try {
-      var response = await userRepository?.login(requestBody);
+      var response = await userRepository?.login(LoginRequestBody(email: email, password: password));
 
       print(response['message']);
       if (response['message'] == "success") {
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-
-        preferences.setString('token', response['token']);
-        preferences.setString('id', response['user']['user_id'].toString());
-        preferences.setInt('formFilled', response['user']['formFilled']);
-        preferences.setString('name', response['user']['name']);
-        preferences.setString('email', response['user']['email']);
-        preferences.setString('phone', response['user']['phone'].toString());
-        preferences.setString('image', response['user']['img']);
-        preferences.setBool('imported', false);
+        final prefs = locator<StorageService>();
+        prefs.setPrefs<String>(kPrefAccessTokenKey, response['token']);
+        prefs.setPrefs<String>('id', response['user']['user_id'].toString());
+        prefs.setPrefs<int>('formFilled', response['user']['formFilled']);
+        prefs.setPrefs<String>('name', response['user']['name']);
+        prefs.setPrefs<String>('email', response['user']['email']);
+        prefs.setPrefs<String>('phone', response['user']['phone'].toString());
+        prefs.setPrefs<String>('image', response['user']['img']);
+        prefs.setPrefs<bool>('imported', false);
       }
       return response;
     } catch (e) {
       print("error");
+      print(e);
     }
   }
 
-  signup(requestBody) async {
+  signup({required String username, required String email, required String phone, required String password}) async {
     try {
-      var response = await userRepository?.signup(requestBody);
+      var response = await userRepository
+          ?.signup(SignupRequestBody(username: username, email: email, phone: phone, password: password));
       print(response.toString());
       if (response['status'] == true) {
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        preferences.setString('token', response['token']);
-        preferences.setString('id', response['user']['user_id'].toString());
-        preferences.setInt('formFilled', response['user']['formFilled']);
-        preferences.setString('name', response['user']['name']);
-        preferences.setString('email', response['user']['email']);
-        preferences.setString('phone', response['user']['phone'].toString());
-        preferences.setString('image', response['user']['img']);
-        preferences.setBool('imported', false);
+        final prefs = locator<StorageService>();
+        prefs.setPrefs<String>(kPrefAccessTokenKey, response['token']);
+        prefs.setPrefs<String>('id', response['user']['user_id'].toString());
+        prefs.setPrefs<int>('formFilled', response['user']['formFilled']);
+        prefs.setPrefs<String>('name', response['user']['name']);
+        prefs.setPrefs<String>('email', response['user']['email']);
+        prefs.setPrefs<String>('phone', response['user']['phone'].toString());
+        prefs.setPrefs<String>('image', response['user']['img']);
+        prefs.setPrefs<bool>('imported', false);
       }
       return response;
     } catch (e) {
@@ -53,90 +60,19 @@ class UserBloc {
     }
   }
 
-  otpVerification(requestBody) async {
+  changePassword(ChangePasswordRequestBody changePasswordrequestBody) async {
     try {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      var response = await userRepository?.otpVerification(requestBody);
-
-      print("response: - ${response['message']}");
-      if (response['message'] == 'success') {
-        preferences.setString('token', response['token']);
-        preferences.setString('id', response['user']['user_id'].toString());
-        preferences.setInt('formFilled', response['user']['formFilled']);
-        preferences.setString('name', response['user']['name']);
-        preferences.setString('email', response['user']['email']);
-        preferences.setString('phone', response['user']['phone'].toString());
-        preferences.setString('image', response['user']['img']);
-        preferences.setBool('imported', false);
-
-        // if (response['user']['personal'] != null) {
-        //   preferences.setString('dob', response['user']['personal']['d_o_b']);
-        //   preferences.setString(
-        //       'add', response['user']['personal']['address_1']);
-        //   preferences.setString(
-        //       'lan', response['user']['personal']['landline'].toString());
-        // } else {
-        //   preferences.setString('dob', 'null');
-        //   preferences.setString('add', 'null');
-        //   preferences.setString('lan', 'null');
-        // }
-
-        // if (response['user']['professional'] != null) {
-        //   preferences.setString(
-        //       'occupation', response['user']['professional']['occupation']);
-        //   preferences.setString(
-        //       'industry', response['user']['professional']['industry']);
-        //   preferences.setString(
-        //       'company', response['user']['professional']['company']);
-        //   preferences.setString('school_university',
-        //       response['user']['professional']['school_university']);
-        //   preferences.setString(
-        //       'grade', response['user']['professional']['grade']);
-        //   preferences.setString(
-        //       'work_nature', response['user']['professional']['work_nature']);
-        //   preferences.setString(
-        //       'designation', response['user']['professional']['designation']);
-
-        //   preferences.setString('professional_list',
-        //       json.encode(response['user']['professional_list']));
-        // } else {
-        //   preferences.setString('occupation', 'null');
-        //   preferences.setString('industry', 'null');
-        //   preferences.setString('company', 'null');
-        //   preferences.setString('school_university', 'null');
-        //   preferences.setString('grade', 'null');
-        //   preferences.setString('work_nature', 'null');
-        //   preferences.setString('designation', 'null');
-        // }
-
-        // if (response['user']['social'] != null) {
-        //   preferences.setString(
-        //       'facebook', response['user']['social']['facebook']);
-        //   preferences.setString(
-        //       'instagram', response['user']['social']['instagram']);
-        //   preferences.setString(
-        //       'twitter', response['user']['social']['twitter']);
-        //   preferences.setString('skype', response['user']['social']['skype']);
-        //   preferences.setString('gpay', response['user']['social']['gpay']);
-        //   preferences.setString('paytm', response['user']['social']['paytm']);
-        // } else {
-        //   preferences.setString('facebook', 'null');
-        //   preferences.setString('instagram', 'null');
-        //   preferences.setString('twitter', 'null');
-        //   preferences.setString('skype', 'null');
-        //   preferences.setString('gpay', 'null');
-        //   preferences.setString('paytm', 'null');
-        // }
-      }
+      var response = await userRepository?.changePassword(changePasswordrequestBody);
+      print(response.toString());
       return response;
     } catch (e) {
       print(e);
     }
   }
 
-  changePassword(requestBody) async {
+  forgotPassword(ForgotpasswordRequestBody forgotpasswordRequestBody) async {
     try {
-      var response = await userRepository?.changePassword(requestBody);
+      var response = await userRepository?.forgotPassword(forgotpasswordRequestBody);
       print(response.toString());
       return response;
     } catch (e) {

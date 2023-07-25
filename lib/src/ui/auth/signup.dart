@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
+import 'package:conet/utils/check_internet_connection.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
-import '../../../networking/apiBaseHelper.dart';
 import '../utils.dart';
 import 'login.dart';
 
@@ -507,15 +507,13 @@ class _SignUpState extends State<SignUp> {
   }
 
   signupFunction() async {
-    var requestBody = {
-      "username": _nameController.text,
-      "email": _emailController.text,
-      "phone": _mobileController.text,
-      "password": _passwordController.text
-    };
+    String username = _nameController.text;
+    String email = _emailController.text;
+    String phone = _mobileController.text;
+    String password = _passwordController.text;
 
     try {
-      var response = await UserBloc().signup(requestBody);
+      var response = await UserBloc().signup(username: username, email: email, phone: phone, password: password);
       var res = response["status"];
       print("response : $res");
       setState(() {

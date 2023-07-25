@@ -22,6 +22,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
+import '../../api_models/qrValue_request_model/qrValue_request_body.dart';
 import '../../utils/custom_fonts.dart';
 import 'notification.dart';
 
@@ -592,8 +593,11 @@ class _RecentPageState extends State<RecentPage> {
   }
 
   _sendQrApi() async {
-    var requestBody = {"value": _outputController!.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(requestBody);
+    //var requestBody = {"value": _outputController!.text, "qrcode": true};
+    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+      value: _outputController?.text,
+      qrcode: false,
+    ));
 
     if (response['status'] == true) {
       Utils.displayToast("Scanned successfully");

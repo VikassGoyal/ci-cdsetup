@@ -90,4 +90,12 @@ extension EnumParser on String {
       return null;
     }
   }
+
+  WorkNatureType? toWorkNature() {
+    try {
+      return WorkNatureType.values.firstWhere((e) => e.name.toLowerCase() == toLowerCase());
+    } catch (err) {
+      return null;
+    }
+  }
 }

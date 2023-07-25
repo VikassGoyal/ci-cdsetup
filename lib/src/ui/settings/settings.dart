@@ -81,6 +81,7 @@ class _SettingsState extends State<Settings> {
         ),
       ),
       body: Container(
+        height: MediaQuery.of(context).size.height,
         child: Padding(
           padding: EdgeInsets.only(left: 21.w),
           child: Column(

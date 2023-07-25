@@ -369,7 +369,7 @@ class _SocialContactState extends State<SocialContact> {
                       ],
                     ),
                     SizedBox(height: 5.h),
-                    Divider(height: 1.h, color: Color(0xFFD7D7D7)),
+                    Divider(height: 1.h, color: const Color(0xFFD7D7D7)),
                     SizedBox(height: 8.h),
                   ],
                 ),

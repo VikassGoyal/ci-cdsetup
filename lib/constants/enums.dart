@@ -8,7 +8,8 @@ enum EnvironmentType { development, staging, production }
 ///
 enum OccupationType {
   professionalService('Professional Service'),
-  entrepreneur('Entrepreneur/Own Business'),
+  entrepreneur('Entrepreneur'),
+  homeMaker('Home maker'),
   employeePrivate('Employee - Private'),
   employeeGovernment('Employee - Government'),
   nonProfit('Non-Profit'),

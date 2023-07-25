@@ -17,11 +17,11 @@ class UserRepository {
         connectTimeout: const Duration(milliseconds: 7000), receiveTimeout: const Duration(milliseconds: 7000)));
 
     // Log requests in development.
-    if (locator<AppConfig>().environmentType == EnvironmentType.development) {
-      dio.interceptors.add(
-        LogInterceptor(request: true, requestHeader: true, requestBody: true, responseHeader: true, responseBody: true),
-      );
-    }
+    // if (locator<AppConfig>().environmentType == EnvironmentType.development) {
+    dio.interceptors.add(
+      LogInterceptor(request: true, requestHeader: true, requestBody: true, responseHeader: true, responseBody: true),
+    );
+    // }
 
     // Add refresh token interceptor.
     dio.interceptors.add(TokenInterceptor(dioClient: dio));

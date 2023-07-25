@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:conet/api_models/addNewContact_request_model/addNewContact_request_body.dart';
 import 'package:conet/api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
+import 'package:conet/constants/enums.dart';
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/settings/myprofile.dart';
 import 'package:flutter/services.dart';
@@ -55,7 +56,7 @@ class _EditProfileState extends State<EditProfile> {
 
   ContactDetail? contactDetail;
   DateTime? selectedDate;
-  String? _occupationValue;
+  OccupationType? _occupationValue;
   bool _loaderoverflow = true;
   bool _valuesChanged = false;
   bool _loader = true;
@@ -118,7 +119,7 @@ class _EditProfileState extends State<EditProfile> {
 
   checkOccupation() {
     print(_occupationValue);
-    if (_occupationValue == 'Entrepreneur') {
+    if (_occupationValue == OccupationType.entrepreneur) {
       _enterpreneurForms = true;
       _companyVisible = false;
       _companyWebsiteVisible = false;
@@ -127,16 +128,7 @@ class _EditProfileState extends State<EditProfile> {
       _studentSchoolVisible = false;
       _studentGradeVisible = false;
       _designationVisible = false;
-    } else if (_occupationValue == 'Employed') {
-      _enterpreneurForms = false;
-      _companyVisible = true;
-      _companyWebsiteVisible = true;
-      // _companyIndustryVisible = true;
-      _companyWorkNatureVisible = true;
-      _studentSchoolVisible = false;
-      _studentGradeVisible = false;
-      _designationVisible = true;
-    } else if (_occupationValue == 'Home maker') {
+    } else if (_occupationValue == OccupationType.homeMaker) {
       _enterpreneurForms = false;
       _companyVisible = false;
       _companyWebsiteVisible = false;
@@ -145,7 +137,7 @@ class _EditProfileState extends State<EditProfile> {
       _studentSchoolVisible = false;
       _studentGradeVisible = false;
       _designationVisible = false;
-    } else if (_occupationValue == 'Student') {
+    } else if (_occupationValue == OccupationType.schoolStudent || _occupationValue == OccupationType.collegeStudent) {
       _enterpreneurForms = false;
       _companyVisible = false;
       _companyWebsiteVisible = false;
@@ -154,6 +146,15 @@ class _EditProfileState extends State<EditProfile> {
       _studentSchoolVisible = true;
       _studentGradeVisible = true;
       _designationVisible = false;
+    } else {
+      _enterpreneurForms = false;
+      _companyVisible = true;
+      _companyWebsiteVisible = true;
+      // _companyIndustryVisible = true;
+      _companyWorkNatureVisible = true;
+      _studentSchoolVisible = false;
+      _studentGradeVisible = false;
+      _designationVisible = true;
     }
   }
 
@@ -239,6 +240,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildName() {
       return TextFormFieldContact(
         hintText: "Name",
+        enableFormatters: false,
         padding: 14.0,
         onChanged: (value) {
           setState(() {
@@ -257,6 +259,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildPhoneNumber() {
       return TextFormFieldContact(
         hintText: "Phone number",
+        enableFormatters: false,
         padding: 14.0,
         onChanged: (value) {
           setState(() {
@@ -455,6 +458,7 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "Country",
         padding: 14.0,
+        enableFormatters: false,
         margin: 22.0,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -472,6 +476,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildState() {
       return TextFormFieldContact(
         hintText: "State",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
         textInputType: TextInputType.text,
@@ -490,6 +495,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildCity() {
       return TextFormFieldContact(
         hintText: "City",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
         textInputType: TextInputType.text,
@@ -675,23 +681,12 @@ class _EditProfileState extends State<EditProfile> {
               borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
             ),
           ),
-          items: const [
-            DropdownMenuItem<String>(
-              value: 'Entrepreneur',
-              child: Text('Entrepreneur'),
-            ),
-            DropdownMenuItem<String>(
-              value: 'Employed',
-              child: Text('Employed'),
-            ),
-            DropdownMenuItem<String>(
-              value: 'Home maker',
-              child: Text('Home maker'),
-            ),
-            DropdownMenuItem<String>(
-              value: 'Student',
-              child: Text('Student'),
-            ),
+          items: [
+            for (final value in OccupationType.values)
+              DropdownMenuItem(
+                value: value,
+                child: Text(value.name),
+              ),
           ],
           value: _occupationValue,
           hint: const Text(
@@ -707,10 +702,10 @@ class _EditProfileState extends State<EditProfile> {
             setState(() {
               // _valuesChanged = true;
               _occupationValue = value;
-              _professionalOccupation.text = value.toString();
+              _professionalOccupation.text = value?.name ?? '';
 
               print(_occupationValue);
-              if (value == 'Entrepreneur') {
+              if (value == OccupationType.entrepreneur) {
                 _enterpreneurForms = true;
                 _companyVisible = false;
                 _companyWebsiteVisible = false;
@@ -719,16 +714,7 @@ class _EditProfileState extends State<EditProfile> {
                 _studentSchoolVisible = false;
                 _studentGradeVisible = false;
                 _designationVisible = false;
-              } else if (value == 'Employed') {
-                _enterpreneurForms = false;
-                _companyVisible = true;
-                _companyWebsiteVisible = true;
-                // _companyIndustryVisible = true;
-                _companyWorkNatureVisible = true;
-                _studentSchoolVisible = false;
-                _studentGradeVisible = false;
-                _designationVisible = true;
-              } else if (value == 'Home maker') {
+              } else if (value == OccupationType.homeMaker) {
                 _enterpreneurForms = false;
                 _companyVisible = false;
                 _companyWebsiteVisible = false;
@@ -737,7 +723,7 @@ class _EditProfileState extends State<EditProfile> {
                 _studentSchoolVisible = false;
                 _studentGradeVisible = false;
                 _designationVisible = false;
-              } else if (value == 'Student') {
+              } else if (value == OccupationType.collegeStudent || value == OccupationType.schoolStudent) {
                 _enterpreneurForms = false;
                 _companyVisible = false;
                 _companyWebsiteVisible = false;
@@ -746,6 +732,15 @@ class _EditProfileState extends State<EditProfile> {
                 _studentSchoolVisible = true;
                 _studentGradeVisible = true;
                 _designationVisible = false;
+              } else {
+                _enterpreneurForms = false;
+                _companyVisible = true;
+                _companyWebsiteVisible = true;
+                // _companyIndustryVisible = true;
+                _companyWorkNatureVisible = true;
+                _studentSchoolVisible = false;
+                _studentGradeVisible = false;
+                _designationVisible = true;
               }
             });
           },
@@ -756,6 +751,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildCompany() {
       return TextFormFieldContact(
         hintText: "Company",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
         textInputType: TextInputType.text,
@@ -769,6 +765,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildCompanyWebsite() {
       return TextFormFieldContact(
         hintText: "Company Website",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
         onChanged: (value) {
@@ -787,6 +784,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildProfessionalSchool() {
       return TextFormFieldContact(
         hintText: "School / University",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
         maxLength: 100,
@@ -807,6 +805,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildGrade() {
       return TextFormFieldContact(
         hintText: "Grade",
+        enableFormatters: false,
         padding: 14.0,
         onChanged: (value) {
           setState(() {
@@ -824,6 +823,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildworknature() {
       return TextFormFieldContact(
         hintText: "Work Nature",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
         onChanged: (value) {
@@ -841,6 +841,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildDesignation() {
       return TextFormFieldContact(
         hintText: "Designation",
+        enableFormatters: false,
         padding: 14.0,
         onChanged: (value) {
           setState(() {
@@ -858,6 +859,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildworkFacebook() {
       return TextFormFieldContact(
         hintText: "Facebook account",
+        enableFormatters: false,
         onChanged: (value) {
           setState(() {
             _valuesChanged = true;
@@ -875,6 +877,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildworkInstagram() {
       return TextFormFieldContact(
         hintText: "Instagram account",
+        enableFormatters: false,
         padding: 14.0,
         onChanged: (value) {
           setState(() {
@@ -892,6 +895,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildworkTwitter() {
       return TextFormFieldContact(
         hintText: "Twitter account",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
         onChanged: (value) {
@@ -909,6 +913,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildworkSkype() {
       return TextFormFieldContact(
         hintText: "Skype account",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
         onChanged: (value) {
@@ -931,7 +936,7 @@ class _EditProfileState extends State<EditProfile> {
           selectedColor: AppColor.primaryColor,
           shadowColor: AppColor.primaryColor,
           backgroundColor: AppColor.primaryColor,
-          label: Text(_values![i]),
+          label: Text(_values![i].trim()),
           pressElevation: 5,
           onPressed: () {
             // setState(() {
@@ -1467,8 +1472,12 @@ class _EditProfileState extends State<EditProfile> {
 
         if (contactDetail?.professional != null) {
           print(contactDetail?.professional?.occupation);
-          _occupationValue = contactDetail?.professional?.occupation ?? "";
-          _professionalOccupation.text = contactDetail?.professional?.occupation ?? "";
+          if (contactDetail?.professional?.occupation != null && contactDetail!.professional!.occupation!.isNotEmpty) {
+            _occupationValue = contactDetail!.professional!.occupation!.toOccupation();
+          }
+
+          // _occupationValue = contactDetail?.professional?.occupation ?? "";
+          _professionalOccupation.text = _occupationValue?.name ?? "";
           _professionalCompany.text = contactDetail?.professional?.company ?? "";
           _professionalCompanyWebsite.text = contactDetail?.professional?.companyWebsite ?? "";
           _professionalSchool.text = contactDetail?.professional?.schoolUniversity ?? "";
@@ -2204,32 +2213,33 @@ class _EditProfileState extends State<EditProfile> {
 
   updateProfile() async {
     setState(() {
-      if (_occupationValue == 'Entrepreneur') {
+      if (_occupationValue == OccupationType.entrepreneur) {
         _professionalCompany.clear();
         _professionalCompanyWebsite.clear();
         _professionalWorkNature.clear();
         _professionalSchool.clear();
         _professionalGrade.clear();
         _professionalDesignation.clear();
-      } else if (_occupationValue == 'Employed') {
+      } else if (_occupationValue == OccupationType.homeMaker) {
+        entreprenerurList = [];
+        _professionalCompany.clear();
+        _professionalCompanyWebsite.clear();
+        _professionalWorkNature.clear();
+        _professionalSchool.clear();
+        _professionalGrade.clear();
+        _professionalDesignation.clear();
+      } else if (_occupationValue == OccupationType.schoolStudent ||
+          _occupationValue == OccupationType.collegeStudent) {
+        entreprenerurList = [];
+        _professionalCompany.clear();
+        _professionalCompanyWebsite.clear();
+        _professionalWorkNature.clear();
+        _professionalDesignation.clear();
+      } else {
         entreprenerurList = [];
         _professionalSchool.clear();
         _professionalGrade.clear();
         _designationVisible = true;
-      } else if (_occupationValue == 'Home maker') {
-        entreprenerurList = [];
-        _professionalCompany.clear();
-        _professionalCompanyWebsite.clear();
-        _professionalWorkNature.clear();
-        _professionalSchool.clear();
-        _professionalGrade.clear();
-        _professionalDesignation.clear();
-      } else if (_occupationValue == 'Student') {
-        entreprenerurList = [];
-        _professionalCompany.clear();
-        _professionalCompanyWebsite.clear();
-        _professionalWorkNature.clear();
-        _professionalDesignation.clear();
       }
     });
 
@@ -2311,7 +2321,7 @@ class _EditProfileState extends State<EditProfile> {
       per_country: _personalCountry.text,
       per_pincode: _personalPincode.text,
       per_lan: _personalLandline.text ?? '',
-      per_keyword: _values!.join(', '),
+      per_keyword: _values!.join(','),
       pro_occ: _professionalOccupation.text,
       pro_ind: _professionalIndustry.text,
       pro_com: _professionalCompany.text,

@@ -5,7 +5,7 @@ import 'package:conet/constants/enums.dart';
 ///
 class AppConfig {
   /// Current environment type.
-  final EnvironmentType environmentType = EnvironmentType.development;
+  final EnvironmentType environmentType = EnvironmentType.production;
 
   AppConfig() {
     // Load environment configuration from environment type.
@@ -31,7 +31,7 @@ class AppConfig {
   /// Initialize Dev.
   ///
   void _initDevelopment() {
-    baseApiUrl = 'http://192.168.1.3:8000';
+    baseApiUrl = 'http://192.168.1.5';
   }
 
   ///
@@ -45,6 +45,6 @@ class AppConfig {
   /// Initialize Production.
   ///
   void _initProduction() {
-    throw UnimplementedError('Production environment not implemented.');
+    baseApiUrl = 'http://konet.in';
   }
 }

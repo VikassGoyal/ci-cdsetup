@@ -484,14 +484,18 @@ class _MyProfileState extends State<MyProfile> {
             );
           },
           child: Container(
-            constraints: BoxConstraints(
-              minHeight: 50.0.h,
-            ),
+            constraints: BoxConstraints(minHeight: 50.0.h),
             alignment: Alignment.center,
             child: Text(
               "Next",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.button!.apply(color: AppColor.whiteColor),
+              style: TextStyle(
+                fontFamily: kSfproRoundedFontFamily,
+                color: AppColor.whiteColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              ),
             ),
           ),
         ),
@@ -1070,11 +1074,14 @@ class _MyProfileState extends State<MyProfile> {
                   visible: _values.isNotEmpty,
                   child: keywordbody(),
                 ),
-                SizedBox(height: 16.h),
+                Visibility(
+                  visible: _values.isNotEmpty,
+                  child: SizedBox(height: 16.h),
+                ),
                 _buildLandLine(),
-                SizedBox(height: 30),
+                SizedBox(height: 30.h),
                 _buildPersonalUpdateButton(),
-                SizedBox(height: 30),
+                SizedBox(height: 80.h),
               ]
             : [
                 SizedBox(height: 26),
@@ -1158,13 +1165,11 @@ class _MyProfileState extends State<MyProfile> {
       return Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 77.h, bottom: 24.h),
+            padding: EdgeInsets.only(top: 77.h, bottom: 4.h),
             child: Text(_personalName.text ?? "Unknown Number",
                 style: TextStyle(fontSize: 20.sp, fontFamily: kSfproRoundedFontFamily, fontWeight: FontWeight.w600)),
           ),
-          SizedBox(
-            height: 10.h,
-          ),
+          SizedBox(height: 10.h),
           selectButton(),
           _buildformBody(),
         ],

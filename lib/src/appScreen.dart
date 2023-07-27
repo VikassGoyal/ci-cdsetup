@@ -24,6 +24,7 @@ class _AppScreenState extends State<AppScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    BlocProvider.of<BottomNavigationBloc>(context).add(AppStarted());
     super.initState();
   }
 

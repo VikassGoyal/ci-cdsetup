@@ -481,6 +481,9 @@ class _SettingsState extends State<Settings> {
         scanQrCode();
       } else if (reqStatus.isDenied) {
         Utils.displayToast("Permission Denied");
+      } else if (reqStatus.isPermanentlyDenied) {
+        Utils.displayToast(
+            "App does not have permission to access the camera. Please go the device settings and allow this app camera permissions");
       }
     }
   }

@@ -2467,6 +2467,27 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       _loaderoverflow = true;
     });
+
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      Utils.displayToast('Please enable location services on your device to use this feature.');
+      return;
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        Utils.displayToast('Location permissions required to use this feature.');
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      Utils.displayToast('Location permissions required to use this feature.');
+      return;
+    }
+
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
       setState(() {
         _currentPosition = position;

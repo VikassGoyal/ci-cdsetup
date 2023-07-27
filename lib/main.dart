@@ -91,8 +91,6 @@ class App extends StatelessWidget {
           ],
           child: Builder(
             builder: (context) {
-              BlocProvider.of<BottomNavigationBloc>(context).add(AppStarted());
-
               return const MyApp();
             },
           ),

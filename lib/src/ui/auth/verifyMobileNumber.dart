@@ -104,6 +104,8 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
             ),
           ),
           onPressed: () async {
+            if (_loader) return;
+
             //print(otpNumber!.length);
             if (otpNumber!.length != 6) {
               Utils.displayToastBottomError("Please Enter Valid  OTP");
@@ -191,17 +193,19 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           child: Container(
             constraints: BoxConstraints(minHeight: 50.h),
             alignment: Alignment.center,
-            child: Text(
-              "Verify Now",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: kSfproRoundedFontFamily,
-                color: AppColor.whiteColor,
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w500,
-                fontStyle: FontStyle.normal,
-              ),
-            ),
+            child: _loader
+                ? const CircularProgressIndicator(color: Colors.white)
+                : Text(
+                    "Verify Now",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: kSfproRoundedFontFamily,
+                      color: AppColor.whiteColor,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
           ),
         ),
       );

@@ -394,10 +394,13 @@ class _SocialContactState extends State<SocialContact> {
         contactDetail = ContactDetail.fromJson(response["user"]);
         setState(() {
           _loader = true;
-          _socialFacebook = contactDetail?.social?.facebook == null ? false : true;
-          _socialInstagram = contactDetail?.social?.instagram == null ? false : true;
-          _socialTwitter = contactDetail?.social?.twitter == null ? false : true;
-          _socialSkype = contactDetail?.social?.skype == null ? false : true;
+          _socialFacebook =
+              contactDetail?.social?.facebook == null || contactDetail?.social?.facebook == "" ? false : true;
+          _socialInstagram =
+              contactDetail?.social?.instagram == null || contactDetail?.social?.instagram == "" ? false : true;
+          _socialTwitter =
+              contactDetail?.social?.twitter == null || contactDetail?.social?.twitter == "" ? false : true;
+          _socialSkype = contactDetail?.social?.skype == null || contactDetail?.social?.skype == "" ? false : true;
 
           _socialFacebookText = contactDetail?.social?.facebook ?? "";
           _socialTwitterText = contactDetail?.social?.twitter ?? "";

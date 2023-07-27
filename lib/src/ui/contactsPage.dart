@@ -27,6 +27,7 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -72,12 +73,11 @@ class _ContactsPageState extends State<ContactsPage> {
   bool _loader = false;
   bool _showCancelIcon = false;
   double susItemHeight = 40;
+  bool updatecheck = false;
 
   @override
   void initState() {
     super.initState();
-    print("initistate");
-    print(widget.contactsData.length);
     contactPageRepository = ContactPageRepository();
     var responseData = widget.contactsData ?? _blanklistcontacts;
     _textEditingController = TextEditingController();
@@ -87,8 +87,9 @@ class _ContactsPageState extends State<ContactsPage> {
     _contacts = responseData;
     _loadedcontacts = _contacts;
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
-    if (widget.updatebool ?? false) {
-      print("update data");
+    updatecheck = widget.updatebool ?? false;
+    if (updatecheck) {
+      updatecheck = false;
       _updateContact();
     }
 
@@ -511,7 +512,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 ),
               ).then((value) {
                 print("value : $value");
-                _updateContact();
+                if (value) _updateContact();
               });
             },
           ),
@@ -528,7 +529,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 ),
               ).then((value) {
                 print("value : $value");
-                _updateContact();
+                if (value) _updateContact();
               });
             },
           )

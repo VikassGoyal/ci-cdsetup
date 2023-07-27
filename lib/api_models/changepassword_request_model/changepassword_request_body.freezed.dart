@@ -14,8 +14,7 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ChangePasswordRequestBody _$ChangePasswordRequestBodyFromJson(
-    Map<String, dynamic> json) {
+ChangePasswordRequestBody _$ChangePasswordRequestBodyFromJson(Map<String, dynamic> json) {
   return _ChangePasswordRequestBody.fromJson(json);
 }
 
@@ -23,29 +22,25 @@ ChangePasswordRequestBody _$ChangePasswordRequestBodyFromJson(
 mixin _$ChangePasswordRequestBody {
   @JsonKey(name: 'oldpassword')
   String get oldpassword => throw _privateConstructorUsedError;
-  @JsonKey(name: ' newpassword')
+  @JsonKey(name: 'newpassword')
   String get newpassword => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ChangePasswordRequestBodyCopyWith<ChangePasswordRequestBody> get copyWith =>
-      throw _privateConstructorUsedError;
+  $ChangePasswordRequestBodyCopyWith<ChangePasswordRequestBody> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $ChangePasswordRequestBodyCopyWith<$Res> {
-  factory $ChangePasswordRequestBodyCopyWith(ChangePasswordRequestBody value,
-          $Res Function(ChangePasswordRequestBody) then) =
+  factory $ChangePasswordRequestBodyCopyWith(
+          ChangePasswordRequestBody value, $Res Function(ChangePasswordRequestBody) then) =
       _$ChangePasswordRequestBodyCopyWithImpl<$Res, ChangePasswordRequestBody>;
   @useResult
-  $Res call(
-      {@JsonKey(name: 'oldpassword') String oldpassword,
-      @JsonKey(name: ' newpassword') String newpassword});
+  $Res call({@JsonKey(name: 'oldpassword') String oldpassword, @JsonKey(name: 'newpassword') String newpassword});
 }
 
 /// @nodoc
-class _$ChangePasswordRequestBodyCopyWithImpl<$Res,
-        $Val extends ChangePasswordRequestBody>
+class _$ChangePasswordRequestBodyCopyWithImpl<$Res, $Val extends ChangePasswordRequestBody>
     implements $ChangePasswordRequestBodyCopyWith<$Res> {
   _$ChangePasswordRequestBodyCopyWithImpl(this._value, this._then);
 
@@ -74,27 +69,21 @@ class _$ChangePasswordRequestBodyCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_ChangePasswordRequestBodyCopyWith<$Res>
-    implements $ChangePasswordRequestBodyCopyWith<$Res> {
+abstract class _$$_ChangePasswordRequestBodyCopyWith<$Res> implements $ChangePasswordRequestBodyCopyWith<$Res> {
   factory _$$_ChangePasswordRequestBodyCopyWith(
-          _$_ChangePasswordRequestBody value,
-          $Res Function(_$_ChangePasswordRequestBody) then) =
+          _$_ChangePasswordRequestBody value, $Res Function(_$_ChangePasswordRequestBody) then) =
       __$$_ChangePasswordRequestBodyCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: 'oldpassword') String oldpassword,
-      @JsonKey(name: ' newpassword') String newpassword});
+  $Res call({@JsonKey(name: 'oldpassword') String oldpassword, @JsonKey(name: 'newpassword') String newpassword});
 }
 
 /// @nodoc
 class __$$_ChangePasswordRequestBodyCopyWithImpl<$Res>
-    extends _$ChangePasswordRequestBodyCopyWithImpl<$Res,
-        _$_ChangePasswordRequestBody>
+    extends _$ChangePasswordRequestBodyCopyWithImpl<$Res, _$_ChangePasswordRequestBody>
     implements _$$_ChangePasswordRequestBodyCopyWith<$Res> {
   __$$_ChangePasswordRequestBodyCopyWithImpl(
-      _$_ChangePasswordRequestBody _value,
-      $Res Function(_$_ChangePasswordRequestBody) _then)
+      _$_ChangePasswordRequestBody _value, $Res Function(_$_ChangePasswordRequestBody) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -122,7 +111,7 @@ class __$$_ChangePasswordRequestBodyCopyWithImpl<$Res>
 class _$_ChangePasswordRequestBody extends _ChangePasswordRequestBody {
   const _$_ChangePasswordRequestBody(
       {@JsonKey(name: 'oldpassword') required this.oldpassword,
-      @JsonKey(name: ' newpassword') required this.newpassword})
+      @JsonKey(name: 'newpassword') required this.newpassword})
       : super._();
 
   factory _$_ChangePasswordRequestBody.fromJson(Map<String, dynamic> json) =>
@@ -132,7 +121,7 @@ class _$_ChangePasswordRequestBody extends _ChangePasswordRequestBody {
   @JsonKey(name: 'oldpassword')
   final String oldpassword;
   @override
-  @JsonKey(name: ' newpassword')
+  @JsonKey(name: 'newpassword')
   final String newpassword;
 
   @override
@@ -145,10 +134,8 @@ class _$_ChangePasswordRequestBody extends _ChangePasswordRequestBody {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ChangePasswordRequestBody &&
-            (identical(other.oldpassword, oldpassword) ||
-                other.oldpassword == oldpassword) &&
-            (identical(other.newpassword, newpassword) ||
-                other.newpassword == newpassword));
+            (identical(other.oldpassword, oldpassword) || other.oldpassword == oldpassword) &&
+            (identical(other.newpassword, newpassword) || other.newpassword == newpassword));
   }
 
   @JsonKey(ignore: true)
@@ -158,9 +145,8 @@ class _$_ChangePasswordRequestBody extends _ChangePasswordRequestBody {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ChangePasswordRequestBodyCopyWith<_$_ChangePasswordRequestBody>
-      get copyWith => __$$_ChangePasswordRequestBodyCopyWithImpl<
-          _$_ChangePasswordRequestBody>(this, _$identity);
+  _$$_ChangePasswordRequestBodyCopyWith<_$_ChangePasswordRequestBody> get copyWith =>
+      __$$_ChangePasswordRequestBodyCopyWithImpl<_$_ChangePasswordRequestBody>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -172,22 +158,20 @@ class _$_ChangePasswordRequestBody extends _ChangePasswordRequestBody {
 
 abstract class _ChangePasswordRequestBody extends ChangePasswordRequestBody {
   const factory _ChangePasswordRequestBody(
-          {@JsonKey(name: 'oldpassword') required final String oldpassword,
-          @JsonKey(name: ' newpassword') required final String newpassword}) =
-      _$_ChangePasswordRequestBody;
+      {@JsonKey(name: 'oldpassword') required final String oldpassword,
+      @JsonKey(name: 'newpassword') required final String newpassword}) = _$_ChangePasswordRequestBody;
   const _ChangePasswordRequestBody._() : super._();
 
-  factory _ChangePasswordRequestBody.fromJson(Map<String, dynamic> json) =
-      _$_ChangePasswordRequestBody.fromJson;
+  factory _ChangePasswordRequestBody.fromJson(Map<String, dynamic> json) = _$_ChangePasswordRequestBody.fromJson;
 
   @override
   @JsonKey(name: 'oldpassword')
   String get oldpassword;
   @override
-  @JsonKey(name: ' newpassword')
+  @JsonKey(name: 'newpassword')
   String get newpassword;
   @override
   @JsonKey(ignore: true)
-  _$$_ChangePasswordRequestBodyCopyWith<_$_ChangePasswordRequestBody>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$_ChangePasswordRequestBodyCopyWith<_$_ChangePasswordRequestBody> get copyWith =>
+      throw _privateConstructorUsedError;
 }

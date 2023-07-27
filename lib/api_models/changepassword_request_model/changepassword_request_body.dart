@@ -8,7 +8,7 @@ class ChangePasswordRequestBody with _$ChangePasswordRequestBody {
   @JsonSerializable(includeIfNull: false)
   const factory ChangePasswordRequestBody({
     @JsonKey(name: 'oldpassword') required String oldpassword,
-    @JsonKey(name: ' newpassword') required String newpassword,
+    @JsonKey(name: 'newpassword') required String newpassword,
   }) = _ChangePasswordRequestBody;
   factory ChangePasswordRequestBody.fromJson(Map<String, dynamic> json) => _$ChangePasswordRequestBodyFromJson(json);
 }

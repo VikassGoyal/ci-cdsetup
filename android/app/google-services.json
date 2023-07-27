@@ -7,6 +7,58 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:968842320717:android:216a01a04be22c98aef504",
+        "android_client_info": {
+          "package_name": "com.konet.in"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "968842320717-9lj5u6eqfroorpjl2ru8t091fiv4vghe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.konet.in",
+            "certificate_hash": "1a37a11358de88c0f50eeb7c40290e7ab1653292"
+          }
+        },
+        {
+          "client_id": "968842320717-sn5870e7lqg0i5ro5o8asauvnfu8ve4c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.konet.in",
+            "certificate_hash": "2e1c2d95bb4a6165e2449c817e35c004d002228f"
+          }
+        },
+        {
+          "client_id": "968842320717-letsr80l8761fkj08ibt517au3jf4p5f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuk0HVTGlLaHHFYRQF0FQ9tswUOFQ0SZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968842320717-letsr80l8761fkj08ibt517au3jf4p5f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "968842320717-k05takhag7cfmeoe5v91ffqjjjgbon4s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.konet.in"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:968842320717:android:4eb51f001ab402c1aef504",
         "android_client_info": {
           "package_name": "com.shade6.conet"
@@ -47,11 +99,10 @@
               "client_type": 3
             },
             {
-              "client_id": "968842320717-ra62330lsg2joa0siv05k61sie3ugarn.apps.googleusercontent.com",
+              "client_id": "968842320717-k05takhag7cfmeoe5v91ffqjjjgbon4s.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.shade6.conet",
-                "app_store_id": "1593177607"
+                "bundle_id": "com.konet.in"
               }
             }
           ]

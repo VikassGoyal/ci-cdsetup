@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBuk0HVTGlLaHHFYRQF0FQ9tswUOFQ0SZ4',
-    appId: '1:968842320717:android:4eb51f001ab402c1aef504',
+    appId: '1:968842320717:android:216a01a04be22c98aef504',
     messagingSenderId: '968842320717',
     projectId: 'conet-26772',
     storageBucket: 'conet-26772.appspot.com',
@@ -59,12 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyASnFyyZzNTBMJ_zG_qg1mu-dJpC4gosuA',
-    appId: '1:968842320717:ios:8f1be60269c9c4f3aef504',
+    appId: '1:968842320717:ios:29cedbe401691b2caef504',
     messagingSenderId: '968842320717',
     projectId: 'conet-26772',
     storageBucket: 'conet-26772.appspot.com',
-    androidClientId: '968842320717-b8hq11ve9afqjnv6hq539ocajn4agv6f.apps.googleusercontent.com',
-    iosClientId: '968842320717-ra62330lsg2joa0siv05k61sie3ugarn.apps.googleusercontent.com',
-    iosBundleId: 'com.shade6.conet',
+    androidClientId: '968842320717-9lj5u6eqfroorpjl2ru8t091fiv4vghe.apps.googleusercontent.com',
+    iosClientId: '968842320717-k05takhag7cfmeoe5v91ffqjjjgbon4s.apps.googleusercontent.com',
+    iosBundleId: 'com.konet.in',
   );
 }

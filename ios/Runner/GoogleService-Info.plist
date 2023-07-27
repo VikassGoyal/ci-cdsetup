@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>968842320717-ra62330lsg2joa0siv05k61sie3ugarn.apps.googleusercontent.com</string>
+	<string>968842320717-k05takhag7cfmeoe5v91ffqjjjgbon4s.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.968842320717-ra62330lsg2joa0siv05k61sie3ugarn</string>
+	<string>com.googleusercontent.apps.968842320717-k05takhag7cfmeoe5v91ffqjjjgbon4s</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>968842320717-b8hq11ve9afqjnv6hq539ocajn4agv6f.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.shade6.conet</string>
+	<string>com.konet.in</string>
 	<key>PROJECT_ID</key>
 	<string>conet-26772</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:968842320717:ios:8f1be60269c9c4f3aef504</string>
+	<string>1:968842320717:ios:29cedbe401691b2caef504</string>
 </dict>
 </plist>

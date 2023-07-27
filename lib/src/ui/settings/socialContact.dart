@@ -24,10 +24,10 @@ class _SocialContactState extends State<SocialContact> {
   bool _socialInstagram = false;
   bool _socialSkype = false;
 
-  var _socialFacebookText = "";
-  var _socialTwitterText = "";
-  var _socialInstagramText = "";
-  var _socialSkypeText = "";
+  var _socialFacebookText;
+  var _socialTwitterText;
+  var _socialInstagramText;
+  var _socialSkypeText;
 
   bool _loader = false;
   @override
@@ -117,7 +117,7 @@ class _SocialContactState extends State<SocialContact> {
                               Text(_socialFacebookText ?? "",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      color: _socialTwitter ? AppColor.whiteColor : AppColor.gray30Color,
+                                      color: _socialFacebook ? AppColor.gray30Color : AppColor.whiteColor,
                                       fontSize: 13.sp,
                                       fontFamily: kSfproRoundedFontFamily,
                                       fontWeight: FontWeight.w300))
@@ -186,7 +186,7 @@ class _SocialContactState extends State<SocialContact> {
                               Text(_socialInstagramText ?? "",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      color: _socialTwitter ? AppColor.whiteColor : AppColor.gray30Color,
+                                      color: _socialInstagram ? AppColor.gray30Color : AppColor.whiteColor,
                                       fontSize: 13.sp,
                                       fontFamily: kSfproRoundedFontFamily,
                                       fontWeight: FontWeight.w300))
@@ -203,7 +203,7 @@ class _SocialContactState extends State<SocialContact> {
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   side: BorderSide(
-                                    color: _socialFacebook ? AppColor.accentColor : AppColor.gray30Color,
+                                    color: _socialInstagram ? AppColor.accentColor : AppColor.gray30Color,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(10.r),
@@ -258,7 +258,7 @@ class _SocialContactState extends State<SocialContact> {
                                 _socialTwitterText ?? "",
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    color: _socialTwitter ? AppColor.whiteColor : AppColor.gray30Color,
+                                    color: _socialTwitter ? AppColor.gray30Color : AppColor.whiteColor,
                                     fontSize: 13.sp,
                                     fontFamily: kSfproRoundedFontFamily,
                                     fontWeight: FontWeight.w300),
@@ -276,7 +276,7 @@ class _SocialContactState extends State<SocialContact> {
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   side: BorderSide(
-                                    color: _socialFacebook ? AppColor.accentColor : AppColor.gray30Color,
+                                    color: _socialTwitter ? AppColor.accentColor : AppColor.gray30Color,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(10.r),
@@ -330,7 +330,7 @@ class _SocialContactState extends State<SocialContact> {
                                 _socialSkypeText ?? "",
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    color: _socialTwitter ? AppColor.whiteColor : AppColor.gray30Color,
+                                    color: _socialSkype ? AppColor.gray30Color : AppColor.whiteColor,
                                     fontSize: 13.sp,
                                     fontFamily: kSfproRoundedFontFamily,
                                     fontWeight: FontWeight.w300),
@@ -348,7 +348,7 @@ class _SocialContactState extends State<SocialContact> {
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   side: BorderSide(
-                                    color: _socialFacebook ? AppColor.accentColor : AppColor.gray30Color,
+                                    color: _socialSkype ? AppColor.accentColor : AppColor.gray30Color,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(10.r),
@@ -394,13 +394,10 @@ class _SocialContactState extends State<SocialContact> {
         contactDetail = ContactDetail.fromJson(response["user"]);
         setState(() {
           _loader = true;
-          _socialFacebook =
-              contactDetail?.social?.facebook == null || contactDetail?.social?.facebook == "" ? false : true;
-          _socialInstagram =
-              contactDetail?.social?.instagram == null || contactDetail?.social?.instagram == "" ? false : true;
-          _socialTwitter =
-              contactDetail?.social?.twitter == null || contactDetail?.social?.twitter == "" ? false : true;
-          _socialSkype = contactDetail?.social?.skype == null || contactDetail?.social?.skype == "" ? false : true;
+          _socialFacebook = contactDetail?.social?.facebook == null ? false : true;
+          _socialInstagram = contactDetail?.social?.instagram == null ? false : true;
+          _socialTwitter = contactDetail?.social?.twitter == null ? false : true;
+          _socialSkype = contactDetail?.social?.skype == null ? false : true;
 
           _socialFacebookText = contactDetail?.social?.facebook ?? "";
           _socialTwitterText = contactDetail?.social?.twitter ?? "";

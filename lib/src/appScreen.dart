@@ -13,7 +13,8 @@ import 'ui/keypadPage.dart';
 import 'ui/settings/settings.dart';
 
 class AppScreen extends StatefulWidget {
-  const AppScreen({Key? key}) : super(key: key);
+  bool? value = false;
+  AppScreen({this.value, Key? key}) : super(key: key);
 
   @override
   State<AppScreen> createState() => _AppScreenState();
@@ -24,9 +25,6 @@ class _AppScreenState extends State<AppScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //final currentIndex = context.read<BottomNavigationBloc>().currentIndex;
-
-    BlocProvider.of<BottomNavigationBloc>(context).add(AppStarted());
   }
 
   @override
@@ -46,6 +44,7 @@ class _AppScreenState extends State<AppScreen> {
             return ContactsPage(
               contactsData: state.contactObject,
               mostDailedContacts: state.mostDailedContacts,
+              updatebool: widget.value ?? false,
             );
           }
           if (state is RecentPageLoaded) {

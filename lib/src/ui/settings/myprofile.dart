@@ -1228,7 +1228,10 @@ class _MyProfileState extends State<MyProfile> {
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context);
+            Navigator.popUntil(
+              context,
+              (route) => route.isFirst,
+            );
           },
           child: Container(
             child: Row(

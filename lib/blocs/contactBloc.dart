@@ -11,6 +11,7 @@ import '../api_models/requestContactResponse_request_model.dart/requestContactRe
 import '../api_models/updateProfileDetails_request_model/updateProfileDetails_request_body.dart';
 import '../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
 import '../api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
+import '../src/ui/utils.dart';
 
 class ContactBloc {
   ContactPageRepository? contactPageRepository;
@@ -51,6 +52,9 @@ class ContactBloc {
       var response = await contactPageRepository?.checkContactForAddNew(checkContactForAddNewRequestBody);
       return response;
     } catch (e) {
+      print('error');
+
+      Utils.displayToast("Already exist in your contact list");
       print(e);
     }
   }

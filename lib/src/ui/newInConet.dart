@@ -102,7 +102,7 @@ class _NewConetUsersState extends State<NewConetUsers> {
                     return InkWell(
                       splashColor: Theme.of(context).primaryColorLight,
                       onTap: () {
-                        if (_contacts[index].userId != null) {
+                        if (_contacts[index].userId == null) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(

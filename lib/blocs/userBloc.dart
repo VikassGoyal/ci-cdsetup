@@ -57,6 +57,7 @@ class UserBloc {
       return response;
     } catch (e) {
       print(e);
+      rethrow;
     }
   }
 

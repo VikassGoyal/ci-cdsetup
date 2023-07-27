@@ -8,6 +8,7 @@ import 'package:conet/src/ui/auth/validateMobileNumberVerified.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -677,9 +678,18 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           ),
         );
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      final msg = e.response?.data?['message']?['email'][0] ??
+          e.response?.data?['message']?['phone'][0] ??
+          'Something went wrong.';
       // Navigator.of(context).pop();
-      Utils.displayToast("Something went wrong!");
+      Utils.displayToast(msg);
+      setState(() {
+        _loader = false;
+      });
+      print(e);
+    } catch (e) {
+      Utils.displayToast("Something went wrong.");
       setState(() {
         _loader = false;
       });

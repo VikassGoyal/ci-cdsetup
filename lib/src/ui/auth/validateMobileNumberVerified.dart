@@ -12,8 +12,10 @@ import 'package:lottie/lottie.dart';
 import 'login.dart';
 
 class ValidateMobileNumberVerified extends StatefulWidget {
+  const ValidateMobileNumberVerified({super.key});
+
   @override
-  _ValidateMobileNumberVerifiedState createState() => _ValidateMobileNumberVerifiedState();
+  State<ValidateMobileNumberVerified> createState() => _ValidateMobileNumberVerifiedState();
 }
 
 class _ValidateMobileNumberVerifiedState extends State<ValidateMobileNumberVerified> {
@@ -175,7 +177,7 @@ class _ValidateMobileNumberVerifiedState extends State<ValidateMobileNumberVerif
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w300,
                         fontStyle: FontStyle.normal,
-                        letterSpacing: -0.5,
+                        letterSpacing: -0.2,
                       ),
                     ),
                     Text(
@@ -186,10 +188,10 @@ class _ValidateMobileNumberVerifiedState extends State<ValidateMobileNumberVerif
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w300,
                         fontStyle: FontStyle.normal,
-                        letterSpacing: -0.5,
+                        letterSpacing: -0.2,
                       ),
                     ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 50.h),
                     Center(
                       child: Lottie.asset(
                         'assets/json/lottie_tick.json',
@@ -199,7 +201,7 @@ class _ValidateMobileNumberVerifiedState extends State<ValidateMobileNumberVerif
                         repeat: false,
                       ),
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: 46.h),
                     verifiedButton(),
                     SizedBox(height: 20.h),
                     Center(
@@ -210,8 +212,8 @@ class _ValidateMobileNumberVerifiedState extends State<ValidateMobileNumberVerif
                           color: AppColor.whiteColor,
                           fontWeight: FontWeight.w300,
                           fontStyle: FontStyle.normal,
-                          fontSize: 14.sp,
-                          letterSpacing: -0.5,
+                          fontSize: 15.sp,
+                          letterSpacing: -0.3,
                         ),
                       ),
                     ),

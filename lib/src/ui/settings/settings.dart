@@ -517,18 +517,18 @@ class _SettingsState extends State<Settings> {
   _sendQrApi() async {
     var contactDetail;
     // var requestBody = {"value": _outputController!.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+    var Qrresponse = await ContactBloc().sendQrValue(QrValueRequestBody(
       value: _outputController?.text,
-      qrcode: false,
+      qrcode: true,
     ));
-    if (response['status'] == true) {
+    if (Qrresponse['status'] == true) {
       Utils.displayToast("Scanned successfully");
       try {
         // var requestBody = {
         //   "phone": _outputController!.text,
         // };
-        var response =
-            await ContactBloc().checkContactForAddNew(CheckContactForAddNewRequestBody(phone: _outputController!.text));
+        var response = await ContactBloc()
+            .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: Qrresponse["contact"]["phone"]));
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
           setState(() {
@@ -556,7 +556,7 @@ class _SettingsState extends State<Settings> {
       } catch (e) {
         Utils.displayToastTopError("Something went wrong");
       }
-    } else if (response['status'] == "Token is Expired") {
+    } else if (Qrresponse['status'] == "Token is Expired") {
       Utils.displayToast('Token is Expired');
       tokenExpired(context);
     } else {

@@ -17,12 +17,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api_models/ filterSearchResults_request_model/ filterSearchResults_request_body.dart';
+import '../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
+import '../../models/contactDetails.dart';
 import '../../utils/custom_fonts.dart';
+import 'addContactUserProfilePage.dart';
 import 'utils.dart';
 
 class ConetWebPage extends StatefulWidget {
@@ -1131,23 +1135,48 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
   _sendQrApi() async {
     //var requestBody = {"value": _outputController!.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+    var Qrresponse = await ContactBloc().sendQrValue(QrValueRequestBody(
       value: _outputController?.text,
       qrcode: false,
     ));
+    var contactDetail;
 
-    if (response['status'] == true) {
+    if (Qrresponse['status'] == true) {
       Utils.displayToast("Scanned successfully");
-      setState(() {
-        _loader = false;
-      });
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) {
-          return NotificationScreen();
-        }),
-      );
-    } else if (response['status'] == "Token is Expired") {
+      try {
+        // var requestBody = {
+        //   "phone": _outputController!.text,
+        // };
+        var response = await ContactBloc()
+            .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: Qrresponse["contact"]["phone"]));
+        if (response["user"] != null) {
+          contactDetail = ContactDetail.fromJson(response["user"]);
+          setState(() {
+            _loader = false;
+          });
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) {
+                return AddContactUserProfilePage(
+                  contactDetails: contactDetail,
+                  conetUser: true,
+                );
+              },
+            ),
+          );
+        } else {
+          setState(() {
+            _loader = false;
+          });
+          Fluttertoast.cancel();
+          Utils.displayToastTopError(response["message"]);
+        }
+      } catch (e) {
+        Utils.displayToastTopError("Something went wrong");
+      }
+    } else if (Qrresponse['status'] == "Token is Expired") {
       Utils.displayToast('Token is Expired');
       tokenExpired(context);
     } else {

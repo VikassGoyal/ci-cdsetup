@@ -104,7 +104,6 @@ class _ContactProfileState extends State<ContactProfile> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      print(widget.phoneNumber);
       getProfileDetails(widget.phoneNumber!);
       getMutualContacts(widget.contactmetaid);
 
@@ -124,8 +123,6 @@ class _ContactProfileState extends State<ContactProfile> {
     print("switch $switchTypeStatus");
 
     _socialInstagram.text = "";
-    print("username");
-    print(userImage);
   }
 
   @override

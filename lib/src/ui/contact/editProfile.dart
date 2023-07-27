@@ -1237,7 +1237,7 @@ class _EditProfileState extends State<EditProfile> {
                     width: 120.w,
                     height: 120.w,
                     padding: const EdgeInsets.all(8),
-                    child: userImage != null
+                    child: userImage != "" && userImage != null
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(100.0),
                             child: FadeInImage.assetNetwork(

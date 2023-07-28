@@ -418,7 +418,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     visible: (_searchResult[index].status == 'requested'),
                     child: Container(
                       height: 30.h,
-                      width: 90.w,
+                      width: 115.w,
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         style: ButtonStyle(
@@ -429,7 +429,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         ),
                         onPressed: () {},
                         child: Container(
-                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 100.0),
+                          // constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 100.0),
                           alignment: Alignment.center,
                           child: Text("Requested",
                               textAlign: TextAlign.center,
@@ -477,7 +477,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           child: Text("Connect",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: AppColor.accentColor,
+                                  color: AppColor.whiteColor,
                                   fontSize: 18.sp,
                                   fontFamily: kSfproRoundedFontFamily,
                                   fontStyle: FontStyle.normal,
@@ -662,7 +662,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                             "Connect",
                                             textAlign: TextAlign.center,
                                             style:
-                                                Theme.of(context).textTheme.button?.apply(color: AppColor.accentColor),
+                                                Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
                                           ),
                                         ),
                                       ),

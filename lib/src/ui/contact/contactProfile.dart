@@ -105,7 +105,7 @@ class _ContactProfileState extends State<ContactProfile> {
     super.initState();
     Future.delayed(Duration.zero, () {
       getProfileDetails(widget.phoneNumber!);
-      getMutualContacts(widget.contactmetaid);
+      getMutualContacts(widget.userid);
 
       // getProfileDetails("9566664128");
     });

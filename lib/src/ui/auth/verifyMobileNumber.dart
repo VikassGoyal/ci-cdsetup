@@ -634,15 +634,19 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
         },
         codeSent: (String? verficationID, int? resendToken) {
           print("codeSent");
-          setState(() {
-            _verificationCode = verficationID;
-          });
+          if (mounted) {
+            setState(() {
+              _verificationCode = verficationID;
+            });
+          }
         },
         codeAutoRetrievalTimeout: (String verificationID) {
           print("codeAutoRetrievalTimeout");
-          setState(() {
-            _verificationCode = verificationID;
-          });
+          if (mounted) {
+            setState(() {
+              _verificationCode = verificationID;
+            });
+          }
         },
         timeout: const Duration(seconds: 120));
   }

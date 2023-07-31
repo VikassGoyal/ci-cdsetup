@@ -518,6 +518,21 @@ class _MyProfileState extends State<MyProfile> {
       );
     }
 
+    Widget _buildIndustry() {
+      return TextFormFieldContact(
+        textColor: AppColor.blackColor,
+        hintText: "Industry",
+        padding: 16.0,
+        margin: 22.0,
+        readonly: true,
+        textInputType: TextInputType.text,
+        actionKeyboard: TextInputAction.next,
+        onSubmitField: () {},
+        controller: _professionalIndustry,
+        parametersValidate: "Please enter Industry.",
+      );
+    }
+
     Widget _buildCompany() {
       return TextFormFieldContact(
         textColor: AppColor.blackColor,
@@ -1091,6 +1106,15 @@ class _MyProfileState extends State<MyProfile> {
                   child: SizedBox(height: 16.h),
                 ),
                 Visibility(
+                  visible: !_companyVisible,
+                  child: SizedBox(height: 16.h),
+                ),
+                _buildIndustry(),
+                Visibility(
+                  visible: _companyVisible,
+                  child: SizedBox(height: 16.h),
+                ),
+                Visibility(
                   visible: _companyVisible,
                   child: _buildCompany(),
                 ),
@@ -1356,6 +1380,7 @@ class _MyProfileState extends State<MyProfile> {
         if (contactDetail?.professional != null) {
           _occupationValue = contactDetail?.professional?.occupation ?? "";
           _professionalOccupation.text = contactDetail?.professional?.occupation ?? "";
+          _professionalIndustry.text = contactDetail?.professional?.industry ?? '';
           _professionalCompany.text = contactDetail?.professional?.company ?? "";
           _professionalCompanyWebsite.text = contactDetail?.professional?.companyWebsite ?? "";
           _professionalSchool.text = contactDetail?.professional?.schoolUniversity ?? "";

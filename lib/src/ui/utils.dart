@@ -98,4 +98,12 @@ extension EnumParser on String {
       return null;
     }
   }
+
+  IndustryType? toIndustry() {
+    try {
+      return IndustryType.values.firstWhere((e) => e.name.toLowerCase() == toLowerCase());
+    } catch (err) {
+      return null;
+    }
+  }
 }

@@ -401,12 +401,17 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           } else {}
         },
         child: Container(
-          padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+          decoration: BoxDecoration(
+            color: wait ? AppColor.secondaryColor : AppColor.secondaryColor.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(7),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Re-Send code ',
+                'Re-Send Code ',
                 style: TextStyle(
                   fontFamily: kSfproDisplayFontFamily,
                   color: AppColor.whiteColor,

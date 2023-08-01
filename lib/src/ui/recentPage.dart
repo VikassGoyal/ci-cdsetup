@@ -528,7 +528,7 @@ class _RecentPageState extends State<RecentPage> {
       if (reqStatus.isGranted) {
         scanQrCode();
       } else if (reqStatus.isDenied) {
-        Utils.displayToast("Permission Denied");
+        Utils.displayToastBottomError("Permission Denied", context);
       }
     }
   }
@@ -547,10 +547,10 @@ class _RecentPageState extends State<RecentPage> {
         if (reqStatus.isGranted || reqStatus.isLimited) {
           return true;
         } else if (reqStatus.isDenied) {
-          Utils.displayToast("Permission Denied");
+          Utils.displayToastBottomError("Permission Denied", context);
           return false;
         } else {
-          Utils.displayToast("Permission Denied");
+          Utils.displayToastBottomError("Permission Denied", context);
           return false;
         }
       }
@@ -601,7 +601,7 @@ class _RecentPageState extends State<RecentPage> {
     ));
     var contactDetail;
     if (Qrresponse['status'] == true) {
-      Utils.displayToast("Scanned successfully");
+      Utils.displayToast("Scanned successfully", context);
       try {
         // var requestBody = {
         //   "phone": _outputController!.text,
@@ -630,16 +630,16 @@ class _RecentPageState extends State<RecentPage> {
             _loader = false;
           });
           Fluttertoast.cancel();
-          Utils.displayToastTopError(response["message"]);
+          Utils.displayToastBottomError(response["message"], context);
         }
       } catch (e) {
-        Utils.displayToastTopError("Something went wrong");
+        Utils.displayToastBottomError("Something went wrong", context);
       }
     } else if (Qrresponse['status'] == "Token is Expired") {
-      Utils.displayToast('Token is Expired');
+      Utils.displayToastBottomError('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
     }
   }
 

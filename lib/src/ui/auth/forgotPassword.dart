@@ -158,7 +158,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             try {
               var response = await UserBloc().forgotPassword(ForgotpasswordRequestBody(email: _emailController.text));
               if (response['status'] == true) {
-                Utils.displayToast(response["message"]);
+                Utils.displayToastBottomError(response["message"], context);
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -166,7 +166,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ),
                 );
               } else {
-                Utils.displayToast(response["message"]);
+                Utils.displayToastBottomError(response["message"], context);
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

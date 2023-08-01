@@ -24,6 +24,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -406,10 +408,14 @@ class _SettingsState extends State<Settings> {
                               fontFamily: kSfproDisplayFontFamily,
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w400)),
-                      leading: SvgPicture.asset(
-                        "assets/icons/ic_settings_logout.svg",
-                        height: 24.w,
-                        width: 24.w,
+                      leading: Container(
+                        height: 34.w,
+                        width: 34.w,
+                        child: SvgPicture.asset(
+                          "assets/icons/ic_settings_logout.svg",
+                          height: 24.w,
+                          width: 24.w,
+                        ),
                       )),
                   Center(
                     child: Text(
@@ -487,10 +493,11 @@ class _SettingsState extends State<Settings> {
       if (reqStatus.isGranted) {
         scanQrCode();
       } else if (reqStatus.isDenied) {
-        Utils.displayToast("Permission Denied");
+        Utils.displayToastBottomError("Permission Denied", context);
       } else if (reqStatus.isPermanentlyDenied) {
-        Utils.displayToast(
-            "App does not have permission to access the camera. Please go the device settings and allow this app camera permissions");
+        Utils.displayToastBottomError(
+            "App does not have permission to access the camera. Please go the device settings and allow this app camera permissions",
+            context);
       }
     }
   }
@@ -510,7 +517,7 @@ class _SettingsState extends State<Settings> {
           });
           _sendQrApi();
         } else {
-          Utils.displayToastBottomError("Invalid QR code");
+          Utils.displayToastBottomError("Invalid QR code", context);
         }
       }
     });
@@ -532,7 +539,13 @@ class _SettingsState extends State<Settings> {
       qrcode: true,
     ));
     if (Qrresponse['status'] == true) {
-      Utils.displayToast("Scanned successfully");
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: 'Success',
+        text: "Scanned successfully",
+      );
+      // Utils.displayToast("Scanned successfully", context);
       try {
         // var requestBody = {
         //   "phone": _outputController!.text,
@@ -561,16 +574,16 @@ class _SettingsState extends State<Settings> {
             _loader = false;
           });
           Fluttertoast.cancel();
-          Utils.displayToastTopError(response["message"]);
+          Utils.displayToastTopError(response["message"], context);
         }
       } catch (e) {
-        Utils.displayToastTopError("Something went wrong");
+        Utils.displayToastTopError("Something went wrong", context);
       }
     } else if (Qrresponse['status'] == "Token is Expired") {
-      Utils.displayToast('Token is Expired');
+      Utils.displayToastBottomError('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
     }
   }
 
@@ -673,12 +686,12 @@ class _SettingsState extends State<Settings> {
       if (reqStatus.isGranted) {
         _importContacts();
       } else if (reqStatus.isDenied) {
-        Utils.displayToast("Permission Denied");
+        Utils.displayToastBottomError("Permission Denied", context);
       } else if (reqStatus.isPermanentlyDenied) {
-        Utils.displayToast("Permission Denied Permanently");
+        Utils.displayToastBottomError("Permission Denied Permanently", context);
         openAppSettings();
       } else {
-        Utils.displayToast("Something Went Wrong ");
+        Utils.displayToastBottomError("Something Went Wrong ", context);
       }
     }
   }
@@ -707,7 +720,7 @@ class _SettingsState extends State<Settings> {
         setState(() {
           _loader = false;
         });
-        Utils.displayToast("Successfully imported");
+        Utils.displayToast("Successfully imported", context);
       } else if (response['status'] == "Token is Expired") {
         tokenExpired(context);
         setState(() {
@@ -717,14 +730,14 @@ class _SettingsState extends State<Settings> {
         setState(() {
           _loader = false;
         });
-        Utils.displayToast("Something went wrong");
+        Utils.displayToastBottomError("Something went wrong", context);
       }
     } catch (e) {
       print(e);
       setState(() {
         _loader = false;
       });
-      Utils.displayToast("Something went wrong");
+      Utils.displayToastBottomError("Something went wrong", context);
     }
   }
 

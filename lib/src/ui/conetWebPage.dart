@@ -20,6 +20,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api_models/ filterSearchResults_request_model/ filterSearchResults_request_body.dart';
@@ -1031,10 +1033,10 @@ class _ConetWebPageState extends State<ConetWebPage> {
             _searchvisible = true;
           });
         } else {
-          Utils.displayToast("No Results Found");
+          Utils.displayToast("No Results Found", context);
         }
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToast(response["message"], context);
       }
     } else {
       setState(() {
@@ -1059,7 +1061,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
         viaid: _searchResult[index].viaId));
 
     if (response['status'] == true) {
-      Utils.displayToast("Request Sent successfully");
+      Utils.displayToast("Request Sent successfully", context);
       setState(() {
         if (type == "parent") {
           _searchResult[index].status = 'requested';
@@ -1068,10 +1070,10 @@ class _ConetWebPageState extends State<ConetWebPage> {
         }
       });
     } else if (response['status'] == "Token is Expired") {
-      Utils.displayToast('Token is Expired');
+      Utils.displayToastBottomError('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
     }
   }
 
@@ -1095,7 +1097,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
       if (reqStatus.isGranted) {
         scanQrCode();
       } else if (reqStatus.isDenied) {
-        Utils.displayToast("Permission Denied");
+        Utils.displayToastBottomError("Permission Denied", context);
       }
     }
   }
@@ -1142,7 +1144,13 @@ class _ConetWebPageState extends State<ConetWebPage> {
     var contactDetail;
 
     if (Qrresponse['status'] == true) {
-      Utils.displayToast("Scanned successfully");
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: 'Success',
+        text: "Scanned successfully",
+      );
+      //Utils.displayToast("Scanned successfully", context);
       try {
         // var requestBody = {
         //   "phone": _outputController!.text,
@@ -1171,16 +1179,16 @@ class _ConetWebPageState extends State<ConetWebPage> {
             _loader = false;
           });
           Fluttertoast.cancel();
-          Utils.displayToastTopError(response["message"]);
+          Utils.displayToastTopError(response["message"], context);
         }
       } catch (e) {
-        Utils.displayToastTopError("Something went wrong");
+        Utils.displayToastTopError("Something went wrong", context);
       }
     } else if (Qrresponse['status'] == "Token is Expired") {
-      Utils.displayToast('Token is Expired');
+      Utils.displayToastBottomError('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
     }
   }
 

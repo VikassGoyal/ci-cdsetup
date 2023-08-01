@@ -41,16 +41,16 @@ class _ChangePasswordState extends State<ChangePassword> {
           onPressed: () {
             var validate = _changeFormKey.currentState!.validate();
             if (_oldPasswordController.text.length < 8) {
-              Utils.displayToastTopError("Old Password Must be more than 8 characters");
+              Utils.displayToastBottomError("Old Password Must be more than 8 characters", context);
               return;
             }
             if (_confirmPasswordController.text.length < 8) {
-              Utils.displayToastTopError("New Password Must be more than 8 characters");
+              Utils.displayToastTopError("New Password Must be more than 8 characters", context);
               return;
             }
 
             if (_newPasswordController.text.length < 8) {
-              Utils.displayToastTopError("Confirm Password Must be more than 8 characters");
+              Utils.displayToastTopError("Confirm Password Must be more than 8 characters", context);
               return;
             }
             if (validate) {
@@ -181,16 +181,16 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   Future<void> changePassword() async {
     if (_oldPasswordController.text.isEmpty) {
-      Utils.displayToastTopError("Please enter Old Password.");
+      Utils.displayToastTopError("Please enter Old Password.", context);
       return;
     } else if (_newPasswordController.text.isEmpty) {
-      Utils.displayToastTopError("Please enter New Password.");
+      Utils.displayToastTopError("Please enter New Password.", context);
       return;
     } else if (_newPasswordController.text != _confirmPasswordController.text) {
-      Utils.displayToastTopError("Password is Mismatch.");
+      Utils.displayToastTopError("Password is Mismatch.", context);
       return;
     } else if (_oldPasswordController.text == _confirmPasswordController.text) {
-      Utils.displayToastTopError("Enter different Password");
+      Utils.displayToastTopError("Enter different Password", context);
       return;
     }
 
@@ -211,13 +211,13 @@ class _ChangePasswordState extends State<ChangePassword> {
       });
 
       if (response['success'] == true) {
-        Utils.displayToast(response["message"]);
+        Utils.displayToast(response["message"], context);
         Navigator.pop(context);
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
-      Utils.displayToast("Something went wrong!");
+      Utils.displayToastBottomError("Something went wrong!", context);
       print(e);
     }
   }

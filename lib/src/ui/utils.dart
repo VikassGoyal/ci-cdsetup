@@ -1,39 +1,46 @@
+import 'dart:async';
+
 import 'package:conet/constants/enums.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:quickalert/quickalert.dart';
 
 class Utils {
-  static Future<bool?> displayToast(String message) {
-    return Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: AppColor.accentColor,
-      textColor: Colors.white,
-      fontSize: 14.0,
+  static displayToast(String message, BuildContext context) {
+    bool check = false;
+    return QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      title: 'Success',
+      text: message,
+      onConfirmBtnTap: () {
+        return;
+      },
+      autoCloseDuration: const Duration(seconds: 3),
     );
   }
 
-  static Future<bool?> displayToastBottomError(String message) {
-    return Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: AppColor.redColor,
-      textColor: Colors.white,
-      fontSize: 14.0,
+  static displayToastBottomError(String message, BuildContext context) {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      title: 'Oops...',
+      text: message,
+      onConfirmBtnTap: () {
+        return;
+      },
+      autoCloseDuration: const Duration(seconds: 3),
     );
   }
 
-  static Future<bool?> displayToastTopError(String message) {
-    return Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.TOP,
-      backgroundColor: AppColor.redColor,
-      textColor: Colors.white,
-      fontSize: 14.0,
+  static displayToastTopError(String message, BuildContext context) {
+    return QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      title: 'Oops...',
+      text: message,
+      autoCloseDuration: const Duration(seconds: 4),
     );
   }
 

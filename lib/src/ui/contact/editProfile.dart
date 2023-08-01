@@ -29,6 +29,8 @@ import 'package:get/get_connect/connect.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
@@ -1199,13 +1201,13 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                         onPressed: () {
                           if (_textEditingController.text.isEmpty) {
-                            Utils.displayToastBottomError("Keyword cannot be empty");
+                            Utils.displayToastBottomError("Keyword cannot be empty", context);
                             return;
                           }
                           print(_textEditingController.text.trim());
 
                           if (_values.toString().toLowerCase().contains(_textEditingController.text.toLowerCase())) {
-                            Utils.displayToastBottomError("Keyword already added");
+                            Utils.displayToastBottomError("Keyword already added", context);
                             _textEditingController.clear();
                             return;
                           }
@@ -1219,7 +1221,7 @@ class _EditProfileState extends State<EditProfile> {
                               _selected = _selected;
                             });
                           } else {
-                            Utils.displayToast("You are limited to 10 keywords");
+                            Utils.displayToastBottomError("You are limited to 10 keywords", context);
                           }
                         },
                       ),
@@ -1289,7 +1291,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 SizedBox(height: 16.h),
                 _buildProfessionlUpdateButton(),
-                SizedBox(height: 30.h),
+                SizedBox(height: 60.h),
               ],
       );
     }
@@ -1645,7 +1647,7 @@ class _EditProfileState extends State<EditProfile> {
           });
         }
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       print(e);
@@ -2287,7 +2289,12 @@ class _EditProfileState extends State<EditProfile> {
     });
 
     if (response['status'] == true) {
-      Utils.displayToast(response['message'].toString());
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: 'Success',
+        text: response['message'].toString(),
+      );
 
       Navigator.pushReplacement(
         context,
@@ -2298,7 +2305,7 @@ class _EditProfileState extends State<EditProfile> {
     } else if (response['status'] == "Token is Expired") {
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
     }
   }
 
@@ -2402,10 +2409,10 @@ class _EditProfileState extends State<EditProfile> {
     });
 
     if (response['status'] == true) {
-      Utils.displayToast(response['message']);
+      Utils.displayToast(response['message'], context);
       getProfileDetails();
     } else {
-      Utils.displayToast("Try Again!");
+      Utils.displayToastBottomError("Try Again!", context);
     }
   }
 
@@ -2419,7 +2426,7 @@ class _EditProfileState extends State<EditProfile> {
       setState(() {
         _loaderoverflow = false;
       });
-      Utils.displayToast('Please enable location services on your device to use this feature.');
+      Utils.displayToastBottomError('Please enable location services on your device to use this feature.', context);
       return;
     }
 
@@ -2430,7 +2437,7 @@ class _EditProfileState extends State<EditProfile> {
         setState(() {
           _loaderoverflow = false;
         });
-        Utils.displayToast('Location permissions required to use this feature.');
+        Utils.displayToastBottomError('Location permissions required to use this feature.', context);
         return;
       }
     }
@@ -2439,7 +2446,7 @@ class _EditProfileState extends State<EditProfile> {
       setState(() {
         _loaderoverflow = false;
       });
-      Utils.displayToast('Location permissions required to use this feature.');
+      Utils.displayToastBottomError('Location permissions required to use this feature.', context);
       return;
     }
 

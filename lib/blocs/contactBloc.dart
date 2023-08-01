@@ -1,4 +1,5 @@
 import 'package:conet/repositories/repositories.dart';
+import 'package:path/path.dart';
 
 import '../api_models/ filterSearchResults_request_model/ filterSearchResults_request_body.dart';
 import '../api_models/addNewContact_request_model/addNewContact_request_body.dart';
@@ -53,8 +54,6 @@ class ContactBloc {
       return response;
     } catch (e) {
       print('error');
-
-      Utils.displayToast("Already exist in your contact list");
       print(e);
     }
   }

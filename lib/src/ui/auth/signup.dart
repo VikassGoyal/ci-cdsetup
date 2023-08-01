@@ -522,16 +522,16 @@ class _SignUpState extends State<SignUp> {
 
       if (response['status'] == 'validation') {
         if (response['message']['phone'] != null) {
-          Utils.displayToast(response['message']['phone'][0]);
+          Utils.displayToastBottomError(response['message']['phone'][0], context);
         } else if (response['message']['email'] != null) {
-          Utils.displayToast(response['message']['email'][0]);
+          Utils.displayToastBottomError(response['message']['email'][0], context);
         } else if (response['message']['username'] != null) {
-          Utils.displayToast(response['message']['username'][0]);
+          Utils.displayToastBottomError(response['message']['username'][0], context);
         }
       } else if (response['status'] == false) {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
 
         Navigator.pushReplacement(
           context,
@@ -542,7 +542,7 @@ class _SignUpState extends State<SignUp> {
       }
     } catch (e) {
       // Navigator.of(context).pop();
-      Utils.displayToast("Something went wrong!");
+      Utils.displayToastBottomError("Something went wrong!", context);
       setState(() {
         _loader = false;
       });

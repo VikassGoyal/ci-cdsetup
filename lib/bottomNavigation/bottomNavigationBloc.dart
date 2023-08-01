@@ -35,20 +35,20 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
 
       if (currentIndex == 0) {
         var data = await _getContactPageData();
+        emit(CoNetWebPageLoaded(conetContactObject: data));
+      }
+      if (currentIndex == 1) {
+        var data = await _getContactPageData();
 
         var mostDailedContactData = await getMostDailedContacts();
         emit(ContactPageLoaded(contactObject: data, mostDailedContacts: mostDailedContactData));
-      }
-      if (currentIndex == 1) {
-        emit(RecentPageLoaded());
       }
       if (currentIndex == 2) {
         var data = await _getKeypadPageData();
         emit(KeypadPageLoaded(contactObject: data));
       }
       if (currentIndex == 3) {
-        var data = await _getContactPageData();
-        emit(CoNetWebPageLoaded(conetContactObject: data));
+        emit(RecentPageLoaded());
       }
       if (currentIndex == 4) {
         List<TotalCountResponseData> data = await _getSettingsPageData();

@@ -87,15 +87,15 @@ class _AppScreenState extends State<AppScreen> {
               items: [
                 BottomNavigationBarItem(
                   icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 0
-                      ? SvgPicture.asset('assets/icons/contacts_active.svg')
-                      : SvgPicture.asset('assets/icons/contacts.svg'),
-                  label: 'Contacts',
+                      ? SvgPicture.asset('assets/icons/conetweb_active.svg')
+                      : SvgPicture.asset('assets/icons/conetweb.svg'),
+                  label: 'KoNet web',
                 ),
                 BottomNavigationBarItem(
                   icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 1
-                      ? SvgPicture.asset('assets/icons/recent_active.svg')
-                      : SvgPicture.asset('assets/icons/recent.svg'),
-                  label: 'Recent',
+                      ? SvgPicture.asset('assets/icons/contacts_active.svg')
+                      : SvgPicture.asset('assets/icons/contacts.svg'),
+                  label: 'Contacts',
                 ),
                 BottomNavigationBarItem(
                   icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 2
@@ -105,9 +105,9 @@ class _AppScreenState extends State<AppScreen> {
                 ),
                 BottomNavigationBarItem(
                   icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 3
-                      ? SvgPicture.asset('assets/icons/conetweb_active.svg')
-                      : SvgPicture.asset('assets/icons/conetweb.svg'),
-                  label: 'KoNet web',
+                      ? SvgPicture.asset('assets/icons/recent_active.svg')
+                      : SvgPicture.asset('assets/icons/recent.svg'),
+                  label: 'Recent',
                 ),
                 BottomNavigationBarItem(
                   icon: context.select((BottomNavigationBloc bloc) => bloc.currentIndex) == 4

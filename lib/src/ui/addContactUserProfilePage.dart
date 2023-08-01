@@ -519,6 +519,7 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
       padding: 14.0,
       readonly: readOnlyValue,
       margin: 22.0,
+      enableFormatters: false,
       textInputType: TextInputType.text,
       actionKeyboard: TextInputAction.next,
       onSubmitField: () {},
@@ -1305,7 +1306,7 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
     if (response['status'] == true) {
       Utils.displayToast(response['message'].toString());
       await checkPermission();
-      context.read<BottomNavigationBloc>().currentIndex = 0;
+      context.read<BottomNavigationBloc>().currentIndex = 1;
 
       Navigator.pushAndRemoveUntil(
         context,

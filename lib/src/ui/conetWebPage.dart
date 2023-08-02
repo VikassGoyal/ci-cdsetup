@@ -1,5 +1,6 @@
 import 'package:conet/api_models/qrValue_request_model/qrValue_request_body.dart';
 import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/userBloc.dart';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/searchContacts.dart';
 import 'package:conet/services/storage_service.dart';
@@ -52,6 +53,9 @@ class _ConetWebPageState extends State<ConetWebPage> {
   bool _loader = false;
   bool _showCancelIcon = false;
 
+  bool _suggestionsLoader = true;
+  List<SearchContacts> _suggestionResult = [];
+
   @override
   void initState() {
     super.initState();
@@ -64,6 +68,42 @@ class _ConetWebPageState extends State<ConetWebPage> {
     _searchvisible = false;
 
     _popupSettings();
+
+    // Fetch suggestions.
+    Future.delayed(const Duration(milliseconds: 500), () async {
+      try {
+        final response = await ContactBloc().contactPageRepository?.getSearchSuggestions();
+        var responseData = response['data'];
+
+        if (response['status'] == true) {
+          if (response['msg'] == 'yes') {
+            if (mounted) {
+              setState(() {
+                _suggestionResult =
+                    List<SearchContacts>.from(responseData.map((item) => SearchContacts.fromJson(item)));
+                if (_suggestionResult.isNotEmpty) {
+                  _searchResult = _suggestionResult;
+                  _searchvisible = true;
+                }
+              });
+            }
+          }
+        }
+
+        if (mounted) {
+          setState(() {
+            _suggestionsLoader = false;
+          });
+        }
+      } catch (err) {
+        print(err);
+        if (mounted) {
+          setState(() {
+            _suggestionsLoader = false;
+          });
+        }
+      }
+    });
   }
 
   @override
@@ -369,7 +409,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                     ?.copyWith(color: AppColor.secondaryColor, fontWeight: FontWeight.w400),
                               ),
                               Text(
-                                  (_searchResult[index].mutualList?.length == 1
+                                  (_searchResult[index].mutualList == null || _searchResult[index].mutualList!.isEmpty
                                       ? ""
                                       : " ${'(${_searchResult[index].mutualList?.length})'}"),
                                   overflow: TextOverflow.ellipsis,
@@ -711,7 +751,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
         width: MediaQuery.of(context).size.width * 0.7,
         child: Column(
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
             const Image(
               image: AssetImage(
                 'assets/images/conetWebDefault.png',
@@ -730,6 +770,22 @@ class _ConetWebPageState extends State<ConetWebPage> {
                 fontSize: 18.sp,
               ),
             ),
+            if (_suggestionsLoader) ...[
+              SizedBox(height: 30.h),
+              const CircularProgressIndicator(
+                color: AppColor.primaryColor,
+              ),
+              Text(
+                'Loading suggestions...',
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.placeholder,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 16.sp,
+                ),
+              ),
+            ]
           ],
         ),
       );
@@ -875,7 +931,20 @@ class _ConetWebPageState extends State<ConetWebPage> {
                               },
                               onSubmitted: (value) {
                                 print(value);
-                                filterSearchResults();
+                                if (value.isEmpty) {
+                                  if (_suggestionResult.isNotEmpty) {
+                                    setState(() {
+                                      _searchResult = _suggestionResult;
+                                      _searchvisible = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      _searchvisible = false;
+                                    });
+                                  }
+                                } else {
+                                  filterSearchResults();
+                                }
                               },
                               focusNode: _focus,
                               maxLines: 1,
@@ -912,6 +981,16 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                   onTap: () {
                                     if (_showCancelIcon == true) {
                                       _clearText();
+                                      if (_suggestionResult.isNotEmpty) {
+                                        setState(() {
+                                          _searchResult = _suggestionResult;
+                                          _searchvisible = true;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          _searchvisible = false;
+                                        });
+                                      }
                                     }
                                   },
                                   child: Padding(

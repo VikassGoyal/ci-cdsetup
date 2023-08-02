@@ -163,6 +163,71 @@ class ContactPageRepository {
   //SearchConetwebContact
   searchConetwebContact(FilterSearchResultsRequestBody filterSearchResultsRequestBody) async {
     var response = await _apiClient.search(filterSearchResultsRequestBody);
+    if (response['data'] != null) {
+      List<dynamic> originalData = response["data"];
+      Map<int, dynamic> groupedData = {};
+      originalData.forEach((entry) {
+        int id = entry["id"];
+        if (groupedData[id] == null) {
+          groupedData[id] = entry;
+          groupedData[id]["mutual_list"] = [];
+          groupedData[id]["listcount"] = 0;
+        }
+
+        groupedData[id]["mutual_list"].add({
+          "id": entry["id"],
+          "name": entry["name"],
+          "profile_image": entry["profile_image"],
+          "qr_value": entry["qr_value"],
+          "email": entry["email"],
+          "phone": entry["phone"],
+          "via": entry["via"],
+          "via_id": entry["via_id"],
+          "status": entry["status"],
+          "pushed": entry["pushed"],
+        });
+
+        groupedData[id]["listcount"]++;
+      });
+
+      List<dynamic> newData = groupedData.values.toList();
+      response["data"] = newData;
+    }
+    return response;
+  }
+
+  Future<dynamic> getSearchSuggestions() async {
+    final response = await _apiClient.searchSuggestions();
+    if (response['data'] != null) {
+      List<dynamic> originalData = response["data"];
+      Map<int, dynamic> groupedData = {};
+      originalData.forEach((entry) {
+        int id = entry["id"];
+        if (groupedData[id] == null) {
+          groupedData[id] = entry;
+          groupedData[id]["mutual_list"] = [];
+          groupedData[id]["listcount"] = 0;
+        }
+
+        // groupedData[id]["mutual_list"].add({
+        //   "id": entry["id"],
+        //   "name": entry["name"],
+        //   "profile_image": entry["profile_image"],
+        //   "qr_value": entry["qr_value"],
+        //   "email": entry["email"],
+        //   "phone": entry["phone"],
+        //   "via": entry["via"],
+        //   "via_id": entry["via_id"],
+        //   "status": entry["status"],
+        //   "pushed": entry["pushed"],
+        // });
+
+        // groupedData[id]["listcount"]++;
+      });
+
+      List<dynamic> newData = groupedData.values.toList();
+      response["data"] = newData;
+    }
     return response;
   }
 

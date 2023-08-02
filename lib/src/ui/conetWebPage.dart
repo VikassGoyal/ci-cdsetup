@@ -511,7 +511,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                   ListView.separated(
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
-                    itemCount: _searchResult[index].mutualList!.length,
+                    itemCount: _searchResult[index].mutualList?.length ?? 0,
                     primary: false,
                     scrollDirection: Axis.vertical,
                     separatorBuilder: (context, index) {
@@ -559,7 +559,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            _searchResult[index].mutualList![mutindex].name ?? "",
+                                            _searchResult[index].mutualList![mutindex].via ?? "",
                                             overflow: TextOverflow.ellipsis,
                                             style: Theme.of(context)
                                                 .textTheme
@@ -567,16 +567,16 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                                 ?.copyWith(fontWeight: FontWeight.w400),
                                           ),
                                           SizedBox(height: 2.h),
-                                          Text(
-                                            _searchResult[index].mutualList![mutindex] == null
-                                                ? ""
-                                                : _searchResult[index].mutualList![mutindex].via!,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6
-                                                ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
-                                          )
+                                          // Text(
+                                          //   _searchResult[index].mutualList![mutindex] == null
+                                          //       ? ""
+                                          //       : _searchResult[index].mutualList![mutindex].via ?? '',
+                                          //   overflow: TextOverflow.ellipsis,
+                                          //   style: Theme.of(context)
+                                          //       .textTheme
+                                          //       .headline6
+                                          //       ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
+                                          // )
                                         ],
                                       ),
                                     ),

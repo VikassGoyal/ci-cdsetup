@@ -89,23 +89,11 @@ class _SignUpState extends State<SignUp> {
               setState(() {
                 _loader = false;
               });
-              ScaffoldMessenger.of(context).showSnackBar(
-                Utils.displaySnackBar(
-                  'Please check your internet connection',
-                  duration: const Duration(seconds: 2),
-                  backgroundColor: AppColor.redColor,
-                ),
-              );
+              Utils.displayToastNoAutoClose('Please check your internet connection', context);
             }
           } else {
             //if there is any error in validations then show some common Error msg
-            ScaffoldMessenger.of(context).showSnackBar(
-              Utils.displaySnackBar(
-                _errorMsg,
-                duration: const Duration(seconds: 2),
-                backgroundColor: AppColor.redColor,
-              ),
-            );
+            Utils.displayToastNoAutoClose(_errorMsg, context);
           }
         },
         child: Container(

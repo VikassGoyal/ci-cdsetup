@@ -8,16 +8,22 @@ import 'package:quickalert/quickalert.dart';
 
 class Utils {
   static displayToast(String message, BuildContext context) {
-    bool check = false;
     return QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
       title: 'Success',
       text: message,
-      onConfirmBtnTap: () {
-        return;
-      },
-      autoCloseDuration: const Duration(seconds: 3),
+
+      //autoCloseDuration: const Duration(seconds: 3),
+    );
+  }
+
+  static displayToastNoAutoClose(String message, BuildContext context) {
+    return QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      title: 'Oops...',
+      text: message,
     );
   }
 
@@ -27,10 +33,8 @@ class Utils {
       type: QuickAlertType.error,
       title: 'Oops...',
       text: message,
-      onConfirmBtnTap: () {
-        return;
-      },
-      autoCloseDuration: const Duration(seconds: 3),
+
+      //autoCloseDuration: const Duration(seconds: 3),
     );
   }
 
@@ -40,7 +44,7 @@ class Utils {
       type: QuickAlertType.error,
       title: 'Oops...',
       text: message,
-      autoCloseDuration: const Duration(seconds: 4),
+      // autoCloseDuration: const Duration(seconds: 4),
     );
   }
 
@@ -63,26 +67,26 @@ class Utils {
     );
   }
 
-  static SnackBar displaySnackBar(String message,
-      {String? actionMessage, VoidCallback? onClick, Color? backgroundColor, Duration? duration}) {
-    return SnackBar(
-      content: Text(
-        message,
-        style: const TextStyle(color: Colors.white, fontSize: 14.0),
-      ),
-      action: (actionMessage != null)
-          ? SnackBarAction(
-              textColor: Colors.white,
-              label: actionMessage,
-              onPressed: () {
-                return onClick!();
-              },
-            )
-          : null,
-      duration: duration ?? const Duration(seconds: 2),
-      backgroundColor: backgroundColor ?? AppColor.accentColor,
-    );
-  }
+  // static SnackBar displaySnackBar(String message,
+  //     {String? actionMessage, VoidCallback? onClick, Color? backgroundColor, Duration? duration}) {
+  //   return SnackBar(
+  //     content: Text(
+  //       message,
+  //       style: const TextStyle(color: Colors.white, fontSize: 14.0),
+  //     ),
+  //     action: (actionMessage != null)
+  //         ? SnackBarAction(
+  //             textColor: Colors.white,
+  //             label: actionMessage,
+  //             onPressed: () {
+  //               return onClick!();
+  //             },
+  //           )
+  //         : null,
+  //     duration: duration ?? const Duration(seconds: 2),
+  //     backgroundColor: backgroundColor ?? AppColor.accentColor,
+  //   );
+  // }
 
   static hideKeyboard(context) {
     FocusScope.of(context).requestFocus(FocusNode());

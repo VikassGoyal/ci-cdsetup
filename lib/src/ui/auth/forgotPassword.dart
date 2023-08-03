@@ -113,13 +113,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     setState(() {
                       _emailError = true;
                     });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      Utils.displaySnackBar(
-                        'Enter a Valid Email',
-                        duration: const Duration(seconds: 1),
-                        backgroundColor: AppColor.redColor,
-                      ),
-                    );
+                    Utils.displayToastNoAutoClose("Enter a Valid Email", context);
+
                     return '';
                   } else {
                     setState(() {

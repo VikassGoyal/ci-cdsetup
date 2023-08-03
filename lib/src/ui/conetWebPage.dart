@@ -460,7 +460,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     visible: (_searchResult[index].status == 'requested'),
                     child: Container(
                       height: 30.h,
-                      width: 115.w,
+                      width: 120.w,
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         style: ButtonStyle(

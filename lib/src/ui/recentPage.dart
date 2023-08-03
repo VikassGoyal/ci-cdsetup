@@ -569,7 +569,7 @@ class _RecentPageState extends State<RecentPage> {
       if (value != null) {
         setState(() {
           _outputController!.clear();
-          _outputController!.text = value!;
+          _outputController!.text = value;
         });
         if (_outputController!.text != '') {
           setState(() {

@@ -474,13 +474,7 @@ class _SettingsState extends State<Settings> {
         ),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        Utils.displaySnackBar(
-          'Please check your internet connection',
-          duration: const Duration(seconds: 1),
-          backgroundColor: AppColor.redColor,
-        ),
-      );
+      Utils.displayToastNoAutoClose('Please check your internet connection', context);
     }
   }
 
@@ -533,19 +527,12 @@ class _SettingsState extends State<Settings> {
 
   _sendQrApi() async {
     var contactDetail;
-    // var requestBody = {"value": _outputController!.text, "qrcode": true};
     var Qrresponse = await ContactBloc().sendQrValue(QrValueRequestBody(
       value: _outputController?.text,
       qrcode: true,
     ));
     if (Qrresponse['status'] == true) {
-      QuickAlert.show(
-        context: context,
-        type: QuickAlertType.success,
-        title: 'Success',
-        text: "Scanned successfully",
-      );
-      // Utils.displayToast("Scanned successfully", context);
+      Utils.displayToast("Scanned successfully", context);
       try {
         // var requestBody = {
         //   "phone": _outputController!.text,
@@ -554,6 +541,7 @@ class _SettingsState extends State<Settings> {
             .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: Qrresponse["contact"]["phone"]));
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
+
           setState(() {
             _loader = false;
           });
@@ -577,7 +565,7 @@ class _SettingsState extends State<Settings> {
           Utils.displayToastTopError(response["message"], context);
         }
       } catch (e) {
-        Utils.displayToastTopError("Something went wrong", context);
+        print(e);
       }
     } else if (Qrresponse['status'] == "Token is Expired") {
       Utils.displayToastBottomError('Token is Expired', context);

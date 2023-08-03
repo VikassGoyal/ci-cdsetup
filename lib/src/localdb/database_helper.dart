@@ -193,8 +193,8 @@ class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> getRecentCallsBetweenInDateTimeMapList(
       DateTime dateTimeFrom, DateTime dateTimeTo, String? name) async {
-    int timeFrom = dateTimeFrom.microsecondsSinceEpoch;
-    int timeTo = dateTimeTo.microsecondsSinceEpoch;
+    int timeFrom = dateTimeFrom.millisecondsSinceEpoch;
+    int timeTo = dateTimeTo.millisecondsSinceEpoch;
     var result = await database.query(
       recentCallsTable,
       orderBy: '$coltimestamp DESC',

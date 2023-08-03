@@ -4,7 +4,6 @@ import 'package:conet/api_models/signup_request_body/signup_request_body.dart';
 import 'package:conet/repositories/userRepository.dart';
 import 'package:conet/services/storage_service.dart';
 import 'package:conet/utils/get_it.dart';
-import 'package:get/get.dart';
 
 import '../api_models/changepassword_request_model/changepassword_request_body.dart';
 import '../api_models/forgotpassword__request_model/forgotpassword_request_body.dart';
@@ -17,9 +16,8 @@ class UserBloc {
   }
 
   login({required String email, required String password}) async {
-    var response;
     try {
-      response = await userRepository?.login(LoginRequestBody(email: email, password: password));
+      var response = await userRepository?.login(LoginRequestBody(email: email, password: password));
 
       print(response['message']);
       if (response['message'] == "success") {
@@ -35,6 +33,7 @@ class UserBloc {
       }
       return response;
     } catch (e) {
+      print("error");
       print(e);
     }
   }

@@ -18,12 +18,13 @@ class RecentCallsBloc extends Bloc<RecentCallsEvent, RecentCallsState> {
   bool isFetchedAllData = false;
 
   RecentCallsBloc({required this.recentPageRepository}) : super(const RecentCallsInitial()) {
-    dateTimeFrom = DateTime.now();
-    dateTimeTo = dateTimeFrom.subtract(Duration(days: daysGap));
-    cutDateTimeForRecentCallsData = dateTimeFrom.subtract(Duration(days: cutDaysCount));
     on<GetRecentCallsEvent>((event, emit) async {
+      if (event.isInitialFetch) {
+        dateTimeFrom = DateTime.now();
+        dateTimeTo = dateTimeFrom.subtract(Duration(days: daysGap));
+        cutDateTimeForRecentCallsData = dateTimeFrom.subtract(Duration(days: cutDaysCount));
+      }
       emit(const GetRecentCallsLoading());
-
       if (event.isRefreshData) {
         dateTimeFrom = DateTime.now();
         dateTimeTo = dateTimeFrom.subtract(Duration(days: daysGap));

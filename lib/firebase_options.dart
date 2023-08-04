@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,22 +43,41 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDdtX4PRxqqR6QOoQDdo3l39T_wOvMKBRg',
+    appId: '1:953426519038:web:9a67d2e286ae6cdb6bd6af',
+    messagingSenderId: '953426519038',
+    projectId: 'konet-ccc15',
+    authDomain: 'konet-ccc15.firebaseapp.com',
+    storageBucket: 'konet-ccc15.appspot.com',
+    measurementId: 'G-YDV5C9424Z',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBuk0HVTGlLaHHFYRQF0FQ9tswUOFQ0SZ4',
-    appId: '1:968842320717:android:216a01a04be22c98aef504',
-    messagingSenderId: '968842320717',
-    projectId: 'conet-26772',
-    storageBucket: 'conet-26772.appspot.com',
+    apiKey: 'AIzaSyAT1ndXHYkmfnIg9VL6vFJXcTXpJ6fio0M',
+    appId: '1:953426519038:android:4ec3414bfacb6d0b6bd6af',
+    messagingSenderId: '953426519038',
+    projectId: 'konet-ccc15',
+    storageBucket: 'konet-ccc15.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyASnFyyZzNTBMJ_zG_qg1mu-dJpC4gosuA',
-    appId: '1:968842320717:ios:29cedbe401691b2caef504',
-    messagingSenderId: '968842320717',
-    projectId: 'conet-26772',
-    storageBucket: 'conet-26772.appspot.com',
-    androidClientId: '968842320717-9lj5u6eqfroorpjl2ru8t091fiv4vghe.apps.googleusercontent.com',
-    iosClientId: '968842320717-k05takhag7cfmeoe5v91ffqjjjgbon4s.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCrDdaT19G0d7Y2xgkBveW1A6rE-DIqPr4',
+    appId: '1:953426519038:ios:bdfaed96710de69c6bd6af',
+    messagingSenderId: '953426519038',
+    projectId: 'konet-ccc15',
+    storageBucket: 'konet-ccc15.appspot.com',
+    iosClientId: '953426519038-anbo49ecfnlsjvptf3loff2oqj6pvp0f.apps.googleusercontent.com',
     iosBundleId: 'com.konet.in',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyCrDdaT19G0d7Y2xgkBveW1A6rE-DIqPr4',
+    appId: '1:953426519038:ios:4c8ad5f4a88970ad6bd6af',
+    messagingSenderId: '953426519038',
+    projectId: 'konet-ccc15',
+    storageBucket: 'konet-ccc15.appspot.com',
+    iosClientId: '953426519038-uicm3mbfg4hoporfu4ej0p1vbbihfju1.apps.googleusercontent.com',
+    iosBundleId: 'com.shade6.conet.conet',
   );
 }

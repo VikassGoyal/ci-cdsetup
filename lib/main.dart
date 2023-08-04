@@ -19,6 +19,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'bottomNavigation/bottomNavigationBloc.dart';
 import 'firebase_options.dart';
 import 'src/app.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class SimpleBlocObserver extends BlocObserver {
   @override
@@ -28,11 +29,20 @@ class SimpleBlocObserver extends BlocObserver {
   }
 }
 
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   FirebaseAnalytics analytics = FirebaseAnalytics();
+//   runApp(MyApp(analytics: analytics));
+// }
+
 void main() {
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     Bloc.observer = SimpleBlocObserver();
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -41,7 +51,6 @@ void main() {
     registerServicesWithGetIt();
 
     // Initializing FlutterFire
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
     await locator<StorageService>().init();
 
@@ -57,9 +66,18 @@ void main() {
         FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
       }
     };
-
+    FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+    analytics.logEvent(
+      name: 'my_events',
+      parameters: <String, dynamic>{
+        'string': 'my_string',
+        'number': 123,
+      },
+    );
     // Run the application.
     runApp(const App());
+
+// Somewhere in your code...
   },
       // Catch all asynchronous exceptions not handled by Flutter framework.
       (error, stack) {

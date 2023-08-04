@@ -8,6 +8,7 @@ import 'package:conet/src/ui/auth/validateMobileNumberVerified.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -103,6 +104,8 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
             ),
           ),
           onPressed: () async {
+            if (_loader) return;
+
             //print(otpNumber!.length);
             if (otpNumber!.length != 6) {
               Utils.displayToastBottomError("Please Enter Valid  OTP");
@@ -396,12 +399,17 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           } else {}
         },
         child: Container(
-          padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+          decoration: BoxDecoration(
+            color: wait ? AppColor.secondaryColor : AppColor.secondaryColor.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(7),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Re-Send code ',
+                'Re-Send Code ',
                 style: TextStyle(
                   fontFamily: kSfproDisplayFontFamily,
                   color: AppColor.whiteColor,
@@ -629,15 +637,19 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
         },
         codeSent: (String? verficationID, int? resendToken) {
           print("codeSent");
-          setState(() {
-            _verificationCode = verficationID;
-          });
+          if (mounted) {
+            setState(() {
+              _verificationCode = verficationID;
+            });
+          }
         },
         codeAutoRetrievalTimeout: (String verificationID) {
           print("codeAutoRetrievalTimeout");
-          setState(() {
-            _verificationCode = verificationID;
-          });
+          if (mounted) {
+            setState(() {
+              _verificationCode = verificationID;
+            });
+          }
         },
         timeout: const Duration(seconds: 120));
   }
@@ -677,9 +689,18 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           ),
         );
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      final msg = e.response?.data?['message']?['email'][0] ??
+          e.response?.data?['message']?['phone'][0] ??
+          'Something went wrong.';
       // Navigator.of(context).pop();
-      Utils.displayToast("Something went wrong!");
+      Utils.displayToast(msg);
+      setState(() {
+        _loader = false;
+      });
+      print(e);
+    } catch (e) {
+      Utils.displayToast("Something went wrong.");
       setState(() {
         _loader = false;
       });

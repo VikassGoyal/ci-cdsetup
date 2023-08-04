@@ -18,6 +18,7 @@ import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -67,6 +69,7 @@ class _ContactsPageState extends State<ContactsPage> {
   bool _loader = false;
   bool _showCancelIcon = false;
   double susItemHeight = 40;
+  final gtm = Gtm.instance;
 
   @override
   void initState() {
@@ -79,6 +82,7 @@ class _ContactsPageState extends State<ContactsPage> {
     _loadedcontacts = [];
     _contacts = responseData;
     _loadedcontacts = _contacts;
+
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
     //_updateContact();
 
@@ -494,6 +498,15 @@ class _ContactsPageState extends State<ContactsPage> {
               "assets/icons/ic_conet_join.svg",
             ),
             onPressed: () {
+              FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+              analytics.logEvent(
+                name: 'KonetJoin',
+                parameters: <String, dynamic>{
+                  'string': 'my_string',
+                  'number': 123,
+                },
+              );
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -511,6 +524,32 @@ class _ContactsPageState extends State<ContactsPage> {
               color: AppColor.whiteColor,
             ),
             onPressed: () {
+              FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+              analytics.logEvent(
+                name: 'addContact',
+                parameters: <String, dynamic>{
+                  'string': 'my_string',
+                  'number': 123,
+                },
+              );
+              gtm.push(
+                'login',
+                parameters: {
+                  'user_no': 1234,
+                },
+              );
+              gtm.setCustomTagTypes(
+                [
+                  CustomTagType(
+                    'amplitude',
+                    handler: (eventName, parameters) {
+                      print('amplitude!');
+                      print(eventName);
+                      print(parameters);
+                    },
+                  ),
+                ],
+              );
               Navigator.push(
                 context,
                 MaterialPageRoute(

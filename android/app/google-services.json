@@ -1,109 +1,34 @@
 {
   "project_info": {
-    "project_number": "968842320717",
-    "project_id": "conet-26772",
-    "storage_bucket": "conet-26772.appspot.com"
+    "project_number": "953426519038",
+    "project_id": "konet-ccc15",
+    "storage_bucket": "konet-ccc15.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:968842320717:android:216a01a04be22c98aef504",
+        "mobilesdk_app_id": "1:953426519038:android:4ec3414bfacb6d0b6bd6af",
         "android_client_info": {
           "package_name": "com.konet.in"
         }
       },
       "oauth_client": [
         {
-          "client_id": "968842320717-9lj5u6eqfroorpjl2ru8t091fiv4vghe.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.konet.in",
-            "certificate_hash": "1a37a11358de88c0f50eeb7c40290e7ab1653292"
-          }
-        },
-        {
-          "client_id": "968842320717-sn5870e7lqg0i5ro5o8asauvnfu8ve4c.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.konet.in",
-            "certificate_hash": "2e1c2d95bb4a6165e2449c817e35c004d002228f"
-          }
-        },
-        {
-          "client_id": "968842320717-letsr80l8761fkj08ibt517au3jf4p5f.apps.googleusercontent.com",
+          "client_id": "953426519038-tmbk1flqolagdbdjdtoq7qmfiocp59v6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBuk0HVTGlLaHHFYRQF0FQ9tswUOFQ0SZ4"
+          "current_key": "AIzaSyAT1ndXHYkmfnIg9VL6vFJXcTXpJ6fio0M"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "968842320717-letsr80l8761fkj08ibt517au3jf4p5f.apps.googleusercontent.com",
+              "client_id": "953426519038-tmbk1flqolagdbdjdtoq7qmfiocp59v6.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "968842320717-k05takhag7cfmeoe5v91ffqjjjgbon4s.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.konet.in"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:968842320717:android:4eb51f001ab402c1aef504",
-        "android_client_info": {
-          "package_name": "com.shade6.conet"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "968842320717-b8hq11ve9afqjnv6hq539ocajn4agv6f.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.shade6.conet",
-            "certificate_hash": "1a37a11358de88c0f50eeb7c40290e7ab1653292"
-          }
-        },
-        {
-          "client_id": "968842320717-vg913b4aqvp1cd7rc12q7g6c921brqme.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.shade6.conet",
-            "certificate_hash": "2e1c2d95bb4a6165e2449c817e35c004d002228f"
-          }
-        },
-        {
-          "client_id": "968842320717-letsr80l8761fkj08ibt517au3jf4p5f.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBuk0HVTGlLaHHFYRQF0FQ9tswUOFQ0SZ4"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "968842320717-letsr80l8761fkj08ibt517au3jf4p5f.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "968842320717-k05takhag7cfmeoe5v91ffqjjjgbon4s.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.konet.in"
-              }
             }
           ]
         }

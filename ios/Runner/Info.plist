@@ -45,6 +45,8 @@
 	<string>Access to the microphone is required to upload business Logo.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Access to the photo library is required to upload business Logo.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to the current location for filling profile details.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

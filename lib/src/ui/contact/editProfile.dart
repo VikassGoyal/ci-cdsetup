@@ -57,6 +57,8 @@ class _EditProfileState extends State<EditProfile> {
   ContactDetail? contactDetail;
   DateTime? selectedDate;
   OccupationType? _occupationValue;
+  WorkNatureType? _workNatureDropdownValue;
+  IndustryType? _industryType;
   bool _loaderoverflow = true;
   bool _valuesChanged = false;
   bool _loader = true;
@@ -241,6 +243,7 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "Name",
         enableFormatters: false,
+        textCapitalization: TextCapitalization.words,
         padding: 14.0,
         onChanged: (value) {
           setState(() {
@@ -327,52 +330,55 @@ class _EditProfileState extends State<EditProfile> {
           ),
           borderRadius: BorderRadius.circular(7),
         ),
-        child: TextFormField(
-          onChanged: (value) {
-            setState(() {
-              _valuesChanged = true;
-            });
+        child: Listener(
+          onPointerDown: (_) {
+            _selectDate(context);
+            _valuesChanged = true;
           },
-          style: TextStyle(
+          child: TextFormField(
+            onChanged: (value) {
+              setState(() {
+                _valuesChanged = true;
+              });
+            },
+            style: TextStyle(
               fontSize: 15.sp,
               fontFamily: kSfproRoundedFontFamily,
               fontWeight: FontWeight.w300,
-              color: AppColor.secondaryColor),
-          readOnly: true,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
-            labelText: "DOB",
-            hintStyle: TextStyle(
-                fontSize: 13.sp,
-                fontFamily: kSfproRoundedFontFamily,
-                fontWeight: FontWeight.w300,
-                color: AppColor.placeholder),
-            labelStyle: TextStyle(
-                fontSize: 13.sp,
-                fontFamily: kSfproRoundedFontFamily,
-                fontWeight: FontWeight.w300,
-                color: AppColor.placeholder),
-            filled: true,
-            fillColor: AppColor.whiteColor,
-            errorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent),
+              color: AppColor.secondaryColor,
             ),
-            suffixIcon: GestureDetector(
-              onTap: () {
-                _selectDate(context);
-                _valuesChanged = true;
-              },
-              child: const Icon(
+            readOnly: true,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+              labelText: "DOB",
+              hintStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder,
+              ),
+              labelStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder,
+              ),
+              filled: true,
+              fillColor: AppColor.whiteColor,
+              errorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+              ),
+              suffixIcon: const Icon(
                 Icons.date_range,
                 color: Color(0xFF878B95),
               ),
+              focusedBorder: InputBorder.none,
             ),
-            focusedBorder: InputBorder.none,
+            cursorColor: AppColor.secondaryColor,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            controller: _personalDob,
           ),
-          cursorColor: AppColor.secondaryColor,
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.next,
-          controller: _personalDob,
         ),
       );
     }
@@ -399,11 +405,12 @@ class _EditProfileState extends State<EditProfile> {
             });
           },
           style: TextStyle(
-              fontSize: 15.sp,
-              fontFamily: kSfproRoundedFontFamily,
-              fontWeight: FontWeight.w300,
-              color: AppColor.secondaryColor),
-          readOnly: true,
+            fontSize: 15.sp,
+            fontFamily: kSfproRoundedFontFamily,
+            fontWeight: FontWeight.w300,
+            color: AppColor.secondaryColor,
+          ),
+          readOnly: false,
           decoration: InputDecoration(
             labelText: "Address",
             contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
@@ -436,10 +443,10 @@ class _EditProfileState extends State<EditProfile> {
                 //   ),
                 // );
               },
-              child: Image.asset(
-                "assets/icons/googlemap.png",
-                height: 16,
-                width: 16,
+              child: Icon(
+                Icons.location_on_outlined,
+                color: AppColor.secondaryColor,
+                size: 30.sp,
               ),
             ),
           ),
@@ -459,6 +466,7 @@ class _EditProfileState extends State<EditProfile> {
         hintText: "Country",
         padding: 14.0,
         enableFormatters: false,
+        textCapitalization: TextCapitalization.words,
         margin: 22.0,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -477,6 +485,7 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "State",
         enableFormatters: false,
+        textCapitalization: TextCapitalization.words,
         padding: 14.0,
         margin: 22.0,
         textInputType: TextInputType.text,
@@ -498,6 +507,7 @@ class _EditProfileState extends State<EditProfile> {
         enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
+        textCapitalization: TextCapitalization.words,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
@@ -561,6 +571,7 @@ class _EditProfileState extends State<EditProfile> {
                 color: AppColor.placeholder),
           ),
           cursorColor: AppColor.secondaryColor,
+          textCapitalization: TextCapitalization.words,
           validator: (value) {
             return null;
           },
@@ -748,6 +759,50 @@ class _EditProfileState extends State<EditProfile> {
       );
     }
 
+    Widget _buildIndustry() {
+      return Container(
+        height: 48.h,
+        width: 331.w,
+        padding: EdgeInsets.fromLTRB(0, 0.h, 0, 0),
+        margin: EdgeInsets.only(left: 22.w, right: 22.w),
+        child: DropdownButtonFormField(
+          style: TextStyle(color: AppColor.secondaryColor, fontSize: 13.sp),
+          icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF878B95)),
+          dropdownColor: AppColor.whiteColor,
+          decoration: const InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(18, 0, 0, 0),
+            filled: true,
+            fillColor: AppColor.whiteColor,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
+            ),
+          ),
+          items: [
+            for (final value in IndustryType.values)
+              DropdownMenuItem(
+                value: value,
+                child: Text(value.name),
+              ),
+          ],
+          value: _industryType,
+          hint: const Text(
+            "Industry",
+            style: TextStyle(fontSize: 13, color: Color(0xFF878B95)),
+          ),
+          onChanged: (value) {
+            setState(() {
+              _valuesChanged = true;
+              _industryType = value;
+              _professionalIndustry.text = value?.name ?? '';
+            });
+          },
+        ),
+      );
+    }
+
     Widget _buildCompany() {
       return TextFormFieldContact(
         hintText: "Company",
@@ -755,6 +810,7 @@ class _EditProfileState extends State<EditProfile> {
         padding: 14.0,
         margin: 22.0,
         textInputType: TextInputType.text,
+        textCapitalization: TextCapitalization.words,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
         controller: _professionalCompany,
@@ -785,6 +841,7 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "School / University",
         enableFormatters: false,
+        textCapitalization: TextCapitalization.words,
         padding: 14.0,
         margin: 22.0,
         maxLength: 100,
@@ -806,6 +863,7 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "Grade",
         enableFormatters: false,
+        textCapitalization: TextCapitalization.words,
         padding: 14.0,
         onChanged: (value) {
           setState(() {
@@ -821,26 +879,53 @@ class _EditProfileState extends State<EditProfile> {
     }
 
     Widget _buildworknature() {
-      return TextFormFieldContact(
-        hintText: "Work Nature",
-        enableFormatters: false,
-        padding: 14.0,
-        margin: 22.0,
-        onChanged: (value) {
-          setState(() {
-            _valuesChanged = true;
-          });
-        },
-        textInputType: TextInputType.text,
-        actionKeyboard: TextInputAction.next,
-        controller: _professionalWorkNature,
-        parametersValidate: "Please enter Work Nature.",
+      return Container(
+        height: 48.h,
+        width: 331.w,
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        margin: EdgeInsets.only(left: 22.w, right: 22.w),
+        child: DropdownButtonFormField(
+          style: TextStyle(color: AppColor.secondaryColor, fontSize: 13.sp),
+          icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF878B95)),
+          dropdownColor: AppColor.whiteColor,
+          decoration: const InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(18, 0, 0, 0),
+            filled: true,
+            fillColor: AppColor.whiteColor,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
+            ),
+          ),
+          items: [
+            for (final value in WorkNatureType.values)
+              DropdownMenuItem(
+                value: value,
+                child: Text(value.name),
+              ),
+          ],
+          value: _workNatureDropdownValue,
+          hint: const Text(
+            "Work Nature",
+            style: TextStyle(fontSize: 13, color: Color(0xFF878B95)),
+          ),
+          onChanged: (value) {
+            setState(() {
+              _valuesChanged = true;
+              _workNatureDropdownValue = value;
+              _professionalWorkNature.text = value?.name ?? '';
+            });
+          },
+        ),
       );
     }
 
     Widget _buildDesignation() {
       return TextFormFieldContact(
         hintText: "Designation",
+        textCapitalization: TextCapitalization.words,
         enableFormatters: false,
         padding: 14.0,
         onChanged: (value) {
@@ -999,6 +1084,15 @@ class _EditProfileState extends State<EditProfile> {
             : [
                 SizedBox(height: 10.h),
                 _buildOccupation(),
+                Visibility(
+                  visible: _companyVisible,
+                  child: SizedBox(height: 16.h),
+                ),
+                Visibility(
+                  visible: !_companyVisible,
+                  child: SizedBox(height: 16.h),
+                ),
+                _buildIndustry(),
                 Visibility(
                   visible: _companyVisible,
                   child: SizedBox(height: 16.h),
@@ -1237,7 +1331,7 @@ class _EditProfileState extends State<EditProfile> {
                     width: 120.w,
                     height: 120.w,
                     padding: const EdgeInsets.all(8),
-                    child: userImage != null
+                    child: userImage != "" && userImage != null
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(100.0),
                             child: FadeInImage.assetNetwork(
@@ -1478,10 +1572,22 @@ class _EditProfileState extends State<EditProfile> {
 
           // _occupationValue = contactDetail?.professional?.occupation ?? "";
           _professionalOccupation.text = _occupationValue?.name ?? "";
+
+          // Industry value.
+          if (contactDetail?.professional?.industry != null && contactDetail!.professional!.industry!.isNotEmpty) {
+            _industryType = contactDetail!.professional!.industry!.toIndustry();
+            _professionalIndustry.text = _industryType?.name ?? '';
+          }
+
           _professionalCompany.text = contactDetail?.professional?.company ?? "";
           _professionalCompanyWebsite.text = contactDetail?.professional?.companyWebsite ?? "";
           _professionalSchool.text = contactDetail?.professional?.schoolUniversity ?? "";
-          _professionalWorkNature.text = contactDetail?.professional?.workNature ?? "";
+
+          // Work nature dropdown value.
+          if (contactDetail?.professional?.workNature != null && contactDetail!.professional!.workNature!.isNotEmpty) {
+            _workNatureDropdownValue = contactDetail!.professional!.workNature!.toWorkNature();
+            _professionalWorkNature.text = _workNatureDropdownValue?.name ?? '';
+          }
           _professionalDesignation.text = contactDetail?.professional?.designation ?? "";
           _professionalGrade.text = contactDetail?.professional?.grade ?? "";
 
@@ -1504,7 +1610,10 @@ class _EditProfileState extends State<EditProfile> {
               entrepreneureData.id = data.id;
               entrepreneureData.company = data.company;
               entrepreneureData.website = data.companyWebsite;
-              entrepreneureData.workNature = data.workNature;
+              if (data.workNature != null && data.workNature!.isNotEmpty) {
+                final workNatureParsed = data.workNature!.toWorkNature();
+                entrepreneureData.workNature = workNatureParsed?.name;
+              }
               entrepreneureData.images = imageData;
               entreprenerurList.add(entrepreneureData);
             });
@@ -1627,6 +1736,7 @@ class _EditProfileState extends State<EditProfile> {
                   focusedBorder: InputBorder.none,
                 ),
                 initialValue: entreprenerurList[i].company,
+                textCapitalization: TextCapitalization.words,
                 cursorColor: AppColor.secondaryColor,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
@@ -1685,42 +1795,39 @@ class _EditProfileState extends State<EditProfile> {
             Container(
               height: 48.h,
               width: 331.w,
-              padding: EdgeInsets.only(left: 14.0.w, right: 14.w),
               margin: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: const Color.fromRGBO(232, 232, 232, 1),
-                ),
-                borderRadius: BorderRadius.circular(7),
-              ),
-              child: TextFormField(
-                style: TextStyle(
-                    fontSize: 15.sp,
-                    fontFamily: kSfproRoundedFontFamily,
-                    fontWeight: FontWeight.w300,
-                    color: AppColor.secondaryColor),
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
-                  labelText: 'Work Nature',
-                  labelStyle: TextStyle(
-                      fontSize: 13.sp,
-                      fontFamily: kSfproRoundedFontFamily,
-                      fontWeight: FontWeight.w300,
-                      color: AppColor.placeholder),
+              child: DropdownButtonFormField(
+                style: TextStyle(color: AppColor.secondaryColor, fontSize: 13.sp),
+                icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF878B95)),
+                dropdownColor: AppColor.whiteColor,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(18, 0, 0, 0),
                   filled: true,
                   fillColor: AppColor.whiteColor,
-                  errorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
                   ),
-                  focusedBorder: InputBorder.none,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
+                  ),
                 ),
-                cursorColor: AppColor.secondaryColor,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                initialValue: entreprenerurList[i].workNature,
+                items: [
+                  for (final value in WorkNatureType.values)
+                    DropdownMenuItem(
+                      value: value,
+                      child: Text(value.name),
+                    ),
+                ],
+                hint: const Text(
+                  "Work Nature",
+                  style: TextStyle(fontSize: 13, color: Color(0xFF878B95)),
+                ),
+                value: entreprenerurList[i].workNature != null && entreprenerurList[i].workNature!.isNotEmpty
+                    ? entreprenerurList[i].workNature!.toWorkNature()
+                    : null,
                 onChanged: (value) {
                   setState(() {
-                    entreprenerurList[i].workNature = value;
+                    entreprenerurList[i].workNature = value?.name;
                   });
                 },
               ),
@@ -1994,167 +2101,6 @@ class _EditProfileState extends State<EditProfile> {
               ],
             ),
             SizedBox(height: 8.h),
-          ],
-        ),
-      ),
-    );
-  }
-
-  entreprenerurItem(int i) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Material(
-        color: AppColor.whiteColor,
-        elevation: 2,
-        clipBehavior: Clip.antiAlias,
-        borderRadius: BorderRadius.circular(8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                onPressed: () {
-                  removeCompanyProfile(i);
-                },
-                icon: const Icon(Icons.close),
-                color: AppColor.primaryColor,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w),
-              child: TextFormField(
-                style: TextStyle(
-                    fontSize: 15.sp,
-                    fontFamily: kSfproRoundedFontFamily,
-                    fontWeight: FontWeight.w300,
-                    color: AppColor.secondaryColor),
-                decoration: InputDecoration(
-                    hintText: "Company",
-                    filled: true,
-                    fillColor: const Color(0xFFF6F6F6),
-                    hintStyle: TextStyle(
-                        fontSize: 13.sp,
-                        fontFamily: kSfproRoundedFontFamily,
-                        fontWeight: FontWeight.w300,
-                        color: AppColor.placeholder)),
-                cursorColor: AppColor.secondaryColor,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                initialValue: entreprenerurList[i].company,
-                onChanged: (value) {
-                  setState(() {
-                    entreprenerurList[i].company = value;
-                  });
-                },
-              ),
-            ),
-            SizedBox(height: 10.h),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w),
-              child: TextFormField(
-                style: TextStyle(
-                    fontSize: 15.sp,
-                    fontFamily: kSfproRoundedFontFamily,
-                    fontWeight: FontWeight.w300,
-                    color: AppColor.secondaryColor),
-                decoration: InputDecoration(
-                  hintText: "Website",
-                  filled: true,
-                  fillColor: AppColor.whiteColor,
-                  hintStyle: TextStyle(
-                      fontSize: 13.sp,
-                      fontFamily: kSfproRoundedFontFamily,
-                      fontWeight: FontWeight.w300,
-                      color: AppColor.placeholder),
-                ),
-                cursorColor: AppColor.secondaryColor,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                initialValue: entreprenerurList[i].website,
-                onChanged: (value) {
-                  setState(() {
-                    entreprenerurList[i].website = value;
-                  });
-                },
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              child: TextFormField(
-                style: TextStyle(
-                    fontSize: 15.sp,
-                    fontFamily: kSfproRoundedFontFamily,
-                    fontWeight: FontWeight.w300,
-                    color: AppColor.secondaryColor),
-                decoration: InputDecoration(
-                  hintText: 'Work Nature',
-                  filled: true,
-                  fillColor: const Color(0xFFF6F6F6),
-                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: const Color(0xFF878B95)),
-                ),
-                cursorColor: AppColor.secondaryColor,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                initialValue: entreprenerurList[i].workNature,
-                onChanged: (value) {
-                  setState(() {
-                    entreprenerurList[i].workNature = value;
-                  });
-                },
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Container(
-              margin: EdgeInsets.only(right: 16.w),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.black45),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            side: const BorderSide(
-                              color: AppColor.accentColor,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                      onPressed: () {
-                        loadImages(i);
-                      },
-                      child: Text(
-                        "Add pictures",
-                        style: TextStyle(
-                          color: AppColor.whiteColor,
-                          fontSize: 14.sp,
-                          fontFamily: kSfproRoundedFontFamily,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      entreprenerurList[i].images!.isEmpty
-                          ? ''
-                          : '(Added Image ${entreprenerurList[i].images!.length})',
-                      style: TextStyle(
-                        color: AppColor.gray30Color,
-                        fontSize: 10.sp,
-                        fontFamily: kSfproDisplayFontFamily,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 10.h),
           ],
         ),
       ),
@@ -2467,6 +2413,36 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       _loaderoverflow = true;
     });
+
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      setState(() {
+        _loaderoverflow = false;
+      });
+      Utils.displayToast('Please enable location services on your device to use this feature.');
+      return;
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        setState(() {
+          _loaderoverflow = false;
+        });
+        Utils.displayToast('Location permissions required to use this feature.');
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      setState(() {
+        _loaderoverflow = false;
+      });
+      Utils.displayToast('Location permissions required to use this feature.');
+      return;
+    }
+
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
       setState(() {
         _currentPosition = position;

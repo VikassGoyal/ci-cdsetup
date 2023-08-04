@@ -142,4 +142,8 @@ abstract class ApiClient {
   @POST(ApiConstants.changepassword)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
   Future<dynamic> changePassword(@Body() ChangePasswordRequestBody changePasswordrequestBody);
+
+  @GET(ApiConstants.searchSuggestions)
+  @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
+  Future<dynamic> searchSuggestions();
 }

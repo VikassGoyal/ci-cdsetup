@@ -31,7 +31,7 @@ class AppConfig {
   /// Initialize Dev.
   ///
   void _initDevelopment() {
-    baseApiUrl = 'http://192.168.1.5';
+    baseApiUrl = 'http://konet.in';
   }
 
   ///

@@ -1,5 +1,6 @@
 import 'package:conet/api_models/qrValue_request_model/qrValue_request_body.dart';
 import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/userBloc.dart';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/searchContacts.dart';
 import 'package:conet/services/storage_service.dart';
@@ -17,12 +18,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api_models/ filterSearchResults_request_model/ filterSearchResults_request_body.dart';
+import '../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
+import '../../models/contactDetails.dart';
 import '../../utils/custom_fonts.dart';
+import 'addContactUserProfilePage.dart';
 import 'utils.dart';
 
 class ConetWebPage extends StatefulWidget {
@@ -48,6 +53,9 @@ class _ConetWebPageState extends State<ConetWebPage> {
   bool _loader = false;
   bool _showCancelIcon = false;
 
+  bool _suggestionsLoader = true;
+  List<SearchContacts> _suggestionResult = [];
+
   @override
   void initState() {
     super.initState();
@@ -60,6 +68,42 @@ class _ConetWebPageState extends State<ConetWebPage> {
     _searchvisible = false;
 
     _popupSettings();
+
+    // Fetch suggestions.
+    Future.delayed(const Duration(milliseconds: 500), () async {
+      try {
+        final response = await ContactBloc().contactPageRepository?.getSearchSuggestions();
+        var responseData = response['data'];
+
+        if (response['status'] == true) {
+          if (response['msg'] == 'yes') {
+            if (mounted) {
+              setState(() {
+                _suggestionResult =
+                    List<SearchContacts>.from(responseData.map((item) => SearchContacts.fromJson(item)));
+                if (_suggestionResult.isNotEmpty) {
+                  _searchResult = _suggestionResult;
+                  _searchvisible = true;
+                }
+              });
+            }
+          }
+        }
+
+        if (mounted) {
+          setState(() {
+            _suggestionsLoader = false;
+          });
+        }
+      } catch (err) {
+        print(err);
+        if (mounted) {
+          setState(() {
+            _suggestionsLoader = false;
+          });
+        }
+      }
+    });
   }
 
   @override
@@ -365,7 +409,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                     ?.copyWith(color: AppColor.secondaryColor, fontWeight: FontWeight.w400),
                               ),
                               Text(
-                                  (_searchResult[index].mutualList?.length == 1
+                                  (_searchResult[index].mutualList == null || _searchResult[index].mutualList!.isEmpty
                                       ? ""
                                       : " ${'(${_searchResult[index].mutualList?.length})'}"),
                                   overflow: TextOverflow.ellipsis,
@@ -414,7 +458,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                     visible: (_searchResult[index].status == 'requested'),
                     child: Container(
                       height: 30.h,
-                      width: 90.w,
+                      width: 115.w,
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         style: ButtonStyle(
@@ -425,7 +469,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                         ),
                         onPressed: () {},
                         child: Container(
-                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 100.0),
+                          // constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 100.0),
                           alignment: Alignment.center,
                           child: Text("Requested",
                               textAlign: TextAlign.center,
@@ -473,7 +517,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           child: Text("Connect",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: AppColor.accentColor,
+                                  color: AppColor.whiteColor,
                                   fontSize: 18.sp,
                                   fontFamily: kSfproRoundedFontFamily,
                                   fontStyle: FontStyle.normal,
@@ -507,7 +551,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                   ListView.separated(
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
-                    itemCount: _searchResult[index].mutualList!.length,
+                    itemCount: _searchResult[index].mutualList?.length ?? 0,
                     primary: false,
                     scrollDirection: Axis.vertical,
                     separatorBuilder: (context, index) {
@@ -555,7 +599,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            _searchResult[index].mutualList![mutindex].name ?? "",
+                                            _searchResult[index].mutualList![mutindex].via ?? "",
                                             overflow: TextOverflow.ellipsis,
                                             style: Theme.of(context)
                                                 .textTheme
@@ -563,16 +607,16 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                                 ?.copyWith(fontWeight: FontWeight.w400),
                                           ),
                                           SizedBox(height: 2.h),
-                                          Text(
-                                            _searchResult[index].mutualList![mutindex] == null
-                                                ? ""
-                                                : _searchResult[index].mutualList![mutindex].via!,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6
-                                                ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
-                                          )
+                                          // Text(
+                                          //   _searchResult[index].mutualList![mutindex] == null
+                                          //       ? ""
+                                          //       : _searchResult[index].mutualList![mutindex].via ?? '',
+                                          //   overflow: TextOverflow.ellipsis,
+                                          //   style: Theme.of(context)
+                                          //       .textTheme
+                                          //       .headline6
+                                          //       ?.copyWith(color: AppColor.gray30Color, fontWeight: FontWeight.w400),
+                                          // )
                                         ],
                                       ),
                                     ),
@@ -658,7 +702,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                             "Connect",
                                             textAlign: TextAlign.center,
                                             style:
-                                                Theme.of(context).textTheme.button?.apply(color: AppColor.accentColor),
+                                                Theme.of(context).textTheme.button?.apply(color: AppColor.whiteColor),
                                           ),
                                         ),
                                       ),
@@ -707,7 +751,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
         width: MediaQuery.of(context).size.width * 0.7,
         child: Column(
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
             const Image(
               image: AssetImage(
                 'assets/images/conetWebDefault.png',
@@ -726,6 +770,22 @@ class _ConetWebPageState extends State<ConetWebPage> {
                 fontSize: 18.sp,
               ),
             ),
+            if (_suggestionsLoader) ...[
+              SizedBox(height: 30.h),
+              const CircularProgressIndicator(
+                color: AppColor.primaryColor,
+              ),
+              Text(
+                'Loading suggestions...',
+                style: TextStyle(
+                  fontFamily: kSfproRoundedFontFamily,
+                  color: AppColor.placeholder,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 16.sp,
+                ),
+              ),
+            ]
           ],
         ),
       );
@@ -871,7 +931,20 @@ class _ConetWebPageState extends State<ConetWebPage> {
                               },
                               onSubmitted: (value) {
                                 print(value);
-                                filterSearchResults();
+                                if (value.isEmpty) {
+                                  if (_suggestionResult.isNotEmpty) {
+                                    setState(() {
+                                      _searchResult = _suggestionResult;
+                                      _searchvisible = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      _searchvisible = false;
+                                    });
+                                  }
+                                } else {
+                                  filterSearchResults();
+                                }
                               },
                               focusNode: _focus,
                               maxLines: 1,
@@ -908,6 +981,16 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                   onTap: () {
                                     if (_showCancelIcon == true) {
                                       _clearText();
+                                      if (_suggestionResult.isNotEmpty) {
+                                        setState(() {
+                                          _searchResult = _suggestionResult;
+                                          _searchvisible = true;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          _searchvisible = false;
+                                        });
+                                      }
                                     }
                                   },
                                   child: Padding(
@@ -1131,23 +1214,48 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
   _sendQrApi() async {
     //var requestBody = {"value": _outputController!.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+    var Qrresponse = await ContactBloc().sendQrValue(QrValueRequestBody(
       value: _outputController?.text,
       qrcode: false,
     ));
+    var contactDetail;
 
-    if (response['status'] == true) {
+    if (Qrresponse['status'] == true) {
       Utils.displayToast("Scanned successfully");
-      setState(() {
-        _loader = false;
-      });
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) {
-          return NotificationScreen();
-        }),
-      );
-    } else if (response['status'] == "Token is Expired") {
+      try {
+        // var requestBody = {
+        //   "phone": _outputController!.text,
+        // };
+        var response = await ContactBloc()
+            .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: Qrresponse["contact"]["phone"]));
+        if (response["user"] != null) {
+          contactDetail = ContactDetail.fromJson(response["user"]);
+          setState(() {
+            _loader = false;
+          });
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) {
+                return AddContactUserProfilePage(
+                  contactDetails: contactDetail,
+                  conetUser: true,
+                );
+              },
+            ),
+          );
+        } else {
+          setState(() {
+            _loader = false;
+          });
+          Fluttertoast.cancel();
+          Utils.displayToastTopError(response["message"]);
+        }
+      } catch (e) {
+        Utils.displayToastTopError("Something went wrong");
+      }
+    } else if (Qrresponse['status'] == "Token is Expired") {
       Utils.displayToast('Token is Expired');
       tokenExpired(context);
     } else {

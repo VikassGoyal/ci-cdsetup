@@ -408,7 +408,7 @@ class _SocialContactState extends State<SocialContact> {
           _socialSkypeText = contactDetail?.social?.skype ?? "";
         });
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       print(e);

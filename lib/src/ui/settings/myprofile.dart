@@ -1441,7 +1441,7 @@ class _MyProfileState extends State<MyProfile> {
 
         setState(() {});
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       print(e);

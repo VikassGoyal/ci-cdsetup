@@ -32,6 +32,8 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -221,7 +223,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       _contacts[index].contactMetaId ?? 0,
                       _contacts[index].contactMetaType ?? "",
                       _contacts[index].fromContactMetaType ?? "",
-                      _contacts[index].id ?? 0),
+                      _contacts[index].userId ?? 0),
                 ),
               ).then((value) {
                 print("value : $value");
@@ -941,12 +943,12 @@ class _ContactsPageState extends State<ContactsPage> {
       if (reqStatus.isGranted) {
         _importContacts();
       } else if (reqStatus.isDenied) {
-        Utils.displayToast("Permission Denied");
+        Utils.displayToastBottomError("Permission Denied", context);
       } else if (reqStatus.isPermanentlyDenied) {
         openAppSettings();
-        Utils.displayToast("Permission Denied Permanently");
+        Utils.displayToastBottomError("Permission Denied Permanently", context);
       } else {
-        Utils.displayToast("Something Went Wrong ");
+        Utils.displayToastBottomError("Something Went Wrong ", context);
       }
     }
   }
@@ -973,7 +975,7 @@ class _ContactsPageState extends State<ContactsPage> {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setBool('imported', true);
         _updateContact();
-        Utils.displayToast("Successfully imported");
+        Utils.displayToast("Successfully imported", context);
       } else if (response['status'] == "Token is Expired") {
         tokenExpired(context);
         setState(() {
@@ -983,14 +985,14 @@ class _ContactsPageState extends State<ContactsPage> {
         setState(() {
           _loader = false;
         });
-        Utils.displayToast("Something went wrong");
+        Utils.displayToastBottomError("Something went wrong", context);
       }
     } catch (e) {
       print(e);
       setState(() {
         _loader = false;
       });
-      Utils.displayToast("Something went wrong");
+      Utils.displayToastBottomError("Something went wrong", context);
     }
   }
 
@@ -1033,7 +1035,7 @@ class _ContactsPageState extends State<ContactsPage> {
       if (reqStatus.isGranted) {
         scanQrCode();
       } else if (reqStatus.isDenied) {
-        Utils.displayToast("Permission Denied");
+        Utils.displayToastBottomError("Permission Denied", context);
       }
     }
   }
@@ -1079,7 +1081,12 @@ class _ContactsPageState extends State<ContactsPage> {
     ));
     var contactDetail;
     if (Qrresponse['status'] == true) {
-      Utils.displayToast("Scanned successfully");
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: 'Success',
+        text: "Scanned successfully",
+      );
       // setState(() {
       //   _loader = false;
       // });
@@ -1111,16 +1118,19 @@ class _ContactsPageState extends State<ContactsPage> {
             _loader = false;
           });
           Fluttertoast.cancel();
-          Utils.displayToastTopError(response["message"]);
+          Utils.displayToastBottomError(response["message"], context);
         }
       } catch (e) {
-        Utils.displayToastTopError("Something went wrong");
+        setState(() {
+          _loader = false;
+        });
+        //Utils.displayToastBottomError("Something went wrong", context);
       }
     } else if (Qrresponse['status'] == "Token is Expired") {
-      Utils.displayToast('Token is Expired');
+      Utils.displayToastBottomError('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
     }
   }
 

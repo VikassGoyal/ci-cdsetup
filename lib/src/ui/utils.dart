@@ -1,39 +1,50 @@
+import 'dart:async';
+
 import 'package:conet/constants/enums.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:quickalert/quickalert.dart';
 
 class Utils {
-  static Future<bool?> displayToast(String message) {
-    return Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: AppColor.accentColor,
-      textColor: Colors.white,
-      fontSize: 14.0,
+  static displayToast(String message, BuildContext context) {
+    return QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      title: 'Success',
+      text: message,
+
+      //autoCloseDuration: const Duration(seconds: 3),
     );
   }
 
-  static Future<bool?> displayToastBottomError(String message) {
-    return Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: AppColor.redColor,
-      textColor: Colors.white,
-      fontSize: 14.0,
+  static displayToastNoAutoClose(String message, BuildContext context) {
+    return QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      title: 'Oops...',
+      text: message,
     );
   }
 
-  static Future<bool?> displayToastTopError(String message) {
-    return Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.TOP,
-      backgroundColor: AppColor.redColor,
-      textColor: Colors.white,
-      fontSize: 14.0,
+  static displayToastBottomError(String message, BuildContext context) {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      title: 'Oops...',
+      text: message,
+
+      //autoCloseDuration: const Duration(seconds: 3),
+    );
+  }
+
+  static displayToastTopError(String message, BuildContext context) {
+    return QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      title: 'Oops...',
+      text: message,
+      // autoCloseDuration: const Duration(seconds: 4),
     );
   }
 
@@ -56,26 +67,26 @@ class Utils {
     );
   }
 
-  static SnackBar displaySnackBar(String message,
-      {String? actionMessage, VoidCallback? onClick, Color? backgroundColor, Duration? duration}) {
-    return SnackBar(
-      content: Text(
-        message,
-        style: const TextStyle(color: Colors.white, fontSize: 14.0),
-      ),
-      action: (actionMessage != null)
-          ? SnackBarAction(
-              textColor: Colors.white,
-              label: actionMessage,
-              onPressed: () {
-                return onClick!();
-              },
-            )
-          : null,
-      duration: duration ?? const Duration(seconds: 2),
-      backgroundColor: backgroundColor ?? AppColor.accentColor,
-    );
-  }
+  // static SnackBar displaySnackBar(String message,
+  //     {String? actionMessage, VoidCallback? onClick, Color? backgroundColor, Duration? duration}) {
+  //   return SnackBar(
+  //     content: Text(
+  //       message,
+  //       style: const TextStyle(color: Colors.white, fontSize: 14.0),
+  //     ),
+  //     action: (actionMessage != null)
+  //         ? SnackBarAction(
+  //             textColor: Colors.white,
+  //             label: actionMessage,
+  //             onPressed: () {
+  //               return onClick!();
+  //             },
+  //           )
+  //         : null,
+  //     duration: duration ?? const Duration(seconds: 2),
+  //     backgroundColor: backgroundColor ?? AppColor.accentColor,
+  //   );
+  // }
 
   static hideKeyboard(context) {
     FocusScope.of(context).requestFocus(FocusNode());

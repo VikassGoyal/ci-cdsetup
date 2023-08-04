@@ -18,6 +18,8 @@ import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../api_models/addNewContact_request_model/addNewContact_request_body.dart';
 import '../../bottomNavigation/bottomNavigationBloc.dart';
@@ -1304,7 +1306,13 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
       _loader = false;
     });
     if (response['status'] == true) {
-      Utils.displayToast(response['message'].toString());
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: 'Success',
+        text: response['message'].toString(),
+      );
+      //Utils.displayToast(response['message'].toString(), context);
       await checkPermission();
       context.read<BottomNavigationBloc>().currentIndex = 1;
 
@@ -1314,10 +1322,10 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
         (route) => false,
       );
     } else if (response['status'] == "Token is Expired") {
-      Utils.displayToast('Token is Expired');
+      Utils.displayToastBottomError('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
     }
   }
 

@@ -100,7 +100,7 @@ flutter:
     - assets/json/standalone/
     - assets/json/standalone/images/
     - assets/data/
-   
+
   fonts:
     - family: Dreadnoughtus
       fonts:

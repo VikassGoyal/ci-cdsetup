@@ -118,7 +118,7 @@ class _LoginState extends State<Login> {
       );
     }
 
-    Widget _buildSignInButton() {
+    Widget _buildSignInButton(BuildContext context) {
       return ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -153,12 +153,12 @@ class _LoginState extends State<Login> {
                   MaterialPageRoute(builder: (context) => HomeScreen()),
                 );
               } else {
-                Utils.displayToastBottomError(response["message"]);
+                Utils.displayToastBottomError(response["message"], context);
               }
             } catch (e) {
               bool hasInternet = await checkInternetConnection();
               Utils.displayToastBottomError(
-                  hasInternet ? "Something went wrong" : "Please check your internet connection");
+                  hasInternet ? "Incorrect password" : "Please check your internet connection", context);
               print(e);
             }
           }
@@ -279,7 +279,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      _buildSignInButton(),
+                      _buildSignInButton(context),
                       const SizedBox(height: 20),
                       _buildDontAccount()
                     ],

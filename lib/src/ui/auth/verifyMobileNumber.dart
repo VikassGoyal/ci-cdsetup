@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../bottomNavigation/bottomNavigationBloc.dart';
 
@@ -108,7 +110,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
 
             //print(otpNumber!.length);
             if (otpNumber!.length != 6) {
-              Utils.displayToastBottomError("Please Enter Valid  OTP");
+              Utils.displayToastBottomError("Please Enter Valid  OTP", context);
               return;
             }
             setState(() {
@@ -130,7 +132,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
               });
             } catch (e) {
               print(e);
-              Utils.displayToast("Invalid OTP");
+              Utils.displayToastBottomError("Invalid OTP", context);
               setState(() {
                 _loader = false;
               });
@@ -634,7 +636,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
         },
         verificationFailed: (FirebaseAuthException e) {
           print("verificationFailed");
-          Utils.displayToast("Something went wrong");
+          Utils.displayToastBottomError("Something went wrong", context);
           print(e.message);
         },
         codeSent: (String? verficationID, int? resendToken) {
@@ -672,16 +674,23 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
 
       if (response['status'] == 'validation') {
         if (response['message']['phone'] != null) {
-          Utils.displayToast(response['message']['phone'][0]);
+          Utils.displayToastBottomError(response['message']['phone'][0], context);
         } else if (response['message']['email'] != null) {
-          Utils.displayToast(response['message']['email'][0]);
+          Utils.displayToastBottomError(response['message']['email'][0], context);
         } else if (response['message']['username'] != null) {
-          Utils.displayToast(response['message']['username'][0]);
+          Utils.displayToastBottomError(response['message']['username'][0], context);
         }
       } else if (response['status'] == false) {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       } else {
-        Utils.displayToast(response["message"]);
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          title: 'Success',
+          text: response["message"],
+          autoCloseDuration: const Duration(seconds: 3),
+        );
+        //Utils.displayToast(response["message"], context);
         context.read<BottomNavigationBloc>().currentIndex = 0;
 
         Navigator.pushReplacement(
@@ -695,14 +704,13 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
       final msg = e.response?.data?['message']?['email'][0] ??
           e.response?.data?['message']?['phone'][0] ??
           'Something went wrong.';
-      // Navigator.of(context).pop();
-      Utils.displayToast(msg);
+      Utils.displayToastBottomError(msg, context);
       setState(() {
         _loader = false;
       });
       print(e);
     } catch (e) {
-      Utils.displayToast("Something went wrong.");
+      Utils.displayToast("Something went wrong.", context);
       setState(() {
         _loader = false;
       });

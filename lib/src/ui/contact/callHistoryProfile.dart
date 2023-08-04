@@ -397,7 +397,7 @@ class _CallHistroyProfileState extends State<CallHistroyProfile> {
           _personalNumber.text = contactDetail!.personal!.number!;
         });
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       print(e);

@@ -515,9 +515,6 @@ class _ContactsPageState extends State<ContactsPage> {
               color: AppColor.whiteColor,
             ),
             onPressed: () {
-              analytics.logEvent(
-                  name: "custom_event",
-                  parameters: {"category": "button_click", "action": "click", "label": "login_button"});
               Navigator.push(
                 context,
                 MaterialPageRoute(

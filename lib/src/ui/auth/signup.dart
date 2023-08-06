@@ -16,6 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import '../utils.dart';
@@ -36,7 +37,7 @@ class _SignUpState extends State<SignUp> {
   bool _showPassword = false;
   bool redirected = true;
   String _errorMsg = '';
-
+  final gtm = Gtm.instance;
   //Controller
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -532,7 +533,7 @@ class _SignUpState extends State<SignUp> {
         Utils.displayToast(response["message"]);
       } else {
         Utils.displayToast(response["message"]);
-
+        gtm.push("login", parameters: {" status": "done"});
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -577,10 +578,11 @@ class CustomTextFormFieldBox extends StatefulWidget {
 
 class _CustomTextFormFieldBoxState extends State<CustomTextFormFieldBox> {
   late bool _showPassword;
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
+    gtm.push("screen_view", parameters: {"pageName": "Login Screen"});
     _showPassword = false;
   }
 

@@ -12,6 +12,7 @@ import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,9 +65,12 @@ class _AddContactState extends State<AddContact> {
   List<EntrepreneurData> entreprenerurList = [];
   List<ProfessionalList>? entreprenerurListJson = [];
   bool _loader = false;
+  final gtm = Gtm.instance;
   @override
   void initState() {
     // TODO: implement initState
+    gtm.push("screen_view", parameters: {"pageName": "Add Contact Screen"});
+
     super.initState();
     initcheckPermission();
 

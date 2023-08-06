@@ -14,6 +14,7 @@ import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
@@ -83,10 +84,12 @@ class _MyProfileState extends State<MyProfile> {
   List<String> _values = [];
   List<NetworkImage> popupImages = <NetworkImage>[];
   // bool _showPreview = false;
+  final gtm = Gtm.instance;
 
   @override
   void initState() {
     super.initState();
+    gtm.push("screen_view", parameters: {"pageName": "User Profile Screen"});
     Future.delayed(Duration.zero, () {
       print(widget.phoneNumber);
 

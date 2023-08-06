@@ -21,6 +21,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
@@ -44,6 +45,7 @@ class _SettingsState extends State<Settings> {
   DatabaseHelper databaseHelper = DatabaseHelper.instance;
   TextEditingController? _outputController;
   final List<DeviceContactData> _importportcontacts = [];
+  final gtm = Gtm.instance;
   bool _loader = false;
 
   int totalUsers = 0;
@@ -91,6 +93,7 @@ class _SettingsState extends State<Settings> {
                 child: ListTile(
                     contentPadding: EdgeInsets.only(left: 0, top: 10.h),
                     onTap: () async {
+                      gtm.push("profile_view", parameters: {" status": "done"});
                       SharedPreferences preferences = await SharedPreferences.getInstance();
 
                       Navigator.push(
@@ -168,6 +171,7 @@ class _SettingsState extends State<Settings> {
               ListTile(
                   contentPadding: EdgeInsets.zero,
                   onTap: () {
+                    gtm.push("import_contacts", parameters: {"status": "done"});
                     _showDialog();
                   },
                   title: Text("Import Contacts",
@@ -453,7 +457,7 @@ class _SettingsState extends State<Settings> {
 
       await databaseHelper.trancateAllContacts();
       await databaseHelper.trancateRecentContacts();
-
+      gtm.push("logout", parameters: {" status": "done"});
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

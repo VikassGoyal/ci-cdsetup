@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -19,10 +20,11 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   List<NotificationResponse> notification = [];
   bool _loader = true;
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
+    gtm.push("screen_view", parameters: {"pageName": "Notification Screen"});
     Future.delayed(Duration.zero, () {
       getNotificationData();
     });
@@ -414,6 +416,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         _loader = false;
       });
       if (response['status'] == true) {
+        gtm.push("notification_received", parameters: {" status": "done"});
         var responseData = response['data'];
         setState(() {
           var data = List<NotificationResponse>.from(

@@ -19,6 +19,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
@@ -41,7 +42,7 @@ class _BussinessCardState extends State<BussinessCard> {
   bool _loader = true;
   Color? currentColor;
   ContactDetail? contactDetail;
-
+  final gtm = Gtm.instance;
   void changeColor(Color color) {
     setState(() => currentColor = color);
     locator<StorageService>().setPrefs<String>('businesscardcolor', color.toString());
@@ -50,7 +51,7 @@ class _BussinessCardState extends State<BussinessCard> {
   @override
   void initState() {
     super.initState();
-
+    gtm.push("screen_view", parameters: {"pageName": "Business Card Screen"});
     getQRImage();
     getProfileDetails();
   }
@@ -503,6 +504,7 @@ class _BussinessCardState extends State<BussinessCard> {
       Map<String, dynamic> response = await _contactPageRepository.removeBusinessCard(id);
 
       if (response['status']) {
+        gtm.push("business_card_logo_delete", parameters: {" status": "done"});
         Utils.displayToast("Logo Removed");
         setState(() {
           imageName = "";
@@ -553,6 +555,7 @@ class _BussinessCardState extends State<BussinessCard> {
       });
 
       if (response['status'] == true) {
+        gtm.push("business_card_logo_upload", parameters: {" status": "done"});
         Utils.displayToast(response['message']);
         getProfileDetails();
       } else {

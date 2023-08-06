@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:azlistview/azlistview.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/allContacts.dart';
@@ -25,6 +25,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -63,11 +64,12 @@ class _ContactsPageState extends State<ContactsPage> {
   Barcode? result;
   // QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   bool _loader = false;
   bool _showCancelIcon = false;
   double susItemHeight = 40;
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
@@ -81,7 +83,7 @@ class _ContactsPageState extends State<ContactsPage> {
     _loadedcontacts = _contacts;
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
     //_updateContact();
-
+    gtm.push("screen_view", parameters: {"pageName": "Contact List Screen"});
     SchedulerBinding.instance.addPostFrameCallback((_) => _checkShowDialog());
     _outputController = TextEditingController();
 
@@ -188,6 +190,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
             _clearText();
             if (_contacts[index].userId == null) {
+              gtm.push("contact_details_view", parameters: {"status": "done"});
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -202,6 +205,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   return null;
               });
             } else {
+              gtm.push("mutual_contact_interaction", parameters: {"status": "done"});
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -511,6 +515,9 @@ class _ContactsPageState extends State<ContactsPage> {
               color: AppColor.whiteColor,
             ),
             onPressed: () {
+              analytics.logEvent(
+                  name: "custom_event",
+                  parameters: {"category": "button_click", "action": "click", "label": "login_button"});
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -545,6 +552,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       child: TextField(
                         controller: _textEditingController,
                         onChanged: (value) {
+                          gtm.push("contact_search", parameters: {"status": "done"});
                           filterSearchResults(value);
 
                           setState(() {

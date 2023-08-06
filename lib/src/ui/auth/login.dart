@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:flutter/services.dart';
 
@@ -32,10 +33,11 @@ class _LoginState extends State<Login> {
   final FocusNode _passwordControllerFocus = FocusNode();
   bool _loader = false;
   bool _showPassword = false;
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
+    gtm.push("screen_view", parameters: {"pageName": "Signup Screen"});
     initlocaldb();
   }
 
@@ -147,6 +149,7 @@ class _LoginState extends State<Login> {
               });
 
               if (response['message'] == 'success') {
+                gtm.push("login", parameters: {" status": "done"});
                 context.read<BottomNavigationBloc>().currentIndex = 0;
                 Navigator.pushReplacement(
                   context,

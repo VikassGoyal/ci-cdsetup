@@ -71,6 +71,8 @@ dependencies:
   path: ^1.8.3
   flutter_screenutil: ^5.8.4
   get_it: ^7.6.0
+  firebase_analytics: ^10.4.4
+  gtm: ^0.0.8
 
 dependency_overrides:
   http: ^1.0.0

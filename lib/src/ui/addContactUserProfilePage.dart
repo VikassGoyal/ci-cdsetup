@@ -12,6 +12,7 @@ import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:gtm/gtm.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
@@ -85,6 +86,7 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
 
   @override
   void initState() {
+    final gtm = Gtm.instance;
     _conetUser = widget.conetUser;
     if (_conetUser) {
       initForConetUser();
@@ -1298,7 +1300,9 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
     setState(() {
       _loader = false;
     });
+    final gtm = Gtm.instance;
     if (response['status'] == true) {
+      gtm.push("contact_add", parameters: {" status": "done"});
       Utils.displayToast(response['message'].toString());
       await checkPermission();
 

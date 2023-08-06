@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -265,6 +266,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
       );
     }
 
+    final gtm = Gtm.instance;
     return Scaffold(
         backgroundColor: AppColor.whiteColor,
         appBar: AppBar(
@@ -330,6 +332,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                   try {
                     var response = await ContactBloc().deleteContact(widget.id ?? 0);
                     if (response['success'] == true) {
+                      gtm.push("contact_delete", parameters: {" status": "done"});
                       Utils.displayToast(response["message"]);
                       _updatepage = true;
                       Navigator.of(context).pop(_updatepage);

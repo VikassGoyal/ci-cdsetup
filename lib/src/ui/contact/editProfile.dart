@@ -26,6 +26,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
+import 'package:gtm/gtm.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
@@ -60,7 +61,7 @@ class _EditProfileState extends State<EditProfile> {
   bool _loaderoverflow = true;
   bool _valuesChanged = false;
   bool _loader = true;
-
+  final gtm = Gtm.instance;
   final _personalName = TextEditingController();
   final _personalNumber = TextEditingController();
   final _personalSecondaryNumber = TextEditingController();
@@ -109,7 +110,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-
+    gtm.push("screen_view", parameters: {"pageName": "Edit Contact Screen"});
     selectedDate = DateTime.now();
 
     Future.delayed(Duration.zero, () {
@@ -2456,6 +2457,7 @@ class _EditProfileState extends State<EditProfile> {
     });
 
     if (response['status'] == true) {
+      gtm.push("profile_image_upload", parameters: {" status": "done"});
       Utils.displayToast(response['message']);
       getProfileDetails();
     } else {

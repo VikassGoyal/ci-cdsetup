@@ -57,6 +57,7 @@ class ContactPageRepository {
       allContacts = List<AllContacts>.from(response['data'].map((item) => AllContacts.fromJson(item)));
 
       allContacts.forEach((element) async {
+        print(element.id);
         await databaseHelper.insertallContact(element);
       });
     }

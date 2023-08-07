@@ -555,7 +555,7 @@ class _BussinessCardState extends State<BussinessCard> {
       });
 
       if (response['status'] == true) {
-        gtm.push("business_card_logo_delete", parameters: {"status": "done"});
+        gtm.push("business_card_logo_updated", parameters: {"status": "done"});
         Utils.displayToast(response['message'], context);
         getProfileDetails();
       } else {

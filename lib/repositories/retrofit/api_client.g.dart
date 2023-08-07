@@ -24,6 +24,7 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = body.toJson();
+    _dio.options.connectTimeout = null;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -45,12 +46,40 @@ class _ApiClient implements ApiClient {
   }
 
   @override
+  Future<dynamic> searchSuggestions() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'auth_header_required': '1'};
+    _headers.removeWhere((k, v) => v == null);
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/api/user/search-suggestions',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
   Future<dynamic> logout() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
+    _dio.options.connectTimeout = null;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -130,7 +159,6 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = body.toJson();
-    _dio.options.connectTimeout = null; // Set the connection timeout to null
 
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
@@ -725,7 +753,7 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = changePasswordrequestBody;
+    final _data = changePasswordrequestBody.toJson();
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,

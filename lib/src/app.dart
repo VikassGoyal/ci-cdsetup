@@ -30,6 +30,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+    BlocProvider.of<BottomNavigationBloc>(context).add(AppStarted());
   }
 
   @override

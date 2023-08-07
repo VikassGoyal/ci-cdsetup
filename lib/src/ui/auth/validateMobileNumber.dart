@@ -16,7 +16,7 @@ class ValidateMobileNumber extends StatefulWidget {
   const ValidateMobileNumber({super.key});
 
   @override
-  _ValidateMobileNumberState createState() => _ValidateMobileNumberState();
+  State<ValidateMobileNumber> createState() => _ValidateMobileNumberState();
 }
 
 class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
@@ -61,7 +61,7 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
 
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => ValidateMobileNumberVerified()),
+            MaterialPageRoute(builder: (context) => const ValidateMobileNumberVerified()),
           );
         },
         child: Container(
@@ -76,7 +76,7 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
                   color: AppColor.whiteColor,
                   fontWeight: FontWeight.w300,
                   fontStyle: FontStyle.normal,
-                  fontSize: 16.sp,
+                  fontSize: 18.sp,
                 ),
               ),
               Text(
@@ -86,7 +86,7 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
                   color: AppColor.secondaryColor,
                   fontWeight: FontWeight.w300,
                   fontStyle: FontStyle.normal,
-                  fontSize: 16.sp,
+                  fontSize: 18.sp,
                 ),
               ),
             ],
@@ -216,7 +216,7 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w300,
                         fontStyle: FontStyle.normal,
-                        letterSpacing: -0.5,
+                        letterSpacing: -0.2,
                       ),
                     ),
                     Text(
@@ -227,10 +227,10 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w300,
                         fontStyle: FontStyle.normal,
-                        letterSpacing: -0.5,
+                        letterSpacing: -0.2,
                       ),
                     ),
-                    SizedBox(height: 50.h),
+                    SizedBox(height: 40.h),
                     Center(
                       child: GestureDetector(
                         child: Image.asset(
@@ -240,7 +240,7 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 50.h),
+                    SizedBox(height: 30.h),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w),
                       child: Column(
@@ -256,15 +256,15 @@ class _ValidateMobileNumberState extends State<ValidateMobileNumber> {
                                 color: AppColor.whiteColor,
                                 fontWeight: FontWeight.w300,
                                 fontStyle: FontStyle.normal,
-                                fontSize: 14.sp,
-                                letterSpacing: -0.5,
+                                fontSize: 15.sp,
+                                letterSpacing: -0.3,
                               ),
                             ),
                           ),
                           termAndCondition(),
-                          SizedBox(height: 42.h),
+                          SizedBox(height: 32.h),
                           _buildGenerateOTP(),
-                          const SizedBox(height: 30),
+                          SizedBox(height: 30.h),
                         ],
                       ),
                     ),

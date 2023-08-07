@@ -29,4 +29,5 @@ class ApiConstants {
   static const String newInconet = '/api/user/newInconet';
   static const String totalcount = '/api/user/totalcount';
   static const String changepassword = '/api/user/changepassword';
+  static const String searchSuggestions = '/api/user/search-suggestions';
 }

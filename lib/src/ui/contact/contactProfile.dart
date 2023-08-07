@@ -104,9 +104,8 @@ class _ContactProfileState extends State<ContactProfile> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      print(widget.phoneNumber);
       getProfileDetails(widget.phoneNumber!);
-      getMutualContacts(widget.contactmetaid);
+      getMutualContacts(widget.userid);
 
       // getProfileDetails("9566664128");
     });
@@ -124,8 +123,6 @@ class _ContactProfileState extends State<ContactProfile> {
     print("switch $switchTypeStatus");
 
     _socialInstagram.text = "";
-    print("username");
-    print(userImage);
   }
 
   @override
@@ -1319,7 +1316,7 @@ class _ContactProfileState extends State<ContactProfile> {
                   child: InkWell(
                     onTap: () {
                       if (_personalEmail.text == '') {
-                        Utils.displayToast("Mail id not found");
+                        Utils.displayToastBottomError("Mail id not found", context);
                         return;
                       }
 
@@ -1584,7 +1581,7 @@ class _ContactProfileState extends State<ContactProfile> {
           });
         }
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       print(e);
@@ -1648,7 +1645,7 @@ class _ContactProfileState extends State<ContactProfile> {
       setState(() {
         _loaderoverflow = false;
       });
-      Utils.displayToast(response["message"]);
+      Utils.displayToast(response["message"], context);
       // if (response['status'] == true) {}
     } catch (e) {
       print(e);
@@ -1665,14 +1662,14 @@ class _ContactProfileState extends State<ContactProfile> {
       if (await canLaunch(whatappURLIos)) {
         await launch(whatappURLIos, forceSafariVC: false);
       } else {
-        Utils.displayToast("whatsapp no installed");
+        Utils.displayToastBottomError("whatsapp no installed", context);
       }
     } else {
       // android , web
       if (await canLaunch(whatsappURlAndroid)) {
         await launch(whatsappURlAndroid);
       } else {
-        Utils.displayToast("whatsapp no installed");
+        Utils.displayToastBottomError("whatsapp no installed", context);
       }
     }
   }

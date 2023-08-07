@@ -90,23 +90,11 @@ class _SignUpState extends State<SignUp> {
               setState(() {
                 _loader = false;
               });
-              ScaffoldMessenger.of(context).showSnackBar(
-                Utils.displaySnackBar(
-                  'Please check your internet connection',
-                  duration: const Duration(seconds: 2),
-                  backgroundColor: AppColor.redColor,
-                ),
-              );
+              Utils.displayToastNoAutoClose('Please check your internet connection', context);
             }
           } else {
             //if there is any error in validations then show some common Error msg
-            ScaffoldMessenger.of(context).showSnackBar(
-              Utils.displaySnackBar(
-                _errorMsg,
-                duration: const Duration(seconds: 2),
-                backgroundColor: AppColor.redColor,
-              ),
-            );
+            Utils.displayToastNoAutoClose(_errorMsg, context);
           }
         },
         child: Container(
@@ -523,17 +511,18 @@ class _SignUpState extends State<SignUp> {
 
       if (response['status'] == 'validation') {
         if (response['message']['phone'] != null) {
-          Utils.displayToast(response['message']['phone'][0]);
+          Utils.displayToastBottomError(response['message']['phone'][0], context);
         } else if (response['message']['email'] != null) {
-          Utils.displayToast(response['message']['email'][0]);
+          Utils.displayToastBottomError(response['message']['email'][0], context);
         } else if (response['message']['username'] != null) {
-          Utils.displayToast(response['message']['username'][0]);
+          Utils.displayToastBottomError(response['message']['username'][0], context);
         }
       } else if (response['status'] == false) {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       } else {
-        Utils.displayToast(response["message"]);
-        gtm.push("login", parameters: {" status": "done"});
+        gtm.push("Signup", parameters: {" status": "done"});
+        Utils.displayToastBottomError(response["message"], context);
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -543,7 +532,7 @@ class _SignUpState extends State<SignUp> {
       }
     } catch (e) {
       // Navigator.of(context).pop();
-      Utils.displayToast("Something went wrong!");
+      Utils.displayToastBottomError("Something went wrong!", context);
       setState(() {
         _loader = false;
       });
@@ -582,7 +571,7 @@ class _CustomTextFormFieldBoxState extends State<CustomTextFormFieldBox> {
   @override
   void initState() {
     super.initState();
-    gtm.push("screen_view", parameters: {"pageName": "Login Screen"});
+    gtm.push("screen_view", parameters: {"pageName": "Signup Screen"});
     _showPassword = false;
   }
 

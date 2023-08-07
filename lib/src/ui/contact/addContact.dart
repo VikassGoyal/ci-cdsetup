@@ -15,6 +15,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../api_models/addNewContact_request_model/addNewContact_request_body.dart';
@@ -95,11 +97,11 @@ class _AddContactState extends State<AddContact> {
             print("clicked");
 
             if (_personalNumber.text.length == 0) {
-              Utils.displayToastBottomError("Please Enter Valid Phone  Number");
+              Utils.displayToastBottomError("Please Enter Valid Phone  Number", context);
               return;
             }
             if (_personalNumber.text.length >= 1 && !_personalNumber.text.isValidMobile()) {
-              Utils.displayToastBottomError("Please Enter 10-digit Phone Number");
+              Utils.displayToastBottomError("Please Enter 10-digit Phone Number", context);
               return;
             }
 
@@ -114,7 +116,7 @@ class _AddContactState extends State<AddContact> {
               });
               getProfileDetails();
             } else {
-              Utils.displayToast("Please enter valid Mobile number.");
+              Utils.displayToastBottomError("Please enter valid Mobile number.", context);
             }
           },
           child: Container(
@@ -144,16 +146,17 @@ class _AddContactState extends State<AddContact> {
             children: [
               const SizedBox(height: 16),
               TextFormFieldContact(
-                  hintText: "Enter the Mobile Number",
-                  padding: 14.0,
-                  margin: 22.0,
-                  maxLength: 10,
-                  textInputType: TextInputType.number,
-                  actionKeyboard: TextInputAction.done,
-                  onChanged: (value) {},
-                  parametersValidate: "Please enter Mobile number.",
-                  controller: _personalNumber,
-                  regexexp: RegExp(r'[0-9]')),
+                hintText: "Enter the Mobile Number",
+                padding: 14.0,
+                margin: 22.0,
+                maxLength: 10,
+                textInputType: TextInputType.number,
+                actionKeyboard: TextInputAction.done,
+                onChanged: (value) {},
+                parametersValidate: "Please enter Mobile number.",
+                controller: _personalNumber,
+                regexexp: RegExp(r'[0-9]'),
+              ),
               SizedBox(height: 20.h),
               contactSearchButton()
             ],
@@ -233,15 +236,22 @@ class _AddContactState extends State<AddContact> {
         _loader = false;
       });
 
+      print(response);
       if (response['status'] == true) {
         _conetUser = response['conetuser'];
 
         displayProfileScreen(response);
       } else {
-        Utils.displayToastTopError(response["message"]);
+        Utils.displayToastTopError(response["message"], context);
       }
     } catch (e) {
-      print(e);
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Oops...',
+        text: "Already exist in your contact list",
+      );
+      //Utils.displayToastTopError("Already exist in your contact list", context);
     }
   }
 
@@ -353,7 +363,6 @@ class _AddContactState extends State<AddContact> {
       _loader = false;
     });
     if (response['status'] == true) {
-      Utils.displayToast(response['message'].toString());
       await checkPermission();
 
       Navigator.pushReplacement(
@@ -361,10 +370,10 @@ class _AddContactState extends State<AddContact> {
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
     } else if (response['status'] == "Token is Expired") {
-      Utils.displayToast('Token is Expired');
+      Utils.displayToastBottomError('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
     }
   }
 

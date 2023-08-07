@@ -488,7 +488,7 @@ class _BussinessCardState extends State<BussinessCard> {
           imageName = contactDetail!.businesscardLogo ?? "";
         });
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       print(e);
@@ -504,8 +504,8 @@ class _BussinessCardState extends State<BussinessCard> {
       Map<String, dynamic> response = await _contactPageRepository.removeBusinessCard(id);
 
       if (response['status']) {
-        gtm.push("business_card_logo_delete", parameters: {" status": "done"});
-        Utils.displayToast("Logo Removed");
+        gtm.push("business_card_logo_delete", parameters: {"status": "done"});
+        Utils.displayToast("Logo Removed", context);
         setState(() {
           imageName = "";
         });
@@ -534,7 +534,7 @@ class _BussinessCardState extends State<BussinessCard> {
       });
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
-      Utils.displayToast("Failed to pick image: $e");
+      Utils.displayToastBottomError("Failed to pick image: $e", context);
     }
   }
 
@@ -555,11 +555,11 @@ class _BussinessCardState extends State<BussinessCard> {
       });
 
       if (response['status'] == true) {
-        gtm.push("business_card_logo_upload", parameters: {" status": "done"});
-        Utils.displayToast(response['message']);
+        gtm.push("business_card_logo_delete", parameters: {"status": "done"});
+        Utils.displayToast(response['message'], context);
         getProfileDetails();
       } else {
-        Utils.displayToast("Try Again!");
+        Utils.displayToastBottomError("Try Again!", context);
       }
     } catch (e) {
       print(e);

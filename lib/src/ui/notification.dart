@@ -426,7 +426,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           print(notification);
         });
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       setState(() {
@@ -446,7 +446,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           .contactRequestResponse(RequestContactResponseRequestBody(id: type, responseid: requestContactId));
       if (response["status"] == true) {
         setState(() {
-          Utils.displayToast(response["message"]);
+          Utils.displayToast(response["message"], context);
           notification.removeAt(index);
         });
       }

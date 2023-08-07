@@ -10,6 +10,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../api_models/deleteContact__request_model/deleteContact.dart';
@@ -203,7 +205,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                   child: InkWell(
                     onTap: () {
                       if (_personalEmail.text == "") {
-                        Utils.displayToastBottomError("Mail id not found");
+                        Utils.displayToastBottomError("Mail id not found", context);
                         return;
                       }
 
@@ -332,20 +334,20 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                   try {
                     var response = await ContactBloc().deleteContact(widget.id ?? 0);
                     if (response['success'] == true) {
-                      gtm.push("contact_delete", parameters: {" status": "done"});
-                      Utils.displayToast(response["message"]);
+                      gtm.push("contact_delete", parameters: {"status": "done"});
+                      QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.success,
+                        title: 'Success',
+                        text: response['message'].toString(),
+                      );
                       _updatepage = true;
                       Navigator.of(context).pop(_updatepage);
-                      //     Navigator.pushReplacement(
-                      //     context,
-                      //      MaterialPageRoute(
-                      //       builder: (context) => ContactsPage(),
-                      //      ),
 
                       // );
                       return;
                     } else {
-                      Utils.displayToast(response["message"]);
+                      Utils.displayToastBottomError(response["message"], context);
                       return;
                     }
                   } catch (e) {
@@ -465,14 +467,14 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
       if (await canLaunch(whatappURLIos)) {
         await launch(whatappURLIos, forceSafariVC: false);
       } else {
-        Utils.displayToast("whatsapp no installed");
+        Utils.displayToastBottomError("whatsapp no installed", context);
       }
     } else {
       // android , web
       if (await canLaunch(whatsappURlAndroid)) {
         await launch(whatsappURlAndroid);
       } else {
-        Utils.displayToast("whatsapp no installed");
+        Utils.displayToastBottomError("whatsapp no installed", context);
       }
     }
   }

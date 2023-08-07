@@ -16,6 +16,7 @@ class TextFormFieldContact extends StatefulWidget {
   final bool obscureText;
   final bool? readonly;
   final bool? enable;
+  final TextCapitalization textCapitalization;
   final TextEditingController? controller;
   final String? functionValidate;
   final String? parametersValidate;
@@ -53,6 +54,7 @@ class TextFormFieldContact extends StatefulWidget {
     this.regexexp,
     this.validator,
     this.enableFormatters = true,
+    this.textCapitalization = TextCapitalization.none,
   });
 
   @override
@@ -78,7 +80,7 @@ class _TextFormFieldContactState extends State<TextFormFieldContact> {
             onChanged: (value) {
               if (widget.onChanged != null) widget.onChanged!(value);
             },
-
+            textCapitalization: widget.textCapitalization,
             readOnly: widget.readonly!,
             validator: widget.validator,
             style: TextStyle(

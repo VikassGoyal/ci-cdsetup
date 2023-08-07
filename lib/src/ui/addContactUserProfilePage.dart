@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
+import 'package:conet/src/appScreen.dart';
 import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
@@ -13,13 +14,18 @@ import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:gtm/gtm.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../api_models/addNewContact_request_model/addNewContact_request_body.dart';
+import '../../bottomNavigation/bottomNavigationBloc.dart';
 import '../../models/imageUploadModel.dart';
+import '../../repositories/contactPageRepository.dart';
 
 class AddContactUserProfilePage extends StatefulWidget {
   const AddContactUserProfilePage({super.key, this.contactDetails, required this.conetUser, this.contactNumber});
@@ -517,6 +523,7 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
       padding: 14.0,
       readonly: readOnlyValue,
       margin: 22.0,
+      enableFormatters: false,
       textInputType: TextInputType.text,
       actionKeyboard: TextInputAction.next,
       onSubmitField: () {},
@@ -1303,19 +1310,26 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
     final gtm = Gtm.instance;
     if (response['status'] == true) {
       gtm.push("contact_add", parameters: {" status": "done"});
-      Utils.displayToast(response['message'].toString());
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: 'Success',
+        text: response['message'].toString(),
+      );
+      //Utils.displayToast(response['message'].toString(), context);
       await checkPermission();
+      context.read<BottomNavigationBloc>().currentIndex = 1;
 
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => AppScreen(value: true)),
         (route) => false,
       );
     } else if (response['status'] == "Token is Expired") {
-      Utils.displayToast('Token is Expired');
+      Utils.displayToastBottomError('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
     }
   }
 

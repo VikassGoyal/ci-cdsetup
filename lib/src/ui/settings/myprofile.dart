@@ -487,14 +487,18 @@ class _MyProfileState extends State<MyProfile> {
             );
           },
           child: Container(
-            constraints: BoxConstraints(
-              minHeight: 50.0.h,
-            ),
+            constraints: BoxConstraints(minHeight: 50.0.h),
             alignment: Alignment.center,
             child: Text(
               "Next",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.button!.apply(color: AppColor.whiteColor),
+              style: TextStyle(
+                fontFamily: kSfproRoundedFontFamily,
+                color: AppColor.whiteColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              ),
             ),
           ),
         ),
@@ -514,6 +518,21 @@ class _MyProfileState extends State<MyProfile> {
         onSubmitField: () {},
         controller: _professionalOccupation,
         parametersValidate: "Please enter Occupation.",
+      );
+    }
+
+    Widget _buildIndustry() {
+      return TextFormFieldContact(
+        textColor: AppColor.blackColor,
+        hintText: "Industry",
+        padding: 16.0,
+        margin: 22.0,
+        readonly: true,
+        textInputType: TextInputType.text,
+        actionKeyboard: TextInputAction.next,
+        onSubmitField: () {},
+        controller: _professionalIndustry,
+        parametersValidate: "Please enter Industry.",
       );
     }
 
@@ -1073,15 +1092,27 @@ class _MyProfileState extends State<MyProfile> {
                   visible: _values.isNotEmpty,
                   child: keywordbody(),
                 ),
-                SizedBox(height: 16.h),
+                Visibility(
+                  visible: _values.isNotEmpty,
+                  child: SizedBox(height: 16.h),
+                ),
                 _buildLandLine(),
-                SizedBox(height: 30),
+                SizedBox(height: 30.h),
                 _buildPersonalUpdateButton(),
-                SizedBox(height: 30),
+                SizedBox(height: 80.h),
               ]
             : [
                 SizedBox(height: 26),
                 _buildOccupation(),
+                Visibility(
+                  visible: _companyVisible,
+                  child: SizedBox(height: 16.h),
+                ),
+                Visibility(
+                  visible: !_companyVisible,
+                  child: SizedBox(height: 16.h),
+                ),
+                _buildIndustry(),
                 Visibility(
                   visible: _companyVisible,
                   child: SizedBox(height: 16.h),
@@ -1161,13 +1192,11 @@ class _MyProfileState extends State<MyProfile> {
       return Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 77.h, bottom: 24.h),
+            padding: EdgeInsets.only(top: 77.h, bottom: 4.h),
             child: Text(_personalName.text ?? "Unknown Number",
                 style: TextStyle(fontSize: 20.sp, fontFamily: kSfproRoundedFontFamily, fontWeight: FontWeight.w600)),
           ),
-          SizedBox(
-            height: 10.h,
-          ),
+          SizedBox(height: 10.h),
           selectButton(),
           _buildformBody(),
         ],
@@ -1231,7 +1260,10 @@ class _MyProfileState extends State<MyProfile> {
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context);
+            Navigator.popUntil(
+              context,
+              (route) => route.isFirst,
+            );
           },
           child: Container(
             child: Row(
@@ -1351,6 +1383,7 @@ class _MyProfileState extends State<MyProfile> {
         if (contactDetail?.professional != null) {
           _occupationValue = contactDetail?.professional?.occupation ?? "";
           _professionalOccupation.text = contactDetail?.professional?.occupation ?? "";
+          _professionalIndustry.text = contactDetail?.professional?.industry ?? '';
           _professionalCompany.text = contactDetail?.professional?.company ?? "";
           _professionalCompanyWebsite.text = contactDetail?.professional?.companyWebsite ?? "";
           _professionalSchool.text = contactDetail?.professional?.schoolUniversity ?? "";
@@ -1411,7 +1444,7 @@ class _MyProfileState extends State<MyProfile> {
 
         setState(() {});
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       print(e);

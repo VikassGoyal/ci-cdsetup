@@ -7,6 +7,7 @@ import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/models/recentCalls.dart';
 import 'package:conet/repositories/repositories.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
+import 'package:conet/src/ui/addContactUserProfilePage.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/src/ui/contact/nonConetContactProfile.dart';
@@ -26,23 +27,30 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gtm/gtm.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
 import '../../api_models/qrValue_request_model/qrValue_request_body.dart';
 import '../../bottomNavigation/bottomNavigationBloc.dart';
+import '../../models/contactDetails.dart';
 import 'contact/contactProfile.dart';
 
 class ContactsPage extends StatefulWidget {
   var contactsData;
   var mostDailedContacts;
+  bool? updatebool = false;
 
-  ContactsPage({this.contactsData, this.mostDailedContacts}) : super();
+  ContactsPage({this.contactsData, this.mostDailedContacts, this.updatebool}) : super();
 
   @override
   _ContactsPageState createState() => _ContactsPageState();
@@ -70,6 +78,8 @@ class _ContactsPageState extends State<ContactsPage> {
   bool _showCancelIcon = false;
   double susItemHeight = 40;
   final gtm = Gtm.instance;
+  bool updatecheck = false;
+
   @override
   void initState() {
     super.initState();
@@ -84,6 +94,12 @@ class _ContactsPageState extends State<ContactsPage> {
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
     //_updateContact();
     gtm.push("screen_view", parameters: {"pageName": "Contact List Screen"});
+    updatecheck = widget.updatebool ?? false;
+    if (updatecheck) {
+      updatecheck = false;
+      _updateContact();
+    }
+
     SchedulerBinding.instance.addPostFrameCallback((_) => _checkShowDialog());
     _outputController = TextEditingController();
 
@@ -505,7 +521,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 ),
               ).then((value) {
                 print("value : $value");
-                _updateContact();
+                if (value) _updateContact();
               });
             },
           ),
@@ -522,7 +538,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 ),
               ).then((value) {
                 print("value : $value");
-                _updateContact();
+                if (value) _updateContact();
               });
             },
           )
@@ -935,12 +951,12 @@ class _ContactsPageState extends State<ContactsPage> {
       if (reqStatus.isGranted) {
         _importContacts();
       } else if (reqStatus.isDenied) {
-        Utils.displayToast("Permission Denied");
+        Utils.displayToastBottomError("Permission Denied", context);
       } else if (reqStatus.isPermanentlyDenied) {
         openAppSettings();
-        Utils.displayToast("Permission Denied Permanently");
+        Utils.displayToastBottomError("Permission Denied Permanently", context);
       } else {
-        Utils.displayToast("Something Went Wrong ");
+        Utils.displayToastBottomError("Something Went Wrong ", context);
       }
     }
   }
@@ -967,7 +983,7 @@ class _ContactsPageState extends State<ContactsPage> {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setBool('imported', true);
         _updateContact();
-        Utils.displayToast("Successfully imported");
+        Utils.displayToast("Successfully imported", context);
       } else if (response['status'] == "Token is Expired") {
         tokenExpired(context);
         setState(() {
@@ -977,14 +993,14 @@ class _ContactsPageState extends State<ContactsPage> {
         setState(() {
           _loader = false;
         });
-        Utils.displayToast("Something went wrong");
+        Utils.displayToastBottomError("Something went wrong", context);
       }
     } catch (e) {
       print(e);
       setState(() {
         _loader = false;
       });
-      Utils.displayToast("Something went wrong");
+      Utils.displayToastBottomError("Something went wrong", context);
     }
   }
 
@@ -995,25 +1011,28 @@ class _ContactsPageState extends State<ContactsPage> {
       });
     }
     await contactPageRepository!.getallContacts();
+    if (mounted) {
+      setState(() {
+        _loader = false;
+      });
+    }
 
-    setState(() {
-      _loader = false;
-    });
     var response = contactPageRepository!.getData();
 
-    setState(() {
-      _contacts = [];
-      _loadedcontacts = [];
-      _contacts = response;
-      _loadedcontacts = _contacts;
-    });
+    if (mounted) {
+      setState(() {
+        _contacts = [];
+        _loadedcontacts = [];
+        _contacts = response;
+        _loadedcontacts = _contacts;
+      });
+    }
 
     _handleList(_contacts);
   }
 
 //QRscanner Start
   _checkQRPermission() async {
-    print("coming");
     var status = await Permission.camera.status;
     print(status);
     if (status.isGranted) {
@@ -1024,7 +1043,7 @@ class _ContactsPageState extends State<ContactsPage> {
       if (reqStatus.isGranted) {
         scanQrCode();
       } else if (reqStatus.isDenied) {
-        Utils.displayToast("Permission Denied");
+        Utils.displayToastBottomError("Permission Denied", context);
       }
     }
   }
@@ -1064,27 +1083,62 @@ class _ContactsPageState extends State<ContactsPage> {
 
   _sendQrApi() async {
     //var requestBody = {"value": _outputController?.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+    var Qrresponse = await ContactBloc().sendQrValue(QrValueRequestBody(
       value: _outputController?.text,
-      qrcode: false,
+      qrcode: true,
     ));
-
-    if (response['status'] == true) {
-      Utils.displayToast("Scanned successfully");
-      setState(() {
-        _loader = false;
-      });
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) {
-          return NotificationScreen();
-        }),
+    var contactDetail;
+    if (Qrresponse['status'] == true) {
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: 'Success',
+        text: "Scanned successfully",
       );
-    } else if (response['status'] == "Token is Expired") {
-      Utils.displayToast('Token is Expired');
+      // setState(() {
+      //   _loader = false;
+      // });
+      try {
+        // var requestBody = {
+        //   "phone": _outputController!.text,
+        // };
+        var response = await ContactBloc()
+            .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: Qrresponse["contact"]["phone"]));
+        if (response["user"] != null) {
+          contactDetail = ContactDetail.fromJson(response["user"]);
+          setState(() {
+            _loader = false;
+          });
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) {
+                return AddContactUserProfilePage(
+                  contactDetails: contactDetail,
+                  conetUser: true,
+                );
+              },
+            ),
+          );
+        } else {
+          setState(() {
+            _loader = false;
+          });
+          Fluttertoast.cancel();
+          Utils.displayToastBottomError(response["message"], context);
+        }
+      } catch (e) {
+        setState(() {
+          _loader = false;
+        });
+        //Utils.displayToastBottomError("Something went wrong", context);
+      }
+    } else if (Qrresponse['status'] == "Token is Expired") {
+      Utils.displayToastBottomError('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
     }
   }
 

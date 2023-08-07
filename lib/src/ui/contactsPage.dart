@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:azlistview/azlistview.dart';
 import 'package:conet/blocs/contactBloc.dart';
@@ -68,7 +69,6 @@ class _ContactsPageState extends State<ContactsPage> {
   TextEditingController? _outputController;
   ContactPageRepository? contactPageRepository;
   FocusNode _focusNode = FocusNode();
-
   Barcode? result;
   // QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -93,7 +93,7 @@ class _ContactsPageState extends State<ContactsPage> {
     _loadedcontacts = _contacts;
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
     //_updateContact();
-    gtm.push("screen_view", parameters: {"pageName": "Contact List Screen"});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kContactListScreen});
     updatecheck = widget.updatebool ?? false;
     if (updatecheck) {
       updatecheck = false;
@@ -206,7 +206,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
             _clearText();
             if (_contacts[index].userId == null) {
-              gtm.push("contact_details_view", parameters: {"status": "done"});
+              gtm.push(GTMConstants.kcontactDetailsViewEvent, parameters: {"status": "done"});
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -221,7 +221,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   return null;
               });
             } else {
-              gtm.push("mutual_contact_interaction", parameters: {"status": "done"});
+              gtm.push(GTMConstants.kMutualContactsScreen, parameters: {"status": "done"});
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -402,7 +402,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       "assets/icons/ic_list_call.svg",
                     ),
                     onPressed: () {
-                      print("Cliked");
+                      gtm.push(GTMConstants.kCallEvent, parameters: {"status": "done"});
                       _callNumber(_contacts[index].phone!);
                     },
                   ),
@@ -565,7 +565,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       child: TextField(
                         controller: _textEditingController,
                         onChanged: (value) {
-                          gtm.push("contact_search", parameters: {"status": "done"});
+                          gtm.push(GTMConstants.kcontactSearchEvent, parameters: {"status": "done"});
                           filterSearchResults(value);
 
                           setState(() {
@@ -718,6 +718,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     itemBuilder: (BuildContext ctxt, int i) {
                       return InkWell(
                         onTap: () {
+                          gtm.push(GTMConstants.kCallEvent, parameters: {"status": "done"});
                           _callNumber(recentCalls[i].number!);
                         },
                         child: Container(

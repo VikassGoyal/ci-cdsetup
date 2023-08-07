@@ -8,6 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gtm/gtm.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../../utils/gtm_constants.dart';
+
 class QRScreen extends StatefulWidget {
   const QRScreen({Key? key}) : super(key: key);
 
@@ -25,7 +27,7 @@ class _QRScreenState extends State<QRScreen> {
 
   @override
   void reassemble() {
-    gtm.push("screen_view", parameters: {"pageName": "QR Code Screen"});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kQRCodeScreen});
     super.reassemble();
     if (Platform.isAndroid) {
       controller!.pauseCamera();

@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:conet/utils/check_internet_connection.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:flutter/services.dart';
 
 import 'package:conet/blocs/userBloc.dart';
@@ -520,8 +521,8 @@ class _SignUpState extends State<SignUp> {
       } else if (response['status'] == false) {
         Utils.displayToastBottomError(response["message"], context);
       } else {
-        gtm.push("Signup", parameters: {" status": "done"});
-        Utils.displayToastBottomError(response["message"], context);
+        gtm.push(GTMConstants.kSignupEvent, parameters: {" status": "done"});
+        Utils.displayToast(response["message"], context);
 
         Navigator.pushReplacement(
           context,
@@ -571,7 +572,7 @@ class _CustomTextFormFieldBoxState extends State<CustomTextFormFieldBox> {
   @override
   void initState() {
     super.initState();
-    gtm.push("screen_view", parameters: {"pageName": "Signup Screen"});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kSignupScreen});
     _showPassword = false;
   }
 

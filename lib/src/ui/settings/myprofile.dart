@@ -10,6 +10,7 @@ import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/contact/editProfile.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +90,7 @@ class _MyProfileState extends State<MyProfile> {
   @override
   void initState() {
     super.initState();
-    gtm.push("screen_view", parameters: {"pageName": "User Profile Screen"});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kUserProfileScreen});
     Future.delayed(Duration.zero, () {
       print(widget.phoneNumber);
 

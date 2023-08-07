@@ -12,6 +12,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gtm/gtm.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../utils/gtm_constants.dart';
+
 class NotificationScreen extends StatefulWidget {
   @override
   _NotificationScreenState createState() => _NotificationScreenState();
@@ -24,7 +26,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     super.initState();
-    gtm.push("screen_view", parameters: {"pageName": "Notification Screen"});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kNotificationScreen});
     Future.delayed(Duration.zero, () {
       getNotificationData();
     });
@@ -416,7 +418,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         _loader = false;
       });
       if (response['status'] == true) {
-        gtm.push("notification_received", parameters: {" status": "done"});
+        gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {" status": "done"});
         var responseData = response['data'];
         setState(() {
           var data = List<NotificationResponse>.from(

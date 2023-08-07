@@ -3,10 +3,12 @@ import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import '../../../api_models/forgotpassword__request_model/forgotpassword_request_body.dart';
 import '../../../blocs/userBloc.dart';
+import '../../../utils/gtm_constants.dart';
 import '../utils.dart';
 import 'login.dart';
 
@@ -21,7 +23,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   final _forgotPasswordFormKey = GlobalKey<FormState>();
   bool _loader = false;
   bool _emailError = false;
-
+  final gtm = Gtm.instance;
   //Controller
   final _emailController = TextEditingController();
   //Focus
@@ -153,7 +155,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             try {
               var response = await UserBloc().forgotPassword(ForgotpasswordRequestBody(email: _emailController.text));
               if (response['status'] == true) {
-                Utils.displayToastBottomError(response["message"], context);
+                gtm.push(GTMConstants.kforgotPasswordEvent, parameters: {"status": "done"});
+                Utils.displayToast(response["message"], context);
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

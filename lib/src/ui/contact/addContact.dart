@@ -7,6 +7,7 @@ import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/ui/addContactUserProfilePage.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
@@ -71,7 +72,7 @@ class _AddContactState extends State<AddContact> {
   @override
   void initState() {
     // TODO: implement initState
-    gtm.push("screen_view", parameters: {"pageName": "Add Contact Screen"});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kAddContactScreen});
 
     super.initState();
     initcheckPermission();

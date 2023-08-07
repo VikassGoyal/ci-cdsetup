@@ -23,6 +23,7 @@ import 'package:gtm/gtm.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+import '../../utils/gtm_constants.dart';
 
 class BussinessCard extends StatefulWidget {
   @override
@@ -51,7 +52,7 @@ class _BussinessCardState extends State<BussinessCard> {
   @override
   void initState() {
     super.initState();
-    gtm.push("screen_view", parameters: {"pageName": "Business Card Screen"});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kBusinessCardScreen});
     getQRImage();
     getProfileDetails();
   }
@@ -504,7 +505,7 @@ class _BussinessCardState extends State<BussinessCard> {
       Map<String, dynamic> response = await _contactPageRepository.removeBusinessCard(id);
 
       if (response['status']) {
-        gtm.push("business_card_logo_delete", parameters: {"status": "done"});
+        gtm.push(GTMConstants.kbusinessCardLogDeleteEvent, parameters: {"status": "done"});
         Utils.displayToast("Logo Removed", context);
         setState(() {
           imageName = "";
@@ -555,7 +556,7 @@ class _BussinessCardState extends State<BussinessCard> {
       });
 
       if (response['status'] == true) {
-        gtm.push("business_card_logo_updated", parameters: {"status": "done"});
+        gtm.push(GTMConstants.kbusinessCardLogoUploadEvent, parameters: {"status": "done"});
         Utils.displayToast(response['message'], context);
         getProfileDetails();
       } else {

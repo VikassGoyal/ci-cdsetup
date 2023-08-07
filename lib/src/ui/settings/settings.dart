@@ -35,6 +35,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
 import '../../../api_models/getTotalCount_response_model/totalCount_response_body.dart';
 import '../../../api_models/qrValue_request_model/qrValue_request_body.dart';
+import '../../../utils/gtm_constants.dart';
 
 class Settings extends StatefulWidget {
   List<TotalCountResponseData> totalcount;
@@ -102,7 +103,7 @@ class _SettingsState extends State<Settings> {
                       contentPadding: EdgeInsets.only(left: 0, top: 10.h),
                       onTap: () async {
                         SharedPreferences preferences = await SharedPreferences.getInstance();
-                        gtm.push("profile_view", parameters: {"status": "done"});
+                        gtm.push(GTMConstants.kprofileviewEvent, parameters: {"status": "done"});
 
                         Navigator.push(
                           context,
@@ -469,7 +470,7 @@ class _SettingsState extends State<Settings> {
 
       await databaseHelper.trancateAllContacts();
       await databaseHelper.trancateRecentContacts();
-      gtm.push("logout", parameters: {" status": "done"});
+      gtm.push(GTMConstants.kLogoutEvent, parameters: {" status": "done"});
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -671,7 +672,7 @@ class _SettingsState extends State<Settings> {
   _checkContactPermission() async {
     var status = await Permission.contacts.status;
     if (status.isGranted) {
-      gtm.push("import_contacts", parameters: {"status": "done"});
+      gtm.push(GTMConstants.kimportContactsEvent, parameters: {"status": "done"});
       _importContacts();
     } else {
       var reqStatus = await Permission.contacts.request();

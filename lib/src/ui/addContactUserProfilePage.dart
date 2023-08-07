@@ -8,6 +8,7 @@ import 'package:conet/src/appScreen.dart';
 import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/switchContactToggle.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
@@ -89,10 +90,9 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
 
   List<EntrepreneurData> entreprenerurList = [];
   List<ProfessionalList>? entreprenerurListJson = [];
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
-    final gtm = Gtm.instance;
     _conetUser = widget.conetUser;
     if (_conetUser) {
       initForConetUser();
@@ -1307,9 +1307,9 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
     setState(() {
       _loader = false;
     });
-    final gtm = Gtm.instance;
+
     if (response['status'] == true) {
-      gtm.push("contact_add", parameters: {" status": "done"});
+      gtm.push(GTMConstants.kcontactAddEvent, parameters: {" status": "done"});
       QuickAlert.show(
         context: context,
         type: QuickAlertType.success,

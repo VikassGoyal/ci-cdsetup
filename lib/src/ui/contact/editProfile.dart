@@ -5,6 +5,7 @@ import 'package:conet/api_models/uploadProfileImage_request_model/uploadProfileI
 import 'package:conet/constants/enums.dart';
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/settings/myprofile.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:flutter/services.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -114,7 +115,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    gtm.push("screen_view", parameters: {"pageName": "Edit Contact Screen"});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kEditContactScreen});
     selectedDate = DateTime.now();
 
     Future.delayed(Duration.zero, () {
@@ -2410,7 +2411,7 @@ class _EditProfileState extends State<EditProfile> {
     });
 
     if (response['status'] == true) {
-      gtm.push("profile_image_upload", parameters: {" status": "done"});
+      gtm.push(GTMConstants.kprofileImageUploadEvent, parameters: {" status": "done"});
       Utils.displayToast(response['message'], context);
       getProfileDetails();
     } else {

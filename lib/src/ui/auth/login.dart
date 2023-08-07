@@ -6,6 +6,7 @@ import 'package:conet/src/ui/auth/forgotPassword.dart';
 import 'package:conet/src/ui/auth/signup.dart';
 import 'package:conet/utils/check_internet_connection.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormWidget.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    gtm.push("screen_view", parameters: {"pageName": "Login Screen"});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kLoginScreen});
     initlocaldb();
   }
 
@@ -149,7 +150,7 @@ class _LoginState extends State<Login> {
               });
 
               if (response['message'] == 'success') {
-                gtm.push("login", parameters: {" status": "done"});
+                gtm.push(GTMConstants.kLoginEvent, parameters: {"status": "done"});
                 context.read<BottomNavigationBloc>().currentIndex = 0;
                 Navigator.pushReplacement(
                   context,

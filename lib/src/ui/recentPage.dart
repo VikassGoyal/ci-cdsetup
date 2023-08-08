@@ -188,7 +188,14 @@ class _RecentPageState extends State<RecentPage> {
                       MaterialPageRoute(
                         builder: (context) => CallHistroyProfile(callLogs: data),
                       ),
-                    );
+                    ).then((value) {
+                      if (value) {
+                        checkPermissionAndFetchCallLogs();
+                        return;
+                      } else {
+                        return;
+                      }
+                    });
                   },
                 ),
               ),
@@ -569,7 +576,7 @@ class _RecentPageState extends State<RecentPage> {
       if (value != null) {
         setState(() {
           _outputController!.clear();
-          _outputController!.text = value;
+          _outputController!.text = value!;
         });
         if (_outputController!.text != '') {
           setState(() {
@@ -630,16 +637,16 @@ class _RecentPageState extends State<RecentPage> {
             _loader = false;
           });
           Fluttertoast.cancel();
-          Utils.displayToastBottomError(response["message"], context);
+          Utils.displayToastTopError(response["message"], context);
         }
       } catch (e) {
-        Utils.displayToastBottomError("Something went wrong", context);
+        Utils.displayToastTopError("Something went wrong", context);
       }
     } else if (Qrresponse['status'] == "Token is Expired") {
-      Utils.displayToastBottomError('Token is Expired', context);
+      Utils.displayToast('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToastBottomError('Something went wrong', context);
+      Utils.displayToast('Something went wrong', context);
     }
   }
 

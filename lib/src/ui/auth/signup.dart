@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:conet/utils/check_internet_connection.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:flutter/services.dart';
 
 import 'package:conet/blocs/userBloc.dart';
@@ -16,6 +17,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import '../utils.dart';
@@ -36,7 +38,7 @@ class _SignUpState extends State<SignUp> {
   bool _showPassword = false;
   bool redirected = true;
   String _errorMsg = '';
-
+  final gtm = Gtm.instance;
   //Controller
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -519,7 +521,8 @@ class _SignUpState extends State<SignUp> {
       } else if (response['status'] == false) {
         Utils.displayToastBottomError(response["message"], context);
       } else {
-        Utils.displayToastBottomError(response["message"], context);
+        gtm.push(GTMConstants.kSignupEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+        Utils.displayToast(response["message"], context);
 
         Navigator.pushReplacement(
           context,
@@ -565,10 +568,11 @@ class CustomTextFormFieldBox extends StatefulWidget {
 
 class _CustomTextFormFieldBoxState extends State<CustomTextFormFieldBox> {
   late bool _showPassword;
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kSignupScreen});
     _showPassword = false;
   }
 

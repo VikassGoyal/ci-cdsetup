@@ -22,6 +22,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quickalert/models/quickalert_type.dart';
@@ -34,6 +35,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
 import '../../../api_models/getTotalCount_response_model/totalCount_response_body.dart';
 import '../../../api_models/qrValue_request_model/qrValue_request_body.dart';
+import '../../../utils/gtm_constants.dart';
 
 class Settings extends StatefulWidget {
   List<TotalCountResponseData> totalcount;
@@ -47,6 +49,7 @@ class _SettingsState extends State<Settings> {
   DatabaseHelper databaseHelper = DatabaseHelper.instance;
   TextEditingController? _outputController;
   final List<DeviceContactData> _importportcontacts = [];
+  final gtm = Gtm.instance;
   bool _loader = false;
 
   int totalUsers = 0;
@@ -100,6 +103,8 @@ class _SettingsState extends State<Settings> {
                       contentPadding: EdgeInsets.only(left: 0, top: 10.h),
                       onTap: () async {
                         SharedPreferences preferences = await SharedPreferences.getInstance();
+                        gtm.push(GTMConstants.kprofileviewEvent,
+                            parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
 
                         Navigator.push(
                           context,
@@ -466,7 +471,7 @@ class _SettingsState extends State<Settings> {
 
       await databaseHelper.trancateAllContacts();
       await databaseHelper.trancateRecentContacts();
-
+      gtm.push(GTMConstants.kLogoutEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -668,6 +673,7 @@ class _SettingsState extends State<Settings> {
   _checkContactPermission() async {
     var status = await Permission.contacts.status;
     if (status.isGranted) {
+      gtm.push(GTMConstants.kimportContactsEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
       _importContacts();
     } else {
       var reqStatus = await Permission.contacts.request();

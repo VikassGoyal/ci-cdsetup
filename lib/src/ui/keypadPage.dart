@@ -1,10 +1,12 @@
 import 'package:conet/repositories/recentPageRepository.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gtm/gtm.dart';
 
 import 'dailpad.dart';
 
@@ -19,7 +21,7 @@ class KeypadPage extends StatefulWidget {
 
 class _KeypadPageState extends State<KeypadPage> {
   RecentPageRepository recentPageRepository = RecentPageRepository();
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
@@ -60,7 +62,7 @@ class _KeypadPageState extends State<KeypadPage> {
             }
 
             recentPageRepository.insertDailedCall(number);
-
+            gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
             _callNumber(number);
           },
         ),

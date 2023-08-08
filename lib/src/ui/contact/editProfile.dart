@@ -5,6 +5,7 @@ import 'package:conet/api_models/uploadProfileImage_request_model/uploadProfileI
 import 'package:conet/constants/enums.dart';
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/settings/myprofile.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:flutter/services.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -26,6 +27,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
+import 'package:gtm/gtm.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
@@ -64,7 +66,7 @@ class _EditProfileState extends State<EditProfile> {
   bool _loaderoverflow = true;
   bool _valuesChanged = false;
   bool _loader = true;
-
+  final gtm = Gtm.instance;
   final _personalName = TextEditingController();
   final _personalNumber = TextEditingController();
   final _personalSecondaryNumber = TextEditingController();
@@ -113,7 +115,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kEditContactScreen});
     selectedDate = DateTime.now();
 
     Future.delayed(Duration.zero, () {
@@ -2409,6 +2411,7 @@ class _EditProfileState extends State<EditProfile> {
     });
 
     if (response['status'] == true) {
+      gtm.push(GTMConstants.kprofileImageUploadEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
       Utils.displayToast(response['message'], context);
       getProfileDetails();
     } else {

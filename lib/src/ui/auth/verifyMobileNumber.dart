@@ -688,7 +688,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           type: QuickAlertType.success,
           title: 'Success',
           text: response["message"],
-          autoCloseDuration: const Duration(seconds: 3),
+         // autoCloseDuration: const Duration(seconds: 3),
         );
         //Utils.displayToast(response["message"], context);
         context.read<BottomNavigationBloc>().currentIndex = 0;

@@ -8,11 +8,13 @@ import 'package:conet/src/appScreen.dart';
 import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/switchContactToggle.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:gtm/gtm.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -88,7 +90,7 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
 
   List<EntrepreneurData> entreprenerurList = [];
   List<ProfessionalList>? entreprenerurListJson = [];
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     _conetUser = widget.conetUser;
@@ -1305,7 +1307,9 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
     setState(() {
       _loader = false;
     });
+
     if (response['status'] == true) {
+      gtm.push(GTMConstants.kcontactAddEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
       QuickAlert.show(
         context: context,
         type: QuickAlertType.success,

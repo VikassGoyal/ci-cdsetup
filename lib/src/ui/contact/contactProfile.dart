@@ -18,12 +18,15 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
+import 'package:gtm/gtm.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';
 import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+import '../../../repositories/recentPageRepository.dart';
+import '../../../utils/gtm_constants.dart';
 import '../utils.dart';
 
 class ContactProfile extends StatefulWidget {
@@ -75,6 +78,8 @@ class _ContactProfileState extends State<ContactProfile> {
   final _socialSkype = TextEditingController();
   final _socialGpay = TextEditingController();
   final _socialPaytm = TextEditingController();
+  final gtm = Gtm.instance;
+  RecentPageRepository recentPageRepository = RecentPageRepository();
 
   List<EntrepreneurData> entreprenerurList = [];
   List<ProfessionalList>? entreprenerurListJson = [];
@@ -1283,6 +1288,9 @@ class _ContactProfileState extends State<ContactProfile> {
                       if (_personalNumber.text == '') {
                         return;
                       }
+                      gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+                      recentPageRepository.insertDailedCall(_personalNumber.text);
+
                       _callNumber(_personalNumber.text);
                     },
                     child: SvgPicture.asset(

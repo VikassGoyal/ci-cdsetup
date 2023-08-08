@@ -18,6 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../api_models/deleteContact__request_model/deleteContact.dart';
 import '../../../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
 import '../../../blocs/contactBloc.dart';
+import '../../../repositories/recentPageRepository.dart';
 import '../utils.dart';
 
 class NonConetContactProfile extends StatefulWidget {
@@ -44,6 +45,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
   final bool _loaderoverflow = false;
   bool personalTab = true;
   final gtm = Gtm.instance;
+  RecentPageRepository recentPageRepository = RecentPageRepository();
   @override
   void initState() {
     super.initState();
@@ -175,6 +177,8 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                         return;
                       }
                       gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+                      recentPageRepository.insertDailedCall(_personalNumber.text);
+
                       _callNumber(_personalNumber.text);
                     },
                     child: SvgPicture.asset(

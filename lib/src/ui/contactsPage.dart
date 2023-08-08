@@ -58,6 +58,7 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
+  RecentPageRepository recentPageRepository = RecentPageRepository();
   TextEditingController? _textEditingController;
   List<AllContacts> _loadedcontacts = [];
   List<RecentCalls> recentCalls = [];
@@ -405,6 +406,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     ),
                     onPressed: () {
                       gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+                      recentPageRepository.insertDailedCall(_contacts[index].phone!);
                       _callNumber(_contacts[index].phone!);
                     },
                   ),

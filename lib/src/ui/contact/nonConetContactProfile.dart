@@ -177,7 +177,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                         return;
                       }
                       gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
-                      recentPageRepository.insertDailedCall(_personalNumber.text);
+                      recentPageRepository.insertDailedCall(_personalNumber.text, _personalName.text);
 
                       _callNumber(_personalNumber.text);
                     },

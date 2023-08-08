@@ -506,8 +506,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                             _outputController?.clear();
                             _outputController?.text = _searchResult[index].qrValue!;
                           });
-                          if (_outputController?.text != '') {
-                            _sentRequest(index, 0, "parent");
+                          if (_outputController?.text != '' && _searchResult.isNotEmpty) {
+                            _sentRequest(index, 0, "parent", _searchResult[index].name);
                           }
                         },
                         child: Container(
@@ -697,8 +697,9 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                             _outputController?.text =
                                                 _searchResult[index].mutualList![mutindex].qrValue!;
                                           });
-                                          if (_outputController?.text != '') {
-                                            _sentRequest(index, mutindex, "child");
+                                          if (_outputController?.text != '' && _searchResult.isNotEmpty) {
+                                            _sentRequest(index, mutindex, "child",
+                                                _searchResult[index].mutualList![mutindex].name);
                                           }
                                         },
                                         child: Container(
@@ -902,7 +903,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
             ],
           ),
           body: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
+            //physics: const ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
             child: Column(
               children: [
                 Container(color: AppColor.primaryColor, height: 20.h),
@@ -1108,6 +1109,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
       var response =
           await ContactBloc().searchConetwebContact(FilterSearchResultsRequestBody(filter: _searchController!.text));
       var responseData = response['data'];
+      print(responseData[0]);
+      print(responseData[0]['mutual_list']);
 
       if (response['status'] == true) {
         if (response['msg'] == 'yes') {
@@ -1130,7 +1133,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
     }
   }
 
-  _sentRequest(index, mutindex, type) async {
+  _sentRequest(index, mutindex, type, receivername) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     // var requestBody = {
     //   "value": _outputController?.text,
@@ -1141,7 +1144,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
     var response = await ContactBloc().sendQrValue(QrValueRequestBody(
         value: _outputController?.text,
         qrcode: false,
-        content: "${preferences.getString("name")} request to ${_searchResult[index].mutualList![mutindex].name}",
+        content: "${preferences.getString("name")} request to ${receivername}",
         viaid: _searchResult[index].viaId));
 
     if (response['status'] == true) {

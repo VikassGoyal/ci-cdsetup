@@ -34,4 +34,11 @@ class GTMConstants {
   static const String kScreenViewEvent = "screen_view";
   static const String kkonetwebpageSearchEvent = "KonetWebpage_Search";
   static const String kCallEvent = "Calling";
+
+  // paramerter Key name
+  static const String kpageName = "pageName";
+  static const String kstatus = "status";
+
+  // status key value for  events
+  static const String kstatusdone = "done";
 }

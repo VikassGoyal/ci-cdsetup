@@ -26,7 +26,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     super.initState();
-    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kNotificationScreen});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kNotificationScreen});
     Future.delayed(Duration.zero, () {
       getNotificationData();
     });
@@ -418,7 +418,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         _loader = false;
       });
       if (response['status'] == true) {
-        gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {" status": "done"});
+        gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
         var responseData = response['data'];
         setState(() {
           var data = List<NotificationResponse>.from(

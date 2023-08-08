@@ -115,7 +115,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kEditContactScreen});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kEditContactScreen});
     selectedDate = DateTime.now();
 
     Future.delayed(Duration.zero, () {
@@ -2411,7 +2411,7 @@ class _EditProfileState extends State<EditProfile> {
     });
 
     if (response['status'] == true) {
-      gtm.push(GTMConstants.kprofileImageUploadEvent, parameters: {" status": "done"});
+      gtm.push(GTMConstants.kprofileImageUploadEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
       Utils.displayToast(response['message'], context);
       getProfileDetails();
     } else {

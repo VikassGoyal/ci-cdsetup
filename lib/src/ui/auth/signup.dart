@@ -521,7 +521,7 @@ class _SignUpState extends State<SignUp> {
       } else if (response['status'] == false) {
         Utils.displayToastBottomError(response["message"], context);
       } else {
-        gtm.push(GTMConstants.kSignupEvent, parameters: {" status": "done"});
+        gtm.push(GTMConstants.kSignupEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
         Utils.displayToast(response["message"], context);
 
         Navigator.pushReplacement(
@@ -572,7 +572,7 @@ class _CustomTextFormFieldBoxState extends State<CustomTextFormFieldBox> {
   @override
   void initState() {
     super.initState();
-    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kSignupScreen});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kSignupScreen});
     _showPassword = false;
   }
 

@@ -90,7 +90,7 @@ class _MyProfileState extends State<MyProfile> {
   @override
   void initState() {
     super.initState();
-    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kUserProfileScreen});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kUserProfileScreen});
     Future.delayed(Duration.zero, () {
       print(widget.phoneNumber);
 

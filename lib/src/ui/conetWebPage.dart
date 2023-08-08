@@ -71,7 +71,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
     _searchController = TextEditingController();
     _outputController = TextEditingController();
     _searchvisible = false;
-    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.KkonetwebpageScreen});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.KkonetwebpageScreen});
 
     _popupSettings();
 
@@ -1111,7 +1111,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
       if (response['status'] == true) {
         if (response['msg'] == 'yes') {
-          gtm.push(GTMConstants.kkonetwebpageSearchEvent, parameters: {"status": "done"});
+          gtm.push(GTMConstants.kkonetwebpageSearchEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
           setState(() {
             _searchResult = List<SearchContacts>.from(responseData.map((item) => SearchContacts.fromJson(item)));
             _searchvisible = true;
@@ -1120,7 +1120,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
           Utils.displayToast("No Results Found", context);
         }
       } else {
-        Utils.displayToast(response["message"], context);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } else {
       setState(() {

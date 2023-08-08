@@ -93,7 +93,7 @@ class _ContactsPageState extends State<ContactsPage> {
     _loadedcontacts = _contacts;
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
     //_updateContact();
-    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kContactListScreen});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kContactListScreen});
     updatecheck = widget.updatebool ?? false;
     if (updatecheck) {
       updatecheck = false;
@@ -206,7 +206,8 @@ class _ContactsPageState extends State<ContactsPage> {
 
             _clearText();
             if (_contacts[index].userId == null) {
-              gtm.push(GTMConstants.kcontactDetailsViewEvent, parameters: {"status": "done"});
+              gtm.push(GTMConstants.kcontactDetailsViewEvent,
+                  parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -221,7 +222,8 @@ class _ContactsPageState extends State<ContactsPage> {
                   return null;
               });
             } else {
-              gtm.push(GTMConstants.kMutualContactsScreen, parameters: {"status": "done"});
+              gtm.push(GTMConstants.kMutualContactsScreen,
+                  parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -402,7 +404,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       "assets/icons/ic_list_call.svg",
                     ),
                     onPressed: () {
-                      gtm.push(GTMConstants.kCallEvent, parameters: {"status": "done"});
+                      gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                       _callNumber(_contacts[index].phone!);
                     },
                   ),
@@ -565,7 +567,8 @@ class _ContactsPageState extends State<ContactsPage> {
                       child: TextField(
                         controller: _textEditingController,
                         onChanged: (value) {
-                          gtm.push(GTMConstants.kcontactSearchEvent, parameters: {"status": "done"});
+                          gtm.push(GTMConstants.kcontactSearchEvent,
+                              parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                           filterSearchResults(value);
 
                           setState(() {
@@ -718,7 +721,8 @@ class _ContactsPageState extends State<ContactsPage> {
                     itemBuilder: (BuildContext ctxt, int i) {
                       return InkWell(
                         onTap: () {
-                          gtm.push(GTMConstants.kCallEvent, parameters: {"status": "done"});
+                          gtm.push(GTMConstants.kCallEvent,
+                              parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                           _callNumber(recentCalls[i].number!);
                         },
                         child: Container(

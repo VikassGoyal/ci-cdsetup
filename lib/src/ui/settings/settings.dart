@@ -103,7 +103,8 @@ class _SettingsState extends State<Settings> {
                       contentPadding: EdgeInsets.only(left: 0, top: 10.h),
                       onTap: () async {
                         SharedPreferences preferences = await SharedPreferences.getInstance();
-                        gtm.push(GTMConstants.kprofileviewEvent, parameters: {"status": "done"});
+                        gtm.push(GTMConstants.kprofileviewEvent,
+                            parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
 
                         Navigator.push(
                           context,
@@ -470,7 +471,7 @@ class _SettingsState extends State<Settings> {
 
       await databaseHelper.trancateAllContacts();
       await databaseHelper.trancateRecentContacts();
-      gtm.push(GTMConstants.kLogoutEvent, parameters: {" status": "done"});
+      gtm.push(GTMConstants.kLogoutEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -672,7 +673,7 @@ class _SettingsState extends State<Settings> {
   _checkContactPermission() async {
     var status = await Permission.contacts.status;
     if (status.isGranted) {
-      gtm.push(GTMConstants.kimportContactsEvent, parameters: {"status": "done"});
+      gtm.push(GTMConstants.kimportContactsEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
       _importContacts();
     } else {
       var reqStatus = await Permission.contacts.request();

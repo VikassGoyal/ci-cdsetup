@@ -72,7 +72,7 @@ class _AddContactState extends State<AddContact> {
   @override
   void initState() {
     // TODO: implement initState
-    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kAddContactScreen});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kAddContactScreen});
 
     super.initState();
     initcheckPermission();

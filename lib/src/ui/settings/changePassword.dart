@@ -214,7 +214,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       });
 
       if (response['success'] == true) {
-        gtm.push(GTMConstants.kpasswordChangeEvent, parameters: {" status": "done"});
+        gtm.push(GTMConstants.kpasswordChangeEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
         Utils.displayToast(response["message"], context);
         Navigator.pop(context);
       } else {

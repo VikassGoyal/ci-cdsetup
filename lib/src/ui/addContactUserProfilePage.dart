@@ -1309,7 +1309,7 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
     });
 
     if (response['status'] == true) {
-      gtm.push(GTMConstants.kcontactAddEvent, parameters: {" status": "done"});
+      gtm.push(GTMConstants.kcontactAddEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
       QuickAlert.show(
         context: context,
         type: QuickAlertType.success,

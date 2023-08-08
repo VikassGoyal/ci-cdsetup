@@ -27,7 +27,7 @@ class _QRScreenState extends State<QRScreen> {
 
   @override
   void reassemble() {
-    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kQRCodeScreen});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kQRCodeScreen});
     super.reassemble();
     if (Platform.isAndroid) {
       controller!.pauseCamera();

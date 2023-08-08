@@ -155,7 +155,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             try {
               var response = await UserBloc().forgotPassword(ForgotpasswordRequestBody(email: _emailController.text));
               if (response['status'] == true) {
-                gtm.push(GTMConstants.kforgotPasswordEvent, parameters: {"status": "done"});
+                gtm.push(GTMConstants.kforgotPasswordEvent,
+                    parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                 Utils.displayToast(response["message"], context);
                 Navigator.pushReplacement(
                   context,

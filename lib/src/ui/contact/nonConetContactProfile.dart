@@ -174,7 +174,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                       if (_personalNumber.text == '') {
                         return;
                       }
-                      gtm.push(GTMConstants.kCallEvent, parameters: {"status": "done"});
+                      gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                       _callNumber(_personalNumber.text);
                     },
                     child: SvgPicture.asset(
@@ -329,14 +329,16 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                   String phoneNumber = _personalNumber.text;
                   String message = 'Name: $contactName\nPhone: $phoneNumber';
                   Share.share(message);
-                  gtm.push(GTMConstants.kContactShareEvent, parameters: {"status": "done"});
+                  gtm.push(GTMConstants.kContactShareEvent,
+                      parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                 }
                 if (value == 1) {
                   //   Add the delete contact  api call functionality . i have created updatepage bool by default value false . if contact delete successfully make it true else false
                   try {
                     var response = await ContactBloc().deleteContact(widget.id ?? 0);
                     if (response['success'] == true) {
-                      gtm.push(GTMConstants.kcontactDeleteEvent, parameters: {"status": "done"});
+                      gtm.push(GTMConstants.kcontactDeleteEvent,
+                          parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                       QuickAlert.show(
                         context: context,
                         type: QuickAlertType.success,

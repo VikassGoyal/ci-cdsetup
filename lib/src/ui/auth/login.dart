@@ -38,7 +38,7 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    gtm.push(GTMConstants.kScreenViewEvent, parameters: {"pageName": GTMConstants.kLoginScreen});
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kLoginScreen});
     initlocaldb();
   }
 
@@ -150,7 +150,7 @@ class _LoginState extends State<Login> {
               });
 
               if (response['message'] == 'success') {
-                gtm.push(GTMConstants.kLoginEvent, parameters: {"status": "done"});
+                gtm.push(GTMConstants.kLoginEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                 context.read<BottomNavigationBloc>().currentIndex = 0;
                 Navigator.pushReplacement(
                   context,

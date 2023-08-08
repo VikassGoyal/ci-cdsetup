@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:conet/utils/gtm_constants.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:azlistview/azlistview.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/allContacts.dart';
@@ -26,6 +27,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -68,14 +70,15 @@ class _ContactsPageState extends State<ContactsPage> {
   TextEditingController? _outputController;
   ContactPageRepository? contactPageRepository;
   FocusNode _focusNode = FocusNode();
-
   Barcode? result;
   // QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   bool _loader = false;
   bool _showCancelIcon = false;
   double susItemHeight = 40;
+  final gtm = Gtm.instance;
   bool updatecheck = false;
 
   @override
@@ -90,6 +93,8 @@ class _ContactsPageState extends State<ContactsPage> {
     _contacts = responseData;
     _loadedcontacts = _contacts;
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
+    //_updateContact();
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kContactListScreen});
     updatecheck = widget.updatebool ?? false;
     if (updatecheck) {
       updatecheck = false;
@@ -202,6 +207,8 @@ class _ContactsPageState extends State<ContactsPage> {
 
             _clearText();
             if (_contacts[index].userId == null) {
+              gtm.push(GTMConstants.kcontactDetailsViewEvent,
+                  parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -216,6 +223,8 @@ class _ContactsPageState extends State<ContactsPage> {
                   return null;
               });
             } else {
+              gtm.push(GTMConstants.kMutualContactsScreen,
+                  parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -396,7 +405,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       "assets/icons/ic_list_call.svg",
                     ),
                     onPressed: () {
-                      print("Cliked");
+                      gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                       recentPageRepository.insertDailedCall(_contacts[index].phone!);
                       _callNumber(_contacts[index].phone!);
                     },
@@ -560,6 +569,8 @@ class _ContactsPageState extends State<ContactsPage> {
                       child: TextField(
                         controller: _textEditingController,
                         onChanged: (value) {
+                          gtm.push(GTMConstants.kcontactSearchEvent,
+                              parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                           filterSearchResults(value);
 
                           setState(() {
@@ -712,7 +723,8 @@ class _ContactsPageState extends State<ContactsPage> {
                     itemBuilder: (BuildContext ctxt, int i) {
                       return InkWell(
                         onTap: () {
-                          recentPageRepository.insertDailedCall(recentCalls[i].number!);
+                          gtm.push(GTMConstants.kCallEvent,
+                              parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                           _callNumber(recentCalls[i].number!);
                         },
                         child: Container(

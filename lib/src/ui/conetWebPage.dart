@@ -19,6 +19,8 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:gtm/gtm.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quickalert/models/quickalert_type.dart';
@@ -29,6 +31,7 @@ import '../../api_models/ filterSearchResults_request_model/ filterSearchResults
 import '../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
 import '../../models/contactDetails.dart';
 import '../../utils/custom_fonts.dart';
+import '../../utils/gtm_constants.dart';
 import 'addContactUserProfilePage.dart';
 import 'utils.dart';
 
@@ -57,7 +60,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
   bool _suggestionsLoader = true;
   List<SearchContacts> _suggestionResult = [];
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
@@ -68,6 +71,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
     _searchController = TextEditingController();
     _outputController = TextEditingController();
     _searchvisible = false;
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.KkonetwebpageScreen});
 
     _popupSettings();
 
@@ -1107,6 +1111,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
       if (response['status'] == true) {
         if (response['msg'] == 'yes') {
+          gtm.push(GTMConstants.kkonetwebpageSearchEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
           setState(() {
             _searchResult = List<SearchContacts>.from(responseData.map((item) => SearchContacts.fromJson(item)));
             _searchvisible = true;
@@ -1115,7 +1120,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
           Utils.displayToast("No Results Found", context);
         }
       } else {
-        Utils.displayToast(response["message"], context);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } else {
       setState(() {

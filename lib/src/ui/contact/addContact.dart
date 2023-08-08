@@ -7,11 +7,13 @@ import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/ui/addContactUserProfilePage.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quickalert/models/quickalert_type.dart';
@@ -66,9 +68,12 @@ class _AddContactState extends State<AddContact> {
   List<EntrepreneurData> entreprenerurList = [];
   List<ProfessionalList>? entreprenerurListJson = [];
   bool _loader = false;
+  final gtm = Gtm.instance;
   @override
   void initState() {
     // TODO: implement initState
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kAddContactScreen});
+
     super.initState();
     initcheckPermission();
 

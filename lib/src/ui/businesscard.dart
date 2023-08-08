@@ -19,9 +19,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+import '../../utils/gtm_constants.dart';
 
 class BussinessCard extends StatefulWidget {
   @override
@@ -41,7 +43,7 @@ class _BussinessCardState extends State<BussinessCard> {
   bool _loader = true;
   Color? currentColor;
   ContactDetail? contactDetail;
-
+  final gtm = Gtm.instance;
   void changeColor(Color color) {
     setState(() => currentColor = color);
     locator<StorageService>().setPrefs<String>('businesscardcolor', color.toString());
@@ -50,7 +52,7 @@ class _BussinessCardState extends State<BussinessCard> {
   @override
   void initState() {
     super.initState();
-
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kBusinessCardScreen});
     getQRImage();
     getProfileDetails();
   }
@@ -503,6 +505,8 @@ class _BussinessCardState extends State<BussinessCard> {
       Map<String, dynamic> response = await _contactPageRepository.removeBusinessCard(id);
 
       if (response['status']) {
+        gtm.push(GTMConstants.kbusinessCardLogDeleteEvent,
+            parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
         Utils.displayToast("Logo Removed", context);
         setState(() {
           imageName = "";
@@ -553,6 +557,8 @@ class _BussinessCardState extends State<BussinessCard> {
       });
 
       if (response['status'] == true) {
+        gtm.push(GTMConstants.kbusinessCardLogoUploadEvent,
+            parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
         Utils.displayToast(response['message'], context);
         getProfileDetails();
       } else {

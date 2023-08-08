@@ -7,7 +7,10 @@ import 'package:conet/utils/theme.dart';
 import 'package:conet/utils/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+
+import '../../../utils/gtm_constants.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
@@ -22,7 +25,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _loader = false;
-
+  final gtm = Gtm.instance;
   @override
   Widget build(BuildContext context) {
     Widget buildUpdateButton() {
@@ -211,6 +214,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       });
 
       if (response['success'] == true) {
+        gtm.push(GTMConstants.kpasswordChangeEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
         Utils.displayToast(response["message"], context);
         Navigator.pop(context);
       } else {

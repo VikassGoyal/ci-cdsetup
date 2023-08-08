@@ -6,12 +6,14 @@ import 'package:conet/src/ui/auth/forgotPassword.dart';
 import 'package:conet/src/ui/auth/signup.dart';
 import 'package:conet/utils/check_internet_connection.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormWidget.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:flutter/services.dart';
 
@@ -32,10 +34,11 @@ class _LoginState extends State<Login> {
   final FocusNode _passwordControllerFocus = FocusNode();
   bool _loader = false;
   bool _showPassword = false;
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kLoginScreen});
     initlocaldb();
   }
 
@@ -147,6 +150,7 @@ class _LoginState extends State<Login> {
               });
 
               if (response['message'] == 'success') {
+                gtm.push(GTMConstants.kLoginEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                 context.read<BottomNavigationBloc>().currentIndex = 0;
                 Navigator.pushReplacement(
                   context,

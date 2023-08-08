@@ -10,10 +10,12 @@ import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/contact/editProfile.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
@@ -83,10 +85,12 @@ class _MyProfileState extends State<MyProfile> {
   List<String> _values = [];
   List<NetworkImage> popupImages = <NetworkImage>[];
   // bool _showPreview = false;
+  final gtm = Gtm.instance;
 
   @override
   void initState() {
     super.initState();
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kUserProfileScreen});
     Future.delayed(Duration.zero, () {
       print(widget.phoneNumber);
 

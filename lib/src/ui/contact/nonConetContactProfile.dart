@@ -2,12 +2,14 @@ import 'dart:io';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/src/ui/contactsPage.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -42,6 +44,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
   final bool _loader = false;
   final bool _loaderoverflow = false;
   bool personalTab = true;
+  final gtm = Gtm.instance;
   RecentPageRepository recentPageRepository = RecentPageRepository();
   @override
   void initState() {
@@ -105,6 +108,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
               ),
               onPressed: () async {
                 print("clicked");
+
                 Share.share(
                     'Hey\n\nKonet is a fast, simple and secure app that i use to message and call the people.\n\nGet it for free at https://play.google.com/store/apps/details?id=com.shade6.agratrade',
                     subject: 'Look what I made!');
@@ -172,6 +176,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                       if (_personalNumber.text == '') {
                         return;
                       }
+                      gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                       recentPageRepository.insertDailedCall(_personalNumber.text);
 
                       _callNumber(_personalNumber.text);
@@ -328,13 +333,16 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                   String phoneNumber = _personalNumber.text;
                   String message = 'Name: $contactName\nPhone: $phoneNumber';
                   Share.share(message);
+                  gtm.push(GTMConstants.kContactShareEvent,
+                      parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                 }
                 if (value == 1) {
-                  print(widget.id);
                   //   Add the delete contact  api call functionality . i have created updatepage bool by default value false . if contact delete successfully make it true else false
                   try {
                     var response = await ContactBloc().deleteContact(widget.id ?? 0);
                     if (response['success'] == true) {
+                      gtm.push(GTMConstants.kcontactDeleteEvent,
+                          parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                       QuickAlert.show(
                         context: context,
                         type: QuickAlertType.success,

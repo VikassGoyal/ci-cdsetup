@@ -434,25 +434,22 @@ class _ConetWebPageState extends State<ConetWebPage> {
                   Visibility(
                     visible: (_searchResult[index].status == 'accepted'),
                     child: Container(
-                      height: 30.h,
-                      width: 110.w,
+                      height: 25.h,
                       alignment: Alignment.center,
                       child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(AppColor.accentColor),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColor.accentColor,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         ),
                         onPressed: () {},
                         child: Container(
-                          // constraints: BoxConstraints(minHeight: 28.0.h, maxWidth: 104.0.w),
+                          constraints: BoxConstraints(minHeight: 25.h, minWidth: 70.w),
                           alignment: Alignment.center,
                           child: Text("Accepted",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: AppColor.whiteColor,
-                                  fontSize: 18.sp,
+                                  fontSize: 13.sp,
                                   fontFamily: kSfproRoundedFontFamily,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500)),
@@ -463,25 +460,22 @@ class _ConetWebPageState extends State<ConetWebPage> {
                   Visibility(
                     visible: (_searchResult[index].status == 'requested'),
                     child: Container(
-                      height: 30.h,
-                      width: 120.w,
+                      height: 25.h,
                       alignment: Alignment.center,
                       child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(AppColor.primaryColor),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColor.primaryColor,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         ),
                         onPressed: () {},
                         child: Container(
-                          // constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 100.0),
+                          constraints: BoxConstraints(minHeight: 25.h, minWidth: 70.w),
                           alignment: Alignment.center,
                           child: Text("Requested",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: AppColor.whiteColor,
-                                  fontSize: 18.sp,
+                                  fontSize: 13.sp,
                                   fontFamily: kSfproRoundedFontFamily,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500)),
@@ -492,14 +486,13 @@ class _ConetWebPageState extends State<ConetWebPage> {
                   Visibility(
                     visible: (_searchResult[index].status == null),
                     child: Container(
-                      height: 30.h,
+                      height: 25.h,
                       alignment: Alignment.center,
                       child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(AppColor.accentColor),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColor.whiteColor,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          side: const BorderSide(color: AppColor.accentColor),
                         ),
                         onPressed: () {
                           setState(() {
@@ -511,20 +504,13 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           }
                         },
                         child: Container(
-                          constraints: BoxConstraints(minHeight: 30.0.h, maxWidth: 90.0.w),
+                          constraints: BoxConstraints(minHeight: 25.h, minWidth: 70.w),
                           alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: AppColor.accentColor,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
                           child: Text("Connect",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: AppColor.whiteColor,
-                                  fontSize: 18.sp,
+                                  color: AppColor.accentColor,
+                                  fontSize: 13.sp,
                                   fontFamily: kSfproRoundedFontFamily,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w500)),

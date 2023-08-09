@@ -51,10 +51,10 @@ class ContactsPage extends StatefulWidget {
   var mostDailedContacts;
   bool? updatebool = false;
 
-  ContactsPage({this.contactsData, this.mostDailedContacts, this.updatebool}) : super();
+  ContactsPage({super.key, this.contactsData, this.mostDailedContacts, this.updatebool});
 
   @override
-  _ContactsPageState createState() => _ContactsPageState();
+  State<ContactsPage> createState() => _ContactsPageState();
 }
 
 class _ContactsPageState extends State<ContactsPage> {

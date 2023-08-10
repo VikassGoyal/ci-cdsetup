@@ -6,7 +6,7 @@ class Imagepreview extends StatefulWidget {
   const Imagepreview({Key? key}) : super(key: key);
 
   @override
-  _ImagepreviewState createState() => _ImagepreviewState();
+  State<Imagepreview> createState() => _ImagepreviewState();
 }
 
 class _ImagepreviewState extends State<Imagepreview> {

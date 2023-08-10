@@ -10,7 +10,7 @@ class IntroVerify extends StatefulWidget {
   const IntroVerify({super.key});
 
   @override
-  _IntroVerifyState createState() => _IntroVerifyState();
+  State<IntroVerify> createState() => _IntroVerifyState();
 }
 
 class _IntroVerifyState extends State<IntroVerify> {

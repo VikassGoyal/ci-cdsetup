@@ -12,6 +12,7 @@ class AnimatedToggle extends StatefulWidget {
   final bool? value;
 
   const AnimatedToggle({
+    super.key,
     required this.values,
     required this.onToggleCallback,
     this.backgroundColor = const Color(0xFFe7e7e8),
@@ -20,7 +21,7 @@ class AnimatedToggle extends StatefulWidget {
     this.value,
   });
   @override
-  _AnimatedToggleState createState() => _AnimatedToggleState();
+  State<AnimatedToggle> createState() => _AnimatedToggleState();
 }
 
 class _AnimatedToggleState extends State<AnimatedToggle> {

@@ -11,10 +11,10 @@ import '../../../api_models/getProfileDetails_request_model/getProfileDetails_re
 import '../utils.dart';
 
 class SocialContact extends StatefulWidget {
-  SocialContact({Key? key}) : super(key: key);
+  const SocialContact({Key? key}) : super(key: key);
 
   @override
-  _SocialContactState createState() => _SocialContactState();
+  State<SocialContact> createState() => _SocialContactState();
 }
 
 class _SocialContactState extends State<SocialContact> {

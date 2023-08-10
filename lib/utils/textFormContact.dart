@@ -58,7 +58,7 @@ class TextFormFieldContact extends StatefulWidget {
   });
 
   @override
-  _TextFormFieldContactState createState() => _TextFormFieldContactState();
+  State<TextFormFieldContact> createState() => _TextFormFieldContactState();
 }
 
 class _TextFormFieldContactState extends State<TextFormFieldContact> {

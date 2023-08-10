@@ -26,8 +26,10 @@ import '../../api_models/getProfileDetails_request_model/getProfileDetails_reque
 import '../../utils/gtm_constants.dart';
 
 class BussinessCard extends StatefulWidget {
+  const BussinessCard({super.key});
+
   @override
-  _BussinessCardState createState() => _BussinessCardState();
+  State<BussinessCard> createState() => _BussinessCardState();
 }
 
 class _BussinessCardState extends State<BussinessCard> {

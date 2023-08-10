@@ -33,7 +33,7 @@ import 'notification.dart';
 class RecentPage extends StatefulWidget {
   const RecentPage({super.key});
   @override
-  _RecentPageState createState() => _RecentPageState();
+  State<RecentPage> createState() => _RecentPageState();
 }
 
 class _RecentPageState extends State<RecentPage> {

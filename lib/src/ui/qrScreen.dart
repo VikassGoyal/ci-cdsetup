@@ -14,7 +14,7 @@ class QRScreen extends StatefulWidget {
   const QRScreen({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _QRScreenState();
+  State<QRScreen> createState() => _QRScreenState();
 }
 
 class _QRScreenState extends State<QRScreen> {

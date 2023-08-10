@@ -5,6 +5,7 @@ import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/searchContacts.dart';
 import 'package:conet/services/storage_service.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
+import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/src/ui/newInConet.dart';
@@ -39,7 +40,7 @@ class ConetWebPage extends StatefulWidget {
   //var contactsData;
   bool backcheck;
 
-  ConetWebPage({required this.backcheck}) : super();
+  ConetWebPage({super.key, required this.backcheck});
 
   @override
   State<ConetWebPage> createState() => _ConetWebPageState();
@@ -805,91 +806,94 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
     return Material(
       child: Scaffold(
-          backgroundColor: AppColor.whiteColor,
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
-            leadingWidth: widget.backcheck ? 80.w : 155.w,
-            centerTitle: widget.backcheck ? true : false,
-            backgroundColor: AppColor.primaryColor,
-            automaticallyImplyLeading: false,
-            elevation: 0.0,
-            title: widget.backcheck
-                ? KonetLogo(
+        backgroundColor: AppColor.whiteColor,
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          systemOverlayStyle: StatusBarTheme.systemUiOverlayStyleOrange,
+          leadingWidth: widget.backcheck ? 80.w : 155.w,
+          centerTitle: widget.backcheck ? true : false,
+          backgroundColor: AppColor.primaryColor,
+          automaticallyImplyLeading: false,
+          elevation: 0.0,
+          title: widget.backcheck
+              ? KonetLogo(
+                  logoHeight: 24.h,
+                  fontSize: 19.sp,
+                  textPadding: 9.w,
+                  spacing: 9,
+                )
+              : SizedBox(),
+          leading: widget.backcheck
+              ? InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 16.w),
+                          child: const Icon(Icons.arrow_back, color: Colors.white),
+                        ),
+                        SizedBox(width: 6.w),
+                        Text(
+                          'Back',
+                          style: TextStyle(
+                            fontFamily: kSfproRoundedFontFamily,
+                            color: AppColor.whiteColor,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w300,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: EdgeInsets.only(left: 16.0.w),
+                  child: KonetLogo(
                     logoHeight: 24.h,
                     fontSize: 19.sp,
                     textPadding: 9.w,
                     spacing: 9,
-                  )
-                : SizedBox(),
-            leading: widget.backcheck
-                ? InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16.w),
-                            child: const Icon(Icons.arrow_back, color: Colors.white),
-                          ),
-                          SizedBox(width: 6.w),
-                          Text(
-                            'Back',
-                            style: TextStyle(
-                              fontFamily: kSfproRoundedFontFamily,
-                              color: AppColor.whiteColor,
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w300,
-                              fontStyle: FontStyle.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                : Padding(
-                    padding: EdgeInsets.only(left: 16.0.w),
-                    child: KonetLogo(
-                      logoHeight: 24.h,
-                      fontSize: 19.sp,
-                      textPadding: 9.w,
-                      spacing: 9,
-                    ),
                   ),
-            actions: [
-              IconButton(
-                icon: SvgPicture.asset(
-                  "assets/icons/ic_conet_join.svg",
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NewConetUsers(),
-                    ),
-                  );
-                },
+          actions: [
+            IconButton(
+              icon: SvgPicture.asset(
+                "assets/icons/ic_conet_join.svg",
               ),
-              IconButton(
-                icon: const Icon(
-                  Icons.notifications,
-                  color: AppColor.whiteColor,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NotificationScreen(),
-                    ),
-                  );
-                },
-              )
-            ],
-          ),
-          body: SingleChildScrollView(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NewConetUsers(),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.notifications,
+                color: AppColor.whiteColor,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NotificationScreen(),
+                  ),
+                );
+              },
+            )
+          ],
+        ),
+        body: ScrollConfiguration(
+          behavior: RemoveScrollGlow(),
+          child: SingleChildScrollView(
             //physics: const ClampingScrollPhysics(parent: NeverScrollableScrollPhysics()),
+            physics: const ClampingScrollPhysics(),
             child: Column(
               children: [
                 Container(color: AppColor.primaryColor, height: 20.h),
@@ -1075,7 +1079,9 @@ class _ConetWebPageState extends State<ConetWebPage> {
                 _searchvisible! ? searchConetwebList() : conetWebSearchDefault(),
               ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 

@@ -8,8 +8,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QRScanner extends StatefulWidget {
+  const QRScanner({super.key});
+
   @override
-  _QRScannerState createState() => _QRScannerState();
+  State<QRScanner> createState() => _QRScannerState();
 }
 
 class _QRScannerState extends State<QRScanner> {

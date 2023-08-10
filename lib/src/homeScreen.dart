@@ -1,16 +1,15 @@
 import 'dart:io';
 
-import 'package:conet/bottomNavigation/bottomNavigationBloc.dart';
 import 'package:conet/utils/textTheme.dart';
 import 'package:conet/utils/theme.dart';
-import 'package:conet/repositories/repositories.dart';
 import 'package:conet/src/appScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {

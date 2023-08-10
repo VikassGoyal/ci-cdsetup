@@ -18,10 +18,10 @@ import '../utils.dart';
 class CallHistroyProfile extends StatefulWidget {
   List<RecentCalls>? callLogs;
 
-  CallHistroyProfile({this.callLogs}) : super();
+  CallHistroyProfile({super.key, this.callLogs});
 
   @override
-  _CallHistroyProfileState createState() => _CallHistroyProfileState();
+  State<CallHistroyProfile> createState() => _CallHistroyProfileState();
 }
 
 class _CallHistroyProfileState extends State<CallHistroyProfile> {

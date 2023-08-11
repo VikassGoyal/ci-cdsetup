@@ -51,10 +51,10 @@ class ContactsPage extends StatefulWidget {
   var mostDailedContacts;
   bool? updatebool = false;
 
-  ContactsPage({this.contactsData, this.mostDailedContacts, this.updatebool}) : super();
+  ContactsPage({super.key, this.contactsData, this.mostDailedContacts, this.updatebool});
 
   @override
-  _ContactsPageState createState() => _ContactsPageState();
+  State<ContactsPage> createState() => _ContactsPageState();
 }
 
 class _ContactsPageState extends State<ContactsPage> {
@@ -406,7 +406,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     ),
                     onPressed: () {
                       gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
-                      recentPageRepository.insertDailedCall(_contacts[index].phone!);
+                      recentPageRepository.insertDailedCall(_contacts[index].phone!, _contacts[index].name!);
                       _callNumber(_contacts[index].phone!);
                     },
                   ),
@@ -725,6 +725,7 @@ class _ContactsPageState extends State<ContactsPage> {
                         onTap: () {
                           gtm.push(GTMConstants.kCallEvent,
                               parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+                          recentPageRepository.insertDailedCall(recentCalls[i].number!, recentCalls[i].name);
                           _callNumber(recentCalls[i].number!);
                         },
                         child: Container(

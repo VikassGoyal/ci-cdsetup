@@ -10,8 +10,10 @@ import 'package:lottie/lottie.dart';
 import 'introVerify.dart';
 
 class IntroSliderScreen extends StatefulWidget {
+  const IntroSliderScreen({super.key});
+
   @override
-  _IntroSliderScreenState createState() => _IntroSliderScreenState();
+  State<IntroSliderScreen> createState() => _IntroSliderScreenState();
 }
 
 class _IntroSliderScreenState extends State<IntroSliderScreen> {

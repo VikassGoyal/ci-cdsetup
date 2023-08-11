@@ -40,9 +40,9 @@ import '../../../utils/gtm_constants.dart';
 class Settings extends StatefulWidget {
   List<TotalCountResponseData> totalcount;
 
-  Settings({required this.totalcount}) : super();
+  Settings({super.key, required this.totalcount});
   @override
-  _SettingsState createState() => _SettingsState();
+  State<Settings> createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {

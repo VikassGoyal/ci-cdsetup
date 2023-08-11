@@ -25,10 +25,10 @@ class VerifyMobileNumber extends StatefulWidget {
   final String? phone;
   final String? password;
 
-  const VerifyMobileNumber({this.username, this.email, this.phone, this.password});
+  const VerifyMobileNumber({super.key, this.username, this.email, this.phone, this.password});
 
   @override
-  _VerifyMobileNumberState createState() => _VerifyMobileNumberState();
+  State<VerifyMobileNumber> createState() => _VerifyMobileNumberState();
 }
 
 // decoration: InputDecoration(
@@ -688,7 +688,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           type: QuickAlertType.success,
           title: 'Success',
           text: response["message"],
-         // autoCloseDuration: const Duration(seconds: 3),
+          // autoCloseDuration: const Duration(seconds: 3),
         );
         //Utils.displayToast(response["message"], context);
         context.read<BottomNavigationBloc>().currentIndex = 0;

@@ -22,7 +22,8 @@ class TextFormFieldWidget extends StatefulWidget {
   final RegExp? regexp;
 
   const TextFormFieldWidget(
-      {required this.hintText,
+      {super.key,
+      required this.hintText,
       this.focusNode,
       this.padding,
       this.textInputType,
@@ -38,7 +39,7 @@ class TextFormFieldWidget extends StatefulWidget {
       this.regexp});
 
   @override
-  _TextFormFieldWidgetState createState() => _TextFormFieldWidgetState();
+  State<TextFormFieldWidget> createState() => _TextFormFieldWidgetState();
 }
 
 class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {

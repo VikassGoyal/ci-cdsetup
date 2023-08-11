@@ -61,7 +61,7 @@ class _KeypadPageState extends State<KeypadPage> {
               return;
             }
 
-            recentPageRepository.insertDailedCall(number);
+            recentPageRepository.insertDailedCall(number, "");
             gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
             _callNumber(number);
           },

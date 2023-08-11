@@ -5,20 +5,23 @@ import 'package:conet/utils/theme.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+import '../../../repositories/recentPageRepository.dart';
+import '../../../utils/custom_fonts.dart';
 import '../utils.dart';
 
 class CallHistroyProfile extends StatefulWidget {
   List<RecentCalls>? callLogs;
 
-  CallHistroyProfile({this.callLogs}) : super();
+  CallHistroyProfile({super.key, this.callLogs});
 
   @override
-  _CallHistroyProfileState createState() => _CallHistroyProfileState();
+  State<CallHistroyProfile> createState() => _CallHistroyProfileState();
 }
 
 class _CallHistroyProfileState extends State<CallHistroyProfile> {
@@ -31,13 +34,14 @@ class _CallHistroyProfileState extends State<CallHistroyProfile> {
   bool _loader = true;
   final bool _loaderoverflow = false;
   bool personalTab = true;
-
+  bool _recentpageupdate = false;
+  RecentPageRepository recentPageRepository = RecentPageRepository();
   @override
   void initState() {
     super.initState();
     try {
       _callHistory = widget.callLogs!;
-
+      _recentpageupdate = false;
       _personalName.text = _callHistory![0].name!;
       _personalNumber.text = _callHistory![0].number!;
       print("CallHistroyProfile : $_callHistory");
@@ -176,6 +180,7 @@ class _CallHistroyProfileState extends State<CallHistroyProfile> {
                       if (_personalNumber.text == '') {
                         return;
                       }
+                      recentPageRepository.insertDailedCall(_personalNumber.text, _personalName.text);
                       _callNumber(_personalNumber.text);
                     },
                     child: SvgPicture.asset(
@@ -260,30 +265,43 @@ class _CallHistroyProfileState extends State<CallHistroyProfile> {
       appBar: AppBar(
         backgroundColor: AppColor.primaryColor,
         elevation: 0.0,
+        leadingWidth: 80.w,
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context, _recentpageupdate);
           },
-          child: Row(
-            children: [
-              const Icon(
-                Icons.arrow_back_sharp,
-                color: AppColor.whiteColor,
-              ),
-              const SizedBox(
-                width: 2,
-              ),
-              Text(
-                "Back",
-                style: Theme.of(context).textTheme.bodyText2!.apply(color: AppColor.whiteColor),
-              )
-            ],
+          child: Container(
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: const Icon(Icons.arrow_back, color: Colors.white),
+                ),
+                SizedBox(width: 6.w),
+                Text(
+                  'Back',
+                  style: TextStyle(
+                    fontFamily: kSfproRoundedFontFamily,
+                    color: AppColor.whiteColor,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         centerTitle: true,
         title: Text(
           "Contact",
-          style: Theme.of(context).textTheme.headline4!.apply(color: AppColor.whiteColor),
+          style: TextStyle(
+            fontFamily: kSfproRoundedFontFamily,
+            color: AppColor.whiteColor,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w500,
+            fontStyle: FontStyle.normal,
+          ),
         ),
         actions: const [
           // PopupMenuButton(
@@ -358,6 +376,7 @@ class _CallHistroyProfileState extends State<CallHistroyProfile> {
 
   _callNumber(String phone) async {
     try {
+      _recentpageupdate = true;
       await FlutterPhoneDirectCaller.callNumber(phone);
     } catch (e) {
       print(e);

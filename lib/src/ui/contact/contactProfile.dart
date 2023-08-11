@@ -34,10 +34,9 @@ class ContactProfile extends StatefulWidget {
   final int? contactmetaid;
   final String? contactMetaType;
   final String? fromContactMetaType;
-  final int? userid;
+  final int? id;
 
-  const ContactProfile(
-      this.phoneNumber, this.contactmetaid, this.contactMetaType, this.fromContactMetaType, this.userid,
+  const ContactProfile(this.phoneNumber, this.contactmetaid, this.contactMetaType, this.fromContactMetaType, this.id,
       {super.key});
 
   @override
@@ -110,7 +109,7 @@ class _ContactProfileState extends State<ContactProfile> {
     super.initState();
     Future.delayed(Duration.zero, () {
       getProfileDetails(widget.phoneNumber!);
-      getMutualContacts(widget.userid);
+      getMutualContacts(widget.id);
 
       // getProfileDetails("9566664128");
     });
@@ -1479,12 +1478,10 @@ class _ContactProfileState extends State<ContactProfile> {
     }
   }
 
-  getMutualContacts(int? userid) async {
-    if (userid == null) return;
-    print("contactmetaid");
-    print(userid);
+  getMutualContacts(int? id) async {
+    if (id == null) return;
     try {
-      var response = await ContactBloc().getMutualContacts(GetMutualsContactRequestBody(to_id: widget.userid));
+      var response = await ContactBloc().getMutualContacts(GetMutualsContactRequestBody(to_id: widget.id));
       if (response["status"]) {
         print("response");
         // _mutualcontact = response['data'].length;

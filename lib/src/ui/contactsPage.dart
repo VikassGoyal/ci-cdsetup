@@ -233,7 +233,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       _contacts[index].contactMetaId ?? 0,
                       _contacts[index].contactMetaType ?? "",
                       _contacts[index].fromContactMetaType ?? "",
-                      _contacts[index].userId ?? 0),
+                      _contacts[index].id ?? 0),
                 ),
               ).then((value) {
                 print("value : $value");

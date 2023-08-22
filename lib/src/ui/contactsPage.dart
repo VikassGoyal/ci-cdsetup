@@ -590,6 +590,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           fontSize: 18.sp,
                         ),
                         textInputAction: TextInputAction.search,
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: -5),
                           isDense: true,

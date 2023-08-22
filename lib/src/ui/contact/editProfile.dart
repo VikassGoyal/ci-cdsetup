@@ -31,6 +31,7 @@ import 'package:gtm/gtm.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -410,6 +411,7 @@ class _EditProfileState extends State<EditProfile> {
               _valuesChanged = true;
             });
           },
+          textCapitalization: TextCapitalization.words,
           style: TextStyle(
             fontSize: 15.sp,
             fontFamily: kSfproRoundedFontFamily,
@@ -2355,14 +2357,45 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
+  requestPermissions() async {
+    final status = await Permission.camera.status;
+    final photosStatus = await Permission.photos.status;
+    print("$status $photosStatus + ssss");
+    if (status.isGranted && photosStatus.isGranted) {
+      print("tttttttt");
+      return true;
+    } else {
+      // Handle photos permission denied
+      final status1 = await Permission.camera.request();
+      final photosStatus1 = await Permission.photos.request();
+      if (status1 == PermissionStatus.granted && photosStatus1 == PermissionStatus.granted) {
+        return true;
+      } else {
+        final bool showSettings = await openAppSettings();
+        if (showSettings) {
+          final status2 = await Permission.camera.status;
+          final photosStatus2 = await Permission.photos.status;
+          if (status2.isGranted && photosStatus2.isGranted) {
+            return true;
+          } else
+            return false;
+        }
+      }
+    }
+  }
+
   Future<void> loadProfileImage() async {
     List<Asset> resultList = <Asset>[];
     String error = 'No Error Dectected';
+    print("loadProfileImage");
 
     try {
+      bool check = await requestPermissions();
+      print("check");
+      print(check);
+      //if (check)
       resultList = await MultipleImagesPicker.pickImages(
         maxImages: 1,
-        enableCamera: true,
         selectedAssets: profileImage,
         cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
         materialOptions: const MaterialOptions(
@@ -2376,7 +2409,8 @@ class _EditProfileState extends State<EditProfile> {
       );
     } on Exception catch (e) {
       error = e.toString();
-      print(error);
+      print("errors");
+      print(e);
     }
 
     List<Asset> assets = resultList;

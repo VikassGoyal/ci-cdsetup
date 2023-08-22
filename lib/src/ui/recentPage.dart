@@ -363,6 +363,7 @@ class _RecentPageState extends State<RecentPage> {
                     height: 36.h,
                     child: TextField(
                       controller: _textEditingController,
+                      textCapitalization: TextCapitalization.words,
                       onChanged: (value) {
                         setState(() {
                           value.length > 1 ? _showCancelIcon = true : _showCancelIcon = false;

@@ -920,6 +920,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                             },
                             child: TextField(
                               controller: _searchController,
+                              textCapitalization: TextCapitalization.words,
                               onChanged: (value) {
                                 // filterSearchResults(value);
                                 setState(() {

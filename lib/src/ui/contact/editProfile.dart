@@ -2360,27 +2360,42 @@ class _EditProfileState extends State<EditProfile> {
   requestPermissions() async {
     final status = await Permission.camera.status;
     final photosStatus = await Permission.photos.status;
+
     print("$status $photosStatus + ssss");
     if (status.isGranted && photosStatus.isGranted) {
       print("tttttttt");
       return true;
-    } else {
-      // Handle photos permission denied
-      final status1 = await Permission.camera.request();
-      final photosStatus1 = await Permission.photos.request();
-      if (status1 == PermissionStatus.granted && photosStatus1 == PermissionStatus.granted) {
+    } else if (status == PermissionStatus.denied || photosStatus == PermissionStatus.denied) {
+      final cameraequest = await Permission.camera.request();
+      final photosrequest = await Permission.photos.request();
+      print("$cameraequest $photosrequest");
+      if (cameraequest != PermissionStatus.denied && photosrequest != PermissionStatus.denied) {
         return true;
-      } else {
-        final bool showSettings = await openAppSettings();
-        if (showSettings) {
-          final status2 = await Permission.camera.status;
-          final photosStatus2 = await Permission.photos.status;
-          if (status2.isGranted && photosStatus2.isGranted) {
-            return true;
-          } else
-            return false;
-        }
-      }
+      } else
+        return false;
+    } else if (status == PermissionStatus.permanentlyDenied || photosStatus == PermissionStatus.permanentlyDenied) {
+      final bool showSettings = await openAppSettings();
+      if (showSettings) {
+        print("showsettings");
+        final status2 = await Permission.camera.status;
+        final photosStatus2 = await Permission.photos.status;
+
+        if (!status2.isDenied && !photosStatus2.isDenied) {
+          return true;
+        } else
+          return false;
+      } else
+        return false;
+    } else if (status == PermissionStatus.restricted || photosStatus == PermissionStatus.restricted) {
+      print("restriction");
+    } else {
+      final cameraequest1 = await Permission.camera.request();
+      final photosrequest1 = await Permission.photos.request();
+
+      if (cameraequest1 != PermissionStatus.denied && photosrequest1 != PermissionStatus.denied) {
+        return true;
+      } else
+        return false;
     }
   }
 
@@ -2393,20 +2408,22 @@ class _EditProfileState extends State<EditProfile> {
       bool check = await requestPermissions();
       print("check");
       print(check);
-      //if (check)
-      resultList = await MultipleImagesPicker.pickImages(
-        maxImages: 1,
-        selectedAssets: profileImage,
-        cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: const MaterialOptions(
-          actionBarColor: "#FF931E",
-          statusBarColor: "#FF931E",
-          actionBarTitle: "Profile Image",
-          allViewTitle: "All Photos",
-          useDetailsView: true,
-          selectCircleStrokeColor: "#FF931E",
-        ),
-      );
+      if (check) {
+        resultList = await MultipleImagesPicker.pickImages(
+          maxImages: 1,
+          //enableCamera: true,
+          //selectedAssets: profileImage,
+          cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
+          materialOptions: const MaterialOptions(
+            actionBarColor: "#FF931E",
+            statusBarColor: "#FF931E",
+            actionBarTitle: "Profile Image",
+            allViewTitle: "All Photos",
+            useDetailsView: true,
+            selectCircleStrokeColor: "#FF931E",
+          ),
+        );
+      }
     } on Exception catch (e) {
       error = e.toString();
       print("errors");

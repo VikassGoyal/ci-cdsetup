@@ -446,6 +446,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       //   "type": type,
       //   "responseid": requestContactId,
       // };
+      print(type);
       var response = await ContactBloc()
           .contactRequestResponse(RequestContactResponseRequestBody(id: type, responseid: requestContactId));
       if (response["status"] == true) {

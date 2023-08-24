@@ -4,7 +4,7 @@ class NotificationResponse {
   String? _phone;
   String? _email;
   String? _profileImage;
-  int? _fromContactId;
+  String? _fromContactId;
   String? _requestedBy;
   String? _status;
   String? _type;
@@ -16,7 +16,7 @@ class NotificationResponse {
       String? phone,
       String? email,
       String? profileImage,
-      int? fromContactId,
+      String? fromContactId,
       String? requestedBy,
       String? status,
       String? type,
@@ -43,8 +43,8 @@ class NotificationResponse {
   set email(String? email) => _email = email;
   String? get profileImage => _profileImage;
   set profileImage(String? profileImage) => _profileImage = profileImage;
-  int? get fromContactId => _fromContactId;
-  set fromContactId(int? fromContactId) => _fromContactId = fromContactId;
+  String? get fromContactId => _fromContactId;
+  set fromContactId(String? fromContactId) => _fromContactId = fromContactId;
   String? get requestedBy => _requestedBy;
   set requestedBy(String? requestedBy) => _requestedBy = requestedBy;
   String? get status => _status;

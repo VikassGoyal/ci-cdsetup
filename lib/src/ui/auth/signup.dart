@@ -293,6 +293,7 @@ class _SignUpState extends State<SignUp> {
                             focusNode: _nameControllerFocus,
                             label: 'Name',
                             textEditingController: _nameController,
+                            textCapitalization: TextCapitalization.words,
                             isError: _nameError,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -553,6 +554,7 @@ class CustomTextFormFieldBox extends StatefulWidget {
   final FocusNode focusNode;
   final String label;
   final TextEditingController textEditingController;
+  final TextCapitalization textCapitalization;
   final String? Function(String?)? validator;
   const CustomTextFormFieldBox({
     super.key,
@@ -561,6 +563,7 @@ class CustomTextFormFieldBox extends StatefulWidget {
     required this.label,
     required this.textEditingController,
     required this.isError,
+    this.textCapitalization = TextCapitalization.none,
     required this.validator,
   });
 
@@ -629,6 +632,7 @@ class _CustomTextFormFieldBoxState extends State<CustomTextFormFieldBox> {
             child: TextFormField(
               controller: widget.textEditingController,
               focusNode: widget.focusNode,
+              textCapitalization: widget.textCapitalization,
               style: TextStyle(
                 fontFamily: kSfproRoundedFontFamily,
                 color: AppColor.whiteColor,

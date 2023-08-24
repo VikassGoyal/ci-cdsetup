@@ -8,6 +8,7 @@ import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
+import 'package:conet/src/ui/konetUserProfilePage.dart';
 import 'package:conet/src/ui/newInConet.dart';
 import 'package:conet/src/ui/notification.dart';
 import 'package:conet/src/ui/qrScreen.dart';
@@ -58,6 +59,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
   bool _searchEnabled = false;
   bool _loader = false;
   bool _showCancelIcon = false;
+  var keywordvalue;
 
   bool _suggestionsLoader = true;
   List<SearchContacts> _suggestionResult = [];
@@ -86,8 +88,9 @@ class _ConetWebPageState extends State<ConetWebPage> {
           if (response['msg'] == 'yes') {
             if (mounted) {
               setState(() {
-                _suggestionResult =
-                    List<SearchContacts>.from(responseData.map((item) => SearchContacts.fromJson(item)));
+                _suggestionResult = List<SearchContacts>.from(responseData.map((item) {
+                  return SearchContacts.fromJson(item);
+                }));
                 if (_suggestionResult.isNotEmpty) {
                   _searchResult = _suggestionResult;
                   _searchvisible = true;
@@ -213,7 +216,6 @@ class _ConetWebPageState extends State<ConetWebPage> {
     }
 
     Widget contactListItem(int index) {
-      print(_contacts[index].name);
       return Container(
         padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
         child: Row(
@@ -353,69 +355,73 @@ class _ConetWebPageState extends State<ConetWebPage> {
         padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
         child: Column(
           children: [
-            InkWell(
-              onTap: () {
-                setState(() {
-                  if (_searchResult[index].mutualList!.length > 1) {
-                    _searchResult[index].visible = !_searchResult[index].visible!;
-                  }
-                });
-              },
-              child: Row(
-                children: [
-                  SizedBox(width: 16.w),
-                  Stack(
-                    children: [
-                      SizedBox(
-                        width: 40.w,
-                        height: 40.w,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100.0),
-                          child: FadeInImage.assetNetwork(
-                            placeholder: "assets/images/profile.png",
-                            image: _searchResult[index].profileImage != null
-                                ? AppConstant.profileImageBaseUrl + _searchResult[index].profileImage!
-                                : "",
-                            fit: BoxFit.cover,
-                            imageErrorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
+            Row(
+              children: [
+                SizedBox(width: 16.w),
+                Stack(
+                  children: [
+                    SizedBox(
+                      width: 40.w,
+                      height: 40.w,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100.0),
+                        child: _searchResult[index].profileImage != null
+                            ? FadeInImage.assetNetwork(
+                                placeholder: "assets/images/profile.png",
+                                image: _searchResult[index].profileImage != null
+                                    ? AppConstant.profileImageBaseUrl + _searchResult[index].profileImage!
+                                    : "",
+                                fit: BoxFit.cover,
+                                imageErrorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    "assets/images/profile.png",
+                                  );
+                                },
+                              )
+                            : Image.asset(
                                 "assets/images/profile.png",
-                              );
-                            },
-                          ),
-                        ),
+                              ),
                       ),
-                    ],
-                  ),
-                  SizedBox(width: 14.w),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.only(right: 8.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _searchResult[index].name ?? "",
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(height: 2.h),
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/ic_contactlink.svg",
-                                height: 10,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                (_searchResult[index].via ?? ""),
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    ?.copyWith(color: AppColor.secondaryColor, fontWeight: FontWeight.w400),
-                              ),
-                              Text(
+                    ),
+                  ],
+                ),
+                SizedBox(width: 14.w),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.only(right: 8.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _searchResult[index].name ?? "",
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w400),
+                        ),
+                        SizedBox(height: 2.h),
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/ic_contactlink.svg",
+                              height: 10,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              (_searchResult[index].via ?? ""),
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  ?.copyWith(color: AppColor.secondaryColor, fontWeight: FontWeight.w400),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  if (_searchResult[index].mutualList!.length > 1) {
+                                    _searchResult[index].visible = !_searchResult[index].visible!;
+                                  }
+                                });
+                              },
+                              child: Text(
                                   (_searchResult[index].mutualList == null || _searchResult[index].mutualList!.isEmpty
                                       ? ""
                                       : " ${'(${_searchResult[index].mutualList?.length})'}"),
@@ -426,102 +432,114 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                       fontFamily: kSfproRoundedFontFamily,
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w400)),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                        keywordvalue != ""
+                            ? Text("Professional: ${keywordvalue}",
+                                style: TextStyle(
+                                    color: AppColor.secondaryColor,
+                                    fontSize: 13.sp,
+                                    fontFamily: kSfproRoundedFontFamily,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400))
+                            : SizedBox(),
+                      ],
                     ),
                   ),
-                  Visibility(
-                    visible: (_searchResult[index].status == 'accepted'),
-                    child: Container(
-                      height: 25.h,
-                      alignment: Alignment.center,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.accentColor,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        ),
-                        onPressed: () {},
-                        child: Container(
-                          constraints: BoxConstraints(minHeight: 25.h, minWidth: 70.w),
-                          alignment: Alignment.center,
-                          child: Text("Accepted",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: AppColor.whiteColor,
-                                  fontSize: 13.sp,
-                                  fontFamily: kSfproRoundedFontFamily,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w500)),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: (_searchResult[index].status == 'requested'),
-                    child: Container(
-                      height: 25.h,
-                      alignment: Alignment.center,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.primaryColor,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        ),
-                        onPressed: () {},
-                        child: Container(
-                          constraints: BoxConstraints(minHeight: 25.h, minWidth: 70.w),
-                          alignment: Alignment.center,
-                          child: Text("Requested",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: AppColor.whiteColor,
-                                  fontSize: 13.sp,
-                                  fontFamily: kSfproRoundedFontFamily,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w500)),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: (_searchResult[index].status == null),
-                    child: Container(
-                      height: 25.h,
-                      alignment: Alignment.center,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.whiteColor,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          side: const BorderSide(color: AppColor.accentColor),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _outputController?.clear();
-                            _outputController?.text = _searchResult[index].qrValue!;
-                          });
-                          if (_outputController?.text != '' && _searchResult.isNotEmpty) {
-                            _sentRequest(index, 0, "parent", _searchResult[index].name);
-                          }
-                        },
-                        child: Container(
-                          constraints: BoxConstraints(minHeight: 25.h, minWidth: 70.w),
-                          alignment: Alignment.center,
-                          child: Text("Connect",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: AppColor.accentColor,
-                                  fontSize: 13.sp,
-                                  fontFamily: kSfproRoundedFontFamily,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w500)),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 16.w),
-                ],
-              ),
+                ),
+                // Visibility(
+                //   visible: (_searchResult[index].status == 'accepted'),
+                //   child: Container(
+                //     height: 25.h,
+                //     alignment: Alignment.center,
+                //     child: ElevatedButton(
+                //       style: ElevatedButton.styleFrom(
+                //         backgroundColor: AppColor.accentColor,
+                //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                //       ),
+                //       onPressed: () {},
+                //       child: Container(
+                //         constraints: BoxConstraints(minHeight: 25.h, minWidth: 70.w),
+                //         alignment: Alignment.center,
+                //         child: Text("Accepted",
+                //             textAlign: TextAlign.center,
+                //             style: TextStyle(
+                //                 color: AppColor.whiteColor,
+                //                 fontSize: 13.sp,
+                //                 fontFamily: kSfproRoundedFontFamily,
+                //                 fontStyle: FontStyle.normal,
+                //                 fontWeight: FontWeight.w500)),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // Visibility(
+                //   visible: (_searchResult[index].status == 'requested'),
+                //   child: Container(
+                //     height: 25.h,
+                //     alignment: Alignment.center,
+                //     child: ElevatedButton(
+                //       style: ElevatedButton.styleFrom(
+                //         backgroundColor: AppColor.primaryColor,
+                //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                //       ),
+                //       onPressed: () {},
+                //       child: Container(
+                //         constraints: BoxConstraints(minHeight: 25.h, minWidth: 70.w),
+                //         alignment: Alignment.center,
+                //         child: Text("Requested",
+                //             textAlign: TextAlign.center,
+                //             style: TextStyle(
+                //                 color: AppColor.whiteColor,
+                //                 fontSize: 13.sp,
+                //                 fontFamily: kSfproRoundedFontFamily,
+                //                 fontStyle: FontStyle.normal,
+                //                 fontWeight: FontWeight.w500)),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // Visibility(
+                //   visible: (_searchResult[index].status == null),
+                //   child: Container(
+                //     height: 25.h,
+                //     alignment: Alignment.center,
+                //     child: ElevatedButton(
+                //       style: ElevatedButton.styleFrom(
+                //         backgroundColor: AppColor.whiteColor,
+                //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                //         side: const BorderSide(color: AppColor.accentColor),
+                //       ),
+                //       onPressed: () {
+                //         print("qeeeeeeeeeeeee");
+                //         print(_searchResult[index].qrValue!);
+                //         setState(() {
+                //           _outputController?.clear();
+                //           _outputController?.text = _searchResult[index].qrValue!;
+                //         });
+                //         if (_outputController?.text != '' && _searchResult.isNotEmpty) {
+                //           _sentRequest(index, 0, "parent", _searchResult[index].name);
+                //         }
+                //       },
+                //       child: Container(
+                //         constraints: BoxConstraints(minHeight: 25.h, minWidth: 70.w),
+                //         alignment: Alignment.center,
+                //         child: Text("Connect",
+                //             textAlign: TextAlign.center,
+                //             style: TextStyle(
+                //                 color: AppColor.accentColor,
+                //                 fontSize: 13.sp,
+                //                 fontFamily: kSfproRoundedFontFamily,
+                //                 fontStyle: FontStyle.normal,
+                //                 fontWeight: FontWeight.w500)),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+
+                SizedBox(width: 16.w),
+              ],
             ),
             Visibility(
               visible: _searchResult[index].visible!,
@@ -799,7 +817,161 @@ class _ConetWebPageState extends State<ConetWebPage> {
           );
         },
         itemBuilder: (context, index) {
-          return _searchvisible! ? contactSearchListItem(index) : contactListItem(index);
+          keywordvalue = _searchResult.isNotEmpty && _searchController!.text.isNotEmpty
+              ? (_searchResult[index].occupation != null &&
+                      _searchResult[index].occupation!.contains(_searchController!.text)
+                  ? "Occupation"
+                  : _searchResult[index].industry != null &&
+                          _searchResult[index].industry!.contains(_searchController!.text)
+                      ? "Industry Name"
+                      : _searchResult[index].company != null &&
+                              _searchResult[index].company!.contains(_searchController!.text)
+                          ? "Company Name"
+                          : _searchResult[index].company_website != null &&
+                                  _searchResult[index].company_website!.contains(_searchController!.text)
+                              ? "Company Website"
+                              : _searchResult[index].school_university != null &&
+                                      _searchResult[index].school_university!.contains(_searchController!.text)
+                                  ? "School/University"
+                                  : _searchResult[index].grade != null &&
+                                          _searchResult[index].grade!.contains(_searchController!.text)
+                                      ? "Grade"
+                                      : _searchResult[index].work_nature != null &&
+                                              _searchResult[index].work_nature!.contains(_searchController!.text)
+                                          ? "Work Nature"
+                                          : _searchResult[index].designation != null &&
+                                                  _searchResult[index].designation!.contains(_searchController!.text)
+                                              ? "Designation"
+                                              : _searchResult[index].keyword != null &&
+                                                      _searchResult[index].keyword!.contains(_searchController!.text)
+                                                  ? "Keyword"
+                                                  : "")
+              : "";
+
+          print("keyword");
+          print(keywordvalue);
+
+          print("${_searchResult[index].name}   ${_searchResult[index].qrValue} ${_searchResult[index].status}");
+          return _searchvisible!
+              ? InkWell(
+                  onTap: () {
+                    print(_searchResult[index].status);
+
+                    print("qrvalue");
+                    print(_searchResult[index].qrValue);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => KonetUserProfilePage(
+                                _searchResult[index].id,
+                                _searchResult[index].name,
+                                _searchResult[index].profileImage,
+                                _searchResult[index].qrValue,
+                                _searchResult[index].via,
+                                _searchResult[index].viaId,
+                                _searchResult[index].status,
+                                _searchResult[index].mutualList ?? [],
+                                _searchResult[index].listcount ?? 0,
+                                _searchResult[index].visible ?? false))).then((value) {
+                      print("value");
+                      print(value);
+                      if (value == true) {
+                        Future.delayed(const Duration(milliseconds: 500), () async {
+                          try {
+                            final response = await ContactBloc().contactPageRepository?.getSearchSuggestions();
+                            var responseData = response['data'];
+
+                            if (response['status'] == true) {
+                              if (response['msg'] == 'yes') {
+                                if (mounted) {
+                                  _searchResult = [];
+                                  _suggestionResult = List<SearchContacts>.from(
+                                      responseData.map((item) => SearchContacts.fromJson(item)));
+                                  if (_suggestionResult.isNotEmpty) {
+                                    _searchResult = _suggestionResult;
+                                    _searchvisible = true;
+                                  }
+                                  setState(() {});
+                                }
+                              }
+                            }
+
+                            if (mounted) {
+                              setState(() {
+                                _suggestionsLoader = false;
+                              });
+                            }
+                          } catch (err) {
+                            print(err);
+                            if (mounted) {
+                              setState(() {
+                                _suggestionsLoader = false;
+                              });
+                            }
+                          }
+                        });
+                      }
+                    });
+                  },
+                  child: contactSearchListItem(index))
+              : InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
+                            builder: (context) => KonetUserProfilePage(
+                                _searchResult[index].id,
+                                _searchResult[index].name,
+                                _searchResult[index].profileImage,
+                                _searchResult[index].qrValue,
+                                _searchResult[index].via,
+                                _searchResult[index].viaId,
+                                _searchResult[index].status,
+                                _searchResult[index].mutualList,
+                                _searchResult[index].listcount,
+                                _searchResult[index].visible)))
+                        .then((value) {
+                      print("value");
+                      print(value);
+                      if (value) {
+                        Future.delayed(const Duration(milliseconds: 500), () async {
+                          try {
+                            final response = await ContactBloc().contactPageRepository?.getSearchSuggestions();
+                            var responseData = response['data'];
+
+                            if (response['status'] == true) {
+                              if (response['msg'] == 'yes') {
+                                if (mounted) {
+                                  print("aaaaaaaaaaa");
+                                  setState(() {
+                                    _suggestionResult = List<SearchContacts>.from(
+                                        responseData.map((item) => SearchContacts.fromJson(item)));
+                                    if (_suggestionResult.isNotEmpty) {
+                                      _searchResult = _suggestionResult;
+                                      _searchvisible = true;
+                                    }
+                                  });
+                                }
+                              }
+                            }
+
+                            if (mounted) {
+                              setState(() {
+                                _suggestionsLoader = false;
+                              });
+                            }
+                          } catch (err) {
+                            print(err);
+                            if (mounted) {
+                              setState(() {
+                                _suggestionsLoader = false;
+                              });
+                            }
+                          }
+                        });
+                      }
+                    });
+                  },
+                  child: contactListItem(index));
         },
       );
     }
@@ -957,6 +1129,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                 fontSize: 18.sp,
                               ),
                               textInputAction: TextInputAction.search,
+                              textCapitalization: TextCapitalization.words,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.symmetric(vertical: -5),
                                 hintText: "Search",
@@ -1101,11 +1274,11 @@ class _ConetWebPageState extends State<ConetWebPage> {
       var response =
           await ContactBloc().searchConetwebContact(FilterSearchResultsRequestBody(filter: _searchController!.text));
       var responseData = response['data'];
-      print(responseData[0]);
-      print(responseData[0]['mutual_list']);
 
       if (response['status'] == true) {
         if (response['msg'] == 'yes') {
+          print("response");
+          print(response["data"].length);
           gtm.push(GTMConstants.kkonetwebpageSearchEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
           setState(() {
             _searchResult = List<SearchContacts>.from(responseData.map((item) => SearchContacts.fromJson(item)));
@@ -1133,6 +1306,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
     //   "content": "${preferences.getString("name")} request to ${_searchResult[index].mutualList![mutindex].name}",
     //   "viaid": _searchResult[index].viaId
     // };
+    print("rrrrreeeeeeeeeeeeee");
     var response = await ContactBloc().sendQrValue(QrValueRequestBody(
         value: _outputController?.text,
         qrcode: false,

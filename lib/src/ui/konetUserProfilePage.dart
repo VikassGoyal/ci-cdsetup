@@ -854,7 +854,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
                   ),
                 ),
                 onPressed: () async {
-                  print("clicked");
+                  Utils.displayToast('Already Connection', context);
                 },
                 child: Container(
                   constraints: BoxConstraints(
@@ -883,13 +883,15 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
                     RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                   ),
                 ),
-                onPressed: () async {},
+                onPressed: () async {
+                  Utils.displayToast('Request Already Sent', context);
+                },
                 child: Container(
                   constraints: BoxConstraints(
                     minHeight: 50.0.h,
                   ),
                   alignment: Alignment.center,
-                  child: Text("Requested",
+                  child: Text("Request Sent",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 18.sp,
@@ -915,10 +917,8 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
                   navigaterefresh = true;
                   setState(() {
                     _outputController?.clear();
-                    print("button presses");
-                    print(widget.qrValue);
+
                     _outputController?.text = widget.qrValue.toString();
-                    print(_outputController?.text);
                   });
                   if (_outputController?.text != '' && widget.id != null && widget.id != 0) {
                     _sentRequest(0, "parent", widget.name);
@@ -1115,13 +1115,11 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
                   borderRadius: BorderRadius.circular(100.0),
                   child: FadeInImage.assetNetwork(
                     placeholder: "assets/images/profile.png",
-                    image: userImage != null
+                    image: userImage != ""
                         ? AppConstant.profileImageBaseUrl + userImage
                         : "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png",
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
-                      print("error");
-                      print(error);
                       return Image.asset(
                         "assets/images/profile.png",
                       );
@@ -1233,13 +1231,10 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
     try {
       var response = await ContactBloc().getMutualContacts(GetMutualsContactRequestBody(to_id: widget.id));
       if (response["status"]) {
-        print("response");
         // _mutualcontact = response['data'].length;
-        print(response["data"].length);
 
         setState(() {
           _mutualcontact = response["data"].length;
-          print(_mutualcontact);
         });
       }
     } catch (e) {
@@ -1249,9 +1244,6 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
 
   getProfileDetails(String id) async {
     try {
-      var requestBody = {
-        "id": id,
-      };
       var response = await ContactBloc().getKonetUserdetail(KonetwebpageRequestBody(id: id));
 
       if (response['status'] == true) {
@@ -1361,7 +1353,6 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
   }
 
   checkOccupation() {
-    print(_occupationValue);
     if (_occupationValue == OccupationType.entrepreneur.name) {
       _enterpreneurForms = true;
       _companyVisible = false;
@@ -1454,10 +1445,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
     //   "content": "${preferences.getString("name")} request to ${_searchResult[index].mutualList![mutindex].name}",
     //   "viaid": _searchResult[index].viaId
     // };
-    print(_outputController?.text);
-    print(false);
-    print("${preferences.getString("name")} request to ${receivername}");
-    print(widget.viaId);
+
     var response = await ContactBloc().sendQrValue(QrValueRequestBody(
         value: widget.qrValue,
         qrcode: false,

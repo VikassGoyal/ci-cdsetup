@@ -106,7 +106,6 @@ class _ConetWebPageState extends State<ConetWebPage> {
           });
         }
       } catch (err) {
-        print(err);
         if (mounted) {
           setState(() {
             _suggestionsLoader = false;
@@ -435,7 +434,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                             ),
                           ],
                         ),
-                        keywordvalue != ""
+                        keywordvalue != "" && keywordvalue != null
                             ? Text("Professional: ${keywordvalue}",
                                 style: TextStyle(
                                     color: AppColor.secondaryColor,
@@ -818,47 +817,45 @@ class _ConetWebPageState extends State<ConetWebPage> {
         },
         itemBuilder: (context, index) {
           keywordvalue = _searchResult.isNotEmpty && _searchController!.text.isNotEmpty
-              ? (_searchResult[index].occupation != null &&
-                      _searchResult[index].occupation!.contains(_searchController!.text)
-                  ? "Occupation"
-                  : _searchResult[index].industry != null &&
-                          _searchResult[index].industry!.contains(_searchController!.text)
-                      ? "Industry Name"
-                      : _searchResult[index].company != null &&
-                              _searchResult[index].company!.contains(_searchController!.text)
-                          ? "Company Name"
-                          : _searchResult[index].company_website != null &&
-                                  _searchResult[index].company_website!.contains(_searchController!.text)
-                              ? "Company Website"
-                              : _searchResult[index].school_university != null &&
-                                      _searchResult[index].school_university!.contains(_searchController!.text)
-                                  ? "School/University"
-                                  : _searchResult[index].grade != null &&
-                                          _searchResult[index].grade!.contains(_searchController!.text)
-                                      ? "Grade"
-                                      : _searchResult[index].work_nature != null &&
-                                              _searchResult[index].work_nature!.contains(_searchController!.text)
-                                          ? "Work Nature"
-                                          : _searchResult[index].designation != null &&
-                                                  _searchResult[index].designation!.contains(_searchController!.text)
-                                              ? "Designation"
-                                              : _searchResult[index].keyword != null &&
-                                                      _searchResult[index].keyword!.contains(_searchController!.text)
-                                                  ? "Keyword"
-                                                  : "")
+              ? _searchResult[index].name != null && _searchResult[index].name == _searchController!.text
+                  ? ""
+                  : (_searchResult[index].occupation != null &&
+                          _searchResult[index].occupation!.contains(_searchController!.text)
+                      ? "Occupation"
+                      : _searchResult[index].industry != null &&
+                              _searchResult[index].industry!.contains(_searchController!.text)
+                          ? "Industry Name"
+                          : _searchResult[index].company != null &&
+                                  _searchResult[index].company!.contains(_searchController!.text)
+                              ? "Company Name"
+                              : _searchResult[index].company_website != null &&
+                                      _searchResult[index].company_website!.contains(_searchController!.text)
+                                  ? "Company Website"
+                                  : _searchResult[index].school_university != null &&
+                                          _searchResult[index].school_university!.contains(_searchController!.text)
+                                      ? "School/University"
+                                      : _searchResult[index].grade != null &&
+                                              _searchResult[index].grade!.contains(_searchController!.text)
+                                          ? "Grade"
+                                          : _searchResult[index].work_nature != null &&
+                                                  _searchResult[index].work_nature!.contains(_searchController!.text)
+                                              ? "Work Nature"
+                                              : _searchResult[index].designation != null &&
+                                                      _searchResult[index]
+                                                          .designation!
+                                                          .contains(_searchController!.text)
+                                                  ? "Designation"
+                                                  : _searchResult[index].keyword != null &&
+                                                          _searchResult[index]
+                                                              .keyword!
+                                                              .contains(_searchController!.text)
+                                                      ? "Keyword"
+                                                      : "")
               : "";
 
-          print("keyword");
-          print(keywordvalue);
-
-          print("${_searchResult[index].name}   ${_searchResult[index].qrValue} ${_searchResult[index].status}");
           return _searchvisible!
               ? InkWell(
                   onTap: () {
-                    print(_searchResult[index].status);
-
-                    print("qrvalue");
-                    print(_searchResult[index].qrValue);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -873,8 +870,6 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                 _searchResult[index].mutualList ?? [],
                                 _searchResult[index].listcount ?? 0,
                                 _searchResult[index].visible ?? false))).then((value) {
-                      print("value");
-                      print(value);
                       if (value == true) {
                         Future.delayed(const Duration(milliseconds: 500), () async {
                           try {
@@ -930,8 +925,6 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                 _searchResult[index].listcount,
                                 _searchResult[index].visible)))
                         .then((value) {
-                      print("value");
-                      print(value);
                       if (value) {
                         Future.delayed(const Duration(milliseconds: 500), () async {
                           try {
@@ -941,7 +934,6 @@ class _ConetWebPageState extends State<ConetWebPage> {
                             if (response['status'] == true) {
                               if (response['msg'] == 'yes') {
                                 if (mounted) {
-                                  print("aaaaaaaaaaa");
                                   setState(() {
                                     _suggestionResult = List<SearchContacts>.from(
                                         responseData.map((item) => SearchContacts.fromJson(item)));
@@ -960,7 +952,6 @@ class _ConetWebPageState extends State<ConetWebPage> {
                               });
                             }
                           } catch (err) {
-                            print(err);
                             if (mounted) {
                               setState(() {
                                 _suggestionsLoader = false;
@@ -1079,8 +1070,6 @@ class _ConetWebPageState extends State<ConetWebPage> {
                           height: 36.h,
                           child: GestureDetector(
                             onTap: () async {
-                              print("success");
-
                               setState(() {
                                 _searchEnabled = true;
                               });
@@ -1092,6 +1081,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                             },
                             child: TextField(
                               controller: _searchController,
+
                               onChanged: (value) {
                                 // filterSearchResults(value);
                                 setState(() {
@@ -1099,7 +1089,6 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                 });
                               },
                               onSubmitted: (value) {
-                                print(value);
                                 if (value.isEmpty) {
                                   if (_suggestionResult.isNotEmpty) {
                                     setState(() {
@@ -1275,10 +1264,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
           await ContactBloc().searchConetwebContact(FilterSearchResultsRequestBody(filter: _searchController!.text));
       var responseData = response['data'];
 
-      if (response['status'] == true) {
+      if (response != null && response['status'] == true) {
         if (response['msg'] == 'yes') {
-          print("response");
-          print(response["data"].length);
           gtm.push(GTMConstants.kkonetwebpageSearchEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
           setState(() {
             _searchResult = List<SearchContacts>.from(responseData.map((item) => SearchContacts.fromJson(item)));
@@ -1306,7 +1293,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
     //   "content": "${preferences.getString("name")} request to ${_searchResult[index].mutualList![mutindex].name}",
     //   "viaid": _searchResult[index].viaId
     // };
-    print("rrrrreeeeeeeeeeeeee");
+
     var response = await ContactBloc().sendQrValue(QrValueRequestBody(
         value: _outputController?.text,
         qrcode: false,

@@ -257,6 +257,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
       return TextFormFieldContact(
         hintText: "Company",
         padding: 14.0,
+        textColor: AppColor.blackColor,
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
@@ -273,6 +274,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
         padding: 14.0,
         margin: 22.0,
         readonly: true,
+        textColor: AppColor.blackColor,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
@@ -288,6 +290,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
+        textColor: AppColor.blackColor,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
         controller: _professionalSchool,
@@ -303,6 +306,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
         readonly: true,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
+        textColor: AppColor.blackColor,
         controller: _professionalGrade,
         parametersValidate: "Please enter Grede.",
       );
@@ -316,6 +320,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
         readonly: true,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
+        textColor: AppColor.blackColor,
         controller: _professionalWorkNature,
         parametersValidate: "Please enter Work Nature.",
       );
@@ -329,6 +334,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
         readonly: true,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
+        textColor: AppColor.blackColor,
         controller: _professionalDesignation,
         parametersValidate: "Please enter Designation.",
       );
@@ -341,6 +347,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
         margin: 22.0,
         readonly: true,
         textInputType: TextInputType.text,
+        textColor: AppColor.blackColor,
         actionKeyboard: TextInputAction.next,
         controller: _socialFacebook,
         parametersValidate: "Please enter Facebook.",
@@ -355,6 +362,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
         readonly: true,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
+        textColor: AppColor.blackColor,
         controller: _socialInstagram,
         parametersValidate: "Please enter Instagram.",
       );
@@ -368,6 +376,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
         readonly: true,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
+        textColor: AppColor.blackColor,
         controller: _socialTwitter,
         parametersValidate: "Please enter Twitter.",
       );
@@ -381,6 +390,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
         readonly: true,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
+        textColor: AppColor.blackColor,
         controller: _socialSkype,
         parametersValidate: "Please enter Skype.",
       );
@@ -419,7 +429,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
                       fontSize: 15.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
-                      color: AppColor.secondaryColor),
+                      color: AppColor.blackColor),
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(top: 6.h, bottom: 3.h),
                     labelText: "Company",
@@ -461,7 +471,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
                       fontSize: 15.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
-                      color: AppColor.secondaryColor),
+                      color: AppColor.blackColor),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                     labelText: "Website",
@@ -503,7 +513,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
                       fontSize: 15.sp,
                       fontFamily: kSfproRoundedFontFamily,
                       fontWeight: FontWeight.w300,
-                      color: AppColor.secondaryColor),
+                      color: AppColor.blackColor),
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(top: 6.h, bottom: 3.h),
                     labelText: 'Work Nature',
@@ -1115,9 +1125,9 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
                   borderRadius: BorderRadius.circular(100.0),
                   child: FadeInImage.assetNetwork(
                     placeholder: "assets/images/profile.png",
-                    image: userImage != ""
+                    image: userImage != "" && userImage.isNotEmpty
                         ? AppConstant.profileImageBaseUrl + userImage
-                        : "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png",
+                        : "assets/images/profile.png",
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
                       return Image.asset(

@@ -706,18 +706,23 @@ class _SettingsState extends State<Settings> {
     });
     try {
       var response = await ContactBloc().importContacts(_importportcontacts);
-      if (response['status'] == true) {
+      if (response != null && response['status'] == true) {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setBool('imported', true);
         setState(() {
           _loader = false;
         });
         Utils.displayToast("Successfully imported", context);
-      } else if (response['status'] == "Token is Expired") {
+      } else if (response != null && response['status'] == "Token is Expired") {
         tokenExpired(context);
         setState(() {
           _loader = false;
         });
+      } else if (response == null) {
+        setState(() {
+          _loader = false;
+        });
+        Utils.displayToastBottomError("Connection Time Out\n Try Again", context);
       } else {
         setState(() {
           _loader = false;

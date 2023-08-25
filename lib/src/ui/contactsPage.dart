@@ -970,15 +970,17 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   _importContacts() async {
-    Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
+    try {
+      Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
 
-    for (var item in contacts) {
-      if (item.phones!.toList().isNotEmpty) {
-        DeviceContactData data = DeviceContactData(item.displayName, item.phones!.toList()[0].value);
-        _importportcontacts.add(data);
+      for (var item in contacts) {
+        if (item.phones!.toList().isNotEmpty) {
+          DeviceContactData data = DeviceContactData(item.displayName, item.phones!.toList()[0].value);
+          _importportcontacts.add(data);
+        }
       }
-    }
-    callImportApi();
+      callImportApi();
+    } catch (e) {}
   }
 
   callImportApi() async {
@@ -992,11 +994,16 @@ class _ContactsPageState extends State<ContactsPage> {
         preferences.setBool('imported', true);
         _updateContact();
         Utils.displayToast("Successfully imported", context);
-      } else if (response['status'] == "Token is Expired") {
+      } else if (response == null && response['status'] == "Token is Expired") {
         tokenExpired(context);
         setState(() {
           _loader = false;
         });
+      } else if (response == null) {
+        setState(() {
+          _loader = false;
+        });
+        Utils.displayToastBottomError("Connection Time Out\n Try Again", context);
       } else {
         setState(() {
           _loader = false;

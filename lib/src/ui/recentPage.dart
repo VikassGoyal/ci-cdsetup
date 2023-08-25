@@ -206,6 +206,44 @@ class _RecentPageState extends State<RecentPage> {
       );
     }
 
+    Widget contactListItemWrapper(int index) {
+      var firstDateTime = DateTime.fromMillisecondsSinceEpoch(_callHistory[index].timestamp!);
+      var now = DateTime.now();
+      return Column(
+        children: [
+          //logic to select the first child and child where day changes
+          ((index == 0) ||
+                  (index < _callHistory.length - 1 &&
+                      !DateUtils.isSameDay(
+                          firstDateTime, DateTime.fromMillisecondsSinceEpoch(_callHistory[index - 1].timestamp!))))
+              ? Container(
+                  padding: EdgeInsets.only(top: 3.h, bottom: 3.h),
+                  width: ScreenUtil().screenWidth,
+                  alignment: Alignment.center,
+                  color: Colors.grey[50],
+                  child: Text(
+                    DateUtils.isSameDay(firstDateTime, now)
+                        ? 'Today'
+                        : DateUtils.isSameDay(firstDateTime, now.subtract(const Duration(days: 1)))
+                            ? 'Yesterday'
+                            : now.difference(firstDateTime).inDays < 7
+                                ? DateFormat.EEEE().format(firstDateTime)
+                                : DateFormat.yMMMd().format(firstDateTime),
+                    style: TextStyle(
+                      fontFamily: kSfproRoundedFontFamily,
+                      color: AppColor.primaryColor,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                )
+              : const SizedBox(),
+          contactListItem(index),
+        ],
+      );
+    }
+
     Widget contactsList() {
       return BlocConsumer<RecentCallsBloc, RecentCallsState>(
         listener: (context, state) {
@@ -288,7 +326,7 @@ class _RecentPageState extends State<RecentPage> {
                             ),
                           );
                         }
-                        return contactListItem(index);
+                        return contactListItemWrapper(index);
                       },
                     ),
             ),

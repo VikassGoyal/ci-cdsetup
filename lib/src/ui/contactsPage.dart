@@ -117,10 +117,18 @@ class _ContactsPageState extends State<ContactsPage> {
   // }
 
   // Overridden this due to Error in AZListView
-  void _sortListBySuspensionTag(List<ISuspensionBean>? list) {
-    if (list == null || list.isEmpty) return;
+  void _sortListBySuspensionTag(List<AllContacts> list) {
+    if (list.isEmpty) return;
     list.sort((a, b) {
-      if (a.getSuspensionTag() == "@" && b.getSuspensionTag() != "@") {
+      if (RegExp("[A-Z]").hasMatch(a.getSuspensionTag()) && !RegExp("[A-Z]").hasMatch(b.getSuspensionTag())) {
+        return -1;
+      } else if (!RegExp("[A-Z]").hasMatch(a.getSuspensionTag()) && RegExp("[A-Z]").hasMatch(b.getSuspensionTag())) {
+        return 1;
+      } else if (RegExp("[A-Z]").hasMatch(a.getSuspensionTag()) && RegExp("[A-Z]").hasMatch(b.getSuspensionTag())) {
+        final nameA = a.name?.toLowerCase() ?? '';
+        final nameB = b.name?.toLowerCase() ?? '';
+        return nameA.compareTo(nameB);
+      } else if (a.getSuspensionTag() == "@" && b.getSuspensionTag() != "@") {
         return -1;
       } else if (a.getSuspensionTag() != "@" && b.getSuspensionTag() == "@") {
         return 1;
@@ -155,16 +163,10 @@ class _ContactsPageState extends State<ContactsPage> {
       }
     }
 
+    //here sorting contacts list by tags and also by names
     _sortListBySuspensionTag(uniqueList);
-    uniqueList.sort((a, b) {
-      final nameA = a.name?.toLowerCase() ?? '';
-      final nameB = b.name?.toLowerCase() ?? '';
-      return nameA.compareTo(nameB);
-    });
+    //here selecting the first contact for each tag to show in list
     SuspensionUtil.setShowSuspensionStatus(uniqueList);
-    // SuspensionUtil.sortListBySuspensionTag(uniqueList);
-
-    // Update the original list with the unique list
     list.clear();
     list.addAll(uniqueList);
   }
@@ -481,7 +483,6 @@ class _ContactsPageState extends State<ContactsPage> {
               return _buildListItem(model, index);
             },
             physics: const BouncingScrollPhysics(),
-            indexBarData: SuspensionUtil.getTagIndexList(_contacts),
             indexHintBuilder: (context, hint) {
               return Container(
                 alignment: Alignment.center,

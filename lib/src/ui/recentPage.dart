@@ -418,6 +418,7 @@ class _RecentPageState extends State<RecentPage> {
                         fontSize: 18.sp,
                       ),
                       textInputAction: TextInputAction.search,
+                      textCapitalization: TextCapitalization.words,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(vertical: -5),
                         isDense: true,

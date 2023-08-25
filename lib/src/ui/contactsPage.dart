@@ -238,7 +238,6 @@ class _ContactsPageState extends State<ContactsPage> {
                       _contacts[index].id ?? 0),
                 ),
               ).then((value) {
-                print("value : $value");
                 if (value) {
                   _updateContact();
                 } else
@@ -525,7 +524,6 @@ class _ContactsPageState extends State<ContactsPage> {
                   builder: (context) => NewConetUsers(),
                 ),
               ).then((value) {
-                print("value : $value");
                 if (value) _updateContact();
               });
             },
@@ -591,6 +589,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           fontSize: 18.sp,
                         ),
                         textInputAction: TextInputAction.search,
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: -5),
                           isDense: true,

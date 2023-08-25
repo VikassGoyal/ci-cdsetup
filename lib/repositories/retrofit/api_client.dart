@@ -15,6 +15,7 @@ import '../../api_models/getAllContact_response_model/getAllContact_response_bod
 import '../../api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';
 import '../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
 import '../../api_models/getTotalCount_response_model/totalCount_response_body.dart';
+import '../../api_models/konetwebpage_request_model/konetwebpage_request_body.dart';
 import '../../api_models/login_request_body/login_request_body.dart';
 import '../../api_models/qrValue_request_model/qrValue_request_body.dart';
 import '../../api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
@@ -89,6 +90,10 @@ abstract class ApiClient {
   @GET(ApiConstants.getallcontact)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
   Future<dynamic> getallcontact();
+
+  @POST(ApiConstants.konetuserdetail)
+  @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
+  Future<dynamic> konetuserdetail(@Body() KonetwebpageRequestBody konetwebpageRequestBody);
 
   @POST(ApiConstants.editContact)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})

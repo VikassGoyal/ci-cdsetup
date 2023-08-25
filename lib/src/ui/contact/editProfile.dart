@@ -1171,7 +1171,9 @@ class _EditProfileState extends State<EditProfile> {
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: TextFormField(
+                    textCapitalization: TextCapitalization.words,
                     maxLength: 25,
+
                     style: TextStyle(
                         fontSize: 15.sp,
                         fontFamily: kSfproRoundedFontFamily,

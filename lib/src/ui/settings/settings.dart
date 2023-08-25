@@ -27,6 +27,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:share_plus/share_plus.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -303,14 +304,11 @@ class _SettingsState extends State<Settings> {
                   ListTile(
                       contentPadding: EdgeInsets.zero,
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ConetWebPage(backcheck: true),
-                          ),
-                        );
+                        Share.share(
+                            'Hey\n\nKonet is a fast, simple and secure app that i use to message and call the people.\n\nGet it for free at https://play.google.com/store/apps/details?id=com.shade6.agratrade',
+                            subject: 'Look what I made!');
                       },
-                      title: Text("Invite to KONET app",
+                      title: Text("Invite to KONET App",
                           style: TextStyle(
                               color: AppColor.blackColor,
                               fontSize: 17.sp,

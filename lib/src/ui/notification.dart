@@ -299,7 +299,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ),
               ],
             ),
-            const SizedBox(width: 14),
+            SizedBox(width: 14.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -307,7 +307,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   Text(
                     notification[index].name ?? notification[index].phone!,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.headline2,
+                    style: TextStyle(
+                      fontFamily: kSfproDisplayFontFamily,
+                      color: AppColor.blackColor,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 18.sp,
+                      letterSpacing: 0.2,
+                    ),
                   ),
                 ],
               ),
@@ -446,6 +453,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       //   "type": type,
       //   "responseid": requestContactId,
       // };
+      print(type);
       var response = await ContactBloc()
           .contactRequestResponse(RequestContactResponseRequestBody(id: type, responseid: requestContactId));
       if (response["status"] == true) {

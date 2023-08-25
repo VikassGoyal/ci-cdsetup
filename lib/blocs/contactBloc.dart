@@ -7,6 +7,7 @@ import '../api_models/checkContactForAddNew_request_model/checkContactForAddNew_
 import '../api_models/deleteContact__request_model/deleteContact.dart';
 import '../api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';
 import '../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+import '../api_models/konetwebpage_request_model/konetwebpage_request_body.dart';
 import '../api_models/qrValue_request_model/qrValue_request_body.dart';
 import '../api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
 import '../api_models/updateProfileDetails_request_model/updateProfileDetails_request_body.dart';
@@ -62,6 +63,15 @@ class ContactBloc {
   getProfileDetails(GetProfileDetailsRequestBody getProfileDetailsRequestBody) async {
     try {
       var response = await contactPageRepository?.getProfileDetails(getProfileDetailsRequestBody);
+      return response;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  getKonetUserdetail(KonetwebpageRequestBody konetwebpageRequestBody) async {
+    try {
+      var response = await contactPageRepository?.getKonetUserdetail(konetwebpageRequestBody);
       return response;
     } catch (e) {
       print(e);

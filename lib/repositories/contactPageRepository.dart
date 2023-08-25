@@ -15,6 +15,7 @@ import '../api_models/checkContactForAddNew_request_model/checkContactForAddNew_
 import '../api_models/deleteContact__request_model/deleteContact.dart';
 import '../api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';
 import '../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+import '../api_models/konetwebpage_request_model/konetwebpage_request_body.dart';
 import '../api_models/qrValue_request_model/qrValue_request_body.dart';
 import '../api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
 import '../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
@@ -98,6 +99,12 @@ class ContactPageRepository {
   //GetProfileDetails
   getProfileDetails(GetProfileDetailsRequestBody getProfileDetailsRequestBody) async {
     var response = await _apiClient.editContact(getProfileDetailsRequestBody);
+    return response;
+  }
+
+  //Getkonetwebpagedetail
+  getKonetUserdetail(KonetwebpageRequestBody konetwebpageRequestBody) async {
+    var response = await _apiClient.konetuserdetail(konetwebpageRequestBody);
     return response;
   }
 

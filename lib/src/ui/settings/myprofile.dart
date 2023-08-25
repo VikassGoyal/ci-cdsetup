@@ -540,6 +540,7 @@ class _MyProfileState extends State<MyProfile> {
     Widget _buildCompany() {
       return TextFormFieldContact(
         textColor: AppColor.blackColor,
+        textCapitalization: TextCapitalization.words,
         hintText: "Company",
         padding: 16.0,
         margin: 22.0,
@@ -571,6 +572,7 @@ class _MyProfileState extends State<MyProfile> {
       return TextFormFieldContact(
         textColor: AppColor.blackColor,
         hintText: "School / University",
+        textCapitalization: TextCapitalization.words,
         padding: 16.0,
         margin: 22.0,
         readonly: true,
@@ -600,6 +602,7 @@ class _MyProfileState extends State<MyProfile> {
       return TextFormFieldContact(
         textColor: AppColor.blackColor,
         hintText: "Work Nature",
+        textCapitalization: TextCapitalization.words,
         padding: 16.0,
         margin: 22.0,
         readonly: true,
@@ -614,6 +617,7 @@ class _MyProfileState extends State<MyProfile> {
       return TextFormFieldContact(
         textColor: AppColor.blackColor,
         hintText: "Designation",
+        textCapitalization: TextCapitalization.words,
         padding: 16.0,
         margin: 22.0,
         readonly: true,
@@ -716,6 +720,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 child: TextFormField(
                   enabled: false,
+                  textCapitalization: TextCapitalization.words,
                   style: TextStyle(
                       fontSize: 15.sp,
                       fontFamily: kSfproRoundedFontFamily,

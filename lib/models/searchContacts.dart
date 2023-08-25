@@ -18,28 +18,35 @@ class SearchContacts {
   String? _work_nature;
   String? _designation;
   List<String>? _keyword;
+  String? _facebook;
+  String? _instagram;
+  String? _twitter;
+  String? _skype;
 
-  SearchContacts({
-    int? id,
-    String? name,
-    String? profileImage,
-    String? qrValue,
-    String? via,
-    int? viaId,
-    String? status,
-    List<MutualList>? mutualList,
-    int? listcount,
-    bool? visible,
-    String? occupation,
-    String? industry,
-    String? company,
-    String? company_website,
-    String? school_university,
-    String? grade,
-    String? work_nature,
-    String? designation,
-    List<String>? keyword,
-  }) {
+  SearchContacts(
+      {int? id,
+      String? name,
+      String? profileImage,
+      String? qrValue,
+      String? via,
+      int? viaId,
+      String? status,
+      List<MutualList>? mutualList,
+      int? listcount,
+      bool? visible,
+      String? occupation,
+      String? industry,
+      String? company,
+      String? company_website,
+      String? school_university,
+      String? grade,
+      String? work_nature,
+      String? designation,
+      List<String>? keyword,
+      String? facebook,
+      String? instagram,
+      String? twitter,
+      String? skype}) {
     _id = id;
     _name = name;
     _profileImage = profileImage;
@@ -59,6 +66,10 @@ class SearchContacts {
     _work_nature = work_nature;
     _designation = designation;
     _keyword = keyword;
+    _facebook = facebook;
+    _instagram = instagram;
+    _twitter = twitter;
+    _skype = skype;
   }
 
   int? get id => _id;
@@ -109,6 +120,17 @@ class SearchContacts {
   set keyword(List<String>? keyword) => _keyword = keyword;
   List<String>? get keyword => _keyword;
 
+  String? get facebook => _facebook;
+  set facebook(String? facebook) => _facebook = facebook;
+
+  String? get instagram => _instagram;
+  set instagram(String? instagram) => _instagram = instagram;
+
+  String? get twitter => _twitter;
+  set twitter(String? twitter) => _twitter = twitter;
+
+  String? get skype => _skype;
+  set skype(String? skype) => _skype = skype;
   SearchContacts.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _name = json['name'];
@@ -126,6 +148,10 @@ class SearchContacts {
     _work_nature = json['work_nature'];
     _designation = json['designation'];
     _keyword = json["keyword"] != null ? json["keyword"].split(',') : [];
+    _facebook = json['facebook'];
+    _instagram = json['instagram'];
+    _twitter = json['twitter'];
+    _skype = json['skype'];
 
     if (json['mutual_list'] != null) {
       _mutualList = <MutualList>[];
@@ -157,6 +183,10 @@ class SearchContacts {
     data['work_nature'] = _work_nature;
     data['designation'] = _designation;
     data['keyword'] = _keyword;
+    data['facebook'] = _facebook;
+    data['instagram'] = _instagram;
+    data['twitter'] = _twitter;
+    data['skype'] = _skype;
 
     return data;
   }

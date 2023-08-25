@@ -60,6 +60,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
   bool _loader = false;
   bool _showCancelIcon = false;
   var keywordvalue;
+  var searchvalue;
 
   bool _suggestionsLoader = true;
   List<SearchContacts> _suggestionResult = [];
@@ -816,41 +817,67 @@ class _ConetWebPageState extends State<ConetWebPage> {
           );
         },
         itemBuilder: (context, index) {
+          searchvalue = _searchController!.text.toLowerCase();
           keywordvalue = _searchResult.isNotEmpty && _searchController!.text.isNotEmpty
               ? _searchResult[index].name != null && _searchResult[index].name == _searchController!.text
                   ? ""
                   : (_searchResult[index].occupation != null &&
-                          _searchResult[index].occupation!.contains(_searchController!.text)
+                          _searchResult[index].occupation!.toLowerCase().contains(searchvalue)
                       ? "Occupation"
                       : _searchResult[index].industry != null &&
-                              _searchResult[index].industry!.contains(_searchController!.text)
+                              _searchResult[index].industry!.toLowerCase().contains(searchvalue)
                           ? "Industry Name"
                           : _searchResult[index].company != null &&
-                                  _searchResult[index].company!.contains(_searchController!.text)
+                                  _searchResult[index].company!.toLowerCase().contains(searchvalue)
                               ? "Company Name"
                               : _searchResult[index].company_website != null &&
-                                      _searchResult[index].company_website!.contains(_searchController!.text)
+                                      _searchResult[index].company_website!.toLowerCase().contains(searchvalue)
                                   ? "Company Website"
                                   : _searchResult[index].school_university != null &&
-                                          _searchResult[index].school_university!.contains(_searchController!.text)
+                                          _searchResult[index].school_university!.toLowerCase().contains(searchvalue)
                                       ? "School/University"
                                       : _searchResult[index].grade != null &&
-                                              _searchResult[index].grade!.contains(_searchController!.text)
+                                              _searchResult[index].grade!.toLowerCase().contains(searchvalue)
                                           ? "Grade"
                                           : _searchResult[index].work_nature != null &&
-                                                  _searchResult[index].work_nature!.contains(_searchController!.text)
+                                                  _searchResult[index].work_nature!.toLowerCase().contains(searchvalue)
                                               ? "Work Nature"
                                               : _searchResult[index].designation != null &&
                                                       _searchResult[index]
                                                           .designation!
-                                                          .contains(_searchController!.text)
+                                                          .toLowerCase()
+                                                          .contains(searchvalue)
                                                   ? "Designation"
                                                   : _searchResult[index].keyword != null &&
                                                           _searchResult[index]
                                                               .keyword!
-                                                              .contains(_searchController!.text)
+                                                              .any((value) => value.toLowerCase().contains(searchvalue))
                                                       ? "Keyword"
-                                                      : "")
+                                                      : _searchResult[index].facebook != null &&
+                                                              _searchResult[index]
+                                                                  .facebook!
+                                                                  .toLowerCase()
+                                                                  .contains(searchvalue)
+                                                          ? "Facebook Profile"
+                                                          : _searchResult[index].instagram != null &&
+                                                                  _searchResult[index]
+                                                                      .instagram!
+                                                                      .toLowerCase()
+                                                                      .contains(searchvalue)
+                                                              ? "Instagram Profile"
+                                                              : _searchResult[index].twitter != null &&
+                                                                      _searchResult[index]
+                                                                          .twitter!
+                                                                          .toLowerCase()
+                                                                          .contains(searchvalue)
+                                                                  ? "Twitter Profile"
+                                                                  : _searchResult[index].skype != null &&
+                                                                          _searchResult[index]
+                                                                              .skype!
+                                                                              .toLowerCase()
+                                                                              .contains(searchvalue)
+                                                                      ? "Skype Profile"
+                                                                      : "")
               : "";
 
           return _searchvisible!

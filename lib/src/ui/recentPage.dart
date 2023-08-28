@@ -49,6 +49,7 @@ class _RecentPageState extends State<RecentPage> {
   bool _isRecentCallsLoading = false;
 
   bool _isFetchedAllData = false;
+  var lengthofnotification = 0;
   @override
   void initState() {
     super.initState();
@@ -56,6 +57,7 @@ class _RecentPageState extends State<RecentPage> {
     try {
       recentCallsBloc = BlocProvider.of<RecentCallsBloc>(context);
       SchedulerBinding.instance.addPostFrameCallback((_) => checkPermissionAndFetchCallLogs());
+      getNotificationData();
     } catch (e) {
       print("RecentPageerror : $e");
     }
@@ -373,19 +375,56 @@ class _RecentPageState extends State<RecentPage> {
               );
             },
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              color: AppColor.whiteColor,
-            ),
-            onPressed: () {
+          InkWell(
+            onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => NotificationScreen(),
-                ),
-              );
+                MaterialPageRoute(builder: (context) => NotificationScreen()),
+              ).then((value) {
+                getNotificationData();
+              });
             },
+            child: Padding(
+              padding: EdgeInsets.only(top: 5.0.h),
+              child: Stack(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.notifications,
+                      color: AppColor.whiteColor,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NotificationScreen()),
+                      ).then((value) {
+                        getNotificationData();
+                      });
+                    },
+                  ),
+                  lengthofnotification != 0
+                      ? Positioned(
+                          top: 8,
+                          right: 12,
+                          child: Container(
+                            width: 17,
+                            height: 17,
+                            decoration: BoxDecoration(
+                              color: AppColor.accentColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: Text(
+                                lengthofnotification != 0 ? lengthofnotification.toString() : "0",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox(),
+                ],
+              ),
+            ),
           )
         ],
       ),
@@ -694,6 +733,28 @@ class _RecentPageState extends State<RecentPage> {
     var outputFormat = DateFormat('hh:mm a');
     var outputDate = outputFormat.format(date);
     return outputDate;
+  }
+
+  getNotificationData() async {
+    try {
+      var response = await ContactBloc().contactRequest();
+
+      if (response['status'] == true) {
+        // gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+        var responseData = response['data'];
+        print(responseData.length);
+        if (responseData != null)
+          lengthofnotification = responseData.length;
+        else
+          lengthofnotification = 0;
+      } else {
+        Utils.displayToastBottomError(response["message"], context);
+      }
+      setState(() {});
+    } catch (e) {
+      setState(() {});
+      print(e);
+    }
   }
 
   void _clearText() {

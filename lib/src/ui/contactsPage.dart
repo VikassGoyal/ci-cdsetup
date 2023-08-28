@@ -80,6 +80,7 @@ class _ContactsPageState extends State<ContactsPage> {
   double susItemHeight = 40;
   final gtm = Gtm.instance;
   bool updatecheck = false;
+  var lengthofnotification = 0;
 
   @override
   void initState() {
@@ -528,23 +529,76 @@ class _ContactsPageState extends State<ContactsPage> {
               });
             },
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              color: AppColor.whiteColor,
-            ),
-            onPressed: () {
+          InkWell(
+            onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => NotificationScreen(),
-                ),
+                MaterialPageRoute(builder: (context) => NotificationScreen()),
               ).then((value) {
-                print("value : $value");
-                if (value) _updateContact();
+                if (value != null && value) _updateContact();
+                getNotificationData();
               });
             },
+            child: Padding(
+              padding: EdgeInsets.only(top: 5.0.h),
+              child: Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.notifications,
+                      color: AppColor.whiteColor,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NotificationScreen()),
+                      ).then((value) {
+                        if (value != null && value) _updateContact();
+                        getNotificationData();
+                      });
+                    },
+                  ),
+                  lengthofnotification != 0
+                      ? Positioned(
+                          top: 8,
+                          right: 12,
+                          child: Container(
+                            width: 17,
+                            height: 17,
+                            decoration: BoxDecoration(
+                              color: AppColor.accentColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: Text(
+                                lengthofnotification != 0 ? lengthofnotification.toString() : "0",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox(),
+                ],
+              ),
+            ),
           )
+          // IconButton(
+          //   icon: const Icon(
+          //     Icons.notifications,
+          //     color: AppColor.whiteColor,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => NotificationScreen(),
+          //       ),
+          //     ).then((value) {
+          //       print("value : $value");
+          //       if (value != null && value) _updateContact();
+          //     });
+          //   },
+          // )
         ],
       ),
       body: LoadingOverlay(
@@ -1154,6 +1208,28 @@ class _ContactsPageState extends State<ContactsPage> {
       tokenExpired(context);
     } else {
       Utils.displayToastBottomError('Something went wrong', context);
+    }
+  }
+
+  getNotificationData() async {
+    try {
+      var response = await ContactBloc().contactRequest();
+
+      if (response['status'] == true) {
+        // gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+        var responseData = response['data'];
+        print(responseData.length);
+        if (responseData != null)
+          lengthofnotification = responseData.length;
+        else
+          lengthofnotification = 0;
+      } else {
+        Utils.displayToastBottomError(response["message"], context);
+      }
+      setState(() {});
+    } catch (e) {
+      setState(() {});
+      print(e);
     }
   }
 

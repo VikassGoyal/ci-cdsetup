@@ -42,7 +42,8 @@ import '../settings/myprofile.dart';
 import '../utils.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({super.key});
+  var editphonenumber;
+  EditProfile(this.editphonenumber, {super.key});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -119,7 +120,8 @@ class _EditProfileState extends State<EditProfile> {
     super.initState();
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kEditContactScreen});
     selectedDate = DateTime.now();
-
+    print("edit calll");
+    print(widget.editphonenumber);
     Future.delayed(Duration.zero, () {
       getProfileDetails();
     });
@@ -2305,7 +2307,7 @@ class _EditProfileState extends State<EditProfile> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => MyProfile(_personalNumber.text.toString() as String?),
+          builder: (BuildContext context) => MyProfile(widget.editphonenumber),
         ),
       );
     } else if (response['status'] == "Token is Expired") {

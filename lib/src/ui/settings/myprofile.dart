@@ -92,6 +92,7 @@ class _MyProfileState extends State<MyProfile> {
     super.initState();
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kUserProfileScreen});
     Future.delayed(Duration.zero, () {
+      print("my profile");
       print(widget.phoneNumber);
 
       getProfileDetails(widget.phoneNumber!);
@@ -1314,8 +1315,9 @@ class _MyProfileState extends State<MyProfile> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => EditProfile()),
+                MaterialPageRoute(builder: (context) => EditProfile(widget.phoneNumber)),
               ).then((value) {
+                print("callllllll");
                 getProfileDetails(widget.phoneNumber!);
                 setState(() {});
               });

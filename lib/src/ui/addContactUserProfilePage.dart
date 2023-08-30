@@ -14,6 +14,7 @@ import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gtm/gtm.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +28,7 @@ import '../../api_models/addNewContact_request_model/addNewContact_request_body.
 import '../../bottomNavigation/bottomNavigationBloc.dart';
 import '../../models/imageUploadModel.dart';
 import '../../repositories/contactPageRepository.dart';
+import '../../utils/custom_fonts.dart';
 
 class AddContactUserProfilePage extends StatefulWidget {
   const AddContactUserProfilePage({super.key, this.contactDetails, required this.conetUser, this.contactNumber});
@@ -184,34 +186,43 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
     return Scaffold(
         backgroundColor: AppColor.whiteColor,
         appBar: AppBar(
-          backgroundColor: AppColor.primaryColor,
-          elevation: 0.0,
-          leading: InkWell(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.arrow_back_sharp,
-                  color: AppColor.whiteColor,
+            backgroundColor: AppColor.primaryColor,
+            leadingWidth: 80.w,
+            elevation: 0.0,
+            leading: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: const Icon(Icons.arrow_back, color: Colors.white),
+                    ),
+                    SizedBox(width: 6.w),
+                    Text(
+                      'Back',
+                      style: TextStyle(
+                        fontFamily: kSfproRoundedFontFamily,
+                        color: AppColor.whiteColor,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  width: 2,
-                ),
-                Text(
-                  "Back",
-                  style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.whiteColor),
-                )
-              ],
+              ),
             ),
-          ),
-          centerTitle: true,
-          title: Text(
-            "Add Contact",
-            style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.whiteColor),
-          ),
-        ),
+            centerTitle: true,
+            title: Text("Add Contact",
+                style: TextStyle(
+                    fontSize: 18.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w500,
+                    color: AppColor.whiteColor))),
         body: LoadingOverlay(
             isLoading: _loader,
             opacity: 0.3,

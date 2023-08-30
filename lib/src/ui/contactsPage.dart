@@ -106,6 +106,7 @@ class _ContactsPageState extends State<ContactsPage> {
     _outputController = TextEditingController();
 
     _handleList(_contacts);
+    getNotificationData();
   }
 
   // //QR SCAN

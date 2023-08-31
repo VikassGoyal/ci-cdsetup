@@ -165,7 +165,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ),
                 );
               } else {
-                Utils.displayToastBottomError(response["message"], context);
+                Utils.displayToastBottomError("User Not Found", context);
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

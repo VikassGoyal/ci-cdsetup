@@ -80,6 +80,7 @@ class _ContactsPageState extends State<ContactsPage> {
   double susItemHeight = 40;
   final gtm = Gtm.instance;
   bool updatecheck = false;
+  var lengthofnotification = 0;
 
   @override
   void initState() {
@@ -105,6 +106,7 @@ class _ContactsPageState extends State<ContactsPage> {
     _outputController = TextEditingController();
 
     _handleList(_contacts);
+    getNotificationData();
   }
 
   // //QR SCAN
@@ -528,23 +530,76 @@ class _ContactsPageState extends State<ContactsPage> {
               });
             },
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              color: AppColor.whiteColor,
-            ),
-            onPressed: () {
+          InkWell(
+            onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => NotificationScreen(),
-                ),
+                MaterialPageRoute(builder: (context) => NotificationScreen()),
               ).then((value) {
-                print("value : $value");
-                if (value) _updateContact();
+                if (value != null && value) _updateContact();
+                getNotificationData();
               });
             },
+            child: Padding(
+              padding: EdgeInsets.only(top: 5.0.h),
+              child: Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.notifications,
+                      color: AppColor.whiteColor,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NotificationScreen()),
+                      ).then((value) {
+                        if (value != null && value) _updateContact();
+                        getNotificationData();
+                      });
+                    },
+                  ),
+                  lengthofnotification != 0
+                      ? Positioned(
+                          top: 8,
+                          right: 12,
+                          child: Container(
+                            width: 17,
+                            height: 17,
+                            decoration: BoxDecoration(
+                              color: AppColor.accentColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: Text(
+                                lengthofnotification != 0 ? lengthofnotification.toString() : "0",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox(),
+                ],
+              ),
+            ),
           )
+          // IconButton(
+          //   icon: const Icon(
+          //     Icons.notifications,
+          //     color: AppColor.whiteColor,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => NotificationScreen(),
+          //       ),
+          //     ).then((value) {
+          //       print("value : $value");
+          //       if (value != null && value) _updateContact();
+          //     });
+          //   },
+          // )
         ],
       ),
       body: LoadingOverlay(
@@ -970,15 +1025,17 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   _importContacts() async {
-    Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
+    try {
+      Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
 
-    for (var item in contacts) {
-      if (item.phones!.toList().isNotEmpty) {
-        DeviceContactData data = DeviceContactData(item.displayName, item.phones!.toList()[0].value);
-        _importportcontacts.add(data);
+      for (var item in contacts) {
+        if (item.phones!.toList().isNotEmpty) {
+          DeviceContactData data = DeviceContactData(item.displayName, item.phones!.toList()[0].value);
+          _importportcontacts.add(data);
+        }
       }
-    }
-    callImportApi();
+      callImportApi();
+    } catch (e) {}
   }
 
   callImportApi() async {
@@ -992,11 +1049,16 @@ class _ContactsPageState extends State<ContactsPage> {
         preferences.setBool('imported', true);
         _updateContact();
         Utils.displayToast("Successfully imported", context);
-      } else if (response['status'] == "Token is Expired") {
+      } else if (response == null && response['status'] == "Token is Expired") {
         tokenExpired(context);
         setState(() {
           _loader = false;
         });
+      } else if (response == null) {
+        setState(() {
+          _loader = false;
+        });
+        Utils.displayToastBottomError("Connection Time Out\n Try Again", context);
       } else {
         setState(() {
           _loader = false;
@@ -1147,6 +1209,28 @@ class _ContactsPageState extends State<ContactsPage> {
       tokenExpired(context);
     } else {
       Utils.displayToastBottomError('Something went wrong', context);
+    }
+  }
+
+  getNotificationData() async {
+    try {
+      var response = await ContactBloc().contactRequest();
+
+      if (response['status'] == true) {
+        // gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+        var responseData = response['data'];
+        print(responseData.length);
+        if (responseData != null)
+          lengthofnotification = responseData.length;
+        else
+          lengthofnotification = 0;
+      } else {
+        Utils.displayToastBottomError(response["message"], context);
+      }
+      setState(() {});
+    } catch (e) {
+      setState(() {});
+      print(e);
     }
   }
 

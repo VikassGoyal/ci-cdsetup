@@ -372,6 +372,9 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
+    Duration duration = Duration(seconds: 10);
+    _dio.options.connectTimeout = duration;
+    _dio.options.receiveTimeout = duration;
     _headers.removeWhere((k, v) => v == null);
     final _data = body.map((e) => e.toJson()).toList();
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
@@ -401,6 +404,7 @@ class _ApiClient implements ApiClient {
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
+
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'GET',
       headers: _headers,

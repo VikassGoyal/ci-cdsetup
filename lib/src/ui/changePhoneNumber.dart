@@ -129,7 +129,7 @@ class _ChangePhoneNumberState extends State<ChangePhoneNumber> {
             children: [
               const SizedBox(height: 16),
               TextFormFieldContact(
-                hintText: "Enter the Mobile Number",
+                hintText: "Enter New Mobile Number",
                 padding: 14.0,
                 margin: 22.0,
                 maxLength: 10,

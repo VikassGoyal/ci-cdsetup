@@ -157,7 +157,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               if (response['status'] == true) {
                 gtm.push(GTMConstants.kforgotPasswordEvent,
                     parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
-                Utils.displayToast(response["message"], context);
+                Utils.displayToast(
+                    "Password Changed \n New Password has been sent to ${_emailController.text.toString()} ", context);
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

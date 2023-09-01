@@ -25,6 +25,7 @@ import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';
 import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+import '../../../api_models/konetwebpage_request_model/konetwebpage_request_body.dart';
 import '../../../repositories/recentPageRepository.dart';
 import '../../../utils/gtm_constants.dart';
 import '../utils.dart';
@@ -108,7 +109,8 @@ class _ContactProfileState extends State<ContactProfile> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      getProfileDetails(widget.phoneNumber!);
+      getProfileDetails(widget.id.toString());
+
       getMutualContacts(widget.id);
 
       // getProfileDetails("9566664128");
@@ -1375,7 +1377,7 @@ class _ContactProfileState extends State<ContactProfile> {
                         : "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png",
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
-                      print("error");
+                      print("errrrror");
                       print(error);
                       return Image.asset(
                         "assets/images/profile.png",
@@ -1482,14 +1484,9 @@ class _ContactProfileState extends State<ContactProfile> {
     if (id == null) return;
     try {
       var response = await ContactBloc().getMutualContacts(GetMutualsContactRequestBody(to_id: widget.id));
-      if (response["status"]) {
-        print("response");
-        // _mutualcontact = response['data'].length;
-        print(response["data"].length);
-
+      if (response != null && response["status"] == true) {
         setState(() {
           _mutualcontact = response["data"].length;
-          print(_mutualcontact);
         });
       }
     } catch (e) {
@@ -1497,14 +1494,14 @@ class _ContactProfileState extends State<ContactProfile> {
     }
   }
 
-  getProfileDetails(String phoneNumber) async {
+  getProfileDetails(String id) async {
     try {
       // var requestBody = {
       //   "phone": phoneNumber,
       // };
-      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phoneNumber));
+      var response = await ContactBloc().getKonetUserdetail(KonetwebpageRequestBody(id: id));
 
-      if (response['status'] == true) {
+      if (response != null && response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);
         _loader = true;
 

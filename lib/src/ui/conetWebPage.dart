@@ -77,6 +77,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
     _searchController = TextEditingController();
     _outputController = TextEditingController();
     _searchvisible = false;
+    keywordvalue = null;
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.KkonetwebpageScreen});
     getNotificationData();
 
@@ -821,6 +822,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
         },
         itemBuilder: (context, index) {
           searchvalue = _searchController!.text.toLowerCase();
+          keywordvalue = null;
           keywordvalue = _searchResult.isNotEmpty && _searchController!.text.isNotEmpty
               ? _searchResult[index].name != null && _searchResult[index].name == _searchController!.text
                   ? ""
@@ -1329,6 +1331,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
       // var requestBody = {
       //   "filter": _searchController!.text,
       // };
+      keywordvalue;
       var response =
           await ContactBloc().searchConetwebContact(FilterSearchResultsRequestBody(filter: _searchController!.text));
       var responseData = response['data'];
@@ -1525,7 +1528,6 @@ class _ConetWebPageState extends State<ConetWebPage> {
       }
       setState(() {});
     } catch (e) {
-      setState(() {});
       print(e);
     }
   }

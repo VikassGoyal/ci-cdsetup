@@ -1082,20 +1082,18 @@ class _ContactsPageState extends State<ContactsPage> {
     }
     await contactPageRepository!.getallContacts();
     if (mounted) {
-      setState(() {
-        _loader = false;
-      });
+      _loader = false;
+      setState(() {});
     }
 
     var response = contactPageRepository!.getData();
 
     if (mounted) {
-      setState(() {
-        _contacts = [];
-        _loadedcontacts = [];
-        _contacts = response;
-        _loadedcontacts = _contacts;
-      });
+      _contacts = [];
+      _loadedcontacts = [];
+      _contacts = response;
+      _loadedcontacts = _contacts;
+      setState(() {});
     }
 
     _handleList(_contacts);

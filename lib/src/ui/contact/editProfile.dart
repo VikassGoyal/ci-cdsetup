@@ -38,6 +38,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
 import '../../../api_models/updateProfileDetails_request_model/updateProfileDetails_request_body.dart';
 import '../../../utils/custom_fonts.dart';
+import '../changePhoneNumber.dart';
 import '../settings/myprofile.dart';
 import '../utils.dart';
 
@@ -120,8 +121,7 @@ class _EditProfileState extends State<EditProfile> {
     super.initState();
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kEditContactScreen});
     selectedDate = DateTime.now();
-    print("edit calll");
-    print(widget.editphonenumber);
+
     Future.delayed(Duration.zero, () {
       getProfileDetails();
     });
@@ -268,23 +268,102 @@ class _EditProfileState extends State<EditProfile> {
     }
 
     Widget _buildPhoneNumber() {
-      return TextFormFieldContact(
-        hintText: "Phone number",
-        enableFormatters: false,
-        padding: 14.0,
-        onChanged: (value) {
-          setState(() {
-            _valuesChanged = true;
-          });
-        },
-        margin: 22.0,
-        textInputType: TextInputType.text,
-        actionKeyboard: TextInputAction.next,
-        onSubmitField: () {},
-        controller: _personalNumber,
-        readonly: true,
-        parametersValidate: "Please enter Mobile number.",
+      return Container(
+        height: 48.h,
+        width: 331.w,
+        padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
+        margin: EdgeInsets.only(
+          left: 22.0.w,
+          right: 22.0.w,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: const Color(0xFFE8E8E8),
+          ),
+          borderRadius: BorderRadius.circular(7),
+        ),
+        child: TextFormField(
+          onChanged: (value) {
+            setState(() {
+              _valuesChanged = true;
+            });
+          },
+          style: TextStyle(
+            fontSize: 15.sp,
+            fontFamily: kSfproRoundedFontFamily,
+            fontWeight: FontWeight.w300,
+            color: AppColor.secondaryColor,
+          ),
+          readOnly: true,
+          decoration: InputDecoration(
+            labelText: "Phone number",
+            contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
+            hintStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder),
+            labelStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder),
+            filled: true,
+            fillColor: AppColor.whiteColor,
+            errorBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.transparent),
+            ),
+            focusedBorder: InputBorder.none,
+            suffixIcon: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChangePhoneNumber(widget.editphonenumber, this.contactDetail),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(top: 15.0.h),
+                  child: Text(
+                    "Edit",
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      letterSpacing: 1,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.secondaryColor,
+                    ),
+                  ),
+                )),
+          ),
+          cursorColor: AppColor.secondaryColor,
+          keyboardType: TextInputType.streetAddress,
+          textInputAction: TextInputAction.next,
+          controller: _personalNumber,
+          validator: (value) {
+            return null;
+          },
+        ),
       );
+      // return TextFormFieldContact(
+      //   hintText: "Phone number",
+      //   enableFormatters: false,
+      //   padding: 14.0,
+      //   onChanged: (value) {
+      //     setState(() {
+      //       _valuesChanged = true;
+      //     });
+      //   },
+      //   margin: 22.0,
+      //   textInputType: TextInputType.text,
+      //   actionKeyboard: TextInputAction.next,
+      //   onSubmitField: () {},
+      //   controller: _personalNumber,
+
+      //   readonly: true,
+      //   parametersValidate: "Please enter Mobile number.",
+      // );
     }
 
     Widget _buildSecondaryPhoneNumber() {
@@ -2265,6 +2344,8 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       _loaderoverflow = true;
     });
+    print('wwwwww');
+    print(_personalAddress.text);
     var response = await ContactBloc().updateProfileDetails(UpdateProfileDetailsRequestBody(
       per_name: _personalName.text,
       per_num: _personalNumber.text,

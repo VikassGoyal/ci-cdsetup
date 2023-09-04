@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:another_carousel_pro/another_carousel_pro.dart';
+import 'package:conet/api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
@@ -16,10 +17,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get_connect/http/src/response/response.dart';
+import 'package:gtm/gtm.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';
+import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+import '../../../api_models/konetwebpage_request_model/konetwebpage_request_body.dart';
+import '../../../repositories/recentPageRepository.dart';
+import '../../../utils/gtm_constants.dart';
 import '../utils.dart';
 
 class ContactProfile extends StatefulWidget {
@@ -27,8 +35,9 @@ class ContactProfile extends StatefulWidget {
   final int? contactmetaid;
   final String? contactMetaType;
   final String? fromContactMetaType;
+  final int? id;
 
-  const ContactProfile(this.phoneNumber, this.contactmetaid, this.contactMetaType, this.fromContactMetaType,
+  const ContactProfile(this.phoneNumber, this.contactmetaid, this.contactMetaType, this.fromContactMetaType, this.id,
       {super.key});
 
   @override
@@ -69,6 +78,8 @@ class _ContactProfileState extends State<ContactProfile> {
   final _socialSkype = TextEditingController();
   final _socialGpay = TextEditingController();
   final _socialPaytm = TextEditingController();
+  final gtm = Gtm.instance;
+  RecentPageRepository recentPageRepository = RecentPageRepository();
 
   List<EntrepreneurData> entreprenerurList = [];
   List<ProfessionalList>? entreprenerurListJson = [];
@@ -77,6 +88,7 @@ class _ContactProfileState extends State<ContactProfile> {
   String? _occupationValue;
   DateTime? selectedDate;
   bool _updatepage = false;
+  var _mutualcontact = 0;
 
   bool _loader = false;
   bool _loaderoverflow = false;
@@ -97,8 +109,10 @@ class _ContactProfileState extends State<ContactProfile> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      print(widget.phoneNumber);
-      getProfileDetails(widget.phoneNumber!);
+      getProfileDetails(widget.id.toString());
+
+      getMutualContacts(widget.id);
+
       // getProfileDetails("9566664128");
     });
 
@@ -115,8 +129,6 @@ class _ContactProfileState extends State<ContactProfile> {
     print("switch $switchTypeStatus");
 
     _socialInstagram.text = "";
-    print("username");
-    print(userImage);
   }
 
   @override
@@ -1225,7 +1237,7 @@ class _ContactProfileState extends State<ContactProfile> {
     Widget bodyContent() {
       return Column(
         children: [
-          SizedBox(height: 80.h),
+          SizedBox(height: 60.h),
           Text(_personalName.text ?? "Unknown Number",
               style: TextStyle(
                 fontFamily: kSfproRoundedFontFamily,
@@ -1234,12 +1246,23 @@ class _ContactProfileState extends State<ContactProfile> {
                 fontWeight: FontWeight.w600,
                 fontStyle: FontStyle.normal,
               )),
-          SizedBox(height: 12.h),
+          SizedBox(
+            height: 5.h,
+          ),
+          Text("$_mutualcontact Mutual Contacts" ?? "",
+              style: TextStyle(
+                color: AppColor.secondaryColor,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w400,
+              )),
+          SizedBox(height: 10.h),
           Visibility(
             visible: _values.isNotEmpty,
             child: keywordbody(),
           ),
-          SizedBox(height: 22.h),
+          SizedBox(height: 15.h),
+          selectButton(),
+          SizedBox(height: 25.h),
           Padding(
             padding: EdgeInsets.only(left: 14.w, right: 14.w),
             child: Row(
@@ -1266,6 +1289,9 @@ class _ContactProfileState extends State<ContactProfile> {
                       if (_personalNumber.text == '') {
                         return;
                       }
+                      gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+                      recentPageRepository.insertDailedCall(_personalNumber.text, _personalName.text);
+
                       _callNumber(_personalNumber.text);
                     },
                     child: SvgPicture.asset(
@@ -1299,7 +1325,7 @@ class _ContactProfileState extends State<ContactProfile> {
                   child: InkWell(
                     onTap: () {
                       if (_personalEmail.text == '') {
-                        Utils.displayToast("Mail id not found");
+                        Utils.displayToastBottomError("Mail id not found", context);
                         return;
                       }
 
@@ -1317,8 +1343,7 @@ class _ContactProfileState extends State<ContactProfile> {
               ],
             ),
           ),
-          SizedBox(height: 16.h),
-          selectButton(),
+          SizedBox(height: 12.h),
           _buildformBody(),
         ],
       );
@@ -1352,7 +1377,7 @@ class _ContactProfileState extends State<ContactProfile> {
                         : "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png",
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
-                      print("error");
+                      print("errrrror");
                       print(error);
                       return Image.asset(
                         "assets/images/profile.png",
@@ -1455,14 +1480,28 @@ class _ContactProfileState extends State<ContactProfile> {
     }
   }
 
-  getProfileDetails(String phoneNumber) async {
+  getMutualContacts(int? id) async {
+    if (id == null) return;
     try {
-      var requestBody = {
-        "phone": phoneNumber,
-      };
-      var response = await ContactBloc().getProfileDetails(requestBody);
+      var response = await ContactBloc().getMutualContacts(GetMutualsContactRequestBody(to_id: widget.id));
+      if (response != null && response["status"] == true) {
+        setState(() {
+          _mutualcontact = response["data"].length;
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
-      if (response['status'] == true) {
+  getProfileDetails(String id) async {
+    try {
+      // var requestBody = {
+      //   "phone": phoneNumber,
+      // };
+      var response = await ContactBloc().getKonetUserdetail(KonetwebpageRequestBody(id: id));
+
+      if (response != null && response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);
         _loader = true;
 
@@ -1544,7 +1583,7 @@ class _ContactProfileState extends State<ContactProfile> {
           });
         }
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       print(e);
@@ -1597,17 +1636,18 @@ class _ContactProfileState extends State<ContactProfile> {
     print(typeStatus);
 
     try {
-      var requestBody = {
-        "id": widget.contactmetaid,
-        "type": typeStatus,
-      };
+      // var requestBody = {
+      //   "id": widget.contactmetaid,
+      //   "type": typeStatus,
+      // };
 
-      var response = await ContactBloc().updateTypeStatus(requestBody);
+      var response =
+          await ContactBloc().updateTypeStatus(UpdateTypeStatusRequestBody(id: widget.contactmetaid, type: typeStatus));
 
       setState(() {
         _loaderoverflow = false;
       });
-      Utils.displayToast(response["message"]);
+      Utils.displayToast(response["message"], context);
       // if (response['status'] == true) {}
     } catch (e) {
       print(e);
@@ -1624,14 +1664,14 @@ class _ContactProfileState extends State<ContactProfile> {
       if (await canLaunch(whatappURLIos)) {
         await launch(whatappURLIos, forceSafariVC: false);
       } else {
-        Utils.displayToast("whatsapp no installed");
+        Utils.displayToastBottomError("whatsapp no installed", context);
       }
     } else {
       // android , web
       if (await canLaunch(whatsappURlAndroid)) {
         await launch(whatsappURlAndroid);
       } else {
-        Utils.displayToast("whatsapp no installed");
+        Utils.displayToastBottomError("whatsapp no installed", context);
       }
     }
   }

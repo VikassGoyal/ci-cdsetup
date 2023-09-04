@@ -1,0 +1,113 @@
+{
+    "exportFormatVersion": 2,
+    "exportTime": "2023-08-07 06:33:34",
+    "containerVersion": {
+        "path": "accounts/6140215373/containers/137847113/versions/2",
+        "accountId": "6140215373",
+        "containerId": "137847113",
+        "containerVersionId": "2",
+        "container": {
+            "path": "accounts/6140215373/containers/137847113",
+            "accountId": "6140215373",
+            "containerId": "137847113",
+            "name": "konet_iOS",
+            "publicId": "GTM-PRNB2GV3",
+            "usageContext": [
+                "IOS_SDK_5"
+            ],
+            "fingerprint": "1691388837002",
+            "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/6140215373/containers/137847113/workspaces?apiLink=container",
+            "features": {
+                "supportUserPermissions": true,
+                "supportEnvironments": true,
+                "supportWorkspaces": true,
+                "supportGtagConfigs": false,
+                "supportBuiltInVariables": true,
+                "supportClients": false,
+                "supportFolders": true,
+                "supportTags": true,
+                "supportTemplates": true,
+                "supportTriggers": true,
+                "supportVariables": true,
+                "supportVersions": true,
+                "supportZones": true,
+                "supportTransformations": false
+            },
+            "tagIds": [
+                "GTM-PRNB2GV3"
+            ]
+        },
+        "tag": [
+            {
+                "accountId": "6140215373",
+                "containerId": "137847113",
+                "tagId": "5",
+                "name": "Google Analytics (Firebase)",
+                "type": "fm",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "mergeEventParameters",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "action",
+                        "value": "measure"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventName",
+                        "value": "customs_event"
+                    }
+                ],
+                "fingerprint": "1691389970422",
+                "firingTriggerId": [
+                    "4"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT",
+                "consentSettings": {
+                    "consentStatus": "NOT_SET"
+                }
+            }
+        ],
+        "trigger": [
+            {
+                "accountId": "6140215373",
+                "containerId": "137847113",
+                "triggerId": "4",
+                "name": "Container Loaded",
+                "type": "WINDOW_LOADED",
+                "fingerprint": "1691389965158"
+            }
+        ],
+        "builtInVariable": [
+            {
+                "accountId": "6140215373",
+                "containerId": "137847113",
+                "type": "APP_ID",
+                "name": "App ID"
+            },
+            {
+                "accountId": "6140215373",
+                "containerId": "137847113",
+                "type": "APP_NAME",
+                "name": "App Name"
+            },
+            {
+                "accountId": "6140215373",
+                "containerId": "137847113",
+                "type": "APP_VERSION_CODE",
+                "name": "App Version Code"
+            },
+            {
+                "accountId": "6140215373",
+                "containerId": "137847113",
+                "type": "EVENT_NAME",
+                "name": "Event Name"
+            }
+        ],
+        "fingerprint": "1691389991012",
+        "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/6140215373/containers/137847113/versions/2?apiLink=version"
+    }
+}

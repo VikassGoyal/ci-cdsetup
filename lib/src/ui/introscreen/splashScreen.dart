@@ -1,19 +1,21 @@
 import 'dart:async';
 
+import 'package:conet/constants/constants.dart';
+import 'package:conet/services/storage_service.dart';
 import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/ui/introscreen/introSlider.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/get_it.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
@@ -81,9 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> navigationPage() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-
-    if (preferences.getString("token") != null) {
+    if (locator<StorageService>().getPrefs(kPrefAccessTokenKey) != null) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),

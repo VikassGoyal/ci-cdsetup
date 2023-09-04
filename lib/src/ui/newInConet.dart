@@ -40,7 +40,7 @@ class _NewConetUsersState extends State<NewConetUsers> {
         leadingWidth: 80.w,
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(false);
           },
           child: Row(
             children: [
@@ -102,7 +102,7 @@ class _NewConetUsersState extends State<NewConetUsers> {
                     return InkWell(
                       splashColor: Theme.of(context).primaryColorLight,
                       onTap: () {
-                        if (_contacts[index].userId != null) {
+                        if (_contacts[index].userId == null) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -110,6 +110,7 @@ class _NewConetUsersState extends State<NewConetUsers> {
                                 _contacts[index].name,
                                 _contacts[index].phone,
                                 _contacts[index].email,
+                                _contacts[index].id,
                               ),
                             ),
                           );
@@ -118,11 +119,11 @@ class _NewConetUsersState extends State<NewConetUsers> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ContactProfile(
-                                _contacts[index].phone,
-                                _contacts[index].contactMetaId,
-                                _contacts[index].contactMetaType,
-                                _contacts[index].fromContactMetaType,
-                              ),
+                                  _contacts[index].phone,
+                                  _contacts[index].contactMetaId,
+                                  _contacts[index].contactMetaType,
+                                  _contacts[index].fromContactMetaType,
+                                  _contacts[index].contactMetaId),
                             ),
                           );
                         }

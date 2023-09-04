@@ -7,13 +7,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
 import '../utils.dart';
 
 class SocialContact extends StatefulWidget {
-  SocialContact({Key? key}) : super(key: key);
+  const SocialContact({Key? key}) : super(key: key);
 
   @override
-  _SocialContactState createState() => _SocialContactState();
+  State<SocialContact> createState() => _SocialContactState();
 }
 
 class _SocialContactState extends State<SocialContact> {
@@ -23,10 +24,10 @@ class _SocialContactState extends State<SocialContact> {
   bool _socialInstagram = false;
   bool _socialSkype = false;
 
-  var _socialFacebookText = "";
-  var _socialTwitterText = "";
-  var _socialInstagramText = "";
-  var _socialSkypeText = "";
+  var _socialFacebookText;
+  var _socialTwitterText;
+  var _socialInstagramText;
+  var _socialSkypeText;
 
   bool _loader = false;
   @override
@@ -116,7 +117,7 @@ class _SocialContactState extends State<SocialContact> {
                               Text(_socialFacebookText ?? "",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      color: _socialTwitter ? AppColor.whiteColor : AppColor.gray30Color,
+                                      color: _socialFacebook ? AppColor.gray30Color : AppColor.whiteColor,
                                       fontSize: 13.sp,
                                       fontFamily: kSfproRoundedFontFamily,
                                       fontWeight: FontWeight.w300))
@@ -185,7 +186,7 @@ class _SocialContactState extends State<SocialContact> {
                               Text(_socialInstagramText ?? "",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      color: _socialTwitter ? AppColor.whiteColor : AppColor.gray30Color,
+                                      color: _socialInstagram ? AppColor.gray30Color : AppColor.whiteColor,
                                       fontSize: 13.sp,
                                       fontFamily: kSfproRoundedFontFamily,
                                       fontWeight: FontWeight.w300))
@@ -202,7 +203,7 @@ class _SocialContactState extends State<SocialContact> {
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   side: BorderSide(
-                                    color: _socialFacebook ? AppColor.accentColor : AppColor.gray30Color,
+                                    color: _socialInstagram ? AppColor.accentColor : AppColor.gray30Color,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(10.r),
@@ -257,7 +258,7 @@ class _SocialContactState extends State<SocialContact> {
                                 _socialTwitterText ?? "",
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    color: _socialTwitter ? AppColor.whiteColor : AppColor.gray30Color,
+                                    color: _socialTwitter ? AppColor.gray30Color : AppColor.whiteColor,
                                     fontSize: 13.sp,
                                     fontFamily: kSfproRoundedFontFamily,
                                     fontWeight: FontWeight.w300),
@@ -275,7 +276,7 @@ class _SocialContactState extends State<SocialContact> {
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   side: BorderSide(
-                                    color: _socialFacebook ? AppColor.accentColor : AppColor.gray30Color,
+                                    color: _socialTwitter ? AppColor.accentColor : AppColor.gray30Color,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(10.r),
@@ -329,7 +330,7 @@ class _SocialContactState extends State<SocialContact> {
                                 _socialSkypeText ?? "",
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    color: _socialTwitter ? AppColor.whiteColor : AppColor.gray30Color,
+                                    color: _socialSkype ? AppColor.gray30Color : AppColor.whiteColor,
                                     fontSize: 13.sp,
                                     fontFamily: kSfproRoundedFontFamily,
                                     fontWeight: FontWeight.w300),
@@ -347,7 +348,7 @@ class _SocialContactState extends State<SocialContact> {
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   side: BorderSide(
-                                    color: _socialFacebook ? AppColor.accentColor : AppColor.gray30Color,
+                                    color: _socialSkype ? AppColor.accentColor : AppColor.gray30Color,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(10.r),
@@ -384,11 +385,11 @@ class _SocialContactState extends State<SocialContact> {
   getProfileDetails() async {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      var phone = preferences.getString("phone");
-      var requestBody = {
-        "phone": phone,
-      };
-      var response = await ContactBloc().getProfileDetails(requestBody);
+      var phonenum = preferences.getString("phone") ?? "";
+      // var requestBody = {
+      //   "phone": phone,
+      // };
+      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phonenum));
       if (response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);
         setState(() {
@@ -407,7 +408,7 @@ class _SocialContactState extends State<SocialContact> {
           _socialSkypeText = contactDetail?.social?.skype ?? "";
         });
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       print(e);

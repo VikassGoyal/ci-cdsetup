@@ -19,16 +19,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
+import '../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
+import '../../api_models/qrValue_request_model/qrValue_request_body.dart';
+import '../../models/contactDetails.dart';
 import '../../utils/custom_fonts.dart';
+import 'addContactUserProfilePage.dart';
 import 'notification.dart';
 
 class RecentPage extends StatefulWidget {
   const RecentPage({super.key});
   @override
-  _RecentPageState createState() => _RecentPageState();
+  State<RecentPage> createState() => _RecentPageState();
 }
 
 class _RecentPageState extends State<RecentPage> {
@@ -44,6 +49,7 @@ class _RecentPageState extends State<RecentPage> {
   bool _isRecentCallsLoading = false;
 
   bool _isFetchedAllData = false;
+  var lengthofnotification = 0;
   @override
   void initState() {
     super.initState();
@@ -51,6 +57,7 @@ class _RecentPageState extends State<RecentPage> {
     try {
       recentCallsBloc = BlocProvider.of<RecentCallsBloc>(context);
       SchedulerBinding.instance.addPostFrameCallback((_) => checkPermissionAndFetchCallLogs());
+      getNotificationData();
     } catch (e) {
       print("RecentPageerror : $e");
     }
@@ -183,7 +190,14 @@ class _RecentPageState extends State<RecentPage> {
                       MaterialPageRoute(
                         builder: (context) => CallHistroyProfile(callLogs: data),
                       ),
-                    );
+                    ).then((value) {
+                      if (value) {
+                        checkPermissionAndFetchCallLogs();
+                        return;
+                      } else {
+                        return;
+                      }
+                    });
                   },
                 ),
               ),
@@ -191,6 +205,44 @@ class _RecentPageState extends State<RecentPage> {
             const SizedBox(width: 16),
           ],
         ),
+      );
+    }
+
+    Widget contactListItemWrapper(int index) {
+      var firstDateTime = DateTime.fromMillisecondsSinceEpoch(_callHistory[index].timestamp!);
+      var now = DateTime.now();
+      return Column(
+        children: [
+          //logic to select the first child and child where day changes
+          ((index == 0) ||
+                  (index < _callHistory.length - 1 &&
+                      !DateUtils.isSameDay(
+                          firstDateTime, DateTime.fromMillisecondsSinceEpoch(_callHistory[index - 1].timestamp!))))
+              ? Container(
+                  padding: EdgeInsets.only(top: 3.h, bottom: 3.h),
+                  width: ScreenUtil().screenWidth,
+                  alignment: Alignment.center,
+                  color: Colors.grey[50],
+                  child: Text(
+                    DateUtils.isSameDay(firstDateTime, now)
+                        ? 'Today'
+                        : DateUtils.isSameDay(firstDateTime, now.subtract(const Duration(days: 1)))
+                            ? 'Yesterday'
+                            : now.difference(firstDateTime).inDays < 7
+                                ? DateFormat.EEEE().format(firstDateTime)
+                                : DateFormat.yMMMd().format(firstDateTime),
+                    style: TextStyle(
+                      fontFamily: kSfproRoundedFontFamily,
+                      color: AppColor.primaryColor,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                )
+              : const SizedBox(),
+          contactListItem(index),
+        ],
       );
     }
 
@@ -276,7 +328,7 @@ class _RecentPageState extends State<RecentPage> {
                             ),
                           );
                         }
-                        return contactListItem(index);
+                        return contactListItemWrapper(index);
                       },
                     ),
             ),
@@ -323,19 +375,56 @@ class _RecentPageState extends State<RecentPage> {
               );
             },
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              color: AppColor.whiteColor,
-            ),
-            onPressed: () {
+          InkWell(
+            onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => NotificationScreen(),
-                ),
-              );
+                MaterialPageRoute(builder: (context) => NotificationScreen()),
+              ).then((value) {
+                getNotificationData();
+              });
             },
+            child: Padding(
+              padding: EdgeInsets.only(top: 5.0.h),
+              child: Stack(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.notifications,
+                      color: AppColor.whiteColor,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NotificationScreen()),
+                      ).then((value) {
+                        getNotificationData();
+                      });
+                    },
+                  ),
+                  lengthofnotification != 0
+                      ? Positioned(
+                          top: 8,
+                          right: 12,
+                          child: Container(
+                            width: 17,
+                            height: 17,
+                            decoration: BoxDecoration(
+                              color: AppColor.accentColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: Text(
+                                lengthofnotification != 0 ? lengthofnotification.toString() : "0",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox(),
+                ],
+              ),
+            ),
           )
         ],
       ),
@@ -368,6 +457,7 @@ class _RecentPageState extends State<RecentPage> {
                         fontSize: 18.sp,
                       ),
                       textInputAction: TextInputAction.search,
+                      textCapitalization: TextCapitalization.words,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(vertical: -5),
                         isDense: true,
@@ -523,7 +613,7 @@ class _RecentPageState extends State<RecentPage> {
       if (reqStatus.isGranted) {
         scanQrCode();
       } else if (reqStatus.isDenied) {
-        Utils.displayToast("Permission Denied");
+        Utils.displayToastBottomError("Permission Denied", context);
       }
     }
   }
@@ -542,10 +632,10 @@ class _RecentPageState extends State<RecentPage> {
         if (reqStatus.isGranted || reqStatus.isLimited) {
           return true;
         } else if (reqStatus.isDenied) {
-          Utils.displayToast("Permission Denied");
+          Utils.displayToastBottomError("Permission Denied", context);
           return false;
         } else {
-          Utils.displayToast("Permission Denied");
+          Utils.displayToastBottomError("Permission Denied", context);
           return false;
         }
       }
@@ -589,25 +679,52 @@ class _RecentPageState extends State<RecentPage> {
   }
 
   _sendQrApi() async {
-    var requestBody = {"value": _outputController!.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(requestBody);
+    //var requestBody = {"value": _outputController!.text, "qrcode": true};
+    var Qrresponse = await ContactBloc().sendQrValue(QrValueRequestBody(
+      value: _outputController?.text,
+      qrcode: false,
+    ));
+    var contactDetail;
+    if (Qrresponse['status'] == true) {
+      Utils.displayToast("Scanned successfully", context);
+      try {
+        // var requestBody = {
+        //   "phone": _outputController!.text,
+        // };
+        var response = await ContactBloc()
+            .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: Qrresponse["contact"]["phone"]));
+        if (response["user"] != null) {
+          contactDetail = ContactDetail.fromJson(response["user"]);
+          setState(() {
+            _loader = false;
+          });
 
-    if (response['status'] == true) {
-      Utils.displayToast("Scanned successfully");
-      setState(() {
-        _loader = false;
-      });
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) {
-          return NotificationScreen();
-        }),
-      );
-    } else if (response['status'] == "Token is Expired") {
-      Utils.displayToast('Token is Expired');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) {
+                return AddContactUserProfilePage(
+                  contactDetails: contactDetail,
+                  conetUser: true,
+                );
+              },
+            ),
+          );
+        } else {
+          setState(() {
+            _loader = false;
+          });
+          Fluttertoast.cancel();
+          Utils.displayToastTopError(response["message"], context);
+        }
+      } catch (e) {
+        Utils.displayToastTopError("Something went wrong", context);
+      }
+    } else if (Qrresponse['status'] == "Token is Expired") {
+      Utils.displayToast('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToast('Something went wrong', context);
     }
   }
 
@@ -616,6 +733,28 @@ class _RecentPageState extends State<RecentPage> {
     var outputFormat = DateFormat('hh:mm a');
     var outputDate = outputFormat.format(date);
     return outputDate;
+  }
+
+  getNotificationData() async {
+    try {
+      var response = await ContactBloc().contactRequest();
+
+      if (response['status'] == true) {
+        // gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+        var responseData = response['data'];
+        print(responseData.length);
+        if (responseData != null)
+          lengthofnotification = responseData.length;
+        else
+          lengthofnotification = 0;
+      } else {
+        Utils.displayToastBottomError(response["message"], context);
+      }
+      setState(() {});
+    } catch (e) {
+      setState(() {});
+      print(e);
+    }
   }
 
   void _clearText() {

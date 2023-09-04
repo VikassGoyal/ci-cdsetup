@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:conet/utils/gtm_constants.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:azlistview/azlistview.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/allContacts.dart';
@@ -7,6 +8,7 @@ import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/models/recentCalls.dart';
 import 'package:conet/repositories/repositories.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
+import 'package:conet/src/ui/addContactUserProfilePage.dart';
 import 'package:conet/src/ui/businesscard.dart';
 import 'package:conet/src/ui/contact/addContact.dart';
 import 'package:conet/src/ui/contact/nonConetContactProfile.dart';
@@ -25,28 +27,38 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gtm/gtm.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
+import '../../api_models/qrValue_request_model/qrValue_request_body.dart';
 import '../../bottomNavigation/bottomNavigationBloc.dart';
+import '../../models/contactDetails.dart';
 import 'contact/contactProfile.dart';
 
 class ContactsPage extends StatefulWidget {
   var contactsData;
   var mostDailedContacts;
+  bool? updatebool = false;
 
-  ContactsPage({this.contactsData, this.mostDailedContacts}) : super();
+  ContactsPage({super.key, this.contactsData, this.mostDailedContacts, this.updatebool});
 
   @override
-  _ContactsPageState createState() => _ContactsPageState();
+  State<ContactsPage> createState() => _ContactsPageState();
 }
 
 class _ContactsPageState extends State<ContactsPage> {
+  RecentPageRepository recentPageRepository = RecentPageRepository();
   TextEditingController? _textEditingController;
   List<AllContacts> _loadedcontacts = [];
   List<RecentCalls> recentCalls = [];
@@ -58,14 +70,17 @@ class _ContactsPageState extends State<ContactsPage> {
   TextEditingController? _outputController;
   ContactPageRepository? contactPageRepository;
   FocusNode _focusNode = FocusNode();
-
   Barcode? result;
   // QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   bool _loader = false;
   bool _showCancelIcon = false;
   double susItemHeight = 40;
+  final gtm = Gtm.instance;
+  bool updatecheck = false;
+  var lengthofnotification = 0;
 
   @override
   void initState() {
@@ -79,11 +94,19 @@ class _ContactsPageState extends State<ContactsPage> {
     _contacts = responseData;
     _loadedcontacts = _contacts;
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
+    //_updateContact();
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kContactListScreen});
+    updatecheck = widget.updatebool ?? false;
+    if (updatecheck) {
+      updatecheck = false;
+      _updateContact();
+    }
 
     SchedulerBinding.instance.addPostFrameCallback((_) => _checkShowDialog());
     _outputController = TextEditingController();
 
     _handleList(_contacts);
+    getNotificationData();
   }
 
   // //QR SCAN
@@ -96,10 +119,18 @@ class _ContactsPageState extends State<ContactsPage> {
   // }
 
   // Overridden this due to Error in AZListView
-  void _sortListBySuspensionTag(List<ISuspensionBean>? list) {
-    if (list == null || list.isEmpty) return;
+  void _sortListBySuspensionTag(List<AllContacts> list) {
+    if (list.isEmpty) return;
     list.sort((a, b) {
-      if (a.getSuspensionTag() == "@" && b.getSuspensionTag() != "@") {
+      if (RegExp("[A-Z]").hasMatch(a.getSuspensionTag()) && !RegExp("[A-Z]").hasMatch(b.getSuspensionTag())) {
+        return -1;
+      } else if (!RegExp("[A-Z]").hasMatch(a.getSuspensionTag()) && RegExp("[A-Z]").hasMatch(b.getSuspensionTag())) {
+        return 1;
+      } else if (RegExp("[A-Z]").hasMatch(a.getSuspensionTag()) && RegExp("[A-Z]").hasMatch(b.getSuspensionTag())) {
+        final nameA = a.name?.toLowerCase() ?? '';
+        final nameB = b.name?.toLowerCase() ?? '';
+        return nameA.compareTo(nameB);
+      } else if (a.getSuspensionTag() == "@" && b.getSuspensionTag() != "@") {
         return -1;
       } else if (a.getSuspensionTag() != "@" && b.getSuspensionTag() == "@") {
         return 1;
@@ -134,16 +165,10 @@ class _ContactsPageState extends State<ContactsPage> {
       }
     }
 
+    //here sorting contacts list by tags and also by names
     _sortListBySuspensionTag(uniqueList);
-    uniqueList.sort((a, b) {
-      final nameA = a.name?.toLowerCase() ?? '';
-      final nameB = b.name?.toLowerCase() ?? '';
-      return nameA.compareTo(nameB);
-    });
+    //here selecting the first contact for each tag to show in list
     SuspensionUtil.setShowSuspensionStatus(uniqueList);
-    // SuspensionUtil.sortListBySuspensionTag(uniqueList);
-
-    // Update the original list with the unique list
     list.clear();
     list.addAll(uniqueList);
   }
@@ -183,16 +208,16 @@ class _ContactsPageState extends State<ContactsPage> {
         child: GestureDetector(
           onTap: () {
             _focusNode.unfocus();
+
             _clearText();
             if (_contacts[index].userId == null) {
+              gtm.push(GTMConstants.kcontactDetailsViewEvent,
+                  parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NonConetContactProfile(
-                    _contacts[index].name ?? "",
-                    _contacts[index].phone!,
-                    _contacts[index].email ?? "",
-                  ),
+                  builder: (context) => NonConetContactProfile(_contacts[index].name ?? "", _contacts[index].phone!,
+                      _contacts[index].email ?? "", _contacts[index].id),
                 ),
               ).then((value) {
                 print("value : $value");
@@ -202,18 +227,19 @@ class _ContactsPageState extends State<ContactsPage> {
                   return null;
               });
             } else {
+              gtm.push(GTMConstants.kMutualContactsScreen,
+                  parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ContactProfile(
-                    _contacts[index].phone ?? "",
-                    _contacts[index].contactMetaId ?? 0,
-                    _contacts[index].contactMetaType ?? "",
-                    _contacts[index].fromContactMetaType ?? "",
-                  ),
+                      _contacts[index].phone ?? "",
+                      _contacts[index].contactMetaId ?? 0,
+                      _contacts[index].contactMetaType ?? "",
+                      _contacts[index].fromContactMetaType ?? "",
+                      _contacts[index].id ?? 0),
                 ),
               ).then((value) {
-                print("value : $value");
                 if (value) {
                   _updateContact();
                 } else
@@ -382,7 +408,8 @@ class _ContactsPageState extends State<ContactsPage> {
                       "assets/icons/ic_list_call.svg",
                     ),
                     onPressed: () {
-                      print("Cliked");
+                      gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+                      recentPageRepository.insertDailedCall(_contacts[index].phone!, _contacts[index].name!);
                       _callNumber(_contacts[index].phone!);
                     },
                   ),
@@ -458,7 +485,6 @@ class _ContactsPageState extends State<ContactsPage> {
               return _buildListItem(model, index);
             },
             physics: const BouncingScrollPhysics(),
-            indexBarData: SuspensionUtil.getTagIndexList(_contacts),
             indexHintBuilder: (context, hint) {
               return Container(
                 alignment: Alignment.center,
@@ -500,28 +526,80 @@ class _ContactsPageState extends State<ContactsPage> {
                   builder: (context) => NewConetUsers(),
                 ),
               ).then((value) {
-                print("value : $value");
-                _updateContact();
+                if (value) _updateContact();
               });
             },
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              color: AppColor.whiteColor,
-            ),
-            onPressed: () {
+          InkWell(
+            onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => NotificationScreen(),
-                ),
+                MaterialPageRoute(builder: (context) => NotificationScreen()),
               ).then((value) {
-                print("value : $value");
-                _updateContact();
+                if (value != null && value) _updateContact();
+                getNotificationData();
               });
             },
+            child: Padding(
+              padding: EdgeInsets.only(top: 5.0.h),
+              child: Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.notifications,
+                      color: AppColor.whiteColor,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NotificationScreen()),
+                      ).then((value) {
+                        if (value != null && value) _updateContact();
+                        getNotificationData();
+                      });
+                    },
+                  ),
+                  lengthofnotification != 0
+                      ? Positioned(
+                          top: 8,
+                          right: 12,
+                          child: Container(
+                            width: 17,
+                            height: 17,
+                            decoration: BoxDecoration(
+                              color: AppColor.accentColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: Text(
+                                lengthofnotification != 0 ? lengthofnotification.toString() : "0",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox(),
+                ],
+              ),
+            ),
           )
+          // IconButton(
+          //   icon: const Icon(
+          //     Icons.notifications,
+          //     color: AppColor.whiteColor,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => NotificationScreen(),
+          //       ),
+          //     ).then((value) {
+          //       print("value : $value");
+          //       if (value != null && value) _updateContact();
+          //     });
+          //   },
+          // )
         ],
       ),
       body: LoadingOverlay(
@@ -545,6 +623,8 @@ class _ContactsPageState extends State<ContactsPage> {
                       child: TextField(
                         controller: _textEditingController,
                         onChanged: (value) {
+                          gtm.push(GTMConstants.kcontactSearchEvent,
+                              parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                           filterSearchResults(value);
 
                           setState(() {
@@ -564,6 +644,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           fontSize: 18.sp,
                         ),
                         textInputAction: TextInputAction.search,
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(vertical: -5),
                           isDense: true,
@@ -697,6 +778,9 @@ class _ContactsPageState extends State<ContactsPage> {
                     itemBuilder: (BuildContext ctxt, int i) {
                       return InkWell(
                         onTap: () {
+                          gtm.push(GTMConstants.kCallEvent,
+                              parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+                          recentPageRepository.insertDailedCall(recentCalls[i].number!, recentCalls[i].name);
                           _callNumber(recentCalls[i].number!);
                         },
                         child: Container(
@@ -930,26 +1014,28 @@ class _ContactsPageState extends State<ContactsPage> {
       if (reqStatus.isGranted) {
         _importContacts();
       } else if (reqStatus.isDenied) {
-        Utils.displayToast("Permission Denied");
+        Utils.displayToastBottomError("Permission Denied", context);
       } else if (reqStatus.isPermanentlyDenied) {
         openAppSettings();
-        Utils.displayToast("Permission Denied Permanently");
+        Utils.displayToastBottomError("Permission Denied Permanently", context);
       } else {
-        Utils.displayToast("Something Went Wrong ");
+        Utils.displayToastBottomError("Something Went Wrong ", context);
       }
     }
   }
 
   _importContacts() async {
-    Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
+    try {
+      Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
 
-    for (var item in contacts) {
-      if (item.phones!.toList().isNotEmpty) {
-        DeviceContactData data = DeviceContactData(item.displayName, item.phones!.toList()[0].value);
-        _importportcontacts.add(data);
+      for (var item in contacts) {
+        if (item.phones!.toList().isNotEmpty) {
+          DeviceContactData data = DeviceContactData(item.displayName, item.phones!.toList()[0].value);
+          _importportcontacts.add(data);
+        }
       }
-    }
-    callImportApi();
+      callImportApi();
+    } catch (e) {}
   }
 
   callImportApi() async {
@@ -962,24 +1048,29 @@ class _ContactsPageState extends State<ContactsPage> {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setBool('imported', true);
         _updateContact();
-        Utils.displayToast("Successfully imported");
-      } else if (response['status'] == "Token is Expired") {
+        Utils.displayToast("Successfully imported", context);
+      } else if (response == null && response['status'] == "Token is Expired") {
         tokenExpired(context);
         setState(() {
           _loader = false;
         });
+      } else if (response == null) {
+        setState(() {
+          _loader = false;
+        });
+        Utils.displayToastBottomError("Connection Time Out\n Try Again", context);
       } else {
         setState(() {
           _loader = false;
         });
-        Utils.displayToast("Something went wrong");
+        Utils.displayToastBottomError("Something went wrong", context);
       }
     } catch (e) {
       print(e);
       setState(() {
         _loader = false;
       });
-      Utils.displayToast("Something went wrong");
+      Utils.displayToastBottomError("Something went wrong", context);
     }
   }
 
@@ -990,25 +1081,26 @@ class _ContactsPageState extends State<ContactsPage> {
       });
     }
     await contactPageRepository!.getallContacts();
-
-    setState(() {
+    if (mounted) {
       _loader = false;
-    });
+      setState(() {});
+    }
+
     var response = contactPageRepository!.getData();
 
-    setState(() {
+    if (mounted) {
       _contacts = [];
       _loadedcontacts = [];
       _contacts = response;
       _loadedcontacts = _contacts;
-    });
+      setState(() {});
+    }
 
     _handleList(_contacts);
   }
 
 //QRscanner Start
   _checkQRPermission() async {
-    print("coming");
     var status = await Permission.camera.status;
     print(status);
     if (status.isGranted) {
@@ -1019,7 +1111,7 @@ class _ContactsPageState extends State<ContactsPage> {
       if (reqStatus.isGranted) {
         scanQrCode();
       } else if (reqStatus.isDenied) {
-        Utils.displayToast("Permission Denied");
+        Utils.displayToastBottomError("Permission Denied", context);
       }
     }
   }
@@ -1058,25 +1150,85 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   _sendQrApi() async {
-    var requestBody = {"value": _outputController?.text, "qrcode": true};
-    var response = await ContactBloc().sendQrValue(requestBody);
-
-    if (response['status'] == true) {
-      Utils.displayToast("Scanned successfully");
-      setState(() {
-        _loader = false;
-      });
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) {
-          return NotificationScreen();
-        }),
+    //var requestBody = {"value": _outputController?.text, "qrcode": true};
+    var Qrresponse = await ContactBloc().sendQrValue(QrValueRequestBody(
+      value: _outputController?.text,
+      qrcode: true,
+    ));
+    var contactDetail;
+    if (Qrresponse['status'] == true) {
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: 'Success',
+        text: "Scanned successfully",
       );
-    } else if (response['status'] == "Token is Expired") {
-      Utils.displayToast('Token is Expired');
+      // setState(() {
+      //   _loader = false;
+      // });
+      try {
+        // var requestBody = {
+        //   "phone": _outputController!.text,
+        // };
+        var response = await ContactBloc()
+            .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: Qrresponse["contact"]["phone"]));
+        if (response["user"] != null) {
+          contactDetail = ContactDetail.fromJson(response["user"]);
+          setState(() {
+            _loader = false;
+          });
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) {
+                return AddContactUserProfilePage(
+                  contactDetails: contactDetail,
+                  conetUser: true,
+                );
+              },
+            ),
+          );
+        } else {
+          setState(() {
+            _loader = false;
+          });
+          Fluttertoast.cancel();
+          Utils.displayToastBottomError(response["message"], context);
+        }
+      } catch (e) {
+        setState(() {
+          _loader = false;
+        });
+        //Utils.displayToastBottomError("Something went wrong", context);
+      }
+    } else if (Qrresponse['status'] == "Token is Expired") {
+      Utils.displayToastBottomError('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
+    }
+  }
+
+  getNotificationData() async {
+    try {
+      var response = await ContactBloc().contactRequest();
+
+      if (response['status'] == true) {
+        // gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+        var responseData = response['data'];
+        print(responseData.length);
+        if (responseData != null)
+          lengthofnotification = responseData.length;
+        else
+          lengthofnotification = 0;
+      } else {
+        Utils.displayToastBottomError(response["message"], context);
+      }
+      setState(() {});
+    } catch (e) {
+      setState(() {});
+      print(e);
     }
   }
 

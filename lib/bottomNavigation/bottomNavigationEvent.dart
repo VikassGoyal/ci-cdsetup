@@ -10,6 +10,7 @@ abstract class BottomNavigationEvent extends Equatable {
 class AppStarted extends BottomNavigationEvent {
   @override
   String toString() => 'AppStarted';
+  AppStarted();
 }
 
 class PageTapped extends BottomNavigationEvent {

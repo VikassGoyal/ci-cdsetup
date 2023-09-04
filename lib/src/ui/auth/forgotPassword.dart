@@ -3,8 +3,12 @@ import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
+import '../../../api_models/forgotpassword__request_model/forgotpassword_request_body.dart';
+import '../../../blocs/userBloc.dart';
+import '../../../utils/gtm_constants.dart';
 import '../utils.dart';
 import 'login.dart';
 
@@ -12,14 +16,14 @@ class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
 
   @override
-  _ForgotPasswordState createState() => _ForgotPasswordState();
+  State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   final _forgotPasswordFormKey = GlobalKey<FormState>();
   bool _loader = false;
   bool _emailError = false;
-
+  final gtm = Gtm.instance;
   //Controller
   final _emailController = TextEditingController();
   //Focus
@@ -111,13 +115,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     setState(() {
                       _emailError = true;
                     });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      Utils.displaySnackBar(
-                        'Enter a Valid Email',
-                        duration: const Duration(seconds: 1),
-                        backgroundColor: AppColor.redColor,
-                      ),
-                    );
+                    Utils.displayToastNoAutoClose("Enter a Valid Email", context);
+
                     return '';
                   } else {
                     setState(() {
@@ -149,12 +148,32 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             setState(() {
               _loader = true;
             });
-            var requestBody = {
-              "email": _emailController.text,
-            };
+            // var requestBody = {
+            //   "email": _emailController.text,
+            // };
 
             try {
-              // var response = await UserBloc().signup(requestBody);
+              var response = await UserBloc().forgotPassword(ForgotpasswordRequestBody(email: _emailController.text));
+              if (response['status'] == true) {
+                gtm.push(GTMConstants.kforgotPasswordEvent,
+                    parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+                Utils.displayToast(
+                    "Password Changed \n New Password has been sent to ${_emailController.text.toString()} ", context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Login(),
+                  ),
+                );
+              } else {
+                Utils.displayToastBottomError("User Not Found", context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Login(),
+                  ),
+                );
+              }
               // var res = response["status"];
               // print("response : $res");
               // setState(() {

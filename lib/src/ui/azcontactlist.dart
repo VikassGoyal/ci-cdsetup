@@ -11,7 +11,7 @@ class AZContactList extends StatefulWidget {
   const AZContactList({Key? key}) : super(key: key);
 
   @override
-  _AZContactListState createState() => _AZContactListState();
+  State<AZContactList> createState() => _AZContactListState();
 }
 
 class _AZContactListState extends State<AZContactList> {

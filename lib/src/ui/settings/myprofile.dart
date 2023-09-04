@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/constants/enums.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/models/imageUploadModel.dart';
@@ -9,15 +10,18 @@ import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/contact/editProfile.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 
+import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
 import '../../../utils/customScrollBehavior.dart';
 import '../utils.dart';
 
@@ -81,11 +85,14 @@ class _MyProfileState extends State<MyProfile> {
   List<String> _values = [];
   List<NetworkImage> popupImages = <NetworkImage>[];
   // bool _showPreview = false;
+  final gtm = Gtm.instance;
 
   @override
   void initState() {
     super.initState();
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kUserProfileScreen});
     Future.delayed(Duration.zero, () {
+      print("my profile");
       print(widget.phoneNumber);
 
       getProfileDetails(widget.phoneNumber!);
@@ -156,7 +163,7 @@ class _MyProfileState extends State<MyProfile> {
           selectedColor: AppColor.primaryColor,
           shadowColor: AppColor.primaryColor,
           backgroundColor: AppColor.primaryColor,
-          label: Text(_values[i]),
+          label: Text(_values[i].trim()),
           pressElevation: 5,
           onPressed: () {},
         );
@@ -482,14 +489,18 @@ class _MyProfileState extends State<MyProfile> {
             );
           },
           child: Container(
-            constraints: BoxConstraints(
-              minHeight: 50.0.h,
-            ),
+            constraints: BoxConstraints(minHeight: 50.0.h),
             alignment: Alignment.center,
             child: Text(
               "Next",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.button!.apply(color: AppColor.whiteColor),
+              style: TextStyle(
+                fontFamily: kSfproRoundedFontFamily,
+                color: AppColor.whiteColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.normal,
+              ),
             ),
           ),
         ),
@@ -512,9 +523,25 @@ class _MyProfileState extends State<MyProfile> {
       );
     }
 
+    Widget _buildIndustry() {
+      return TextFormFieldContact(
+        textColor: AppColor.blackColor,
+        hintText: "Industry",
+        padding: 16.0,
+        margin: 22.0,
+        readonly: true,
+        textInputType: TextInputType.text,
+        actionKeyboard: TextInputAction.next,
+        onSubmitField: () {},
+        controller: _professionalIndustry,
+        parametersValidate: "Please enter Industry.",
+      );
+    }
+
     Widget _buildCompany() {
       return TextFormFieldContact(
         textColor: AppColor.blackColor,
+        textCapitalization: TextCapitalization.words,
         hintText: "Company",
         padding: 16.0,
         margin: 22.0,
@@ -546,6 +573,7 @@ class _MyProfileState extends State<MyProfile> {
       return TextFormFieldContact(
         textColor: AppColor.blackColor,
         hintText: "School / University",
+        textCapitalization: TextCapitalization.words,
         padding: 16.0,
         margin: 22.0,
         readonly: true,
@@ -575,6 +603,7 @@ class _MyProfileState extends State<MyProfile> {
       return TextFormFieldContact(
         textColor: AppColor.blackColor,
         hintText: "Work Nature",
+        textCapitalization: TextCapitalization.words,
         padding: 16.0,
         margin: 22.0,
         readonly: true,
@@ -589,6 +618,7 @@ class _MyProfileState extends State<MyProfile> {
       return TextFormFieldContact(
         textColor: AppColor.blackColor,
         hintText: "Designation",
+        textCapitalization: TextCapitalization.words,
         padding: 16.0,
         margin: 22.0,
         readonly: true,
@@ -691,6 +721,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 child: TextFormField(
                   enabled: false,
+                  textCapitalization: TextCapitalization.words,
                   style: TextStyle(
                       fontSize: 15.sp,
                       fontFamily: kSfproRoundedFontFamily,
@@ -1068,15 +1099,27 @@ class _MyProfileState extends State<MyProfile> {
                   visible: _values.isNotEmpty,
                   child: keywordbody(),
                 ),
-                SizedBox(height: 16.h),
+                Visibility(
+                  visible: _values.isNotEmpty,
+                  child: SizedBox(height: 16.h),
+                ),
                 _buildLandLine(),
-                SizedBox(height: 30),
+                SizedBox(height: 30.h),
                 _buildPersonalUpdateButton(),
-                SizedBox(height: 30),
+                SizedBox(height: 80.h),
               ]
             : [
                 SizedBox(height: 26),
                 _buildOccupation(),
+                Visibility(
+                  visible: _companyVisible,
+                  child: SizedBox(height: 16.h),
+                ),
+                Visibility(
+                  visible: !_companyVisible,
+                  child: SizedBox(height: 16.h),
+                ),
+                _buildIndustry(),
                 Visibility(
                   visible: _companyVisible,
                   child: SizedBox(height: 16.h),
@@ -1156,13 +1199,11 @@ class _MyProfileState extends State<MyProfile> {
       return Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 77.h, bottom: 24.h),
+            padding: EdgeInsets.only(top: 77.h, bottom: 4.h),
             child: Text(_personalName.text ?? "Unknown Number",
                 style: TextStyle(fontSize: 20.sp, fontFamily: kSfproRoundedFontFamily, fontWeight: FontWeight.w600)),
           ),
-          SizedBox(
-            height: 10.h,
-          ),
+          SizedBox(height: 10.h),
           selectButton(),
           _buildformBody(),
         ],
@@ -1194,16 +1235,20 @@ class _MyProfileState extends State<MyProfile> {
                   height: 110.w,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100.0.w),
-                    child: FadeInImage.assetNetwork(
-                      placeholder: "assets/images/profile.png",
-                      image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
-                      fit: BoxFit.cover,
-                      imageErrorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          "assets/images/profile.png",
-                        );
-                      },
-                    ),
+                    child: userImage != ""
+                        ? FadeInImage.assetNetwork(
+                            placeholder: "assets/images/profile.png",
+                            image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
+                            fit: BoxFit.cover,
+                            imageErrorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                "assets/images/profile.png",
+                              );
+                            },
+                          )
+                        : Image.asset(
+                            "assets/images/profile.png",
+                          ),
                   ),
                 ),
               ],
@@ -1222,7 +1267,10 @@ class _MyProfileState extends State<MyProfile> {
         elevation: 0.0,
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context);
+            Navigator.popUntil(
+              context,
+              (route) => route.isFirst,
+            );
           },
           child: Container(
             child: Row(
@@ -1267,8 +1315,9 @@ class _MyProfileState extends State<MyProfile> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => EditProfile()),
+                MaterialPageRoute(builder: (context) => EditProfile(widget.phoneNumber)),
               ).then((value) {
+                print("callllllll");
                 getProfileDetails(widget.phoneNumber!);
                 setState(() {});
               });
@@ -1311,10 +1360,11 @@ class _MyProfileState extends State<MyProfile> {
 
   getProfileDetails(String phoneNumber) async {
     try {
-      var requestBody = {
-        "phone": phoneNumber,
-      };
-      var response = await ContactBloc().getProfileDetails(requestBody);
+      // var requestBody = {
+      //   "phone": phoneNumber,
+      // };
+
+      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phoneNumber));
 
       if (response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);
@@ -1341,6 +1391,7 @@ class _MyProfileState extends State<MyProfile> {
         if (contactDetail?.professional != null) {
           _occupationValue = contactDetail?.professional?.occupation ?? "";
           _professionalOccupation.text = contactDetail?.professional?.occupation ?? "";
+          _professionalIndustry.text = contactDetail?.professional?.industry ?? '';
           _professionalCompany.text = contactDetail?.professional?.company ?? "";
           _professionalCompanyWebsite.text = contactDetail?.professional?.companyWebsite ?? "";
           _professionalSchool.text = contactDetail?.professional?.schoolUniversity ?? "";
@@ -1401,7 +1452,7 @@ class _MyProfileState extends State<MyProfile> {
 
         setState(() {});
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       print(e);
@@ -1410,7 +1461,7 @@ class _MyProfileState extends State<MyProfile> {
 
   checkOccupation() {
     print(_occupationValue);
-    if (_occupationValue == 'Entrepreneur') {
+    if (_occupationValue == OccupationType.entrepreneur.name) {
       _enterpreneurForms = true;
       _companyVisible = false;
       _companyWebsiteVisible = false;
@@ -1419,16 +1470,7 @@ class _MyProfileState extends State<MyProfile> {
       _studentSchoolVisible = false;
       _studentGradeVisible = false;
       _designationVisible = false;
-    } else if (_occupationValue == 'Employed') {
-      _enterpreneurForms = false;
-      _companyVisible = true;
-      _companyWebsiteVisible = true;
-      // _companyIndustryVisible = true;
-      _companyWorkNatureVisible = true;
-      _studentSchoolVisible = false;
-      _studentGradeVisible = false;
-      _designationVisible = true;
-    } else if (_occupationValue == 'Home maker') {
+    } else if (_occupationValue == OccupationType.homeMaker.name) {
       _enterpreneurForms = false;
       _companyVisible = false;
       _companyWebsiteVisible = false;
@@ -1437,7 +1479,8 @@ class _MyProfileState extends State<MyProfile> {
       _studentSchoolVisible = false;
       _studentGradeVisible = false;
       _designationVisible = false;
-    } else if (_occupationValue == 'Student') {
+    } else if (_occupationValue == OccupationType.schoolStudent.name ||
+        _occupationValue == OccupationType.collegeStudent.name) {
       _enterpreneurForms = false;
       _companyVisible = false;
       _companyWebsiteVisible = false;
@@ -1446,6 +1489,15 @@ class _MyProfileState extends State<MyProfile> {
       _studentSchoolVisible = true;
       _studentGradeVisible = true;
       _designationVisible = false;
+    } else {
+      _enterpreneurForms = false;
+      _companyVisible = true;
+      _companyWebsiteVisible = true;
+      // _companyIndustryVisible = true;
+      _companyWorkNatureVisible = true;
+      _studentSchoolVisible = false;
+      _studentGradeVisible = false;
+      _designationVisible = true;
     }
   }
 }

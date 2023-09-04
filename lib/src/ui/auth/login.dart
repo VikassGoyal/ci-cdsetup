@@ -4,23 +4,27 @@ import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/forgotPassword.dart';
 import 'package:conet/src/ui/auth/signup.dart';
+import 'package:conet/utils/check_internet_connection.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormWidget.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:flutter/services.dart';
 
 import '../../../bottomNavigation/bottomNavigationBloc.dart';
-import '../../../networking/apiBaseHelper.dart';
 import '../utils.dart';
 
 class Login extends StatefulWidget {
+  const Login({super.key});
+
   @override
-  _LoginState createState() => _LoginState();
+  State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
@@ -32,10 +36,11 @@ class _LoginState extends State<Login> {
   final FocusNode _passwordControllerFocus = FocusNode();
   bool _loader = false;
   bool _showPassword = false;
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kLoginScreen});
     initlocaldb();
   }
 
@@ -118,7 +123,7 @@ class _LoginState extends State<Login> {
       );
     }
 
-    Widget _buildSignInButton() {
+    Widget _buildSignInButton(BuildContext context) {
       return ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -136,31 +141,30 @@ class _LoginState extends State<Login> {
             setState(() {
               _loader = true;
             });
-            var requestBody = {
-              "email": _mobileEmailController.text,
-              "password": _passwordController.text,
-            };
+            String email = _mobileEmailController.text;
+            String password = _passwordController.text;
 
             try {
-              var response = await UserBloc().login(requestBody);
+              var response = await UserBloc().login(email: email, password: password);
 
               setState(() {
                 _loader = false;
               });
 
               if (response['message'] == 'success') {
+                gtm.push(GTMConstants.kLoginEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                 context.read<BottomNavigationBloc>().currentIndex = 0;
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => HomeScreen()),
                 );
               } else {
-                Utils.displayToastBottomError(response["message"]);
+                Utils.displayToastBottomError(response["message"], context);
               }
             } catch (e) {
               bool hasInternet = await checkInternetConnection();
               Utils.displayToastBottomError(
-                  hasInternet ? "Something went wrong" : "Please check your internet connection");
+                  hasInternet ? "Incorrect password" : "Please check your internet connection", context);
               print(e);
             }
           }
@@ -281,7 +285,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      _buildSignInButton(),
+                      _buildSignInButton(context),
                       const SizedBox(height: 20),
                       _buildDontAccount()
                     ],

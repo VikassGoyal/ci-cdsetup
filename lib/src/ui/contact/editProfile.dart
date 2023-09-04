@@ -1,7 +1,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:conet/api_models/addNewContact_request_model/addNewContact_request_body.dart';
+import 'package:conet/api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
+import 'package:conet/constants/enums.dart';
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/settings/myprofile.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:flutter/services.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -23,18 +27,27 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
+import 'package:gtm/gtm.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+import '../../../api_models/updateProfileDetails_request_model/updateProfileDetails_request_body.dart';
 import '../../../utils/custom_fonts.dart';
+import '../changePhoneNumber.dart';
 import '../settings/myprofile.dart';
 import '../utils.dart';
 
 class EditProfile extends StatefulWidget {
+  var editphonenumber;
+  EditProfile(this.editphonenumber, {super.key});
+
   @override
-  _EditProfileState createState() => _EditProfileState();
+  State<EditProfile> createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
@@ -51,11 +64,13 @@ class _EditProfileState extends State<EditProfile> {
 
   ContactDetail? contactDetail;
   DateTime? selectedDate;
-  String? _occupationValue;
+  OccupationType? _occupationValue;
+  WorkNatureType? _workNatureDropdownValue;
+  IndustryType? _industryType;
   bool _loaderoverflow = true;
   bool _valuesChanged = false;
   bool _loader = true;
-
+  final gtm = Gtm.instance;
   final _personalName = TextEditingController();
   final _personalNumber = TextEditingController();
   final _personalSecondaryNumber = TextEditingController();
@@ -104,7 +119,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kEditContactScreen});
     selectedDate = DateTime.now();
 
     Future.delayed(Duration.zero, () {
@@ -114,7 +129,7 @@ class _EditProfileState extends State<EditProfile> {
 
   checkOccupation() {
     print(_occupationValue);
-    if (_occupationValue == 'Entrepreneur') {
+    if (_occupationValue == OccupationType.entrepreneur) {
       _enterpreneurForms = true;
       _companyVisible = false;
       _companyWebsiteVisible = false;
@@ -123,16 +138,7 @@ class _EditProfileState extends State<EditProfile> {
       _studentSchoolVisible = false;
       _studentGradeVisible = false;
       _designationVisible = false;
-    } else if (_occupationValue == 'Employed') {
-      _enterpreneurForms = false;
-      _companyVisible = true;
-      _companyWebsiteVisible = true;
-      // _companyIndustryVisible = true;
-      _companyWorkNatureVisible = true;
-      _studentSchoolVisible = false;
-      _studentGradeVisible = false;
-      _designationVisible = true;
-    } else if (_occupationValue == 'Home maker') {
+    } else if (_occupationValue == OccupationType.homeMaker) {
       _enterpreneurForms = false;
       _companyVisible = false;
       _companyWebsiteVisible = false;
@@ -141,7 +147,7 @@ class _EditProfileState extends State<EditProfile> {
       _studentSchoolVisible = false;
       _studentGradeVisible = false;
       _designationVisible = false;
-    } else if (_occupationValue == 'Student') {
+    } else if (_occupationValue == OccupationType.schoolStudent || _occupationValue == OccupationType.collegeStudent) {
       _enterpreneurForms = false;
       _companyVisible = false;
       _companyWebsiteVisible = false;
@@ -150,6 +156,15 @@ class _EditProfileState extends State<EditProfile> {
       _studentSchoolVisible = true;
       _studentGradeVisible = true;
       _designationVisible = false;
+    } else {
+      _enterpreneurForms = false;
+      _companyVisible = true;
+      _companyWebsiteVisible = true;
+      // _companyIndustryVisible = true;
+      _companyWorkNatureVisible = true;
+      _studentSchoolVisible = false;
+      _studentGradeVisible = false;
+      _designationVisible = true;
     }
   }
 
@@ -201,7 +216,7 @@ class _EditProfileState extends State<EditProfile> {
                     MaterialStateProperty.all<Color>(professionalTab ? AppColor.whiteColor : AppColor.secondaryColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                    side: BorderSide(
+                    side: const BorderSide(
                       color: AppColor.secondaryColor,
                       width: 1,
                       style: BorderStyle.solid,
@@ -235,6 +250,8 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildName() {
       return TextFormFieldContact(
         hintText: "Name",
+        enableFormatters: false,
+        textCapitalization: TextCapitalization.words,
         padding: 14.0,
         onChanged: (value) {
           setState(() {
@@ -251,22 +268,102 @@ class _EditProfileState extends State<EditProfile> {
     }
 
     Widget _buildPhoneNumber() {
-      return TextFormFieldContact(
-        hintText: "Phone number",
-        padding: 14.0,
-        onChanged: (value) {
-          setState(() {
-            _valuesChanged = true;
-          });
-        },
-        margin: 22.0,
-        textInputType: TextInputType.text,
-        actionKeyboard: TextInputAction.next,
-        onSubmitField: () {},
-        controller: _personalNumber,
-        readonly: true,
-        parametersValidate: "Please enter Mobile number.",
+      return Container(
+        height: 48.h,
+        width: 331.w,
+        padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
+        margin: EdgeInsets.only(
+          left: 22.0.w,
+          right: 22.0.w,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: const Color(0xFFE8E8E8),
+          ),
+          borderRadius: BorderRadius.circular(7),
+        ),
+        child: TextFormField(
+          onChanged: (value) {
+            setState(() {
+              _valuesChanged = true;
+            });
+          },
+          style: TextStyle(
+            fontSize: 15.sp,
+            fontFamily: kSfproRoundedFontFamily,
+            fontWeight: FontWeight.w300,
+            color: AppColor.secondaryColor,
+          ),
+          readOnly: true,
+          decoration: InputDecoration(
+            labelText: "Phone number",
+            contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
+            hintStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder),
+            labelStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder),
+            filled: true,
+            fillColor: AppColor.whiteColor,
+            errorBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.transparent),
+            ),
+            focusedBorder: InputBorder.none,
+            suffixIcon: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChangePhoneNumber(widget.editphonenumber, this.contactDetail),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(top: 15.0.h),
+                  child: Text(
+                    "Edit",
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontFamily: kSfproRoundedFontFamily,
+                      letterSpacing: 1,
+                      fontWeight: FontWeight.w300,
+                      color: AppColor.secondaryColor,
+                    ),
+                  ),
+                )),
+          ),
+          cursorColor: AppColor.secondaryColor,
+          keyboardType: TextInputType.streetAddress,
+          textInputAction: TextInputAction.next,
+          controller: _personalNumber,
+          validator: (value) {
+            return null;
+          },
+        ),
       );
+      // return TextFormFieldContact(
+      //   hintText: "Phone number",
+      //   enableFormatters: false,
+      //   padding: 14.0,
+      //   onChanged: (value) {
+      //     setState(() {
+      //       _valuesChanged = true;
+      //     });
+      //   },
+      //   margin: 22.0,
+      //   textInputType: TextInputType.text,
+      //   actionKeyboard: TextInputAction.next,
+      //   onSubmitField: () {},
+      //   controller: _personalNumber,
+
+      //   readonly: true,
+      //   parametersValidate: "Please enter Mobile number.",
+      // );
     }
 
     Widget _buildSecondaryPhoneNumber() {
@@ -316,56 +413,59 @@ class _EditProfileState extends State<EditProfile> {
         padding: EdgeInsets.only(left: 14.0.w, right: 14.0.w),
         decoration: BoxDecoration(
           border: Border.all(
-            color: Color.fromRGBO(232, 232, 232, 1),
+            color: const Color.fromRGBO(232, 232, 232, 1),
           ),
           borderRadius: BorderRadius.circular(7),
         ),
-        child: TextFormField(
-          onChanged: (value) {
-            setState(() {
-              _valuesChanged = true;
-            });
+        child: Listener(
+          onPointerDown: (_) {
+            _selectDate(context);
+            _valuesChanged = true;
           },
-          style: TextStyle(
+          child: TextFormField(
+            onChanged: (value) {
+              setState(() {
+                _valuesChanged = true;
+              });
+            },
+            style: TextStyle(
               fontSize: 15.sp,
               fontFamily: kSfproRoundedFontFamily,
               fontWeight: FontWeight.w300,
-              color: AppColor.secondaryColor),
-          readOnly: true,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
-            labelText: "DOB",
-            hintStyle: TextStyle(
-                fontSize: 13.sp,
-                fontFamily: kSfproRoundedFontFamily,
-                fontWeight: FontWeight.w300,
-                color: AppColor.placeholder),
-            labelStyle: TextStyle(
-                fontSize: 13.sp,
-                fontFamily: kSfproRoundedFontFamily,
-                fontWeight: FontWeight.w300,
-                color: AppColor.placeholder),
-            filled: true,
-            fillColor: AppColor.whiteColor,
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent),
+              color: AppColor.secondaryColor,
             ),
-            suffixIcon: GestureDetector(
-              onTap: () {
-                _selectDate(context);
-                _valuesChanged = true;
-              },
-              child: Icon(
+            readOnly: true,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
+              labelText: "DOB",
+              hintStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder,
+              ),
+              labelStyle: TextStyle(
+                fontSize: 13.sp,
+                fontFamily: kSfproRoundedFontFamily,
+                fontWeight: FontWeight.w300,
+                color: AppColor.placeholder,
+              ),
+              filled: true,
+              fillColor: AppColor.whiteColor,
+              errorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+              ),
+              suffixIcon: const Icon(
                 Icons.date_range,
                 color: Color(0xFF878B95),
               ),
+              focusedBorder: InputBorder.none,
             ),
-            focusedBorder: InputBorder.none,
+            cursorColor: AppColor.secondaryColor,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            controller: _personalDob,
           ),
-          cursorColor: AppColor.secondaryColor,
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.next,
-          controller: _personalDob,
         ),
       );
     }
@@ -381,7 +481,7 @@ class _EditProfileState extends State<EditProfile> {
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: Color(0xFFE8E8E8),
+            color: const Color(0xFFE8E8E8),
           ),
           borderRadius: BorderRadius.circular(7),
         ),
@@ -392,11 +492,12 @@ class _EditProfileState extends State<EditProfile> {
             });
           },
           style: TextStyle(
-              fontSize: 15.sp,
-              fontFamily: kSfproRoundedFontFamily,
-              fontWeight: FontWeight.w300,
-              color: AppColor.secondaryColor),
-          readOnly: true,
+            fontSize: 15.sp,
+            fontFamily: kSfproRoundedFontFamily,
+            fontWeight: FontWeight.w300,
+            color: AppColor.secondaryColor,
+          ),
+          readOnly: false,
           decoration: InputDecoration(
             labelText: "Address",
             contentPadding: EdgeInsets.only(top: 6.0.h, bottom: 3.0.h),
@@ -412,7 +513,7 @@ class _EditProfileState extends State<EditProfile> {
                 color: AppColor.placeholder),
             filled: true,
             fillColor: AppColor.whiteColor,
-            errorBorder: OutlineInputBorder(
+            errorBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),
             ),
             focusedBorder: InputBorder.none,
@@ -429,10 +530,10 @@ class _EditProfileState extends State<EditProfile> {
                 //   ),
                 // );
               },
-              child: Image.asset(
-                "assets/icons/googlemap.png",
-                height: 16,
-                width: 16,
+              child: Icon(
+                Icons.location_on_outlined,
+                color: AppColor.secondaryColor,
+                size: 30.sp,
               ),
             ),
           ),
@@ -451,6 +552,8 @@ class _EditProfileState extends State<EditProfile> {
       return TextFormFieldContact(
         hintText: "Country",
         padding: 14.0,
+        enableFormatters: false,
+        textCapitalization: TextCapitalization.words,
         margin: 22.0,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
@@ -468,6 +571,8 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildState() {
       return TextFormFieldContact(
         hintText: "State",
+        enableFormatters: false,
+        textCapitalization: TextCapitalization.words,
         padding: 14.0,
         margin: 22.0,
         textInputType: TextInputType.text,
@@ -486,8 +591,10 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildCity() {
       return TextFormFieldContact(
         hintText: "City",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
+        textCapitalization: TextCapitalization.words,
         textInputType: TextInputType.text,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
@@ -524,7 +631,7 @@ class _EditProfileState extends State<EditProfile> {
         margin: EdgeInsets.only(left: 22.0.w, right: 22.0.w),
         decoration: BoxDecoration(
           border: Border.all(
-            color: Color.fromRGBO(232, 232, 232, 1),
+            color: const Color.fromRGBO(232, 232, 232, 1),
           ),
           borderRadius: BorderRadius.circular(7),
         ),
@@ -551,6 +658,7 @@ class _EditProfileState extends State<EditProfile> {
                 color: AppColor.placeholder),
           ),
           cursorColor: AppColor.secondaryColor,
+          textCapitalization: TextCapitalization.words,
           validator: (value) {
             return null;
           },
@@ -582,7 +690,7 @@ class _EditProfileState extends State<EditProfile> {
 
     Widget _buildPersonalUpdateButton() {
       return Container(
-        margin: EdgeInsets.only(left: 22, right: 22),
+        margin: const EdgeInsets.only(left: 22, right: 22),
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
@@ -651,16 +759,16 @@ class _EditProfileState extends State<EditProfile> {
       return Container(
         height: 48.h,
         width: 331.w,
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         margin: EdgeInsets.only(left: 22.w, right: 22.w),
         child: DropdownButtonFormField(
           style: TextStyle(color: AppColor.secondaryColor, fontSize: 13.sp),
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_drop_down,
             color: Color(0xFF878B95),
           ),
           dropdownColor: AppColor.whiteColor,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             contentPadding: EdgeInsets.fromLTRB(18, 0, 0, 0),
             filled: true,
             fillColor: AppColor.whiteColor,
@@ -671,26 +779,15 @@ class _EditProfileState extends State<EditProfile> {
               borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
             ),
           ),
-          value: _occupationValue,
           items: [
-            DropdownMenuItem<String>(
-              value: 'Entrepreneur',
-              child: Text('Entrepreneur'),
-            ),
-            DropdownMenuItem<String>(
-              value: 'Employed',
-              child: Text('Employed'),
-            ),
-            DropdownMenuItem<String>(
-              value: 'Home maker',
-              child: Text('Home maker'),
-            ),
-            DropdownMenuItem<String>(
-              value: 'Student',
-              child: Text('Student'),
-            ),
+            for (final value in OccupationType.values)
+              DropdownMenuItem(
+                value: value,
+                child: Text(value.name),
+              ),
           ],
-          hint: Text(
+          value: _occupationValue,
+          hint: const Text(
             'Select Occupation',
             style: TextStyle(
               fontSize: 13,
@@ -702,11 +799,11 @@ class _EditProfileState extends State<EditProfile> {
           onChanged: (value) {
             setState(() {
               // _valuesChanged = true;
-              _occupationValue = value as String?;
-              _professionalOccupation.text = value.toString();
+              _occupationValue = value;
+              _professionalOccupation.text = value?.name ?? '';
 
               print(_occupationValue);
-              if (value == 'Entrepreneur') {
+              if (value == OccupationType.entrepreneur) {
                 _enterpreneurForms = true;
                 _companyVisible = false;
                 _companyWebsiteVisible = false;
@@ -715,16 +812,7 @@ class _EditProfileState extends State<EditProfile> {
                 _studentSchoolVisible = false;
                 _studentGradeVisible = false;
                 _designationVisible = false;
-              } else if (value == 'Employed') {
-                _enterpreneurForms = false;
-                _companyVisible = true;
-                _companyWebsiteVisible = true;
-                // _companyIndustryVisible = true;
-                _companyWorkNatureVisible = true;
-                _studentSchoolVisible = false;
-                _studentGradeVisible = false;
-                _designationVisible = true;
-              } else if (value == 'Home maker') {
+              } else if (value == OccupationType.homeMaker) {
                 _enterpreneurForms = false;
                 _companyVisible = false;
                 _companyWebsiteVisible = false;
@@ -733,7 +821,7 @@ class _EditProfileState extends State<EditProfile> {
                 _studentSchoolVisible = false;
                 _studentGradeVisible = false;
                 _designationVisible = false;
-              } else if (value == 'Student') {
+              } else if (value == OccupationType.collegeStudent || value == OccupationType.schoolStudent) {
                 _enterpreneurForms = false;
                 _companyVisible = false;
                 _companyWebsiteVisible = false;
@@ -742,7 +830,60 @@ class _EditProfileState extends State<EditProfile> {
                 _studentSchoolVisible = true;
                 _studentGradeVisible = true;
                 _designationVisible = false;
+              } else {
+                _enterpreneurForms = false;
+                _companyVisible = true;
+                _companyWebsiteVisible = true;
+                // _companyIndustryVisible = true;
+                _companyWorkNatureVisible = true;
+                _studentSchoolVisible = false;
+                _studentGradeVisible = false;
+                _designationVisible = true;
               }
+            });
+          },
+        ),
+      );
+    }
+
+    Widget _buildIndustry() {
+      return Container(
+        height: 48.h,
+        width: 331.w,
+        padding: EdgeInsets.fromLTRB(0, 0.h, 0, 0),
+        margin: EdgeInsets.only(left: 22.w, right: 22.w),
+        child: DropdownButtonFormField(
+          style: TextStyle(color: AppColor.secondaryColor, fontSize: 13.sp),
+          icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF878B95)),
+          dropdownColor: AppColor.whiteColor,
+          decoration: const InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(18, 0, 0, 0),
+            filled: true,
+            fillColor: AppColor.whiteColor,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
+            ),
+          ),
+          items: [
+            for (final value in IndustryType.values)
+              DropdownMenuItem(
+                value: value,
+                child: Text(value.name),
+              ),
+          ],
+          value: _industryType,
+          hint: const Text(
+            "Industry",
+            style: TextStyle(fontSize: 13, color: Color(0xFF878B95)),
+          ),
+          onChanged: (value) {
+            setState(() {
+              _valuesChanged = true;
+              _industryType = value;
+              _professionalIndustry.text = value?.name ?? '';
             });
           },
         ),
@@ -752,9 +893,11 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildCompany() {
       return TextFormFieldContact(
         hintText: "Company",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
         textInputType: TextInputType.text,
+        textCapitalization: TextCapitalization.words,
         actionKeyboard: TextInputAction.next,
         onSubmitField: () {},
         controller: _professionalCompany,
@@ -765,6 +908,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildCompanyWebsite() {
       return TextFormFieldContact(
         hintText: "Company Website",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
         onChanged: (value) {
@@ -783,6 +927,8 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildProfessionalSchool() {
       return TextFormFieldContact(
         hintText: "School / University",
+        enableFormatters: false,
+        textCapitalization: TextCapitalization.words,
         padding: 14.0,
         margin: 22.0,
         maxLength: 100,
@@ -803,6 +949,8 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildGrade() {
       return TextFormFieldContact(
         hintText: "Grade",
+        enableFormatters: false,
+        textCapitalization: TextCapitalization.words,
         padding: 14.0,
         onChanged: (value) {
           setState(() {
@@ -818,25 +966,54 @@ class _EditProfileState extends State<EditProfile> {
     }
 
     Widget _buildworknature() {
-      return TextFormFieldContact(
-        hintText: "Work Nature",
-        padding: 14.0,
-        margin: 22.0,
-        onChanged: (value) {
-          setState(() {
-            _valuesChanged = true;
-          });
-        },
-        textInputType: TextInputType.text,
-        actionKeyboard: TextInputAction.next,
-        controller: _professionalWorkNature,
-        parametersValidate: "Please enter Work Nature.",
+      return Container(
+        height: 48.h,
+        width: 331.w,
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        margin: EdgeInsets.only(left: 22.w, right: 22.w),
+        child: DropdownButtonFormField(
+          style: TextStyle(color: AppColor.secondaryColor, fontSize: 13.sp),
+          icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF878B95)),
+          dropdownColor: AppColor.whiteColor,
+          decoration: const InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(18, 0, 0, 0),
+            filled: true,
+            fillColor: AppColor.whiteColor,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
+            ),
+          ),
+          items: [
+            for (final value in WorkNatureType.values)
+              DropdownMenuItem(
+                value: value,
+                child: Text(value.name),
+              ),
+          ],
+          value: _workNatureDropdownValue,
+          hint: const Text(
+            "Work Nature",
+            style: TextStyle(fontSize: 13, color: Color(0xFF878B95)),
+          ),
+          onChanged: (value) {
+            setState(() {
+              _valuesChanged = true;
+              _workNatureDropdownValue = value;
+              _professionalWorkNature.text = value?.name ?? '';
+            });
+          },
+        ),
       );
     }
 
     Widget _buildDesignation() {
       return TextFormFieldContact(
         hintText: "Designation",
+        textCapitalization: TextCapitalization.words,
+        enableFormatters: false,
         padding: 14.0,
         onChanged: (value) {
           setState(() {
@@ -854,6 +1031,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildworkFacebook() {
       return TextFormFieldContact(
         hintText: "Facebook account",
+        enableFormatters: false,
         onChanged: (value) {
           setState(() {
             _valuesChanged = true;
@@ -871,6 +1049,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildworkInstagram() {
       return TextFormFieldContact(
         hintText: "Instagram account",
+        enableFormatters: false,
         padding: 14.0,
         onChanged: (value) {
           setState(() {
@@ -888,6 +1067,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildworkTwitter() {
       return TextFormFieldContact(
         hintText: "Twitter account",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
         onChanged: (value) {
@@ -905,6 +1085,7 @@ class _EditProfileState extends State<EditProfile> {
     Widget _buildworkSkype() {
       return TextFormFieldContact(
         hintText: "Skype account",
+        enableFormatters: false,
         padding: 14.0,
         margin: 22.0,
         onChanged: (value) {
@@ -927,7 +1108,7 @@ class _EditProfileState extends State<EditProfile> {
           selectedColor: AppColor.primaryColor,
           shadowColor: AppColor.primaryColor,
           backgroundColor: AppColor.primaryColor,
-          label: Text(_values![i]),
+          label: Text(_values![i].trim()),
           pressElevation: 5,
           onPressed: () {
             // setState(() {
@@ -990,6 +1171,15 @@ class _EditProfileState extends State<EditProfile> {
             : [
                 SizedBox(height: 10.h),
                 _buildOccupation(),
+                Visibility(
+                  visible: _companyVisible,
+                  child: SizedBox(height: 16.h),
+                ),
+                Visibility(
+                  visible: !_companyVisible,
+                  child: SizedBox(height: 16.h),
+                ),
+                _buildIndustry(),
                 Visibility(
                   visible: _companyVisible,
                   child: SizedBox(height: 16.h),
@@ -1062,16 +1252,19 @@ class _EditProfileState extends State<EditProfile> {
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: TextFormField(
-                    maxLength: 10,
+                    textCapitalization: TextCapitalization.words,
+                    maxLength: 25,
+
                     style: TextStyle(
                         fontSize: 15.sp,
                         fontFamily: kSfproRoundedFontFamily,
                         fontWeight: FontWeight.w300,
                         color: AppColor.secondaryColor),
                     controller: _textEditingController,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                    ],
+
+                    // inputFormatters: [
+                    //   FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                    // ],
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(top: 6.0.w, bottom: 3.0.w),
                       hintText: "Keyword",
@@ -1095,17 +1288,18 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                         onPressed: () {
                           if (_textEditingController.text.isEmpty) {
-                            Utils.displayToastBottomError("Keyword cannot be empty");
+                            Utils.displayToastBottomError("Keyword cannot be empty", context);
                             return;
                           }
+                          print(_textEditingController.text.trim());
 
                           if (_values.toString().toLowerCase().contains(_textEditingController.text.toLowerCase())) {
-                            Utils.displayToastBottomError("Keyword already added");
+                            Utils.displayToastBottomError("Keyword already added", context);
                             _textEditingController.clear();
                             return;
                           }
                           if (_values!.length <= 10) {
-                            _values!.add(_textEditingController.text);
+                            _values!.add(_textEditingController.text.trim());
                             _selected.add(true);
                             _textEditingController.clear();
 
@@ -1114,7 +1308,7 @@ class _EditProfileState extends State<EditProfile> {
                               _selected = _selected;
                             });
                           } else {
-                            Utils.displayToast("You are limited to 10 keywords");
+                            Utils.displayToastBottomError("You are limited to 10 keywords", context);
                           }
                         },
                       ),
@@ -1174,7 +1368,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       addAutomaticKeepAlives: true,
                       itemCount: entreprenerurList.length,
                       // itemCount: 1 ,
@@ -1184,7 +1378,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 SizedBox(height: 16.h),
                 _buildProfessionlUpdateButton(),
-                SizedBox(height: 30.h),
+                SizedBox(height: 60.h),
               ],
       );
     }
@@ -1225,27 +1419,34 @@ class _EditProfileState extends State<EditProfile> {
                   Container(
                     width: 120.w,
                     height: 120.w,
-                    padding: EdgeInsets.all(8),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100.0),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: "assets/images/profile.png",
-                        image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
-                        fit: BoxFit.cover,
-                        imageErrorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            "assets/images/profile.png",
-                          );
-                        },
-                      ),
-                    ),
+                    padding: const EdgeInsets.all(8),
+                    child: userImage != "" && userImage != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(100.0),
+                            child: FadeInImage.assetNetwork(
+                              placeholder: "assets/images/profile.png",
+                              image: userImage != "" ? AppConstant.profileImageBaseUrl + userImage : "",
+                              fit: BoxFit.cover,
+                              imageErrorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  "assets/images/profile.png",
+                                );
+                              },
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(100.0),
+                            child: Image.asset(
+                              "assets/images/profile.png",
+                            ),
+                          ),
                   ),
                   Positioned(
                     bottom: 0,
                     child: Container(
                       height: 19.w,
                       width: 19.w,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppColor.secondaryColor,
                       ),
@@ -1284,7 +1485,7 @@ class _EditProfileState extends State<EditProfile> {
                         child: Text(
                           "Changes not saved",
                           style: TextStyle(
-                              color: Color(0xff3F3D56),
+                              color: const Color(0xff3F3D56),
                               fontFamily: kSfproDisplayFontFamily,
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w500),
@@ -1292,7 +1493,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                       content: Text("Are you sure  want to Exit without Saving ?",
                           style: TextStyle(
-                              color: Color(0xff878B95),
+                              color: const Color(0xff878B95),
                               fontFamily: kSfproRoundedFontFamily,
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w300)),
@@ -1387,7 +1588,7 @@ class _EditProfileState extends State<EditProfile> {
                 color: AppColor.whiteColor)),
       ),
       body: _loader
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
@@ -1395,7 +1596,7 @@ class _EditProfileState extends State<EditProfile> {
           : LoadingOverlay(
               isLoading: _loaderoverflow,
               opacity: 0.3,
-              progressIndicator: CircularProgressIndicator(
+              progressIndicator: const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
               ),
               child: SizedBox(
@@ -1415,11 +1616,11 @@ class _EditProfileState extends State<EditProfile> {
   getProfileDetails() async {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      var phone = preferences.getString("phone");
-      var requestBody = {
-        "phone": phone,
-      };
-      var response = await ContactBloc().getProfileDetails(requestBody);
+      String phonenum = preferences.getString("phone") ?? "";
+      // var requestBody = {
+      //   "phone": phone,
+      // };
+      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phonenum));
 
       setState(() {
         _loader = false;
@@ -1454,12 +1655,28 @@ class _EditProfileState extends State<EditProfile> {
 
         if (contactDetail?.professional != null) {
           print(contactDetail?.professional?.occupation);
-          _occupationValue = contactDetail?.professional?.occupation ?? "";
-          _professionalOccupation.text = contactDetail?.professional?.occupation ?? "";
+          if (contactDetail?.professional?.occupation != null && contactDetail!.professional!.occupation!.isNotEmpty) {
+            _occupationValue = contactDetail!.professional!.occupation!.toOccupation();
+          }
+
+          // _occupationValue = contactDetail?.professional?.occupation ?? "";
+          _professionalOccupation.text = _occupationValue?.name ?? "";
+
+          // Industry value.
+          if (contactDetail?.professional?.industry != null && contactDetail!.professional!.industry!.isNotEmpty) {
+            _industryType = contactDetail!.professional!.industry!.toIndustry();
+            _professionalIndustry.text = _industryType?.name ?? '';
+          }
+
           _professionalCompany.text = contactDetail?.professional?.company ?? "";
           _professionalCompanyWebsite.text = contactDetail?.professional?.companyWebsite ?? "";
           _professionalSchool.text = contactDetail?.professional?.schoolUniversity ?? "";
-          _professionalWorkNature.text = contactDetail?.professional?.workNature ?? "";
+
+          // Work nature dropdown value.
+          if (contactDetail?.professional?.workNature != null && contactDetail!.professional!.workNature!.isNotEmpty) {
+            _workNatureDropdownValue = contactDetail!.professional!.workNature!.toWorkNature();
+            _professionalWorkNature.text = _workNatureDropdownValue?.name ?? '';
+          }
           _professionalDesignation.text = contactDetail?.professional?.designation ?? "";
           _professionalGrade.text = contactDetail?.professional?.grade ?? "";
 
@@ -1482,7 +1699,10 @@ class _EditProfileState extends State<EditProfile> {
               entrepreneureData.id = data.id;
               entrepreneureData.company = data.company;
               entrepreneureData.website = data.companyWebsite;
-              entrepreneureData.workNature = data.workNature;
+              if (data.workNature != null && data.workNature!.isNotEmpty) {
+                final workNatureParsed = data.workNature!.toWorkNature();
+                entrepreneureData.workNature = workNatureParsed?.name;
+              }
               entrepreneureData.images = imageData;
               entreprenerurList.add(entrepreneureData);
             });
@@ -1514,7 +1734,7 @@ class _EditProfileState extends State<EditProfile> {
           });
         }
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       print(e);
@@ -1549,13 +1769,13 @@ class _EditProfileState extends State<EditProfile> {
                   child: FloatingActionButton(
                     heroTag: null,
                     elevation: 0,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(10.0),
                       ),
                     ),
                     backgroundColor: AppColor.removeIconColor,
-                    child: Icon(
+                    child: const Icon(
                       Icons.close,
                       size: 18,
                       color: AppColor.whiteColor,
@@ -1574,7 +1794,7 @@ class _EditProfileState extends State<EditProfile> {
               margin: EdgeInsets.only(top: 20.h, left: 5.0.w, right: 5.0.w),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Color.fromRGBO(232, 232, 232, 1),
+                  color: const Color.fromRGBO(232, 232, 232, 1),
                 ),
                 borderRadius: BorderRadius.circular(7),
               ),
@@ -1599,12 +1819,13 @@ class _EditProfileState extends State<EditProfile> {
                       color: AppColor.placeholder),
                   filled: true,
                   fillColor: AppColor.whiteColor,
-                  errorBorder: OutlineInputBorder(
+                  errorBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
                   focusedBorder: InputBorder.none,
                 ),
                 initialValue: entreprenerurList[i].company,
+                textCapitalization: TextCapitalization.words,
                 cursorColor: AppColor.secondaryColor,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
@@ -1623,7 +1844,7 @@ class _EditProfileState extends State<EditProfile> {
               margin: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Color.fromRGBO(232, 232, 232, 1),
+                  color: const Color.fromRGBO(232, 232, 232, 1),
                 ),
                 borderRadius: BorderRadius.circular(7),
               ),
@@ -1634,7 +1855,7 @@ class _EditProfileState extends State<EditProfile> {
                     fontWeight: FontWeight.w300,
                     color: AppColor.secondaryColor),
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
+                  contentPadding: const EdgeInsets.only(top: 6.0, bottom: 3.0),
                   labelText: "Website",
                   labelStyle: TextStyle(
                       fontSize: 13.sp,
@@ -1663,42 +1884,39 @@ class _EditProfileState extends State<EditProfile> {
             Container(
               height: 48.h,
               width: 331.w,
-              padding: EdgeInsets.only(left: 14.0.w, right: 14.w),
               margin: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color.fromRGBO(232, 232, 232, 1),
-                ),
-                borderRadius: BorderRadius.circular(7),
-              ),
-              child: TextFormField(
-                style: TextStyle(
-                    fontSize: 15.sp,
-                    fontFamily: kSfproRoundedFontFamily,
-                    fontWeight: FontWeight.w300,
-                    color: AppColor.secondaryColor),
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(top: 6.0, bottom: 3.0),
-                  labelText: 'Work Nature',
-                  labelStyle: TextStyle(
-                      fontSize: 13.sp,
-                      fontFamily: kSfproRoundedFontFamily,
-                      fontWeight: FontWeight.w300,
-                      color: AppColor.placeholder),
+              child: DropdownButtonFormField(
+                style: TextStyle(color: AppColor.secondaryColor, fontSize: 13.sp),
+                icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF878B95)),
+                dropdownColor: AppColor.whiteColor,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(18, 0, 0, 0),
                   filled: true,
                   fillColor: AppColor.whiteColor,
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
                   ),
-                  focusedBorder: InputBorder.none,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1),
+                  ),
                 ),
-                cursorColor: AppColor.secondaryColor,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                initialValue: entreprenerurList[i].workNature,
+                items: [
+                  for (final value in WorkNatureType.values)
+                    DropdownMenuItem(
+                      value: value,
+                      child: Text(value.name),
+                    ),
+                ],
+                hint: const Text(
+                  "Work Nature",
+                  style: TextStyle(fontSize: 13, color: Color(0xFF878B95)),
+                ),
+                value: entreprenerurList[i].workNature != null && entreprenerurList[i].workNature!.isNotEmpty
+                    ? entreprenerurList[i].workNature!.toWorkNature()
+                    : null,
                 onChanged: (value) {
                   setState(() {
-                    entreprenerurList[i].workNature = value;
+                    entreprenerurList[i].workNature = value?.name;
                   });
                 },
               ),
@@ -1736,7 +1954,7 @@ class _EditProfileState extends State<EditProfile> {
                         border: Border.all(
                           color: AppColor.secondaryColor,
                         ),
-                        borderRadius: BorderRadius.all(
+                        borderRadius: const BorderRadius.all(
                           Radius.circular(10.0),
                         ),
                       ),
@@ -1754,7 +1972,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: Stack(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           width: 114.w,
                           height: 102.h,
                           child: ClipRRect(
@@ -1831,7 +2049,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: Stack(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           width: 114.w,
                           height: 102.h,
                           child: ClipRRect(
@@ -1851,7 +2069,7 @@ class _EditProfileState extends State<EditProfile> {
                                       placeholder: (context, url) => Image.asset(
                                         "assets/images/placeholderImage.jpg",
                                       ),
-                                      errorWidget: (context, url, error) => Icon(Icons.error),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
                                     )
                                   : (entreprenerurList[i].images!.length >= 2
                                       ? AssetThumb(
@@ -1903,7 +2121,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: Stack(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           width: 114.w,
                           height: 102.h,
                           child: ClipRRect(
@@ -1923,7 +2141,7 @@ class _EditProfileState extends State<EditProfile> {
                                       placeholder: (context, url) => Image.asset(
                                         "assets/images/placeholderImage.jpg",
                                       ),
-                                      errorWidget: (context, url, error) => Icon(Icons.error),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
                                     )
                                   : (entreprenerurList[i].images!.length == 3
                                       ? AssetThumb(
@@ -1978,167 +2196,6 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  entreprenerurItem(int i) {
-    return Padding(
-      padding: EdgeInsets.all(16),
-      child: Material(
-        color: AppColor.whiteColor,
-        elevation: 2,
-        clipBehavior: Clip.antiAlias,
-        borderRadius: BorderRadius.circular(8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                onPressed: () {
-                  removeCompanyProfile(i);
-                },
-                icon: Icon(Icons.close),
-                color: AppColor.primaryColor,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w),
-              child: TextFormField(
-                style: TextStyle(
-                    fontSize: 15.sp,
-                    fontFamily: kSfproRoundedFontFamily,
-                    fontWeight: FontWeight.w300,
-                    color: AppColor.secondaryColor),
-                decoration: InputDecoration(
-                    hintText: "Company",
-                    filled: true,
-                    fillColor: Color(0xFFF6F6F6),
-                    hintStyle: TextStyle(
-                        fontSize: 13.sp,
-                        fontFamily: kSfproRoundedFontFamily,
-                        fontWeight: FontWeight.w300,
-                        color: AppColor.placeholder)),
-                cursorColor: AppColor.secondaryColor,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                initialValue: entreprenerurList[i].company,
-                onChanged: (value) {
-                  setState(() {
-                    entreprenerurList[i].company = value;
-                  });
-                },
-              ),
-            ),
-            SizedBox(height: 10.h),
-            Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 16.w),
-              child: TextFormField(
-                style: TextStyle(
-                    fontSize: 15.sp,
-                    fontFamily: kSfproRoundedFontFamily,
-                    fontWeight: FontWeight.w300,
-                    color: AppColor.secondaryColor),
-                decoration: InputDecoration(
-                  hintText: "Website",
-                  filled: true,
-                  fillColor: AppColor.whiteColor,
-                  hintStyle: TextStyle(
-                      fontSize: 13.sp,
-                      fontFamily: kSfproRoundedFontFamily,
-                      fontWeight: FontWeight.w300,
-                      color: AppColor.placeholder),
-                ),
-                cursorColor: AppColor.secondaryColor,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                initialValue: entreprenerurList[i].website,
-                onChanged: (value) {
-                  setState(() {
-                    entreprenerurList[i].website = value;
-                  });
-                },
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: TextFormField(
-                style: TextStyle(
-                    fontSize: 15.sp,
-                    fontFamily: kSfproRoundedFontFamily,
-                    fontWeight: FontWeight.w300,
-                    color: AppColor.secondaryColor),
-                decoration: InputDecoration(
-                  hintText: 'Work Nature',
-                  filled: true,
-                  fillColor: Color(0xFFF6F6F6),
-                  hintStyle: Theme.of(context).textTheme.bodyText2?.apply(color: Color(0xFF878B95)),
-                ),
-                cursorColor: AppColor.secondaryColor,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                initialValue: entreprenerurList[i].workNature,
-                onChanged: (value) {
-                  setState(() {
-                    entreprenerurList[i].workNature = value;
-                  });
-                },
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Container(
-              margin: EdgeInsets.only(right: 16.w),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.black45),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: AppColor.accentColor,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                      onPressed: () {
-                        loadImages(i);
-                      },
-                      child: Text(
-                        "Add pictures",
-                        style: TextStyle(
-                          color: AppColor.whiteColor,
-                          fontSize: 14.sp,
-                          fontFamily: kSfproRoundedFontFamily,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      entreprenerurList[i].images!.isEmpty
-                          ? ''
-                          : '(Added Image ${entreprenerurList[i].images!.length})',
-                      style: TextStyle(
-                        color: AppColor.gray30Color,
-                        fontSize: 10.sp,
-                        fontFamily: kSfproDisplayFontFamily,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 10.h),
-          ],
-        ),
-      ),
-    );
-  }
-
   ///on form user deleted
   void removeCompanyProfile(int i) {
     setState(() {
@@ -2180,7 +2237,7 @@ class _EditProfileState extends State<EditProfile> {
         );
       },
     );
-    if (picked != selectedDate) {
+    if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
         dynamic d = formatDate(selectedDate!, [dd, '-', mm, '-', yyyy]);
@@ -2191,32 +2248,33 @@ class _EditProfileState extends State<EditProfile> {
 
   updateProfile() async {
     setState(() {
-      if (_occupationValue == 'Entrepreneur') {
+      if (_occupationValue == OccupationType.entrepreneur) {
         _professionalCompany.clear();
         _professionalCompanyWebsite.clear();
         _professionalWorkNature.clear();
         _professionalSchool.clear();
         _professionalGrade.clear();
         _professionalDesignation.clear();
-      } else if (_occupationValue == 'Employed') {
+      } else if (_occupationValue == OccupationType.homeMaker) {
+        entreprenerurList = [];
+        _professionalCompany.clear();
+        _professionalCompanyWebsite.clear();
+        _professionalWorkNature.clear();
+        _professionalSchool.clear();
+        _professionalGrade.clear();
+        _professionalDesignation.clear();
+      } else if (_occupationValue == OccupationType.schoolStudent ||
+          _occupationValue == OccupationType.collegeStudent) {
+        entreprenerurList = [];
+        _professionalCompany.clear();
+        _professionalCompanyWebsite.clear();
+        _professionalWorkNature.clear();
+        _professionalDesignation.clear();
+      } else {
         entreprenerurList = [];
         _professionalSchool.clear();
         _professionalGrade.clear();
         _designationVisible = true;
-      } else if (_occupationValue == 'Home maker') {
-        entreprenerurList = [];
-        _professionalCompany.clear();
-        _professionalCompanyWebsite.clear();
-        _professionalWorkNature.clear();
-        _professionalSchool.clear();
-        _professionalGrade.clear();
-        _professionalDesignation.clear();
-      } else if (_occupationValue == 'Student') {
-        entreprenerurList = [];
-        _professionalCompany.clear();
-        _professionalCompanyWebsite.clear();
-        _professionalWorkNature.clear();
-        _professionalDesignation.clear();
       }
     });
 
@@ -2253,57 +2311,90 @@ class _EditProfileState extends State<EditProfile> {
       }
     }
 
-    var requestBody = {
-      "per_name": _personalName.text,
-      "per_num": _personalNumber.text,
-      "per_email": _personalEmail.text,
-      "per_dob": _personalDob.text,
-      "per_add": _personalAddress.text,
-      "per_city": _personalCity.text,
-      "per_state": _personalState.text,
-      "per_country": _personalCountry.text,
-      "per_pincode": _personalPincode.text,
-      "per_lan": _personalLandline.text == null ? '' : _personalLandline.text,
-      "per_keyword": _values!.join(', '),
-      "pro_occ": _professionalOccupation.text,
-      "pro_ind": _professionalIndustry.text,
-      "pro_com": _professionalCompany.text,
-      "pro_com_website": _professionalCompanyWebsite.text,
-      "pro_wn": _professionalWorkNature.text,
-      "pro_des": _professionalDesignation.text,
-      "pro_sch": _professionalSchool.text,
-      "pro_gra": _professionalGrade.text,
-      "fb": _socialFacebook.text,
-      "in": _socialInstagram.text,
-      "tt": _socialTwitter.text,
-      "sk": _socialSkype.text,
-      // "gp": _socialFacebook.text,
-      // "pt": _socialFacebook.text,
-      "entreprenerur_list": (entreprenerurListResquest.map((e) => e.toJson()).toList()),
-    };
+    // var requestBody = {
+    //   "per_name": _personalName.text,
+    //   "per_num": _personalNumber.text,
+    //   "per_secondary_num": _personalSecondaryNumber.text ?? '',
+    //   "per_email": _personalEmail.text,
+    //   "per_dob": _personalDob.text,
+    //   "per_add": _personalAddress.text,
+    //   "per_city": _personalCity.text,
+    //   "per_state": _personalState.text,
+    //   "per_country": _personalCountry.text,
+    //   "per_pincode": _personalPincode.text,
+    //   "per_lan": _personalLandline.text ?? '',
+    //   "per_keyword": _values!.join(', '),
+    //   "pro_occ": _professionalOccupation.text,
+    //   "pro_ind": _professionalIndustry.text,
+    //   "pro_com": _professionalCompany.text,
+    //   "pro_com_website": _professionalCompanyWebsite.text,
+    //   "pro_wn": _professionalWorkNature.text,
+    //   "pro_des": _professionalDesignation.text,
+    //   "pro_sch": _professionalSchool.text,
+    //   "pro_gra": _professionalGrade.text,
+    //   "fb": _socialFacebook.text,
+    //   "in": _socialInstagram.text,
+    //   "tt": _socialTwitter.text,
+    //   "sk": _socialSkype.text,
+    //   // "gp": _socialFacebook.text,
+    //   // "pt": _socialFacebook.text,
+    //   "entreprenerur_list": (entreprenerurListResquest.map((e) => e.toJson()).toList()),
+    // };
 
     setState(() {
       _loaderoverflow = true;
     });
-    var response = await ContactBloc().updateProfileDetails(requestBody);
-
+    print('wwwwww');
+    print(_personalAddress.text);
+    var response = await ContactBloc().updateProfileDetails(UpdateProfileDetailsRequestBody(
+      per_name: _personalName.text,
+      per_num: _personalNumber.text,
+      per_secondary_num: _personalSecondaryNumber.text ?? '',
+      per_email: _personalEmail.text,
+      per_dob: _personalDob.text,
+      per_add: _personalAddress.text,
+      per_city: _personalCity.text,
+      per_state: _personalState.text,
+      per_country: _personalCountry.text,
+      per_pincode: _personalPincode.text,
+      per_lan: _personalLandline.text ?? '',
+      per_keyword: _values!.join(','),
+      pro_occ: _professionalOccupation.text,
+      pro_ind: _professionalIndustry.text,
+      pro_com: _professionalCompany.text,
+      pro_com_website: _professionalCompanyWebsite.text,
+      pro_wn: _professionalWorkNature.text,
+      pro_des: _professionalDesignation.text,
+      pro_sch: _professionalSchool.text,
+      pro_gra: _professionalGrade.text,
+      fb: _socialFacebook.text,
+      inn: _socialInstagram.text,
+      tt: _socialTwitter.text,
+      sk: _socialSkype.text,
+      entreprenerur_list: (entreprenerurListResquest.map((e) => e.toJson()).toList()),
+    ));
     setState(() {
       _loaderoverflow = false;
     });
 
     if (response['status'] == true) {
-      Utils.displayToast(response['message'].toString());
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: 'Success',
+        text: response['message'].toString(),
+      );
 
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => MyProfile(requestBody['per_num'] as String?),
+          builder: (BuildContext context) => MyProfile(widget.editphonenumber),
         ),
       );
     } else if (response['status'] == "Token is Expired") {
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
     }
   }
 
@@ -2358,8 +2449,8 @@ class _EditProfileState extends State<EditProfile> {
         maxImages: 1,
         enableCamera: true,
         selectedAssets: profileImage,
-        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: MaterialOptions(
+        cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: const MaterialOptions(
           actionBarColor: "#FF931E",
           statusBarColor: "#FF931E",
           actionBarTitle: "Profile Image",
@@ -2390,25 +2481,28 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   void uploadeProfileImage() async {
-    var jsonData = {
-      "base64data_profile": "data:image/png;base64,$uploadedProfileImage",
-    };
+    // var jsonData = {
+    //   "base64data_profile": "data:image/png;base64,$uploadedProfileImage",
+    // };
 
     setState(() {
       _loaderoverflow = true;
     });
 
-    var response = await ContactBloc().updateProfileImage(jsonData);
+    var response = await ContactBloc().updateProfileImage(
+        UploadProfileImageRequestBody(base64data_profile: "data:image/png;base64,$uploadedProfileImage"));
+    print("response");
     print(response);
     setState(() {
       _loaderoverflow = false;
     });
 
     if (response['status'] == true) {
-      Utils.displayToast(response['message']);
+      gtm.push(GTMConstants.kprofileImageUploadEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+      Utils.displayToast(response['message'], context);
       getProfileDetails();
     } else {
-      Utils.displayToast("Try Again!");
+      Utils.displayToastBottomError("Try Again!", context);
     }
   }
 
@@ -2416,6 +2510,36 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       _loaderoverflow = true;
     });
+
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      setState(() {
+        _loaderoverflow = false;
+      });
+      Utils.displayToastBottomError('Please enable location services on your device to use this feature.', context);
+      return;
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        setState(() {
+          _loaderoverflow = false;
+        });
+        Utils.displayToastBottomError('Location permissions required to use this feature.', context);
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      setState(() {
+        _loaderoverflow = false;
+      });
+      Utils.displayToastBottomError('Location permissions required to use this feature.', context);
+      return;
+    }
+
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
       setState(() {
         _currentPosition = position;

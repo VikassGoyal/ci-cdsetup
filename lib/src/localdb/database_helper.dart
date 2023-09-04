@@ -130,7 +130,8 @@ class DatabaseHelper {
 
   // Insert Operation: Insert a allContact object to database
   Future<int> insertallContact(AllContacts allContact) async {
-    var result = await database.insert(allContactTable, allContact.toJson());
+    var result =
+        await database.insert(allContactTable, allContact.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
     return result;
   }
 
@@ -193,8 +194,8 @@ class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> getRecentCallsBetweenInDateTimeMapList(
       DateTime dateTimeFrom, DateTime dateTimeTo, String? name) async {
-    int timeFrom = dateTimeFrom.microsecondsSinceEpoch;
-    int timeTo = dateTimeTo.microsecondsSinceEpoch;
+    int timeFrom = dateTimeFrom.millisecondsSinceEpoch;
+    int timeTo = dateTimeTo.millisecondsSinceEpoch;
     var result = await database.query(
       recentCallsTable,
       orderBy: '$coltimestamp DESC',

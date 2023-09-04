@@ -5,24 +5,29 @@ import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+
+import '../../utils/gtm_constants.dart';
 
 class QRScreen extends StatefulWidget {
   const QRScreen({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _QRScreenState();
+  State<QRScreen> createState() => _QRScreenState();
 }
 
 class _QRScreenState extends State<QRScreen> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-
+  final gtm = Gtm.instance;
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
+
   @override
   void reassemble() {
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kQRCodeScreen});
     super.reassemble();
     if (Platform.isAndroid) {
       controller!.pauseCamera();

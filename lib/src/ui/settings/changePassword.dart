@@ -1,3 +1,4 @@
+import 'package:conet/api_models/changepassword_request_model/changepassword_request_body.dart';
 import 'package:conet/blocs/userBloc.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/custom_fonts.dart';
@@ -6,13 +7,16 @@ import 'package:conet/utils/theme.dart';
 import 'package:conet/utils/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+
+import '../../../utils/gtm_constants.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);
 
   @override
-  _ChangePasswordState createState() => _ChangePasswordState();
+  State<ChangePassword> createState() => _ChangePasswordState();
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
@@ -21,7 +25,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _loader = false;
-
+  final gtm = Gtm.instance;
   @override
   Widget build(BuildContext context) {
     Widget buildUpdateButton() {
@@ -40,16 +44,16 @@ class _ChangePasswordState extends State<ChangePassword> {
           onPressed: () {
             var validate = _changeFormKey.currentState!.validate();
             if (_oldPasswordController.text.length < 8) {
-              Utils.displayToastTopError("Old Password Must be more than 8 characters");
+              Utils.displayToastBottomError("Old Password Must be more than 8 characters", context);
               return;
             }
             if (_confirmPasswordController.text.length < 8) {
-              Utils.displayToastTopError("New Password Must be more than 8 characters");
+              Utils.displayToastTopError("New Password Must be more than 8 characters", context);
               return;
             }
 
             if (_newPasswordController.text.length < 8) {
-              Utils.displayToastTopError("Confirm Password Must be more than 8 characters");
+              Utils.displayToastTopError("Confirm Password Must be more than 8 characters", context);
               return;
             }
             if (validate) {
@@ -180,42 +184,44 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   Future<void> changePassword() async {
     if (_oldPasswordController.text.isEmpty) {
-      Utils.displayToastTopError("Please enter Old Password.");
+      Utils.displayToastTopError("Please enter Old Password.", context);
       return;
     } else if (_newPasswordController.text.isEmpty) {
-      Utils.displayToastTopError("Please enter New Password.");
+      Utils.displayToastTopError("Please enter New Password.", context);
       return;
     } else if (_newPasswordController.text != _confirmPasswordController.text) {
-      Utils.displayToastTopError("Password is Mismatch.");
+      Utils.displayToastTopError("Password is Mismatch.", context);
       return;
     } else if (_oldPasswordController.text == _confirmPasswordController.text) {
-      Utils.displayToastTopError("Enter different Password");
+      Utils.displayToastTopError("Enter different Password", context);
       return;
     }
 
     setState(() {
       _loader = true;
     });
-    var requestBody = {
-      "oldpassword": _oldPasswordController.text,
-      "newpassword": _newPasswordController.text,
-    };
+    // var requestBody = {
+    //   "oldpassword": _oldPasswordController.text,
+    //   "newpassword": _newPasswordController.text,
+    // };
 
     try {
-      var response = await UserBloc().changePassword(requestBody);
+      var response = await UserBloc().changePassword(ChangePasswordRequestBody(
+          oldpassword: _oldPasswordController.text, newpassword: _newPasswordController.text));
 
       setState(() {
         _loader = false;
       });
 
       if (response['success'] == true) {
-        Utils.displayToast(response["message"]);
+        gtm.push(GTMConstants.kpasswordChangeEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+        Utils.displayToast(response["message"], context);
         Navigator.pop(context);
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
-      Utils.displayToast("Something went wrong!");
+      Utils.displayToastBottomError("Something went wrong!", context);
       print(e);
     }
   }

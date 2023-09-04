@@ -60,9 +60,9 @@ class RecentPageRepository {
     return _data == null ? _data : List<RecentCalls>.from(_data!);
   }
 
-  insertDailedCall(phoneNumber) async {
+  insertDailedCall(phoneNumber, name) async {
     RecentCalls recentCalls = RecentCalls(
-        name: "",
+        name: name ?? "",
         callType: "CallType.outgoing",
         number: phoneNumber.toString(),
         timestamp: DateTime.now().millisecondsSinceEpoch);

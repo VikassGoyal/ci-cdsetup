@@ -1,3 +1,4 @@
+import 'package:conet/api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/blocs/contactRequest.dart';
 import 'package:conet/src/ui/utils.dart';
@@ -8,20 +9,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../utils/gtm_constants.dart';
+
 class NotificationScreen extends StatefulWidget {
+  const NotificationScreen({super.key});
+
   @override
-  _NotificationScreenState createState() => _NotificationScreenState();
+  State<NotificationScreen> createState() => _NotificationScreenState();
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
   List<NotificationResponse> notification = [];
   bool _loader = true;
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kNotificationScreen});
     Future.delayed(Duration.zero, () {
       getNotificationData();
     });
@@ -292,7 +299,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ),
               ],
             ),
-            const SizedBox(width: 14),
+            SizedBox(width: 14.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,7 +307,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   Text(
                     notification[index].name ?? notification[index].phone!,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.headline2,
+                    style: TextStyle(
+                      fontFamily: kSfproDisplayFontFamily,
+                      color: AppColor.blackColor,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 18.sp,
+                      letterSpacing: 0.2,
+                    ),
                   ),
                 ],
               ),
@@ -413,6 +427,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         _loader = false;
       });
       if (response['status'] == true) {
+        gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
         var responseData = response['data'];
         setState(() {
           var data = List<NotificationResponse>.from(
@@ -422,7 +437,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           print(notification);
         });
       } else {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
       setState(() {
@@ -434,14 +449,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   requestContactResponse(index, String type, requestContactId) async {
     try {
-      var requestBody = {
-        "type": type,
-        "responseid": requestContactId,
-      };
-      var response = await ContactBloc().contactRequestResponse(requestBody);
+      // var requestBody = {
+      //   "type": type,
+      //   "responseid": requestContactId,
+      // };
+      print(type);
+      var response = await ContactBloc()
+          .contactRequestResponse(RequestContactResponseRequestBody(id: type, responseid: requestContactId));
       if (response["status"] == true) {
         setState(() {
-          Utils.displayToast(response["message"]);
+          Utils.displayToast(response["message"], context);
           notification.removeAt(index);
         });
       }

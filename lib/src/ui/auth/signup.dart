@@ -1,8 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
+import 'package:conet/utils/check_internet_connection.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:flutter/services.dart';
 
 import 'package:conet/blocs/userBloc.dart';
@@ -15,15 +17,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
-import '../../../networking/apiBaseHelper.dart';
 import '../utils.dart';
 import 'login.dart';
 
 class SignUp extends StatefulWidget {
+  const SignUp({super.key});
+
   @override
-  _SignUpState createState() => _SignUpState();
+  State<SignUp> createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> {
@@ -36,7 +40,7 @@ class _SignUpState extends State<SignUp> {
   bool _showPassword = false;
   bool redirected = true;
   String _errorMsg = '';
-
+  final gtm = Gtm.instance;
   //Controller
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -89,23 +93,11 @@ class _SignUpState extends State<SignUp> {
               setState(() {
                 _loader = false;
               });
-              ScaffoldMessenger.of(context).showSnackBar(
-                Utils.displaySnackBar(
-                  'Please check your internet connection',
-                  duration: const Duration(seconds: 2),
-                  backgroundColor: AppColor.redColor,
-                ),
-              );
+              Utils.displayToastNoAutoClose('Please check your internet connection', context);
             }
           } else {
             //if there is any error in validations then show some common Error msg
-            ScaffoldMessenger.of(context).showSnackBar(
-              Utils.displaySnackBar(
-                _errorMsg,
-                duration: const Duration(seconds: 2),
-                backgroundColor: AppColor.redColor,
-              ),
-            );
+            Utils.displayToastNoAutoClose(_errorMsg, context);
           }
         },
         child: Container(
@@ -301,6 +293,7 @@ class _SignUpState extends State<SignUp> {
                             focusNode: _nameControllerFocus,
                             label: 'Name',
                             textEditingController: _nameController,
+                            textCapitalization: TextCapitalization.words,
                             isError: _nameError,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -507,15 +500,13 @@ class _SignUpState extends State<SignUp> {
   }
 
   signupFunction() async {
-    var requestBody = {
-      "username": _nameController.text,
-      "email": _emailController.text,
-      "phone": _mobileController.text,
-      "password": _passwordController.text
-    };
+    String username = _nameController.text;
+    String email = _emailController.text;
+    String phone = _mobileController.text;
+    String password = _passwordController.text;
 
     try {
-      var response = await UserBloc().signup(requestBody);
+      var response = await UserBloc().signup(username: username, email: email, phone: phone, password: password);
       var res = response["status"];
       print("response : $res");
       setState(() {
@@ -524,16 +515,17 @@ class _SignUpState extends State<SignUp> {
 
       if (response['status'] == 'validation') {
         if (response['message']['phone'] != null) {
-          Utils.displayToast(response['message']['phone'][0]);
+          Utils.displayToastBottomError(response['message']['phone'][0], context);
         } else if (response['message']['email'] != null) {
-          Utils.displayToast(response['message']['email'][0]);
+          Utils.displayToastBottomError(response['message']['email'][0], context);
         } else if (response['message']['username'] != null) {
-          Utils.displayToast(response['message']['username'][0]);
+          Utils.displayToastBottomError(response['message']['username'][0], context);
         }
       } else if (response['status'] == false) {
-        Utils.displayToast(response["message"]);
+        Utils.displayToastBottomError(response["message"], context);
       } else {
-        Utils.displayToast(response["message"]);
+        gtm.push(GTMConstants.kSignupEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+        Utils.displayToast(response["message"], context);
 
         Navigator.pushReplacement(
           context,
@@ -544,7 +536,7 @@ class _SignUpState extends State<SignUp> {
       }
     } catch (e) {
       // Navigator.of(context).pop();
-      Utils.displayToast("Something went wrong!");
+      Utils.displayToastBottomError("Something went wrong!", context);
       setState(() {
         _loader = false;
       });
@@ -562,6 +554,7 @@ class CustomTextFormFieldBox extends StatefulWidget {
   final FocusNode focusNode;
   final String label;
   final TextEditingController textEditingController;
+  final TextCapitalization textCapitalization;
   final String? Function(String?)? validator;
   const CustomTextFormFieldBox({
     super.key,
@@ -570,6 +563,7 @@ class CustomTextFormFieldBox extends StatefulWidget {
     required this.label,
     required this.textEditingController,
     required this.isError,
+    this.textCapitalization = TextCapitalization.none,
     required this.validator,
   });
 
@@ -579,10 +573,11 @@ class CustomTextFormFieldBox extends StatefulWidget {
 
 class _CustomTextFormFieldBoxState extends State<CustomTextFormFieldBox> {
   late bool _showPassword;
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kSignupScreen});
     _showPassword = false;
   }
 
@@ -637,6 +632,7 @@ class _CustomTextFormFieldBoxState extends State<CustomTextFormFieldBox> {
             child: TextFormField(
               controller: widget.textEditingController,
               focusNode: widget.focusNode,
+              textCapitalization: widget.textCapitalization,
               style: TextStyle(
                 fontFamily: kSfproRoundedFontFamily,
                 color: AppColor.whiteColor,

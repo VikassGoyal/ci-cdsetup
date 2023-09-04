@@ -4,20 +4,31 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
+import 'package:conet/src/appScreen.dart';
 import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/switchContactToggle.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gtm/gtm.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
+import '../../api_models/addNewContact_request_model/addNewContact_request_body.dart';
+import '../../bottomNavigation/bottomNavigationBloc.dart';
 import '../../models/imageUploadModel.dart';
+import '../../repositories/contactPageRepository.dart';
+import '../../utils/custom_fonts.dart';
 
 class AddContactUserProfilePage extends StatefulWidget {
   const AddContactUserProfilePage({super.key, this.contactDetails, required this.conetUser, this.contactNumber});
@@ -81,7 +92,7 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
 
   List<EntrepreneurData> entreprenerurList = [];
   List<ProfessionalList>? entreprenerurListJson = [];
-
+  final gtm = Gtm.instance;
   @override
   void initState() {
     _conetUser = widget.conetUser;
@@ -175,34 +186,43 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
     return Scaffold(
         backgroundColor: AppColor.whiteColor,
         appBar: AppBar(
-          backgroundColor: AppColor.primaryColor,
-          elevation: 0.0,
-          leading: InkWell(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.arrow_back_sharp,
-                  color: AppColor.whiteColor,
+            backgroundColor: AppColor.primaryColor,
+            leadingWidth: 80.w,
+            elevation: 0.0,
+            leading: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: const Icon(Icons.arrow_back, color: Colors.white),
+                    ),
+                    SizedBox(width: 6.w),
+                    Text(
+                      'Back',
+                      style: TextStyle(
+                        fontFamily: kSfproRoundedFontFamily,
+                        color: AppColor.whiteColor,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  width: 2,
-                ),
-                Text(
-                  "Back",
-                  style: Theme.of(context).textTheme.bodyText2?.apply(color: AppColor.whiteColor),
-                )
-              ],
+              ),
             ),
-          ),
-          centerTitle: true,
-          title: Text(
-            "Add Contact",
-            style: Theme.of(context).textTheme.headline4?.apply(color: AppColor.whiteColor),
-          ),
-        ),
+            centerTitle: true,
+            title: Text("Add Contact",
+                style: TextStyle(
+                    fontSize: 18.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w500,
+                    color: AppColor.whiteColor))),
         body: LoadingOverlay(
             isLoading: _loader,
             opacity: 0.3,
@@ -514,6 +534,7 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
       padding: 14.0,
       readonly: readOnlyValue,
       margin: 22.0,
+      enableFormatters: false,
       textInputType: TextInputType.text,
       actionKeyboard: TextInputAction.next,
       onSubmitField: () {},
@@ -1245,52 +1266,81 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
       }
     });
 
-    var requestBody = {
-      "per_name": _personalName.text,
-      "per_num": _personalNumber.text,
-      "per_email": _personalEmail.text,
-      "per_dob": _personalDob.text,
-      "per_add": _personalAddress.text,
-      "per_lan": _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
-      "pro_occ": _professionalOccupation.text,
-      "pro_ind": _professionalIndustry.text,
-      "pro_com": _professionalCompany.text,
-      "pro_com_website": _professionalCompanyWebsite.text,
-      "pro_wn": _professionalWorkNature.text,
-      "pro_des": _professionalDesignation.text,
-      "pro_sch": _professionalSchool.text,
-      "pro_gra": _professionalGrade.text,
-      "fb": _socialFacebook.text,
-      "in": _socialInstagram.text,
-      "tt": _socialTwitter.text,
-      "sk": _socialSkype.text,
-      // "gp": _socialFacebook.text,
-      // "pt": _socialFacebook.text,
-      "entreprenerur_list": (entreprenerurList.map((e) => e.toJson()).toList()),
-    };
+    // var requestBody = {
+    //   "per_name": _personalName.text,
+    //   "per_num": _personalNumber.text,
+    //   "per_email": _personalEmail.text,
+    //   "per_dob": _personalDob.text,
+    //   "per_add": _personalAddress.text,
+    //   "per_lan": _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
+    //   "pro_occ": _professionalOccupation.text,
+    //   "pro_ind": _professionalIndustry.text,
+    //   "pro_com": _professionalCompany.text,
+    //   "pro_com_website": _professionalCompanyWebsite.text,
+    //   "pro_wn": _professionalWorkNature.text,
+    //   "pro_des": _professionalDesignation.text,
+    //   "pro_sch": _professionalSchool.text,
+    //   "pro_gra": _professionalGrade.text,
+    //   "fb": _socialFacebook.text,
+    //   "in": _socialInstagram.text,
+    //   "tt": _socialTwitter.text,
+    //   "sk": _socialSkype.text,
+    //   // "gp": _socialFacebook.text,
+    //   // "pt": _socialFacebook.text,
+    //   "entreprenerur_list": (entreprenerurList.map((e) => e.toJson()).toList()),
+    // };
 
-    print(jsonEncode(requestBody));
+    //print(jsonEncode(requestBody));
 
     Utils.hideKeyboard(context);
 
-    var response = await ContactBloc().addNewContact(requestBody);
+    var response = await ContactBloc().addNewContact(AddNewContactRequestBody(
+      personalName: _personalName.text,
+      personalNumber: _personalNumber.text,
+      personalEmail: _personalEmail.text,
+      personalDob: _personalDob.text,
+      personalAddress: _personalAddress.text,
+      personalLandline: _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
+      professionalWorkNature: _professionalWorkNature.text,
+      professionalDesignation: _professionalDesignation.text,
+      professionalSchool: _professionalSchool.text,
+      professionalGrade: _professionalGrade.text,
+      socialFacebook: _socialFacebook.text,
+      socialInstagram: _socialInstagram.text,
+      socialTwitter: _socialTwitter.text,
+      socialSkype: _socialSkype.text,
+      entreprenerur_list: entreprenerurList.map((e) => e.toJson()).toList(),
+      professionalCompany: _professionalCompany.text,
+      professionalCompanyWebsite: _professionalCompanyWebsite.text,
+      professionalOccupation: _professionalOccupation.text,
+      professionalIndustry: _professionalIndustry.text,
+    ));
     setState(() {
       _loader = false;
     });
+
     if (response['status'] == true) {
-      Utils.displayToast(response['message'].toString());
+      gtm.push(GTMConstants.kcontactAddEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: 'Success',
+        text: response['message'].toString(),
+      );
+      //Utils.displayToast(response['message'].toString(), context);
       await checkPermission();
+      context.read<BottomNavigationBloc>().currentIndex = 1;
 
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => AppScreen(value: true)),
         (route) => false,
       );
     } else if (response['status'] == "Token is Expired") {
-      Utils.displayToast('Token is Expired');
+      Utils.displayToastBottomError('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToast('Something went wrong');
+      Utils.displayToastBottomError('Something went wrong', context);
     }
   }
 

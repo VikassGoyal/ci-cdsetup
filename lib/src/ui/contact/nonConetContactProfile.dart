@@ -1,23 +1,33 @@
 import 'dart:io';
 import 'package:conet/models/contactDetails.dart';
+import 'package:conet/src/ui/contactsPage.dart';
 import 'package:conet/utils/custom_fonts.dart';
+import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../api_models/deleteContact__request_model/deleteContact.dart';
+import '../../../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
+import '../../../blocs/contactBloc.dart';
+import '../../../repositories/recentPageRepository.dart';
 import '../utils.dart';
 
 class NonConetContactProfile extends StatefulWidget {
   final String? name;
   final String? phoneNumber;
   final String? email;
+  final int? id;
 
-  const NonConetContactProfile(this.name, this.phoneNumber, this.email, {super.key});
+  const NonConetContactProfile(this.name, this.phoneNumber, this.email, this.id, {super.key});
 
   @override
   State<NonConetContactProfile> createState() => _NonConetContactProfileState();
@@ -34,7 +44,8 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
   final bool _loader = false;
   final bool _loaderoverflow = false;
   bool personalTab = true;
-
+  final gtm = Gtm.instance;
+  RecentPageRepository recentPageRepository = RecentPageRepository();
   @override
   void initState() {
     super.initState();
@@ -97,6 +108,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
               ),
               onPressed: () async {
                 print("clicked");
+
                 Share.share(
                     'Hey\n\nKonet is a fast, simple and secure app that i use to message and call the people.\n\nGet it for free at https://play.google.com/store/apps/details?id=com.shade6.agratrade',
                     subject: 'Look what I made!');
@@ -164,6 +176,9 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                       if (_personalNumber.text == '') {
                         return;
                       }
+                      gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+                      recentPageRepository.insertDailedCall(_personalNumber.text, _personalName.text);
+
                       _callNumber(_personalNumber.text);
                     },
                     child: SvgPicture.asset(
@@ -197,7 +212,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                   child: InkWell(
                     onTap: () {
                       if (_personalEmail.text == "") {
-                        Utils.displayToastBottomError("Mail id not found");
+                        Utils.displayToastBottomError("Mail id not found", context);
                         return;
                       }
 
@@ -311,18 +326,42 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                 child: const Center(child: Icon(Icons.more_horiz, color: AppColor.whiteColor)),
               ),
-              onSelected: (value) {
+              onSelected: (value) async {
                 print(value);
                 if (value == 2) {
                   String contactName = _personalName.text;
                   String phoneNumber = _personalNumber.text;
                   String message = 'Name: $contactName\nPhone: $phoneNumber';
                   Share.share(message);
+                  gtm.push(GTMConstants.kContactShareEvent,
+                      parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                 }
                 if (value == 1) {
                   //   Add the delete contact  api call functionality . i have created updatepage bool by default value false . if contact delete successfully make it true else false
+                  try {
+                    var response = await ContactBloc().deleteContact(widget.id ?? 0);
+                    if (response['success'] == true) {
+                      gtm.push(GTMConstants.kcontactDeleteEvent,
+                          parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+                      QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.success,
+                        title: 'Success',
+                        text: response['message'].toString(),
+                      );
+                      _updatepage = true;
+                      Navigator.of(context).pop(_updatepage);
 
-                  _updatepage = true;
+                      // );
+                      return;
+                    } else {
+                      Utils.displayToastBottomError(response["message"], context);
+                      return;
+                    }
+                  } catch (e) {
+                    print(e);
+                    return;
+                  }
                 }
               },
               itemBuilder: (context) => [
@@ -436,14 +475,14 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
       if (await canLaunch(whatappURLIos)) {
         await launch(whatappURLIos, forceSafariVC: false);
       } else {
-        Utils.displayToast("whatsapp no installed");
+        Utils.displayToastBottomError("whatsapp no installed", context);
       }
     } else {
       // android , web
       if (await canLaunch(whatsappURlAndroid)) {
         await launch(whatsappURlAndroid);
       } else {
-        Utils.displayToast("whatsapp no installed");
+        Utils.displayToastBottomError("whatsapp no installed", context);
       }
     }
   }

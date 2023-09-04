@@ -1,4 +1,19 @@
 import 'package:conet/repositories/repositories.dart';
+import 'package:path/path.dart';
+
+import '../api_models/ filterSearchResults_request_model/ filterSearchResults_request_body.dart';
+import '../api_models/addNewContact_request_model/addNewContact_request_body.dart';
+import '../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
+import '../api_models/deleteContact__request_model/deleteContact.dart';
+import '../api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';
+import '../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+import '../api_models/konetwebpage_request_model/konetwebpage_request_body.dart';
+import '../api_models/qrValue_request_model/qrValue_request_body.dart';
+import '../api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
+import '../api_models/updateProfileDetails_request_model/updateProfileDetails_request_body.dart';
+import '../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
+import '../api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
+import '../src/ui/utils.dart';
 
 class ContactBloc {
   ContactPageRepository? contactPageRepository;
@@ -16,28 +31,56 @@ class ContactBloc {
     }
   }
 
-  contactRequestResponse(requestBody) async {
+  deleteContact(int id) async {
     try {
-      var response = await contactPageRepository?.contactRequestResponse(requestBody);
+      var response = await contactPageRepository?.deleteContactResponse(id);
       return response;
     } catch (e) {
       print(e);
     }
   }
 
-  checkContactForAddNew(requestBody) async {
+  contactRequestResponse(RequestContactResponseRequestBody requestContactResponseRequestBody) async {
     try {
-      var response = await contactPageRepository?.checkContactForAddNew(requestBody);
+      var response = await contactPageRepository?.contactRequestResponse(requestContactResponseRequestBody);
       return response;
     } catch (e) {
+      print(e);
+    }
+  }
+
+  checkContactForAddNew(CheckContactForAddNewRequestBody checkContactForAddNewRequestBody) async {
+    try {
+      var response = await contactPageRepository?.checkContactForAddNew(checkContactForAddNewRequestBody);
+      return response;
+    } catch (e) {
+      print('error');
       print(e);
     }
   }
 
   //GetProfileDetails
-  getProfileDetails(requestBody) async {
+  getProfileDetails(GetProfileDetailsRequestBody getProfileDetailsRequestBody) async {
     try {
-      var response = await contactPageRepository?.getProfileDetails(requestBody);
+      var response = await contactPageRepository?.getProfileDetails(getProfileDetailsRequestBody);
+      return response;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  getKonetUserdetail(KonetwebpageRequestBody konetwebpageRequestBody) async {
+    try {
+      var response = await contactPageRepository?.getKonetUserdetail(konetwebpageRequestBody);
+      return response;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  getMutualContacts(GetMutualsContactRequestBody getMutualsContactRequestBody) async {
+    try {
+      var response = await contactPageRepository?.getMutualContacts(getMutualsContactRequestBody);
       return response;
     } catch (e) {
       print(e);
@@ -45,9 +88,9 @@ class ContactBloc {
   }
 
   //UpdateProfile
-  updateProfileDetails(requestBody) async {
+  updateProfileDetails(UpdateProfileDetailsRequestBody updateProfileDetailsRequestBody) async {
     try {
-      var response = await contactPageRepository?.updateProfileDetails(requestBody);
+      var response = await contactPageRepository?.updateProfileDetails(updateProfileDetailsRequestBody);
       return response;
     } catch (e) {
       print(e);
@@ -55,9 +98,9 @@ class ContactBloc {
   }
 
   //UpdateProfileImage
-  updateProfileImage(requestBody) async {
+  updateProfileImage(UploadProfileImageRequestBody uploadProfileImagrequestBody) async {
     try {
-      var response = await contactPageRepository?.updateProfileImage(requestBody);
+      var response = await contactPageRepository?.updateProfileImage(uploadProfileImagrequestBody);
       return response;
     } catch (e) {
       print(e.toString());
@@ -65,9 +108,9 @@ class ContactBloc {
   }
 
   //AddNewContact
-  addNewContact(requestBody) async {
+  addNewContact(AddNewContactRequestBody addNewContactRequestBody) async {
     try {
-      var response = await contactPageRepository?.addNewContact(requestBody);
+      var response = await contactPageRepository?.addNewContact(addNewContactRequestBody);
       return response;
     } catch (e) {
       print(e);
@@ -85,9 +128,9 @@ class ContactBloc {
   }
 
   //AddNewContact
-  sendQrValue(requestBody) async {
+  sendQrValue(QrValueRequestBody qrValueRequestBody) async {
     try {
-      var response = await contactPageRepository?.sendQrValue(requestBody);
+      var response = await contactPageRepository?.sendQrValue(qrValueRequestBody);
       return response;
     } catch (e) {
       print(e);
@@ -95,9 +138,9 @@ class ContactBloc {
   }
 
   //SearchConetwebContact
-  searchConetwebContact(requestBody) async {
+  searchConetwebContact(FilterSearchResultsRequestBody filterSearchResultsRequestBody) async {
     try {
-      var response = await contactPageRepository?.searchConetwebContact(requestBody);
+      var response = await contactPageRepository?.searchConetwebContact(filterSearchResultsRequestBody);
       return response;
     } catch (e) {
       print(e);
@@ -105,9 +148,9 @@ class ContactBloc {
   }
 
   //UpdateTypeStatus
-  updateTypeStatus(requestBody) async {
+  updateTypeStatus(UpdateTypeStatusRequestBody updateTypeStatusRequestBody) async {
     try {
-      var response = await contactPageRepository?.updateTypeStatus(requestBody);
+      var response = await contactPageRepository?.updateTypeStatus(updateTypeStatusRequestBody);
       return response;
     } catch (e) {
       print(e);

@@ -1,16 +1,18 @@
+import 'package:conet/config/app_config.dart';
 import 'package:conet/src/ui/auth/login.dart';
+import 'package:conet/utils/get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppConstant {
-  static String url = 'http://conet.shade6.in/';
+  static String url = locator<AppConfig>().baseApiUrl;
   // static String url = 'http://192.168.1.2/conet/public/';
 
   static String baseUrl = '$url/api/';
-  static String imageBaseUrl = '$url/uploads/';
-  static String businessimageBaseUrl = '$url/businesscardlogo/';
-  static String profileImageBaseUrl = '$url/profileimages/';
+  static String imageBaseUrl = '$url/storage/uploads/';
+  static String businessimageBaseUrl = '$url/storage/businesscardlogo/';
+  static String profileImageBaseUrl = '$url/storage/profileimages/';
   static String serverHost = url;
 }
 
@@ -19,10 +21,10 @@ Size displaySize(BuildContext context) {
   return MediaQuery.of(context).size;
 }
 
-double displayHeight(BuildContext context) {
-  debugPrint('Height = ${displaySize(context).height}');
-  return displaySize(context).height;
-}
+// double displayHeight(BuildContext context) {
+//   debugPrint('Height = ${displaySize(context).height}');
+//   return displaySize(context).height;
+// }
 
 double displayWidth(BuildContext context) {
   debugPrint('Width = ${displaySize(context).width}');

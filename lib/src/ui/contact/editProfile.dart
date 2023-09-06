@@ -2449,7 +2449,7 @@ class _EditProfileState extends State<EditProfile> {
     //   var base64data = base64.encode(Uint8List.view(buffer));
     //   uploadedProfileImage = base64data;
 
-    List<XFile> assets = resultList;
+    List<XFile> assets = resultList.length > 3 ? resultList.sublist(0, 3) : resultList;
     // entreprenerurList[index].images = [];
 
     for (XFile asset in assets) {

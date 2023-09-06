@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:typed_data';
+
 import 'package:conet/api_models/addNewContact_request_model/addNewContact_request_body.dart';
 import 'package:conet/api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
 import 'package:conet/constants/enums.dart';
@@ -25,9 +25,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:get/get_connect/connect.dart';
 import 'package:gtm/gtm.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
@@ -107,6 +106,9 @@ class _EditProfileState extends State<EditProfile> {
   List<Asset> profileImage = <Asset>[];
   String uploadedProfileImage = '';
   String userImage = '';
+  XFile? image;
+  String imagePath = "";
+  Uint8List? imageBytes;
 
   //Address
   Position? _currentPosition;
@@ -1412,7 +1414,9 @@ class _EditProfileState extends State<EditProfile> {
           Positioned(
             top: -4.0,
             child: GestureDetector(
-              onTap: loadProfileImage,
+              onTap: () {
+                _showPicker(context: context);
+              },
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -2344,8 +2348,7 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       _loaderoverflow = true;
     });
-    print('wwwwww');
-    print(_personalAddress.text);
+
     var response = await ContactBloc().updateProfileDetails(UpdateProfileDetailsRequestBody(
       per_name: _personalName.text,
       per_num: _personalNumber.text,
@@ -2440,7 +2443,96 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
+  void _showPicker({
+    required BuildContext context,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(
+                  Icons.photo_library,
+                  color: Colors.black,
+                ),
+                title: Text(
+                  'Gallery',
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+                onTap: () {
+                  //getVideo(ImageSource.gallery);
+                  loadbusinesslogo(ImageSource.gallery);
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera, color: Colors.black),
+                title: Text(
+                  'Camera',
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: kSfproRoundedFontFamily,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+                onTap: () {
+                  //getVideo(ImageSource.camera);
+                  loadbusinesslogo(ImageSource.camera);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> loadbusinesslogo(imagesource) async {
+    try {
+      //List<Asset> resultList = <Asset>[];
+      final image = await ImagePicker().pickImage(source: imagesource);
+      if (image == null) return;
+
+      final imageTemporary = XFile(image.path);
+      imagePath = image.path;
+      imageBytes = await image.readAsBytes();
+      this.image = imageTemporary;
+      var buffer = imageBytes!.buffer;
+      var base64data = base64.encode(Uint8List.view(buffer));
+      uploadedProfileImage = base64data;
+      uploadeProfileImage();
+
+      setState(() {});
+      //    List<Asset> assets = resultList;
+      // int i = 0;
+      // for (Asset asset in assets) {
+      //   var bytes = await asset.getByteData();
+      //   var buffer = bytes.buffer;
+      //   var base64data = base64.encode(Uint8List.view(buffer));
+      //   i = i + 1;
+      //   if (i == 1) {
+      //     uploadedProfileImage = base64data;
+      //     uploadeProfileImage();
+      //   }
+      //   setState(() {});
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+      Utils.displayToastBottomError("Failed to pick image: $e", context);
+    }
+  }
+
   Future<void> loadProfileImage() async {
+    // for upload profile image
     List<Asset> resultList = <Asset>[];
     String error = 'No Error Dectected';
 
@@ -2497,7 +2589,7 @@ class _EditProfileState extends State<EditProfile> {
       _loaderoverflow = false;
     });
 
-    if (response['status'] == true) {
+    if (response != null && response['status'] == true) {
       gtm.push(GTMConstants.kprofileImageUploadEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
       Utils.displayToast(response['message'], context);
       getProfileDetails();

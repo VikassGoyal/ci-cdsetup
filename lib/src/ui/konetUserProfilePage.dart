@@ -604,10 +604,14 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
                                       ),
                                     )
                                   : (entreprenerurList[i].images!.isNotEmpty
-                                      ? AssetThumb(
-                                          asset: entreprenerurList[i].images![0].imageAsset,
+                                      ? Image.file(
                                           width: 114,
                                           height: 102,
+                                          fit: BoxFit.cover,
+                                          File(entreprenerurList[i].images![0].imageAsset.path),
+                                          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                            return const Center(child: Text('This image type is not supported'));
+                                          },
                                         )
                                       : const SizedBox(
                                           width: 114,
@@ -675,10 +679,14 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
                                         ),
                                       )
                                     : (entreprenerurList[i].images!.length >= 2
-                                        ? AssetThumb(
-                                            asset: entreprenerurList[i].images![1].imageAsset,
+                                        ? Image.file(
                                             width: 114,
                                             height: 102,
+                                            fit: BoxFit.cover,
+                                            File(entreprenerurList[i].images![1].imageAsset.path),
+                                            errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                              return const Center(child: Text('This image type is not supported'));
+                                            },
                                           )
                                         : const SizedBox(
                                             width: 114,
@@ -745,10 +753,16 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
                                         ),
                                       )
                                     : (entreprenerurList[i].images!.length == 3
-                                        ? AssetThumb(
-                                            asset: entreprenerurList[i].images![2].imageAsset,
+                                        ? Image.file(
                                             width: 114,
                                             height: 102,
+                                            fit: BoxFit.cover,
+                                            File(
+                                              entreprenerurList[i].images![1].imageAsset.path,
+                                            ),
+                                            errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                              return const Center(child: Text('This image type is not supported'));
+                                            },
                                           )
                                         : const SizedBox(
                                             width: 114,

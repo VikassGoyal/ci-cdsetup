@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:conet/api_models/addNewContact_request_model/addNewContact_request_body.dart';
+import 'dart:io';
 import 'package:conet/api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
 import 'package:conet/constants/enums.dart';
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
@@ -2003,11 +2003,21 @@ class _EditProfileState extends State<EditProfile> {
                                     ),
                                   )
                                 : (entreprenerurList[i].images!.isNotEmpty
-                                    ? AssetThumb(
-                                        asset: entreprenerurList[i].images![0].imageAsset,
+                                    ? Image.file(
+                                        File(entreprenerurList[i].images![0].imageAsset.path),
                                         width: 114,
                                         height: 102,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                          return const Center(child: Text('This image type is not supported'));
+                                        },
                                       )
+
+                                    // AssetThumb(
+                                    //  asset: entreprenerurList[i].images![0].imageAsset,
+                                    //     width: 114,
+                                    //     height: 102,
+                                    //   )
                                     : SizedBox(
                                         width: 114.w,
                                         height: 102.h,
@@ -2076,11 +2086,22 @@ class _EditProfileState extends State<EditProfile> {
                                       errorWidget: (context, url, error) => const Icon(Icons.error),
                                     )
                                   : (entreprenerurList[i].images!.length >= 2
-                                      ? AssetThumb(
-                                          asset: entreprenerurList[i].images![1].imageAsset,
-                                          width: 114,
-                                          height: 102,
+                                      ? Container(
+                                          child: Image.file(
+                                            width: 114,
+                                            height: 102,
+                                            fit: BoxFit.cover,
+                                            File(entreprenerurList[i].images![1].imageAsset.path),
+                                            errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                              return const Center(child: Text('This image type is not supported'));
+                                            },
+                                          ),
                                         )
+                                      //AssetThumb(
+                                      //     asset: entreprenerurList[i].images![1].imageAsset,
+                                      //     width: 114,
+                                      //     height: 102,
+                                      //   )
                                       : SizedBox(
                                           width: 114.w,
                                           height: 102.h,
@@ -2148,11 +2169,20 @@ class _EditProfileState extends State<EditProfile> {
                                       errorWidget: (context, url, error) => const Icon(Icons.error),
                                     )
                                   : (entreprenerurList[i].images!.length == 3
-                                      ? AssetThumb(
-                                          asset: entreprenerurList[i].images![2].imageAsset,
+                                      ? Image.file(
                                           width: 114,
                                           height: 102,
+                                          fit: BoxFit.cover,
+                                          File(entreprenerurList[i].images![2].imageAsset.path),
+                                          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                            return const Center(child: Text('This image type is not supported'));
+                                          },
                                         )
+                                      // AssetThumb(
+                                      //     asset: entreprenerurList[i].images![2].imageAsset,
+                                      //     width: 114,
+                                      //     height: 102,
+                                      //   )
                                       : SizedBox(
                                           width: 114.w,
                                           height: 102.h,
@@ -2402,35 +2432,34 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Future<void> loadImages(int index) async {
-    List<Asset> images = <Asset>[];
-    List<Asset> resultList = <Asset>[];
+    List<XFile> images = <XFile>[];
+    List<XFile> resultList = <XFile>[];
     String error = 'No Error Dectected';
 
     try {
-      resultList = await MultipleImagesPicker.pickImages(
-        maxImages: 3,
-        enableCamera: true,
-        selectedAssets: images,
-        cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: const MaterialOptions(
-          actionBarColor: "#FF931E",
-          statusBarColor: "#FF931E",
-          actionBarTitle: "Company Image",
-          allViewTitle: "All Photos",
-          useDetailsView: false,
-          selectCircleStrokeColor: "#0087FB",
-        ),
-      );
+      resultList = await ImagePicker().pickMultiImage();
     } on Exception catch (e) {
       error = e.toString();
     }
+    // final imageTemporary = XFile(image.path);
+    //   imagePath = image.path;
+    //   imageBytes = await image.readAsBytes();
+    //   this.image = imageTemporary;
+    //   var buffer = imageBytes!.buffer;
+    //   var base64data = base64.encode(Uint8List.view(buffer));
+    //   uploadedProfileImage = base64data;
 
-    List<Asset> assets = resultList;
+    List<XFile> assets = resultList;
     // entreprenerurList[index].images = [];
 
-    for (Asset asset in assets) {
-      var bytes = await asset.getByteData();
-      var buffer = bytes.buffer;
+    for (XFile asset in assets) {
+      // var bytes = await asset.getByteData();
+      // var buffer = bytes.buffer;
+      // var base64data = base64.encode(Uint8List.view(buffer));
+      //  final imageTemporary = XFile(asset.path);
+      //  imagePath = image.path;
+      imageBytes = await asset.readAsBytes();
+      var buffer = imageBytes!.buffer;
       var base64data = base64.encode(Uint8List.view(buffer));
 
       setState(() {

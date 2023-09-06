@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conet/blocs/contactBloc.dart';
@@ -1129,10 +1130,14 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
                                       ),
                                     )
                                   : (entreprenerurList[i].images!.isNotEmpty
-                                      ? AssetThumb(
-                                          asset: entreprenerurList[i].images![0].imageAsset,
+                                      ? Image.file(
                                           width: 114,
                                           height: 102,
+                                          fit: BoxFit.cover,
+                                          File(entreprenerurList[i].images![0].imageAsset.path),
+                                          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                            return const Center(child: Text('This image type is not supported'));
+                                          },
                                         )
                                       : const SizedBox(
                                           width: 114,
@@ -1172,10 +1177,14 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
                                       errorWidget: (context, url, error) => const Icon(Icons.error),
                                     )
                                   : (entreprenerurList[i].images!.length >= 2
-                                      ? AssetThumb(
-                                          asset: entreprenerurList[i].images![1].imageAsset,
+                                      ? Image.file(
                                           width: 114,
                                           height: 102,
+                                          fit: BoxFit.cover,
+                                          File(entreprenerurList[i].images![1].imageAsset.path),
+                                          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                            return const Center(child: Text('This image type is not supported'));
+                                          },
                                         )
                                       : const SizedBox(
                                           width: 114,
@@ -1196,30 +1205,33 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
                           width: 114,
                           height: 102,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: (entreprenerurList[i].images!.length == 3
-                                    ? entreprenerurList[i].images![2].isUploaded!
-                                    : false)
-                                ? CachedNetworkImage(
-                                    imageUrl: entreprenerurList[i].images!.length == 3
-                                        ? AppConstant.imageBaseUrl + entreprenerurList[i].images![2].imageUrl!
-                                        : "",
-                                    imageBuilder: (context, imageProvider) => Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: (entreprenerurList[i].images!.length == 3
+                                      ? entreprenerurList[i].images![2].isUploaded!
+                                      : false)
+                                  ? CachedNetworkImage(
+                                      imageUrl: entreprenerurList[i].images!.length == 3
+                                          ? AppConstant.imageBaseUrl + entreprenerurList[i].images![2].imageUrl!
+                                          : "",
+                                      imageBuilder: (context, imageProvider) => Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                        ),
                                       ),
-                                    ),
-                                    placeholder: (context, url) => Image.asset(
-                                      "assets/images/placeholderImage.jpg",
-                                    ),
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                                  )
-                                : AssetThumb(
-                                    asset: (entreprenerurList[i].images![2].imageAsset),
-                                    width: 114,
-                                    height: 102,
-                                  ),
-                          ),
+                                      placeholder: (context, url) => Image.asset(
+                                        "assets/images/placeholderImage.jpg",
+                                      ),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    )
+                                  : Image.file(
+                                      width: 114,
+                                      height: 102,
+                                      fit: BoxFit.cover,
+                                      File(entreprenerurList[i].images![2].imageAsset.path),
+                                      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                        return const Center(child: Text('This image type is not supported'));
+                                      },
+                                    )),
                         ),
                       ],
                     ),

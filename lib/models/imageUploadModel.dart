@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 
 class ImageUploadModel {
@@ -5,16 +6,11 @@ class ImageUploadModel {
   int? _professionalId;
   bool? _isUploaded;
   String? _imageUrl;
-  Asset? _imageAsset;
+  XFile? _imageAsset;
   String? _base64data;
 
   ImageUploadModel(
-      {int? id,
-      int? professionalId,
-      bool? isUploaded,
-      String? imageUrl,
-      Asset? imageAsset,
-      String? base64data}) {
+      {int? id, int? professionalId, bool? isUploaded, String? imageUrl, XFile? imageAsset, String? base64data}) {
     _isUploaded = isUploaded;
     _imageUrl = imageUrl;
     _imageAsset = imageAsset;
@@ -29,8 +25,8 @@ class ImageUploadModel {
   set isUploaded(bool? isUploaded) => _isUploaded = isUploaded;
   String? get imageUrl => _imageUrl;
   set imageUrl(String? imageUrl) => _imageUrl = imageUrl;
-  Asset get imageAsset => _imageAsset!;
-  set imageAsset(Asset imageAsset) => _imageAsset = imageAsset;
+  XFile get imageAsset => _imageAsset!;
+  set imageAsset(XFile imageAsset) => _imageAsset = imageAsset;
   String? get base64data => _base64data;
   set base64data(String? base64data) => _base64data = base64data;
 

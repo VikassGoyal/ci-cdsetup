@@ -478,11 +478,7 @@ class _VerifyNewPhoneNumberState extends State<VerifyNewPhoneNumber> {
             onTap: () async {
               SharedPreferences preferences = await SharedPreferences.getInstance();
               String phonenum = preferences.getString("phone") ?? "";
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ChangePhoneNumber(phonenum, widget.contactdetaill, this.widget.entreprenerurList)));
+              Navigator.of(context).pop();
             },
             child: Row(
               children: [

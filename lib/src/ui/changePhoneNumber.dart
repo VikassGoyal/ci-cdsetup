@@ -99,8 +99,12 @@ class _ChangePhoneNumberState extends State<ChangePhoneNumber> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) =>
-                          VerifyNewPhoneNumber(widget.contactDetail, _personalNumber.text, widget.entreprenerurList)));
+                      builder: (_) => VerifyNewPhoneNumber(
+                          widget.contactDetail, _personalNumber.text, widget.entreprenerurList))).then((value) {
+                setState(() {
+                  _loader = false;
+                });
+              });
 
               //getProfileDetails();
             } else {

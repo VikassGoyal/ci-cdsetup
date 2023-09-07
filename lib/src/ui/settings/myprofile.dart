@@ -1334,7 +1334,6 @@ class _MyProfileState extends State<MyProfile> {
                 context,
                 MaterialPageRoute(builder: (context) => EditProfile(widget.phoneNumber)),
               ).then((value) {
-                print("callllllll");
                 getProfileDetails(widget.phoneNumber!);
                 setState(() {});
               });

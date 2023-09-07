@@ -28,9 +28,11 @@ import '../../../api_models/checkContactForAddNew_request_model/checkContactForA
 class ChangePhoneNumber extends StatefulWidget {
   final String? phoneNumber;
   ContactDetail? contactDetail;
+  List<EntrepreneurData> entreprenerurList;
   ChangePhoneNumber(
     this.phoneNumber,
-    this.contactDetail, {
+    this.contactDetail,
+    this.entreprenerurList, {
     super.key,
   });
 
@@ -94,8 +96,11 @@ class _ChangePhoneNumberState extends State<ChangePhoneNumber> {
               setState(() {
                 _loader = true;
               });
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => VerifyNewPhoneNumber(widget.contactDetail, _personalNumber.text)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          VerifyNewPhoneNumber(widget.contactDetail, _personalNumber.text, widget.entreprenerurList)));
 
               //getProfileDetails();
             } else {

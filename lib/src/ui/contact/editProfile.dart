@@ -100,6 +100,7 @@ class _EditProfileState extends State<EditProfile> {
   final _socialPaytm = TextEditingController();
 
   List<EntrepreneurData> entreprenerurList = [];
+  List<EntrepreneurData> entreprenerurListdummy = [];
   List<EntrepreneurDataRequest> entreprenerurListResquest = [];
   List<ProfessionalList>? entreprenerurListJson = [];
 
@@ -321,7 +322,8 @@ class _EditProfileState extends State<EditProfile> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ChangePhoneNumber(widget.editphonenumber, this.contactDetail),
+                      builder: (context) =>
+                          ChangePhoneNumber(widget.editphonenumber, this.contactDetail, this.entreprenerurListdummy),
                     ),
                   );
                 },
@@ -1709,6 +1711,7 @@ class _EditProfileState extends State<EditProfile> {
               }
               entrepreneureData.images = imageData;
               entreprenerurList.add(entrepreneureData);
+              entreprenerurListdummy.add(entrepreneureData);
             });
           }
 
@@ -2404,24 +2407,24 @@ class _EditProfileState extends State<EditProfile> {
       inn: _socialInstagram.text,
       tt: _socialTwitter.text,
       sk: _socialSkype.text,
-      entreprenerur_list: (entreprenerurListResquest.map((e) => e.toJson()).toList()),
+      entreprenerur_list: (entreprenerurList.map((e) => e.toJson()).toList()),
     ));
     setState(() {
       _loaderoverflow = false;
     });
 
-    if (response['status'] == true) {
+    if (response != null && response['status'] == true) {
       QuickAlert.show(
         context: context,
         type: QuickAlertType.success,
         title: 'Success',
         text: response['message'].toString(),
       );
-
+      SharedPreferences preferences = await SharedPreferences.getInstance();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => MyProfile(widget.editphonenumber),
+          builder: (BuildContext context) => MyProfile(preferences.getString("phone")),
         ),
       );
     } else if (response['status'] == "Token is Expired") {

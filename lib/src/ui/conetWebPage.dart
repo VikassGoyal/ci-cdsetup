@@ -1526,7 +1526,9 @@ class _ConetWebPageState extends State<ConetWebPage> {
       } else {
         Utils.displayToastBottomError(response["message"], context);
       }
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     } catch (e) {
       print(e);
     }

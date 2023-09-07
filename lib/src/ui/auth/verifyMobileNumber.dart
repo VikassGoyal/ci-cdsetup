@@ -701,9 +701,11 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
         );
       }
     } on DioException catch (e) {
-      final msg = e.response?.data?['message']?['email'][0] ??
-          e.response?.data?['message']?['phone'][0] ??
-          'Something went wrong.';
+      final msg = e.response?.data?['message']?['email'] != null
+          ? e.response?.data?['message']?['email'][0]
+          : e.response?.data?['message']?['phone'] != null
+              ? e.response?.data?['message']?['phone'][0]
+              : 'Something went wrong.';
       Utils.displayToastBottomError(msg, context);
       setState(() {
         _loader = false;

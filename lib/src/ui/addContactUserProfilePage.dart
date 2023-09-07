@@ -1134,7 +1134,7 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
                                           width: 114,
                                           height: 102,
                                           fit: BoxFit.cover,
-                                          File(entreprenerurList[i].images![0].imageAsset.path),
+                                          File(entreprenerurList[i].images![0].imageAsset),
                                           errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                                             return const Center(child: Text('This image type is not supported'));
                                           },
@@ -1181,7 +1181,7 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
                                           width: 114,
                                           height: 102,
                                           fit: BoxFit.cover,
-                                          File(entreprenerurList[i].images![1].imageAsset.path),
+                                          File(entreprenerurList[i].images![1].imageAsset),
                                           errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                                             return const Center(child: Text('This image type is not supported'));
                                           },
@@ -1227,7 +1227,7 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
                                       width: 114,
                                       height: 102,
                                       fit: BoxFit.cover,
-                                      File(entreprenerurList[i].images![2].imageAsset.path),
+                                      File(entreprenerurList[i].images![2].imageAsset),
                                       errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                                         return const Center(child: Text('This image type is not supported'));
                                       },

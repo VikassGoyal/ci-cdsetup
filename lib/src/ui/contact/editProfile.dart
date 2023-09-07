@@ -2007,7 +2007,7 @@ class _EditProfileState extends State<EditProfile> {
                                   )
                                 : (entreprenerurList[i].images!.isNotEmpty
                                     ? Image.file(
-                                        File(entreprenerurList[i].images![0].imageAsset.path),
+                                        File(entreprenerurList[i].images![0].imageAsset),
                                         width: 114,
                                         height: 102,
                                         fit: BoxFit.cover,
@@ -2094,7 +2094,7 @@ class _EditProfileState extends State<EditProfile> {
                                             width: 114,
                                             height: 102,
                                             fit: BoxFit.cover,
-                                            File(entreprenerurList[i].images![1].imageAsset.path),
+                                            File(entreprenerurList[i].images![1].imageAsset),
                                             errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                                               return const Center(child: Text('This image type is not supported'));
                                             },
@@ -2176,7 +2176,7 @@ class _EditProfileState extends State<EditProfile> {
                                           width: 114,
                                           height: 102,
                                           fit: BoxFit.cover,
-                                          File(entreprenerurList[i].images![2].imageAsset.path),
+                                          File(entreprenerurList[i].images![2].imageAsset),
                                           errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                                             return const Center(child: Text('This image type is not supported'));
                                           },
@@ -2440,9 +2440,11 @@ class _EditProfileState extends State<EditProfile> {
     String error = 'No Error Dectected';
 
     try {
-      resultList = await ImagePicker().pickMultiImage();
+      resultList = await ImagePicker().pickMultiImage(imageQuality: 50);
     } on Exception catch (e) {
       error = e.toString();
+      print("error");
+      print(error);
     }
     // final imageTemporary = XFile(image.path);
     //   imagePath = image.path;
@@ -2468,7 +2470,7 @@ class _EditProfileState extends State<EditProfile> {
       setState(() {
         ImageUploadModel imageUpload = ImageUploadModel();
         imageUpload.isUploaded = false;
-        imageUpload.imageAsset = asset;
+        imageUpload.imageAsset = asset.path;
         imageUpload.base64data = "data:image/jpeg;base64,$base64data";
         entreprenerurList[index].images!.add(imageUpload);
       });

@@ -6,11 +6,11 @@ class ImageUploadModel {
   int? _professionalId;
   bool? _isUploaded;
   String? _imageUrl;
-  XFile? _imageAsset;
+  String? _imageAsset;
   String? _base64data;
 
   ImageUploadModel(
-      {int? id, int? professionalId, bool? isUploaded, String? imageUrl, XFile? imageAsset, String? base64data}) {
+      {int? id, int? professionalId, bool? isUploaded, String? imageUrl, String? imageAsset, String? base64data}) {
     _isUploaded = isUploaded;
     _imageUrl = imageUrl;
     _imageAsset = imageAsset;
@@ -25,8 +25,8 @@ class ImageUploadModel {
   set isUploaded(bool? isUploaded) => _isUploaded = isUploaded;
   String? get imageUrl => _imageUrl;
   set imageUrl(String? imageUrl) => _imageUrl = imageUrl;
-  XFile get imageAsset => _imageAsset!;
-  set imageAsset(XFile imageAsset) => _imageAsset = imageAsset;
+  String get imageAsset => _imageAsset!;
+  set imageAsset(String imageAsset) => _imageAsset = imageAsset;
   String? get base64data => _base64data;
   set base64data(String? base64data) => _base64data = base64data;
 

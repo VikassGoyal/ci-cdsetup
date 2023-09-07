@@ -1334,6 +1334,11 @@ class _MyProfileState extends State<MyProfile> {
                 context,
                 MaterialPageRoute(builder: (context) => EditProfile(widget.phoneNumber)),
               ).then((value) {
+                entreprenerurList = [];
+                entreprenerurListJson = [];
+                _values = [];
+                popupImages = <NetworkImage>[];
+
                 getProfileDetails(widget.phoneNumber!);
                 setState(() {});
               });

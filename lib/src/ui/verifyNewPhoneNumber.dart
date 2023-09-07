@@ -25,6 +25,7 @@ import '../../../bottomNavigation/bottomNavigationBloc.dart';
 import '../../api_models/updateProfileDetails_request_model/updateProfileDetails_request_body.dart';
 
 import '../../models/contactDetails.dart';
+import '../../models/entrepreneureData.dart';
 import '../../services/storage_service.dart';
 import '../../utils/constant.dart';
 import '../../utils/get_it.dart';
@@ -32,8 +33,9 @@ import '../../utils/get_it.dart';
 class VerifyNewPhoneNumber extends StatefulWidget {
   ContactDetail? contactdetaill;
   final String? PhoneNumber;
+  List<EntrepreneurData> entreprenerurList;
 
-  VerifyNewPhoneNumber(this.contactdetaill, this.PhoneNumber, {super.key});
+  VerifyNewPhoneNumber(this.contactdetaill, this.PhoneNumber, this.entreprenerurList, {super.key});
 
   @override
   State<VerifyNewPhoneNumber> createState() => _VerifyNewPhoneNumberState();
@@ -476,8 +478,7 @@ class _VerifyNewPhoneNumberState extends State<VerifyNewPhoneNumber> {
             onTap: () async {
               SharedPreferences preferences = await SharedPreferences.getInstance();
               String phonenum = preferences.getString("phone") ?? "";
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => ChangePhoneNumber(phonenum, widget.contactdetaill)));
+              Navigator.of(context).pop();
             },
             child: Row(
               children: [
@@ -675,7 +676,7 @@ class _VerifyNewPhoneNumberState extends State<VerifyNewPhoneNumber> {
 
       var response = await ContactBloc().updateProfileDetails(UpdateProfileDetailsRequestBody(
           fb: widget.contactdetaill!.social!.facebook ?? "",
-          entreprenerur_list: widget.contactdetaill!.professionalList!.map((v) => v.toJson()).toList(),
+          entreprenerur_list: (widget.entreprenerurList.map((e) => e.toJson()).toList()),
           per_add: widget.contactdetaill!.personal!.address1 ?? "",
           per_name: widget.contactdetaill!.name ?? "",
           tt: widget.contactdetaill!.social!.twitter ?? "",

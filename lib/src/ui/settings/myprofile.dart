@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -16,7 +17,6 @@ import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gtm/gtm.dart';
-import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:another_carousel_pro/another_carousel_pro.dart';
@@ -906,11 +906,20 @@ class _MyProfileState extends State<MyProfile> {
                                       ),
                                     )
                                   : (entreprenerurList[i].images!.isNotEmpty
-                                      ? AssetThumb(
-                                          asset: entreprenerurList[i].images![0].imageAsset,
+                                      ? Image.file(
                                           width: 114,
                                           height: 102,
+                                          fit: BoxFit.cover,
+                                          File(entreprenerurList[i].images![0].imageAsset),
+                                          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                            return const Center(child: Text('This image type is not supported'));
+                                          },
                                         )
+                                      // AssetThumb(
+                                      //     asset: entreprenerurList[i].images![0].imageAsset,
+                                      //     width: 114,
+                                      //     height: 102,
+                                      //   )
                                       : SizedBox(
                                           width: 114.w,
                                           height: 102.h,
@@ -977,10 +986,14 @@ class _MyProfileState extends State<MyProfile> {
                                       ),
                                     )
                                   : (entreprenerurList[i].images!.length >= 2
-                                      ? AssetThumb(
-                                          asset: entreprenerurList[i].images![1].imageAsset,
+                                      ? Image.file(
                                           width: 114,
                                           height: 102,
+                                          fit: BoxFit.cover,
+                                          File(entreprenerurList[i].images![1].imageAsset),
+                                          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                            return const Center(child: Text('This image type is not supported'));
+                                          },
                                         )
                                       : SizedBox(
                                           width: 114.w,
@@ -1048,10 +1061,14 @@ class _MyProfileState extends State<MyProfile> {
                                       ),
                                     )
                                   : (entreprenerurList[i].images!.length == 3
-                                      ? AssetThumb(
-                                          asset: entreprenerurList[i].images![2].imageAsset,
+                                      ? Image.file(
                                           width: 114,
                                           height: 102,
+                                          fit: BoxFit.cover,
+                                          File(entreprenerurList[i].images![2].imageAsset),
+                                          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                            return const Center(child: Text('This image type is not supported'));
+                                          },
                                         )
                                       : SizedBox(
                                           width: 114.w,
@@ -1317,7 +1334,11 @@ class _MyProfileState extends State<MyProfile> {
                 context,
                 MaterialPageRoute(builder: (context) => EditProfile(widget.phoneNumber)),
               ).then((value) {
-                print("callllllll");
+                entreprenerurList = [];
+                entreprenerurListJson = [];
+                _values = [];
+                popupImages = <NetworkImage>[];
+
                 getProfileDetails(widget.phoneNumber!);
                 setState(() {});
               });

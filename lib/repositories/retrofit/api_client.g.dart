@@ -187,6 +187,9 @@ class _ApiClient implements ApiClient {
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
     _headers.removeWhere((k, v) => v == null);
     final _data = updateProfileDetailsRequestBody.toJson();
+    Duration duration = Duration(seconds: 10);
+    _dio.options.connectTimeout = duration;
+    _dio.options.receiveTimeout = duration;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -212,6 +215,9 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
+    Duration duration = Duration(seconds: 10);
+    _dio.options.connectTimeout = duration;
+    _dio.options.receiveTimeout = duration;
     _headers.removeWhere((k, v) => v == null);
     final _data = body.toJson();
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(

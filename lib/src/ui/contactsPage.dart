@@ -240,7 +240,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       _contacts[index].id ?? 0),
                 ),
               ).then((value) {
-                if (value) {
+                if (value != null && value) {
                   _updateContact();
                 } else
                   return null;

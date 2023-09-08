@@ -509,9 +509,9 @@ class _SignUpState extends State<SignUp> {
       var response = await UserBloc().signup(username: username, email: email, phone: phone, password: password);
       var res = response["status"];
       print("response : $res");
-      setState(() {
-        _loader = false;
-      });
+
+      _loader = false;
+      if (mounted) setState(() {});
 
       if (response['status'] == 'validation') {
         if (response['message']['phone'] != null) {
@@ -536,11 +536,11 @@ class _SignUpState extends State<SignUp> {
       }
     } catch (e) {
       // Navigator.of(context).pop();
-      Utils.displayToastBottomError("Something went wrong!", context);
-      setState(() {
-        _loader = false;
-      });
+      Utils.displayToastBottomError("Something went wrong! in Sign Up", context);
       print(e);
+
+      _loader = false;
+      if (mounted) setState(() {});
     }
   }
 }

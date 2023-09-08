@@ -184,9 +184,11 @@ class _ContactsPageState extends State<ContactsPage> {
   void _clearText() {
     _textEditingController!.clear();
     FocusScope.of(context).requestFocus(FocusNode());
-    setState(() {
-      _showCancelIcon = false;
-    });
+    if (mounted) {
+      setState(() {
+        _showCancelIcon = false;
+      });
+    }
   }
 
   @override
@@ -1019,7 +1021,7 @@ class _ContactsPageState extends State<ContactsPage> {
         openAppSettings();
         Utils.displayToastBottomError("Permission Denied Permanently", context);
       } else {
-        Utils.displayToastBottomError("Something Went Wrong ", context);
+        Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
       }
     }
   }
@@ -1039,38 +1041,33 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   callImportApi() async {
-    setState(() {
-      _loader = true;
-    });
+    _loader = true;
+    if (mounted) setState(() {});
     try {
       var response = await ContactBloc().importContacts(_importportcontacts);
-      if (response['status'] == true) {
+      if (response == null) {
+        _loader = false;
+        if (mounted) setState(() {});
+        Utils.displayToastBottomError("Connection Time Out\n Try Again", context);
+      } else if (response['status'] == true) {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setBool('imported', true);
         _updateContact();
         Utils.displayToast("Successfully imported", context);
-      } else if (response == null && response['status'] == "Token is Expired") {
+      } else if (response['status'] == "Token is Expired") {
         tokenExpired(context);
-        setState(() {
-          _loader = false;
-        });
-      } else if (response == null) {
-        setState(() {
-          _loader = false;
-        });
-        Utils.displayToastBottomError("Connection Time Out\n Try Again", context);
+        _loader = false;
+        if (mounted) setState(() {});
       } else {
-        setState(() {
-          _loader = false;
-        });
-        Utils.displayToastBottomError("Something went wrong", context);
+        _loader = false;
+        if (mounted) setState(() {});
+        Utils.displayToastBottomError("Something went wrong in Importing Contacts", context);
       }
     } catch (e) {
       print(e);
-      setState(() {
-        _loader = false;
-      });
-      Utils.displayToastBottomError("Something went wrong", context);
+      _loader = false;
+      if (mounted) setState(() {});
+      Utils.displayToastBottomError("Something went wrong contacts import", context);
     }
   }
 
@@ -1151,12 +1148,14 @@ class _ContactsPageState extends State<ContactsPage> {
 
   _sendQrApi() async {
     //var requestBody = {"value": _outputController?.text, "qrcode": true};
-    var Qrresponse = await ContactBloc().sendQrValue(QrValueRequestBody(
+    var qrResponse = await ContactBloc().sendQrValue(QrValueRequestBody(
       value: _outputController?.text,
       qrcode: true,
     ));
     var contactDetail;
-    if (Qrresponse['status'] == true) {
+    if (qrResponse == null) {
+      Utils.displayToastBottomError('Something went wrong in QR request', context);
+    } else if (qrResponse['status'] == true) {
       QuickAlert.show(
         context: context,
         type: QuickAlertType.success,
@@ -1171,7 +1170,7 @@ class _ContactsPageState extends State<ContactsPage> {
         //   "phone": _outputController!.text,
         // };
         var response = await ContactBloc()
-            .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: Qrresponse["contact"]["phone"]));
+            .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: qrResponse["contact"]["phone"]));
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
           setState(() {
@@ -1202,11 +1201,11 @@ class _ContactsPageState extends State<ContactsPage> {
         });
         //Utils.displayToastBottomError("Something went wrong", context);
       }
-    } else if (Qrresponse['status'] == "Token is Expired") {
+    } else if (qrResponse['status'] == "Token is Expired") {
       Utils.displayToastBottomError('Token is Expired', context);
       tokenExpired(context);
     } else {
-      Utils.displayToastBottomError('Something went wrong', context);
+      Utils.displayToastBottomError('Something went wrong for QR', context);
     }
   }
 
@@ -1214,7 +1213,9 @@ class _ContactsPageState extends State<ContactsPage> {
     try {
       var response = await ContactBloc().contactRequest();
 
-      if (response['status'] == true) {
+      if (response == null) {
+        Utils.displayToastBottomError('Something went wrong in getting Notifications', context);
+      } else if (response['status'] == true) {
         // gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
         var responseData = response['data'];
         print(responseData.length);

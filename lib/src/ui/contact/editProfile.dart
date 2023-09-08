@@ -2427,10 +2427,12 @@ class _EditProfileState extends State<EditProfile> {
           builder: (BuildContext context) => MyProfile(preferences.getString("phone")),
         ),
       );
+    } else if (response == null) {
+      Utils.displayToastBottomError('Something went wrong in Updating Profile', context);
     } else if (response['status'] == "Token is Expired") {
       tokenExpired(context);
     } else {
-      Utils.displayToastBottomError('Something went wrong', context);
+      Utils.displayToastBottomError('Something went wrong in Updating', context);
     }
   }
 

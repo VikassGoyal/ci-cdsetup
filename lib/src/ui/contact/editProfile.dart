@@ -29,7 +29,6 @@ import 'package:gtm/gtm.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -104,7 +103,6 @@ class _EditProfileState extends State<EditProfile> {
   List<EntrepreneurDataRequest> entreprenerurListResquest = [];
   List<ProfessionalList>? entreprenerurListJson = [];
 
-  List<Asset> profileImage = <Asset>[];
   String uploadedProfileImage = '';
   String userImage = '';
   XFile? image;
@@ -2565,46 +2563,46 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
-  Future<void> loadProfileImage() async {
-    // for upload profile image
-    List<Asset> resultList = <Asset>[];
-    String error = 'No Error Dectected';
+  // Future<void> loadProfileImage() async {
+  //   // for upload profile image
+  //   List<Asset> resultList = <Asset>[];
+  //   String error = 'No Error Dectected';
 
-    try {
-      resultList = await MultipleImagesPicker.pickImages(
-        maxImages: 1,
-        enableCamera: true,
-        selectedAssets: profileImage,
-        cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: const MaterialOptions(
-          actionBarColor: "#FF931E",
-          statusBarColor: "#FF931E",
-          actionBarTitle: "Profile Image",
-          allViewTitle: "All Photos",
-          useDetailsView: true,
-          selectCircleStrokeColor: "#FF931E",
-        ),
-      );
-    } on Exception catch (e) {
-      error = e.toString();
-      print(error);
-    }
+  //   try {
+  //     resultList = await MultipleImagesPicker.pickImages(
+  //       maxImages: 1,
+  //       enableCamera: true,
+  //       selectedAssets: profileImage,
+  //       cupertinoOptions: const CupertinoOptions(takePhotoIcon: "chat"),
+  //       materialOptions: const MaterialOptions(
+  //         actionBarColor: "#FF931E",
+  //         statusBarColor: "#FF931E",
+  //         actionBarTitle: "Profile Image",
+  //         allViewTitle: "All Photos",
+  //         useDetailsView: true,
+  //         selectCircleStrokeColor: "#FF931E",
+  //       ),
+  //     );
+  //   } on Exception catch (e) {
+  //     error = e.toString();
+  //     print(error);
+  //   }
 
-    List<Asset> assets = resultList;
-    int i = 0;
-    for (Asset asset in assets) {
-      var bytes = await asset.getByteData();
-      var buffer = bytes.buffer;
-      var base64data = base64.encode(Uint8List.view(buffer));
-      i = i + 1;
-      if (i == 1) {
-        uploadedProfileImage = base64data;
-        uploadeProfileImage();
-      }
-      setState(() {});
-    }
-    if (!mounted) return;
-  }
+  //   List<Asset> assets = resultList;
+  //   int i = 0;
+  //   for (Asset asset in assets) {
+  //     var bytes = await asset.getByteData();
+  //     var buffer = bytes.buffer;
+  //     var base64data = base64.encode(Uint8List.view(buffer));
+  //     i = i + 1;
+  //     if (i == 1) {
+  //       uploadedProfileImage = base64data;
+  //       uploadeProfileImage();
+  //     }
+  //     setState(() {});
+  //   }
+  //   if (!mounted) return;
+  // }
 
   void uploadeProfileImage() async {
     // var jsonData = {

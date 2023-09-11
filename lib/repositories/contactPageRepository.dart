@@ -77,6 +77,10 @@ class ContactPageRepository {
     return allContacts;
   }
 
+  getRemoveData() {
+    allContacts = [];
+  }
+
   //getNotification
   getNotification() async {
     var response = await _apiClient.notification();

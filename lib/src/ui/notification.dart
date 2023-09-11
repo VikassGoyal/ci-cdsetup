@@ -423,10 +423,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
     try {
       var response = await ContactBloc().contactRequest();
 
-      setState(() {
-        _loader = false;
-      });
-      if (response['status'] == true) {
+      _loader = false;
+      if (mounted) setState(() {});
+      if (response == null) {
+        Utils.displayToastBottomError('Something went wrong in fetching Notifications', context);
+      } else if (response['status'] == true) {
         gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
         var responseData = response['data'];
         setState(() {
@@ -440,9 +441,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
         Utils.displayToastBottomError(response["message"], context);
       }
     } catch (e) {
-      setState(() {
-        _loader = false;
-      });
+      _loader = false;
+      if (mounted) setState(() {});
       print(e);
     }
   }

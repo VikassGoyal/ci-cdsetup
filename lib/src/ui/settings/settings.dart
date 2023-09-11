@@ -19,6 +19,7 @@ import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -36,6 +37,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
 import '../../../api_models/getTotalCount_response_model/totalCount_response_body.dart';
 import '../../../api_models/qrValue_request_model/qrValue_request_body.dart';
+import '../../../bottomNavigation/bottomNavigationBloc.dart';
 import '../../../utils/gtm_constants.dart';
 
 class Settings extends StatefulWidget {
@@ -469,6 +471,7 @@ class _SettingsState extends State<Settings> {
 
       await databaseHelper.trancateAllContacts();
       await databaseHelper.trancateRecentContacts();
+      BlocProvider.of<BottomNavigationBloc>(context).getRemoveContactData();
       gtm.push(GTMConstants.kLogoutEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
       Navigator.pushReplacement(
         context,

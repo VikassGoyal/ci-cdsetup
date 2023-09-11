@@ -72,8 +72,13 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
   //   // if (event is PageTapped) {}
   // }
 
+  getRemoveContactData() async {
+    await contactPageRepository.getRemoveData();
+  }
+
   Future _getContactPageData() async {
     var data = await contactPageRepository.getData();
+    print("first time call fetch data ${data.length}");
     List<AllContacts> contacts = [];
     contacts.addAll(data);
     try {

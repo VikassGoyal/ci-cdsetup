@@ -56,7 +56,7 @@ dependencies:
   loading_overlay: ^0.3.0
   lottie: ^2.3.2
   lpinyin: ^2.0.3
-  multiple_images_picker: ^1.0.1
+  #multiple_images_picker: ^1.0.1
   package_info_plus: ^4.0.1
   path_provider: ^2.0.15
   percent_indicator: ^4.2.3

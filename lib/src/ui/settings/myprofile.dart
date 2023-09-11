@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 
 import '../../../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';

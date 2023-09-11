@@ -23,7 +23,6 @@ import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:gtm/gtm.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:multiple_images_picker/multiple_images_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';

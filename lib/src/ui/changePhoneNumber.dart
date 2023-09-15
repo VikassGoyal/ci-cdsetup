@@ -24,6 +24,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../api_models/addNewContact_request_model/addNewContact_request_body.dart';
 import '../../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
+import '../../utils/check_internet_connection.dart';
 
 class ChangePhoneNumber extends StatefulWidget {
   final String? phoneNumber;
@@ -96,19 +97,40 @@ class _ChangePhoneNumberState extends State<ChangePhoneNumber> {
               setState(() {
                 _loader = true;
               });
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => VerifyNewPhoneNumber(
-                          widget.contactDetail, _personalNumber.text, widget.entreprenerurList))).then((value) {
+              try {
+                var response = await ContactBloc()
+                    .checkContactForchangeNumber(CheckContactForAddNewRequestBody(phone: _personalNumber.text));
+
+                if (response != null && response["status"] == true) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => VerifyNewPhoneNumber(
+                              widget.contactDetail, _personalNumber.text, widget.entreprenerurList))).then((value) {
+                    setState(() {
+                      _loader = false;
+                    });
+                  });
+                } else {
+                  Utils.displayToastBottomError("Account Already exist on this number", context);
+                  setState(() {
+                    _loader = false;
+                  });
+                }
+              } catch (e) {
+                bool hasInternet = await checkInternetConnection();
+                Utils.displayToastBottomError(
+                    hasInternet ? "Account Already exist on this number" : "Please check your internet connection",
+                    context);
+
                 setState(() {
                   _loader = false;
                 });
-              });
+              }
 
               //getProfileDetails();
             } else {
-              Utils.displayToastBottomError("Please enter valid Mobile number.", context);
+              Utils.displayToastBottomError("Your Account Already exist on this number", context);
             }
           },
           child: Container(

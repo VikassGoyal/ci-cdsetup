@@ -650,7 +650,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                         ),
                                         onPressed: () {},
                                         child: Container(
-                                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 84.0),
+                                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 90.0),
                                           alignment: Alignment.center,
                                           child: Text(
                                             "Accepted",
@@ -712,7 +712,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                           }
                                         },
                                         child: Container(
-                                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 70.0),
+                                          constraints: const BoxConstraints(minHeight: 28.0, maxWidth: 90.0),
                                           alignment: Alignment.center,
                                           child: Text(
                                             "Connect",

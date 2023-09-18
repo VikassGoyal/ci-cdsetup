@@ -1,9 +1,18 @@
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
+import 'package:conet/src/ui/auth/login.dart';
+import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../blocs/contactBloc.dart';
+import '../../bottomNavigation/bottomNavigationBloc.dart';
+import '../../utils/check_internet_connection.dart';
 import '../../utils/custom_fonts.dart';
+import '../localdb/database_helper.dart';
 
 class DeleteAccount extends StatefulWidget {
   const DeleteAccount({super.key});
@@ -13,6 +22,7 @@ class DeleteAccount extends StatefulWidget {
 }
 
 class _DeleteAccountState extends State<DeleteAccount> {
+  DatabaseHelper databaseHelper = DatabaseHelper.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +93,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                 margin: EdgeInsets.only(left: 15.w, right: 15.w),
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                     ),
@@ -156,8 +166,33 @@ class _DeleteAccountState extends State<DeleteAccount> {
                               fontFamily: kSfproRoundedFontFamily,
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w500)),
-                      onPressed: () {
-                        Navigator.of(context).pop();
+                      onPressed: () async {
+                        try {
+                          bool hasInternet = await checkInternetConnection();
+
+                          if (hasInternet) {
+                            var response = await ContactBloc().deleteAccount();
+                            if (response != null && response["status"] == true) {
+                              SharedPreferences preferences = await SharedPreferences.getInstance();
+                              await preferences.clear();
+
+                              await databaseHelper.trancateAllContacts();
+                              await databaseHelper.trancateRecentContacts();
+                              BlocProvider.of<BottomNavigationBloc>(context).getRemoveContactData();
+
+                              QuickAlert.show(
+                                context: context,
+                                type: QuickAlertType.success,
+                                title: 'Success',
+                                text: response['message'].toString(),
+                              );
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (context) => Login()), (Route<dynamic> route) => false);
+                            }
+                          }
+                        } catch (e) {
+                          Utils.displayToastBottomError("Account not deleted", context);
+                        }
                       },
                     ),
                   ),

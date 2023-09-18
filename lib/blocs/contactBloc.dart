@@ -40,6 +40,15 @@ class ContactBloc {
     }
   }
 
+  deleteAccount() async {
+    try {
+      var response = await contactPageRepository?.deleteAccountResponse();
+      return response;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   contactRequestResponse(RequestContactResponseRequestBody requestContactResponseRequestBody) async {
     try {
       var response = await contactPageRepository?.contactRequestResponse(requestContactResponseRequestBody);

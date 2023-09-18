@@ -942,7 +942,7 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
           ),
           content: Text(
-            'Do you want to import contacts to konet?',
+            'Do you want to import contacts to konet?\nThis app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.',
             style: TextStyle(
                 color: AppColor.logoutheadingcolor,
                 fontFamily: kSfproRoundedFontFamily,
@@ -971,7 +971,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                 ),
                 SizedBox(
-                  width: 20.w,
+                  width: 30.w,
                 ),
                 Container(
                   constraints: BoxConstraints(minWidth: 100.0.w),

@@ -102,6 +102,10 @@ abstract class ApiClient {
   @POST(ApiConstants.checkcontact)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
   Future<dynamic> checkcontact(@Body() CheckContactForAddNewRequestBody checkContactForAddNewRequestBody);
+  @POST(ApiConstants.checkcontactForchangenumber)
+  @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
+  Future<dynamic> checkcontactForchangenumber(
+      @Body() CheckContactForAddNewRequestBody checkContactForAddNewRequestBody);
 // not used yet
   @POST(ApiConstants.getcontactdetails)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})

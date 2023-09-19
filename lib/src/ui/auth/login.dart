@@ -164,7 +164,7 @@ class _LoginState extends State<Login> {
             } catch (e) {
               bool hasInternet = await checkInternetConnection();
               Utils.displayToastBottomError(
-                  hasInternet ? "Incorrect password" : "Please check your internet connection", context);
+                  hasInternet ? "Incorrect Username or Password" : "Please check your internet connection", context);
               print(e);
             }
           }

@@ -19,6 +19,7 @@ class ApiConstants {
   static const String getallcontact = '/api/user/getallcontact';
   static const String editContact = '/api/user/editContact';
   static const String checkcontact = '/api/user/checkcontact';
+  static const String checkcontactForchangenumber = '/api/user/checkcontactForchangenumber';
   static const String getcontactdetails = '/api/user/getcontactdetails';
   static const String requestedcontactlist = '/api/user/requestedcontactlist';
   static const String requestedcontactresponse = '/api/user/requestedcontactresponse';

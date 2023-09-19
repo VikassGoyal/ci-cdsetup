@@ -109,6 +109,12 @@ class ContactPageRepository {
     return response;
   }
 
+  checkContactForchangeNumber(CheckContactForAddNewRequestBody checkContactForAddNewRequestBody) async {
+    var response = await _apiClient.checkcontactForchangenumber(checkContactForAddNewRequestBody);
+
+    return response;
+  }
+
   //GetProfileDetails
   getProfileDetails(GetProfileDetailsRequestBody getProfileDetailsRequestBody) async {
     var response = await _apiClient.editContact(getProfileDetailsRequestBody);

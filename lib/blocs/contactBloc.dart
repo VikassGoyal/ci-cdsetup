@@ -68,6 +68,16 @@ class ContactBloc {
     }
   }
 
+  checkContactForchangeNumber(CheckContactForAddNewRequestBody checkContactForAddNewRequestBody) async {
+    try {
+      var response = await contactPageRepository?.checkContactForchangeNumber(checkContactForAddNewRequestBody);
+      return response;
+    } catch (e) {
+      print('error');
+      print(e);
+    }
+  }
+
   //GetProfileDetails
   getProfileDetails(GetProfileDetailsRequestBody getProfileDetailsRequestBody) async {
     try {

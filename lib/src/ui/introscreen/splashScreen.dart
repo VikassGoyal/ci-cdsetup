@@ -145,7 +145,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> navigationPage() async {
-    print("ewwwwww");
     if (locator<StorageService>().getPrefs(kPrefAccessTokenKey) != null) {
       if (await doesUserExist()) {
         Navigator.pushReplacement(

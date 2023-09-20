@@ -1,3 +1,4 @@
+import 'package:conet/models/allContacts.dart';
 import 'package:conet/repositories/recentPageRepository.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/utils/gtm_constants.dart';
@@ -5,7 +6,6 @@ import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gtm/gtm.dart';
 
 import 'dailpad.dart';
@@ -60,8 +60,19 @@ class _KeypadPageState extends State<KeypadPage> {
             if (number == "") {
               return;
             }
-
-            recentPageRepository.insertDailedCall(number, "");
+            String contactName = '';
+            //get the name of dialed contact to save in recent call log in local db
+            //here in Regular expression, we remove spaces, parentheses, commas, and hyphens
+            List<AllContacts> dialedContacts = widget.contactsData!
+                .where((element) =>
+                    element.phone!.replaceAll(RegExp(r'[\s(),-]'), '').toLowerCase() == number.toLowerCase())
+                .toList();
+            print(dialedContacts);
+            if (dialedContacts.isNotEmpty) {
+              contactName = dialedContacts[0].name!;
+            }
+            //
+            recentPageRepository.insertDailedCall(number, contactName);
             gtm.push(GTMConstants.kCallEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
             _callNumber(number);
           },

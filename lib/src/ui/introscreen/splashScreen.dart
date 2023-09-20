@@ -18,6 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -31,6 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    print("eeeeeeee");
     startTimer();
   }
 
@@ -113,13 +116,25 @@ class _SplashScreenState extends State<SplashScreen> {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       String phonenum = preferences.getString("phone") ?? "";
-      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phonenum));
-      // print('status : ${response['status']} and message : ${response['message']}');
-      // if (response != null && response['status'] == false && response['message'] == "No User Available") {
-      //   return false;
-      // }
-      if (response == null) {
-        return false;
+      bool hasInternet = await checkInternetConnection();
+      if (hasInternet) {
+        var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phonenum));
+        // print('status : ${response['status']} and message : ${response['message']}');
+        // if (response != null && response['status'] == false && response['message'] == "No User Available") {
+        //   return false;
+        // }
+        if (response == null) {
+          return false;
+        }
+      } else {
+        await QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Oops...',
+            text: "Please check your internet connection",
+            onConfirmBtnTap: () {
+              startTimer();
+            });
       }
     } catch (e) {
       bool hasInternet = await checkInternetConnection();
@@ -130,6 +145,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> navigationPage() async {
+    print("ewwwwww");
     if (locator<StorageService>().getPrefs(kPrefAccessTokenKey) != null) {
       if (await doesUserExist()) {
         Navigator.pushReplacement(

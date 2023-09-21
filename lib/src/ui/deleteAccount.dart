@@ -53,9 +53,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 10.h,
-              ),
+              SizedBox(height: 10.h),
               Text(
                 'Konet', // App name
                 style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, color: AppColor.whiteColor),
@@ -65,19 +63,17 @@ class _DeleteAccountState extends State<DeleteAccount> {
                 child: Text(
                   'The app is a realtime contacts book on cloud. It disrupts and replaces the pre-installed contacts app on every phone. This realtime contacts book on cloud virtually allows users to store, manage and update their contact information such as contact name, phone number, email ID, work place and social media accounts from time to time so that the User’s contacts always have updated information at all times. The App allows users to make and receive phone calls and messages as a regular phone manager. It further enables users to view and manage their call logs with their contacts in their History.',
                   textAlign: TextAlign.justify,
-                  style: TextStyle(fontSize: 20.sp, color: AppColor.whiteColor, letterSpacing: 0.2
+                  style: TextStyle(fontSize: 18.sp, color: AppColor.whiteColor, letterSpacing: 0.2
 
                       // Customize the font size as needed for the paragraph
                       ),
                 ),
               ),
-              SizedBox(
-                height: 10.h,
-              ),
+              SizedBox(height: 10.h),
               Padding(
                 padding: EdgeInsets.all(8.w),
                 child: Text(
-                  'Please rethink before deciding to delete your account. It will delete your All Data Permanently.',
+                  'Please rethink before deciding to delete your account. This action is irreversible and it will delete your Konet account with all of your data permanently.',
                   textAlign: TextAlign.justify,
                   style: TextStyle(
                     fontSize: 20.sp,
@@ -86,9 +82,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 30.h,
-              ),
+              SizedBox(height: 40.h),
               Container(
                 margin: EdgeInsets.only(left: 15.w, right: 15.w),
                 child: ElevatedButton(
@@ -140,7 +134,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w500),
           ),
-          content: Text("Are you sure want to delete account permanently",
+          content: Text("Are you sure you want to delete this account permanently",
               style: TextStyle(
                   color: const Color(0xff878B95),
                   fontFamily: kSfproRoundedFontFamily,
@@ -187,7 +181,8 @@ class _DeleteAccountState extends State<DeleteAccount> {
                                 text: response['message'].toString(),
                               );
                               Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(builder: (context) => Login()), (Route<dynamic> route) => false);
+                                  MaterialPageRoute(builder: (context) => const Login()),
+                                  (Route<dynamic> route) => false);
                             }
                           }
                         } catch (e) {

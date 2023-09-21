@@ -92,9 +92,14 @@ class ContactPageRepository {
     return response;
   }
 
-  //deleteContact
   deleteContactResponse(int id) async {
     var response = await _apiClient.deleteContact(id.toString());
+    return response;
+  }
+
+  //deleteContact
+  deleteAccountResponse() async {
+    var response = await _apiClient.deleteAccount();
     return response;
   }
 

@@ -526,13 +526,20 @@ class _SignUpState extends State<SignUp> {
       } else {
         gtm.push(GTMConstants.kSignupEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
         Utils.displayToast(response["message"], context);
-
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (context) => ValidateMobileNumberVerified(),
           ),
+          (route) => false,
         );
+
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => ValidateMobileNumberVerified(),
+        //   ),
+        // );
       }
     } catch (e) {
       // Navigator.of(context).pop();

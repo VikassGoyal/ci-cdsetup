@@ -33,9 +33,12 @@ class _ValidateMobileNumberVerifiedState extends State<ValidateMobileNumberVerif
           ),
         ),
         onPressed: () async {
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+            (route) => false,
           );
         },
         child: Container(

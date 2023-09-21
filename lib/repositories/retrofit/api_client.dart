@@ -83,6 +83,10 @@ abstract class ApiClient {
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
   Future<dynamic> deleteContact(@Path('id') String id);
 
+  @DELETE(ApiConstants.deleteaccount)
+  @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
+  Future<dynamic> deleteAccount();
+
   @POST(ApiConstants.importcontacts)
   @Headers(<String, dynamic>{kAuthHeaderRequired: '1'})
   Future<dynamic> importcontacts(@Body() List<DeviceContactData> body);

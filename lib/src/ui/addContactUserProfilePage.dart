@@ -1222,15 +1222,20 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
                                       ),
                                       errorWidget: (context, url, error) => const Icon(Icons.error),
                                     )
-                                  : Image.file(
-                                      width: 114,
-                                      height: 102,
-                                      fit: BoxFit.cover,
-                                      File(entreprenerurList[i].images![2].imageAsset),
-                                      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                                        return const Center(child: Text('This image type is not supported'));
-                                      },
-                                    )),
+                                  : (entreprenerurList[i].images!.length >= 2
+                                      ? Image.file(
+                                          width: 114,
+                                          height: 102,
+                                          fit: BoxFit.cover,
+                                          File(entreprenerurList[i].images![2].imageAsset),
+                                          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                            return const Center(child: Text('This image type is not supported'));
+                                          },
+                                        )
+                                      : const SizedBox(
+                                          width: 114,
+                                          height: 102,
+                                        ))),
                         ),
                       ],
                     ),

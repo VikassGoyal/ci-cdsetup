@@ -10,6 +10,7 @@ class ApiConstants {
   static const String profile = '/api/user/profile';
   static const String uploadprofileimage = '/api/user/uploadprofileimage';
   static const String deleteprofileimage = '/api/user/deleteprofileimage';
+  static const String deleteaccount = '/api/user/deleteaccount';
   static const String businesscardLogo = '/api/user/businesscardLogo';
   static const String deleteBusinesscardLogo = '/api/user/businesscardLogo/{id}';
   static const String addnewcontact = '/api/user/addnewcontact';

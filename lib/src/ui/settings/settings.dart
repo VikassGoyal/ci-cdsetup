@@ -6,6 +6,7 @@ import 'package:conet/src/localdb/database_helper.dart';
 import 'package:conet/src/ui/auth/login.dart';
 import 'package:conet/src/ui/addContactUserProfilePage.dart';
 import 'package:conet/src/ui/conetWebPage.dart';
+import 'package:conet/src/ui/deleteAccount.dart';
 import 'package:conet/src/ui/notification.dart';
 import 'package:conet/src/ui/qrScreen.dart';
 import 'package:conet/src/ui/settings/changePassword.dart';
@@ -88,6 +89,40 @@ class _SettingsState extends State<Settings> {
             fontStyle: FontStyle.normal,
           ),
         ),
+        actions: [
+          PopupMenuButton(
+            color: const Color(0xFFF0F0F0),
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7.0))),
+            child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: const Icon(Icons.more_vert, color: AppColor.whiteColor)),
+            onSelected: (value) {
+              print(value);
+
+              if (value == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DeleteAccount()),
+                );
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 1,
+                child: Text(
+                  "Delete Account",
+                  style: TextStyle(
+                    fontFamily: kSfproDisplayFontFamily,
+                    color: AppColor.blackColor,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
       body: Container(
         decoration: const BoxDecoration(color: Colors.white),

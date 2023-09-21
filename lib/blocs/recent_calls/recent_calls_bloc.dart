@@ -77,10 +77,10 @@ class RecentCallsBloc extends Bloc<RecentCallsEvent, RecentCallsState> {
     try {
       List<RecentCalls>? data = await recentPageRepository.getDataBetweenDateTimes(dateTimeFrom, dateTimeTo, name);
 
-      if (Platform.isAndroid) {
-        await recentPageRepository.fetchData(dateTimeFrom, dateTimeTo, name);
-        data = await recentPageRepository.getDataBetweenDateTimes(dateTimeFrom, dateTimeTo, name);
-      }
+      // if (Platform.isAndroid) {
+      //   await recentPageRepository.fetchData(dateTimeFrom, dateTimeTo, name);
+      //   data = await recentPageRepository.getDataBetweenDateTimes(dateTimeFrom, dateTimeTo, name);
+      // }
 
       return data;
     } catch (e) {

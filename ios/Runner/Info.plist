@@ -47,6 +47,8 @@
 	<string>Access to the photo library is required to upload business Logo.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to the current location for filling profile details.</string>
+	<key>NSUserTrackingUsageDescription</key>
+    <string>This identifier will be used to deliver personalized ads to you.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

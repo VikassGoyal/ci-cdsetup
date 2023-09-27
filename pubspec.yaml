@@ -74,6 +74,7 @@ dependencies:
   quickalert: ^1.0.1
   gtm: ^0.0.8
   firebase_analytics: ^10.4.4
+  app_tracking_transparency: ^2.0.4
 
 dependency_overrides:
   http: ^1.0.0

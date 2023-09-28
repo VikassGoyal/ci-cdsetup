@@ -102,7 +102,7 @@ class _ContactsPageState extends State<ContactsPage> {
       _updateContact();
     }
 
-    SchedulerBinding.instance.addPostFrameCallback((_) => _checkShowDialog());
+    SchedulerBinding.instance.addPostFrameCallback((_) => _checkPermission());
     _outputController = TextEditingController();
 
     _handleList(_contacts);
@@ -914,13 +914,32 @@ class _ContactsPageState extends State<ContactsPage> {
     }
   }
 
-  _checkShowDialog() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+  _checkPermission() async {
+    var status = await Permission.contacts.status;
+    if (status.isGranted) {
+      _importContacts();
+    } else {
+      var reqStatus = await Permission.contacts.request();
+      if (reqStatus.isGranted) {
+        _importContacts();
+      } else if (reqStatus.isDenied) {
+        Utils.displayToastBottomError("Permission Denied", context);
+      } else if (reqStatus.isPermanentlyDenied) {
+        _showDialog();
 
-    if (preferences.getBool('imported') == false) {
-      _showDialog();
+        // openAppSettings();
+      } else {
+        Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
+      }
     }
   }
+  //  _checkShowDialog() async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+
+  //   if (preferences.getBool('imported') == false) {
+  //     _showDialog();
+  //   }
+  // }
 
   _showDialog() async {
     await Future.delayed(const Duration(milliseconds: 50));
@@ -942,7 +961,7 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
           ),
           content: Text(
-            'Do you want to import contacts to konet?\nThis app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.',
+            'This app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.',
             style: TextStyle(
                 color: AppColor.logoutheadingcolor,
                 fontFamily: kSfproRoundedFontFamily,
@@ -962,7 +981,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                         )),
                     onPressed: () => Navigator.pop(context, true),
-                    child: Text('Yes',
+                    child: Text('Open Settings',
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: kSfproRoundedFontFamily,
@@ -982,7 +1001,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                         )),
                     onPressed: () => Navigator.pop(context, false),
-                    child: Text('No',
+                    child: Text('Back',
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: kSfproRoundedFontFamily,
@@ -999,31 +1018,15 @@ class _ContactsPageState extends State<ContactsPage> {
       if (value == null) return;
       if (value) {
         print(value);
-        SchedulerBinding.instance.addPostFrameCallback((_) => _checkPermission());
+        // SchedulerBinding.instance.addPostFrameCallback((_) => _checkPermission());
+        openAppSettings();
       } else {
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        preferences.setBool('imported', true);
+        Utils.displayToastBottomError("Permission Denied Permanently", context);
+
+        //SharedPreferences preferences = await SharedPreferences.getInstance();
+        //preferences.setBool('imported', true);
       }
     });
-  }
-
-  _checkPermission() async {
-    var status = await Permission.contacts.status;
-    if (status.isGranted) {
-      _importContacts();
-    } else {
-      var reqStatus = await Permission.contacts.request();
-      if (reqStatus.isGranted) {
-        _importContacts();
-      } else if (reqStatus.isDenied) {
-        Utils.displayToastBottomError("Permission Denied", context);
-      } else if (reqStatus.isPermanentlyDenied) {
-        openAppSettings();
-        Utils.displayToastBottomError("Permission Denied Permanently", context);
-      } else {
-        Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
-      }
-    }
   }
 
   _importContacts() async {

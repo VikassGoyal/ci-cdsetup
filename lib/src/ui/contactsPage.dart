@@ -915,21 +915,38 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   _checkPermission() async {
-    var status = await Permission.contacts.status;
-    if (status.isGranted) {
-      _importContacts();
-    } else {
-      var reqStatus = await Permission.contacts.request();
-      if (reqStatus.isGranted) {
-        _importContacts();
-      } else if (reqStatus.isDenied) {
-        Utils.displayToastBottomError("Permission Denied", context);
-      } else if (reqStatus.isPermanentlyDenied) {
-        _showDialog();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
 
-        // openAppSettings();
+    if (preferences.getBool('imported') == false) {
+      var status = await Permission.contacts.status;
+      if (status.isGranted) {
+        _importContacts();
       } else {
-        Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
+        var reqStatus = await Permission.contacts.request();
+        print(" reqstatus $reqStatus");
+        if (reqStatus.isGranted) {
+          _importContacts();
+        } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.confirm,
+            width: 300,
+            title: reqStatus.isDenied ? "Permission Denied" : "Permission Denied Permanently",
+            text:
+                "This app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.'",
+
+            confirmBtnText: "Settings",
+            cancelBtnText: "Back",
+
+            onConfirmBtnTap: () => openAppSettings(),
+
+            //autoCloseDuration: const Duration(seconds: 3),
+          );
+
+          // openAppSettings();
+        } else {
+          Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
+        }
       }
     }
   }
@@ -941,93 +958,93 @@ class _ContactsPageState extends State<ContactsPage> {
   //   }
   // }
 
-  _showDialog() async {
-    await Future.delayed(const Duration(milliseconds: 50));
-    // ignore: use_build_context_synchronously
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
-          backgroundColor: AppColor.whiteColor,
-          title: Center(
-            child: Text(
-              'Confirmation',
-              style: TextStyle(
-                  color: AppColor.logoutcolor,
-                  fontFamily: kSfproDisplayFontFamily,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500),
-            ),
-          ),
-          content: Text(
-            'This app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.',
-            style: TextStyle(
-                color: AppColor.logoutheadingcolor,
-                fontFamily: kSfproRoundedFontFamily,
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w300),
-          ),
-          actions: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  constraints: BoxConstraints(minWidth: 100.0.w),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-                        )),
-                    onPressed: () => Navigator.pop(context, true),
-                    child: Text('Open Settings',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: kSfproRoundedFontFamily,
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500)),
-                  ),
-                ),
-                SizedBox(
-                  width: 30.w,
-                ),
-                Container(
-                  constraints: BoxConstraints(minWidth: 100.0.w),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-                        )),
-                    onPressed: () => Navigator.pop(context, false),
-                    child: Text('Back',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: kSfproRoundedFontFamily,
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w500)),
-                  ),
-                ),
-              ],
-            )
-          ],
-        );
-      },
-    ).then((value) async {
-      if (value == null) return;
-      if (value) {
-        print(value);
-        // SchedulerBinding.instance.addPostFrameCallback((_) => _checkPermission());
-        openAppSettings();
-      } else {
-        Utils.displayToastBottomError("Permission Denied Permanently", context);
+  // _showDialog() async {
+  //   await Future.delayed(const Duration(milliseconds: 50));
+  //   // ignore: use_build_context_synchronously
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
+  //         backgroundColor: AppColor.whiteColor,
+  //         title: Center(
+  //           child: Text(
+  //             'Confirmation',
+  //             style: TextStyle(
+  //                 color: AppColor.logoutcolor,
+  //                 fontFamily: kSfproDisplayFontFamily,
+  //                 fontSize: 18.sp,
+  //                 fontWeight: FontWeight.w500),
+  //           ),
+  //         ),
+  //         content: Text(
+  //           'This app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.',
+  //           style: TextStyle(
+  //               color: AppColor.logoutheadingcolor,
+  //               fontFamily: kSfproRoundedFontFamily,
+  //               fontSize: 15.sp,
+  //               fontWeight: FontWeight.w300),
+  //         ),
+  //         actions: <Widget>[
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: [
+  //               Container(
+  //                 constraints: BoxConstraints(minWidth: 100.0.w),
+  //                 child: ElevatedButton(
+  //                   style: ButtonStyle(
+  //                       backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+  //                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+  //                         RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+  //                       )),
+  //                   onPressed: () => Navigator.pop(context, true),
+  //                   child: Text('Open Settings',
+  //                       style: TextStyle(
+  //                           color: Colors.white,
+  //                           fontFamily: kSfproRoundedFontFamily,
+  //                           fontSize: 18.sp,
+  //                           fontWeight: FontWeight.w500)),
+  //                 ),
+  //               ),
+  //               SizedBox(
+  //                 width: 30.w,
+  //               ),
+  //               Container(
+  //                 constraints: BoxConstraints(minWidth: 100.0.w),
+  //                 child: ElevatedButton(
+  //                   style: ButtonStyle(
+  //                       backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
+  //                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+  //                         RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+  //                       )),
+  //                   onPressed: () => Navigator.pop(context, false),
+  //                   child: Text('Back',
+  //                       style: TextStyle(
+  //                           color: Colors.white,
+  //                           fontFamily: kSfproRoundedFontFamily,
+  //                           fontSize: 18.sp,
+  //                           fontWeight: FontWeight.w500)),
+  //                 ),
+  //               ),
+  //             ],
+  //           )
+  //         ],
+  //       );
+  //     },
+  //   ).then((value) async {
+  //     if (value == null) return;
+  //     if (value) {
+  //       print(value);
+  //       // SchedulerBinding.instance.addPostFrameCallback((_) => _checkPermission());
+  //       openAppSettings();
+  //     } else {
+  //       Utils.displayToastBottomError("Permission Denied Permanently", context);
 
-        //SharedPreferences preferences = await SharedPreferences.getInstance();
-        //preferences.setBool('imported', true);
-      }
-    });
-  }
+  //       //SharedPreferences preferences = await SharedPreferences.getInstance();
+  //       //preferences.setBool('imported', true);
+  //     }
+  //   });
+  // }
 
   _importContacts() async {
     try {

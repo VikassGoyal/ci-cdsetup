@@ -220,7 +220,7 @@ class _SettingsState extends State<Settings> {
                   ListTile(
                       contentPadding: EdgeInsets.zero,
                       onTap: () {
-                        _showDialog();
+                        _checkContactPermission();
                       },
                       title: Text("Import Contacts",
                           style: TextStyle(
@@ -706,25 +706,25 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-  _checkContactPermission() async {
-    var status = await Permission.contacts.status;
-    if (status.isGranted) {
-      gtm.push(GTMConstants.kimportContactsEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
-      _importContacts();
-    } else {
-      var reqStatus = await Permission.contacts.request();
-      if (reqStatus.isGranted) {
-        _importContacts();
-      } else if (reqStatus.isDenied) {
-        Utils.displayToastBottomError("Permission Denied", context);
-      } else if (reqStatus.isPermanentlyDenied) {
-        Utils.displayToastBottomError("Permission Denied Permanently", context);
-        openAppSettings();
-      } else {
-        Utils.displayToastBottomError("Something Went Wrong ", context);
-      }
-    }
-  }
+  // _checkContactPermission() async {
+  //   var status = await Permission.contacts.status;
+  //   if (status.isGranted) {
+  //     gtm.push(GTMConstants.kimportContactsEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+  //     _importContacts();
+  //   } else {
+  //     var reqStatus = await Permission.contacts.request();
+  //     if (reqStatus.isGranted) {
+  //       _importContacts();
+  //     } else if (reqStatus.isDenied) {
+  //       Utils.displayToastBottomError("Permission Denied", context);
+  //     } else if (reqStatus.isPermanentlyDenied) {
+  //       Utils.displayToastBottomError("Permission Denied Permanently", context);
+  //       openAppSettings();
+  //     } else {
+  //       Utils.displayToastBottomError("Something Went Wrong ", context);
+  //     }
+  //   }
+  // }
 
   _importContacts() async {
     Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
@@ -773,6 +773,40 @@ class _SettingsState extends State<Settings> {
         _loader = false;
       });
       Utils.displayToastBottomError("Something went wrong", context);
+    }
+  }
+
+  _checkContactPermission() async {
+    var status = await Permission.contacts.status;
+    if (status.isGranted) {
+      gtm.push(GTMConstants.kimportContactsEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+      _importContacts();
+    } else {
+      var reqStatus = await Permission.contacts.request();
+      print(" reqstatus $reqStatus");
+      if (reqStatus.isGranted) {
+        _importContacts();
+      } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.confirm,
+          width: 300,
+          title: reqStatus.isDenied ? "Permission Denied" : "Permission Denied Permanently",
+          text:
+              "This app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.'",
+
+          confirmBtnText: "Settings",
+          cancelBtnText: "Back",
+
+          onConfirmBtnTap: () => openAppSettings(),
+
+          //autoCloseDuration: const Duration(seconds: 3),
+        );
+
+        // openAppSettings();
+      } else {
+        Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
+      }
     }
   }
 

@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:conet/api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
 import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/bottomNavigation/bottomNavigationBloc.dart';
@@ -33,8 +35,33 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    print("eeeeeeee");
+
+    // for only ios devices
+    if (Platform.isIOS) {
+      WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) => initPlugin());
+    }
+
     startTimer();
+  }
+
+  Future<void> initPlugin() async {
+    try {
+      final TrackingStatus status = await AppTrackingTransparency.trackingAuthorizationStatus;
+      if (mounted) setState(() {});
+
+      // If the system can show an authorization request dialog
+      if (status == TrackingStatus.notDetermined) {
+        // Request system's tracking authorization dialog
+        final TrackingStatus status = await AppTrackingTransparency.requestTrackingAuthorization();
+        if (mounted) setState(() {});
+      }
+      print("status ${status}");
+    } catch (e) {}
+
+    final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
+    final prefs = locator<StorageService>();
+    prefs.setPrefs<String>('uuid', uuid.toString());
+    print("UUID: $uuid");
   }
 
   @override

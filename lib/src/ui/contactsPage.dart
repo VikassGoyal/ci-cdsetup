@@ -927,21 +927,8 @@ class _ContactsPageState extends State<ContactsPage> {
         if (reqStatus.isGranted) {
           _importContacts();
         } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.confirm,
-            width: 300,
-            title: reqStatus.isDenied ? "Permission Denied" : "Permission Denied Permanently",
-            text:
-                "This app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.'",
-
-            confirmBtnText: "Settings",
-            cancelBtnText: "Back",
-
-            onConfirmBtnTap: () => openAppSettings(),
-
-            //autoCloseDuration: const Duration(seconds: 3),
-          );
+          preferences.setBool('imported', true);
+          Utils.displayToastBottomError("Permission Denied for Contact Imports", context);
 
           // openAppSettings();
         } else {

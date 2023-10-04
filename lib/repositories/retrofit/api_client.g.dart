@@ -406,7 +406,7 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'auth_header_required': '1'};
-    Duration duration = const Duration(seconds: 20);
+    Duration duration = const Duration(seconds: 30);
     _dio.options.connectTimeout = duration;
     _dio.options.receiveTimeout = duration;
     _headers.removeWhere((k, v) => v == null);

@@ -793,7 +793,7 @@ class _SettingsState extends State<Settings> {
           width: 300,
           title: reqStatus.isDenied ? "Permission Denied" : "Permission Denied Permanently",
           text:
-              "This app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.'",
+              "This app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.",
 
           confirmBtnText: "Settings",
           cancelBtnText: "Back",

@@ -1,16 +1,50 @@
-# conet
+# Konet Frontend
 
-A new Flutter project.
+## Project Setup
 
-## Getting Started
+To set up the project locally, follow these steps:
 
-This project is a starting point for a Flutter application.
+## Clone the repository:
 
-A few resources to get you started if this is your first Flutter project:
+git clone https://git.geekyants.com/conet/conet.git
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Navigate to the project directory:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+cd frontend
+
+## Fetch dependencies:
+
+flutter pub get
+
+## Run the app:
+
+flutter run
+
+## Installation
+
+Ensure you have Flutter and Dart SDK installed on your machine. You can check the installation guide <a href="https://docs.flutter.dev/get-started/install" target="_blank">here</a> .
+
+## Usage
+
+After setting up the project, you can run the Flutter app on your preferred device or emulator.
+
+## Contributing Guidelines
+
+### Fork the repository
+
+Create a new branch: git checkout -b feature/your-feature-name
+Create a pull request
+
+## Generating Android and iOS Builds
+
+### Android
+
+1. Navigate to the project directory
+2. Run flutter build apk
+3. The APK will be generated in the ./build/app/outputs/flutter-apk/ directory
+
+### iOS
+
+1. Navigate to the project directory
+2. Run flutter build ipa
+3. The IPA will be generated in the ./build/ios/iphoneos/ directory

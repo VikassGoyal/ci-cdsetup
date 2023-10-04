@@ -291,7 +291,7 @@ class _SettingsState extends State<Settings> {
                       contentPadding: EdgeInsets.zero,
                       onTap: () {
                         Uri emailLaunchUri =
-                            Uri(scheme: 'mailto', path: "thekonetapp@gmail.com", queryParameters: {'subject': null});
+                            Uri(scheme: 'mailto', path: "theconetapp@gmail.com", queryParameters: {'subject': null});
                         launch(emailLaunchUri.toString());
                       },
                       title: Text("Contact us",

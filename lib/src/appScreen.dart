@@ -33,6 +33,9 @@ class _AppScreenState extends State<AppScreen> {
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       body: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
+        buildWhen: (previous, current) {
+          return (previous != current);
+        },
         builder: (BuildContext context, BottomNavigationState state) {
           if (state is PageLoading) {
             return const Center(

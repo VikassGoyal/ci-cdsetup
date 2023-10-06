@@ -78,6 +78,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
   //Firebase
   final SMSCodeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late Timer timer;
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -630,6 +631,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           await FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
             if (value.user != null) {
               signupFunction();
+
               print("verificationCompleted : Sign up successfully...!");
             }
           });
@@ -692,6 +694,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
         );
         //Utils.displayToast(response["message"], context);
         context.read<BottomNavigationBloc>().currentIndex = 0;
+        stopTimer();
 
         Navigator.pushReplacement(
           context,
@@ -722,22 +725,25 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
 
   void startTimer() {
     const onsec = Duration(seconds: 1);
-    Timer timer = Timer.periodic(onsec, (timer) {
+    timer = Timer.periodic(onsec, (timer) {
       if (start == 0) {
+        timer.cancel();
+        wait = true;
         if (mounted) {
-          setState(() {
-            wait = true;
-            timer.cancel();
-          });
+          setState(() {});
         }
       } else {
+        wait = false;
+        start--;
         if (mounted) {
-          setState(() {
-            wait = false;
-            start--;
-          });
+          setState(() {});
         }
       }
     });
+  }
+
+  void stopTimer() {
+    timer.cancel();
+    print("stop timer cancel");
   }
 }

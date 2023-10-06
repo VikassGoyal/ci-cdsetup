@@ -5,7 +5,7 @@ import 'package:conet/constants/enums.dart';
 ///
 class AppConfig {
   /// Current environment type.
-  final EnvironmentType environmentType = EnvironmentType.production;
+  final EnvironmentType environmentType = EnvironmentType.development;
 
   AppConfig() {
     // Load environment configuration from environment type.
@@ -31,7 +31,7 @@ class AppConfig {
   /// Initialize Dev.
   ///
   void _initDevelopment() {
-    baseApiUrl = 'http://konet.in';
+    baseApiUrl = 'http://192.168.1.3';
   }
 
   ///

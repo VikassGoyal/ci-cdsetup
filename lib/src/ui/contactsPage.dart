@@ -74,7 +74,7 @@ class _ContactsPageState extends State<ContactsPage> {
   // QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-
+  late BottomNavigationBloc bottomNavigationBloc;
   bool _loader = false;
   bool _showCancelIcon = false;
   double susItemHeight = 40;
@@ -86,6 +86,7 @@ class _ContactsPageState extends State<ContactsPage> {
   void initState() {
     super.initState();
     contactPageRepository = ContactPageRepository();
+    bottomNavigationBloc = BlocProvider.of<BottomNavigationBloc>(context);
     var responseData = widget.contactsData ?? _blanklistcontacts;
     _textEditingController = TextEditingController();
     _contacts = [];
@@ -94,6 +95,8 @@ class _ContactsPageState extends State<ContactsPage> {
     _contacts = responseData;
     _loadedcontacts = _contacts;
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
+    print("initcalling");
+
     //_updateContact();
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kContactListScreen});
     updatecheck = widget.updatebool ?? false;
@@ -101,6 +104,8 @@ class _ContactsPageState extends State<ContactsPage> {
       updatecheck = false;
       _updateContact();
     }
+
+    setState(() {});
 
     SchedulerBinding.instance.addPostFrameCallback((_) => _checkPermission());
     _outputController = TextEditingController();
@@ -915,24 +920,38 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   _checkPermission() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (!bottomNavigationBloc.getIsImportAndSyncInProgressValue()) {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    if (preferences.getBool('imported') == false) {
-      var status = await Permission.contacts.status;
-      if (status.isGranted) {
-        _importContacts();
-      } else {
-        var reqStatus = await Permission.contacts.request();
-        print(" reqstatus $reqStatus");
-        if (reqStatus.isGranted) {
-          _importContacts();
-        } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
-          preferences.setBool('imported', true);
-          Utils.displayToastBottomError("Permission Denied for Contact Imports", context);
+      if (preferences.getBool('imported') == false) {
+        var status = await Permission.contacts.status;
+        print(status);
+        if (status.isGranted) {
+          print(status.isGranted);
+          print("if");
+          print("calling 22");
 
-          // openAppSettings();
+          await _importContacts();
+          setState(() {});
         } else {
-          Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
+          print("else");
+          var reqStatus = await Permission.contacts.request();
+          print(" reqstatus $reqStatus");
+          if (reqStatus.isGranted) {
+            print("calling 22333");
+
+            await _importContacts();
+            setState(() {});
+
+            // await _importContacts();
+          } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
+            preferences.setBool('imported', true);
+            Utils.displayToastBottomError("Permission Denied for Contact Imports", context);
+
+            // openAppSettings();
+          } else {
+            Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
+          }
         }
       }
     }
@@ -1035,6 +1054,8 @@ class _ContactsPageState extends State<ContactsPage> {
 
   _importContacts() async {
     try {
+      bottomNavigationBloc.setIsImportAndSyncInProgressValue(true);
+      print("import function calll api");
       Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
 
       for (var item in contacts) {
@@ -1043,13 +1064,22 @@ class _ContactsPageState extends State<ContactsPage> {
           _importportcontacts.add(data);
         }
       }
-      callImportApi();
-    } catch (e) {}
+
+      await callImportApi();
+      bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
+    } catch (e) {
+      print("import function");
+      //bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
+
+      print(e.toString());
+    }
   }
 
   callImportApi() async {
     _loader = true;
     if (mounted) setState(() {});
+    print("call import api");
+
     try {
       var response = await ContactBloc().importContacts(_importportcontacts);
       if (response == null) {
@@ -1071,10 +1101,10 @@ class _ContactsPageState extends State<ContactsPage> {
         Utils.displayToastBottomError("Something went wrong in Importing Contacts", context);
       }
     } catch (e) {
-      print(e);
+      print(e.toString());
       _loader = false;
       if (mounted) setState(() {});
-      Utils.displayToastBottomError("Something went wrong contacts import", context);
+      if (mounted) Utils.displayToastBottomError("Something went wrong contacts import", context);
     }
   }
 
@@ -1090,7 +1120,7 @@ class _ContactsPageState extends State<ContactsPage> {
       setState(() {});
     }
 
-    var response = contactPageRepository!.getData();
+    var response = await contactPageRepository!.getData();
 
     if (mounted) {
       _contacts = [];

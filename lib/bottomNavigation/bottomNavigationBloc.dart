@@ -63,6 +63,7 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
   final CoNetWebPageRepository conetWebPageRepository;
   final SettingsPageRepository settingsPageRepository;
   int currentIndex = 0;
+  bool isImportAndSyncInProgress = false;
 
   // @override
   // Stream<BottomNavigationState> mapEventToState(
@@ -71,6 +72,13 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
 
   //   // if (event is PageTapped) {}
   // }
+  setIsImportAndSyncInProgressValue(bool value) {
+    isImportAndSyncInProgress = value;
+  }
+
+  bool getIsImportAndSyncInProgressValue() {
+    return isImportAndSyncInProgress;
+  }
 
   getRemoveContactData() async {
     await contactPageRepository.getRemoveData();

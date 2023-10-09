@@ -107,7 +107,9 @@ class _ContactsPageState extends State<ContactsPage> {
 
     setState(() {});
 
-    SchedulerBinding.instance.addPostFrameCallback((_) => _checkPermission());
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      await _checkPermission();
+    });
     _outputController = TextEditingController();
 
     _handleList(_contacts);
@@ -479,9 +481,9 @@ class _ContactsPageState extends State<ContactsPage> {
           color: AppColor.primaryColor,
           backgroundColor: AppColor.whiteColor,
           onRefresh: () {
-            return Future.delayed(const Duration(milliseconds: 500), () {
-              BlocProvider.of<BottomNavigationBloc>(context).add(PageRefreshed(index: 0));
-              _updateContact();
+            return Future.delayed(const Duration(milliseconds: 500), () async {
+              // BlocProvider.of<BottomNavigationBloc>(context).add(PageRefreshed(index: 0));
+              await _updateContact();
             });
           },
           child: AzListView(
@@ -921,9 +923,11 @@ class _ContactsPageState extends State<ContactsPage> {
 
   _checkPermission() async {
     if (!bottomNavigationBloc.getIsImportAndSyncInProgressValue()) {
+      // print('Checking sync issue number 4 on timestamp : ${DateTime.now().toString()}');
       SharedPreferences preferences = await SharedPreferences.getInstance();
 
       if (preferences.getBool('imported') == false) {
+        // print('Checking sync issue number 5 on timestamp : ${DateTime.now().toString()}');
         var status = await Permission.contacts.status;
         print(status);
         if (status.isGranted) {
@@ -932,16 +936,17 @@ class _ContactsPageState extends State<ContactsPage> {
           print("calling 22");
 
           await _importContacts();
-          setState(() {});
+          if (mounted) {
+            setState(() {});
+          }
         } else {
-          print("else");
           var reqStatus = await Permission.contacts.request();
           print(" reqstatus $reqStatus");
           if (reqStatus.isGranted) {
-            print("calling 22333");
-
             await _importContacts();
-            setState(() {});
+            if (mounted) {
+              setState(() {});
+            }
 
             // await _importContacts();
           } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {

@@ -743,6 +743,7 @@ class _SettingsState extends State<Settings> {
       bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
     } catch (e) {
       print("import contacts function");
+      bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
       print(e.toString());
     }
   }
@@ -755,31 +756,26 @@ class _SettingsState extends State<Settings> {
       if (response != null && response['status'] == true) {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setBool('imported', true);
-        setState(() {
-          _loader = false;
-        });
+        _loader = false;
+        if (mounted) setState(() {});
         Utils.displayToast("Successfully imported", context);
       } else if (response != null && response['status'] == "Token is Expired") {
         tokenExpired(context);
-        setState(() {
-          _loader = false;
-        });
+        _loader = false;
+        if (mounted) setState(() {});
       } else if (response == null) {
-        setState(() {
-          _loader = false;
-        });
+        _loader = false;
+        if (mounted) setState(() {});
         Utils.displayToastBottomError("Connection Time Out\n Try Again", context);
       } else {
-        setState(() {
-          _loader = false;
-        });
+        _loader = false;
+        if (mounted) setState(() {});
         Utils.displayToastBottomError("Something went wrong", context);
       }
     } catch (e) {
       print(e);
-      setState(() {
-        _loader = false;
-      });
+      _loader = false;
+      if (mounted) setState(() {});
       bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
       Utils.displayToastBottomError("Something went wrong", context);
     }
@@ -790,12 +786,16 @@ class _SettingsState extends State<Settings> {
       var status = await Permission.contacts.status;
       if (status.isGranted) {
         gtm.push(GTMConstants.kimportContactsEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+        bottomNavigationBloc.setIsImportAndSyncInProgressValue(true);
         await _importContacts();
+        bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
       } else {
         var reqStatus = await Permission.contacts.request();
         print(" reqstatus $reqStatus");
         if (reqStatus.isGranted) {
-          await _importContacts();
+          _checkContactPermission();
+
+          //await _importContacts();
         } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
           QuickAlert.show(
             context: context,
@@ -827,9 +827,8 @@ class _SettingsState extends State<Settings> {
       totalConnection = widget.totalcount[0].totalConnection ?? 0;
       totalContact = widget.totalcount[0].totalContact ?? 0;
       PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-        setState(() {
-          version = packageInfo.version;
-        });
+        version = packageInfo.version;
+        if (mounted) setState(() {});
       });
     } catch (e) {}
   }

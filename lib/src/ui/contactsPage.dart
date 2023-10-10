@@ -95,7 +95,6 @@ class _ContactsPageState extends State<ContactsPage> {
     _contacts = responseData;
     _loadedcontacts = _contacts;
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
-    print("initcalling");
 
     //_updateContact();
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kContactListScreen});
@@ -104,8 +103,6 @@ class _ContactsPageState extends State<ContactsPage> {
       updatecheck = false;
       _updateContact();
     }
-
-    setState(() {});
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await _checkPermission();
@@ -922,43 +919,48 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   _checkPermission() async {
-    if (!bottomNavigationBloc.getIsImportAndSyncInProgressValue()) {
-      // print('Checking sync issue number 4 on timestamp : ${DateTime.now().toString()}');
-      SharedPreferences preferences = await SharedPreferences.getInstance();
+    try {
+      if (!bottomNavigationBloc.getIsImportAndSyncInProgressValue()) {
+        // print('Checking sync issue number 4 on timestamp : ${DateTime.now().toString()}');
+        SharedPreferences preferences = await SharedPreferences.getInstance();
 
-      if (preferences.getBool('imported') == false) {
-        // print('Checking sync issue number 5 on timestamp : ${DateTime.now().toString()}');
-        var status = await Permission.contacts.status;
-        print(status);
-        if (status.isGranted) {
-          print(status.isGranted);
-          print("if");
-          print("calling 22");
-
-          await _importContacts();
-          if (mounted) {
-            setState(() {});
-          }
-        } else {
-          var reqStatus = await Permission.contacts.request();
-          print(" reqstatus $reqStatus");
-          if (reqStatus.isGranted) {
+        if (preferences.getBool('imported') == false) {
+          // print('Checking sync issue number 5 on timestamp : ${DateTime.now().toString()}');
+          var status = await Permission.contacts.status;
+          print(status);
+          if (status.isGranted) {
+            print(status.isGranted);
+            bottomNavigationBloc.setIsImportAndSyncInProgressValue(true);
             await _importContacts();
+            bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
+
             if (mounted) {
               setState(() {});
             }
-
-            // await _importContacts();
-          } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
-            preferences.setBool('imported', true);
-            Utils.displayToastBottomError("Permission Denied for Contact Imports", context);
-
-            // openAppSettings();
           } else {
-            Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
+            var reqStatus = await Permission.contacts.request();
+            print(" reqstatus $reqStatus");
+
+            if (reqStatus.isGranted) {
+              // await _importContacts();
+              if (mounted) {
+                setState(() {});
+              }
+
+              // await _importContacts();
+            } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
+              preferences.setBool('imported', true);
+              Utils.displayToastBottomError("Permission Denied for Contact Imports", context);
+
+              // openAppSettings();
+            } else {
+              Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
+            }
           }
         }
       }
+    } catch (e) {
+      bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
     }
   }
   //  _checkShowDialog() async {
@@ -1060,7 +1062,7 @@ class _ContactsPageState extends State<ContactsPage> {
   _importContacts() async {
     try {
       bottomNavigationBloc.setIsImportAndSyncInProgressValue(true);
-      print("import function calll api");
+      print("import function call api");
       Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
 
       for (var item in contacts) {
@@ -1074,8 +1076,7 @@ class _ContactsPageState extends State<ContactsPage> {
       bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
     } catch (e) {
       print("import function");
-      //bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
-
+      bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
       print(e.toString());
     }
   }

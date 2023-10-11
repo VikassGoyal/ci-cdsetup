@@ -1,3 +1,4 @@
+import 'package:conet/models/allContacts.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ContactsOperationsState extends Equatable {
@@ -16,27 +17,26 @@ class ContactsOperationsLoading extends ContactsOperationsState {
 }
 
 class ContactsOperationsError extends ContactsOperationsState {
-  const ContactsOperationsError(this.message);
+  const ContactsOperationsError(this.message, this.errorResult);
 
-  final Object message;
+  final Object errorResult;
+  final String message;
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message, errorResult];
 }
 
 class SyncContactsEventSuccess extends ContactsOperationsState {
-  final List contactsData;
-  // bool isInitialFetch;
-  // bool isRefreshData;
-  // bool isFetchedAllData;
+  final List<AllContacts> contactsDataList;
+  final List<AllContacts> loadedContactsDataList;
+  final bool isUpdatingAfterContactsSync;
 
   const SyncContactsEventSuccess({
-    // this.isInitialFetch = false,
-    // this.isRefreshData = false,
-    // this.isFetchedAllData = false,
-    required this.contactsData,
+    required this.contactsDataList,
+    required this.loadedContactsDataList,
+    required this.isUpdatingAfterContactsSync,
   });
 
   @override
-  List<Object> get props => [contactsData];
+  List<Object> get props => [contactsDataList, loadedContactsDataList];
 }

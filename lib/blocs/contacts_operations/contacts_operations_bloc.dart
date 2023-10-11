@@ -9,8 +9,13 @@ import 'package:conet/api_models/requestContactResponse_request_model.dart/reque
 import 'package:conet/api_models/updateProfileDetails_request_model/updateProfileDetails_request_body.dart';
 import 'package:conet/api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
 import 'package:conet/api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
+import 'package:conet/models/allContacts.dart';
+import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/repositories/contactPageRepository.dart';
+import 'package:conet/utils/contacts_helper.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'contacts_operations_event.dart';
 import 'contacts_operations_state.dart';
@@ -21,7 +26,67 @@ class ContactsOperationsBloc extends Bloc<ContactsOperationsEvent, ContactsOpera
 
   ContactsOperationsBloc({required this.contactPageRepository}) : super(const ContactsOperationsInitial()) {
     on<SyncContactsEvent>((event, emit) async {
-      //
+      emit(const ContactsOperationsLoading());
+      try {
+        isImportAndSyncInProgress = true;
+        print("import function call api");
+        Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
+        List<DeviceContactData> importportcontacts = [];
+        for (var item in contacts) {
+          if (item.phones!.toList().isNotEmpty) {
+            DeviceContactData data = DeviceContactData(item.displayName, item.phones!.toList()[0].value);
+            importportcontacts.add(data);
+          }
+        }
+        //
+        var response = await importContacts(importportcontacts);
+        if (response == null) {
+          emit(ContactsOperationsError('Connection Time Out\n Try Again', response));
+        } else if (response['status'] == true) {
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          preferences.setBool('imported', true);
+          add(const UpdateContactsEvent(isUpdatingAfterContactsSync: true));
+        } else if (response['status'] == "Token is Expired") {
+          emit(ContactsOperationsError('Token is Expired', response));
+        } else {
+          emit(ContactsOperationsError('Something went wrong in Importing Contacts', response));
+        }
+        isImportAndSyncInProgress = false;
+        //
+      } catch (e) {
+        print("SyncContactsEvent function");
+        isImportAndSyncInProgress = false;
+        print(e.toString());
+        emit(ContactsOperationsError('Something went wrong in contacts import', e));
+      }
+    });
+    on<UpdateContactsEvent>((event, emit) async {
+      emit(const ContactsOperationsLoading());
+      try {
+        //
+        await contactPageRepository.getallContacts();
+
+        var response = await contactPageRepository!.getData();
+        List<AllContacts> contactsDataList = [];
+        List<AllContacts> loadedContactsDataList = [];
+        contactsDataList = response;
+        loadedContactsDataList = contactsDataList;
+
+        ContactsHelper.handleAndSortContactsList(contactsDataList);
+        if (event.isUpdatingAfterContactsSync) {
+          isImportAndSyncInProgress = false;
+        }
+        emit(SyncContactsEventSuccess(
+          contactsDataList: contactsDataList,
+          loadedContactsDataList: loadedContactsDataList,
+          isUpdatingAfterContactsSync: event.isUpdatingAfterContactsSync,
+        ));
+      } catch (e) {
+        print("UpdateContactsEvent function");
+        isImportAndSyncInProgress = false;
+        print(e.toString());
+        emit(ContactsOperationsError('Something went wrong in Updating Contacts', e));
+      }
     });
   }
 

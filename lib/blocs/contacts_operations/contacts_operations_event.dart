@@ -8,12 +8,12 @@ abstract class ContactsOperationsEvent extends Equatable {
 }
 
 class SyncContactsEvent extends ContactsOperationsEvent {
-  // bool isInitialFetch;
-  // bool isRefreshData;
-  SyncContactsEvent(
-      // {
-      // this.isInitialFetch = false,
-      // this.isRefreshData = false,
-      // }
-      );
+  const SyncContactsEvent();
+}
+
+class UpdateContactsEvent extends ContactsOperationsEvent {
+  final bool isUpdatingAfterContactsSync;
+  const UpdateContactsEvent({
+    this.isUpdatingAfterContactsSync = false,
+  });
 }

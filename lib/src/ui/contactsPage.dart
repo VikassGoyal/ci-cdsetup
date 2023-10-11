@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_event.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_state.dart';
 import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
+import 'package:conet/utils/contacts_helper.dart';
 import 'package:conet/utils/gtm_constants.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:azlistview/azlistview.dart';
 import 'package:conet/models/allContacts.dart';
-import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/models/recentCalls.dart';
 import 'package:conet/repositories/repositories.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
@@ -20,30 +22,24 @@ import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gtm/gtm.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:lpinyin/lpinyin.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-// import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
 import '../../api_models/qrValue_request_model/qrValue_request_body.dart';
-import '../../bottomNavigation/bottomNavigationBloc.dart';
 import '../../models/contactDetails.dart';
 import 'contact/contactProfile.dart';
 
@@ -67,16 +63,16 @@ class _ContactsPageState extends State<ContactsPage> {
   List<AllContacts> _searchResult = [];
   List<AllContacts> _blanklistcontacts = [];
   List<RecentCalls> _blanklistrecentCalls = [];
-  final List<DeviceContactData> _importportcontacts = [];
+  // final List<DeviceContactData> _importportcontacts = [];
   TextEditingController? _outputController;
   late final ContactPageRepository contactPageRepository;
-  FocusNode _focusNode = FocusNode();
+  late final FocusNode textFocusNode;
   Barcode? result;
   // QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   late final ContactsOperationsBloc contactsOperationsBloc;
-  bool _loader = false;
+  bool _isContactsPageLoading = false;
   bool _showCancelIcon = false;
   double susItemHeight = 40;
   final gtm = Gtm.instance;
@@ -91,6 +87,7 @@ class _ContactsPageState extends State<ContactsPage> {
     contactPageRepository = contactsOperationsBloc.contactPageRepository;
     var responseData = widget.contactsData ?? _blanklistcontacts;
     _textEditingController = TextEditingController();
+    textFocusNode = FocusNode();
     _contacts = [];
     recentCalls = [];
     _loadedcontacts = [];
@@ -98,20 +95,23 @@ class _ContactsPageState extends State<ContactsPage> {
     _loadedcontacts = _contacts;
     recentCalls = widget.mostDailedContacts ?? _blanklistrecentCalls;
 
-    //_updateContact();
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kContactListScreen});
-    // updatecheck = widget.updatebool ?? false;
-    // if (updatecheck) {
-    //   updatecheck = false;
-    //   _updateContact();
-    // }
+    updatecheck = widget.updatebool ?? false;
+    if (updatecheck) {
+      updatecheck = false;
+      _updateContact();
+    }
     _outputController = TextEditingController();
 
-    _handleList(_contacts);
+    ContactsHelper.handleAndSortContactsList(_contacts);
     getNotificationData();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      _checkPermission();
+      _checkPermissionAndSyncContacts();
     });
+  }
+
+  _updateContact() {
+    contactsOperationsBloc.add(const UpdateContactsEvent(isUpdatingAfterContactsSync: false));
   }
 
   // //QR SCAN
@@ -122,61 +122,6 @@ class _ContactsPageState extends State<ContactsPage> {
   //     qrViewController!.pauseCamera();
   //   }
   // }
-
-  // Overridden this due to Error in AZListView
-  void _sortListBySuspensionTag(List<AllContacts> list) {
-    if (list.isEmpty) return;
-    list.sort((a, b) {
-      if (RegExp("[A-Z]").hasMatch(a.getSuspensionTag()) && !RegExp("[A-Z]").hasMatch(b.getSuspensionTag())) {
-        return -1;
-      } else if (!RegExp("[A-Z]").hasMatch(a.getSuspensionTag()) && RegExp("[A-Z]").hasMatch(b.getSuspensionTag())) {
-        return 1;
-      } else if (RegExp("[A-Z]").hasMatch(a.getSuspensionTag()) && RegExp("[A-Z]").hasMatch(b.getSuspensionTag())) {
-        final nameA = a.name?.toLowerCase() ?? '';
-        final nameB = b.name?.toLowerCase() ?? '';
-        return nameA.compareTo(nameB);
-      } else if (a.getSuspensionTag() == "@" && b.getSuspensionTag() != "@") {
-        return -1;
-      } else if (a.getSuspensionTag() != "@" && b.getSuspensionTag() == "@") {
-        return 1;
-      } else if (a.getSuspensionTag() == "#" && b.getSuspensionTag() != "#") {
-        return -1;
-      } else if (a.getSuspensionTag() != "#" && b.getSuspensionTag() == "#") {
-        return 1;
-      } else {
-        return a.getSuspensionTag().compareTo(b.getSuspensionTag());
-      }
-    });
-  }
-
-  void _handleList(List<AllContacts> list) {
-    Set<String> uniqueContacts = {};
-    List<AllContacts> uniqueList = [];
-
-    for (int i = 0; i < list.length; i++) {
-      String? name = list[i].name ?? list[i].phone;
-      String pinyin = PinyinHelper.getPinyinE(name!);
-      String tag = pinyin.substring(0, 1).toUpperCase();
-      if (RegExp("[A-Z]").hasMatch(tag)) {
-        list[i].tagIndex = tag;
-      } else {
-        list[i].tagIndex = "#";
-      }
-      // Create a unique key based on name and phone
-      String contactKey = '${list[i].name}${list[i].phone}';
-      if (!uniqueContacts.contains(contactKey)) {
-        uniqueContacts.add(contactKey); // Add the unique key to the set
-        uniqueList.add(list[i]); // Add the unique contact to the unique list
-      }
-    }
-
-    //here sorting contacts list by tags and also by names
-    _sortListBySuspensionTag(uniqueList);
-    //here selecting the first contact for each tag to show in list
-    SuspensionUtil.setShowSuspensionStatus(uniqueList);
-    list.clear();
-    list.addAll(uniqueList);
-  }
 
   Decoration getIndexBarDecoration(Color color) {
     return BoxDecoration(
@@ -201,7 +146,7 @@ class _ContactsPageState extends State<ContactsPage> {
     super.dispose();
     _textEditingController!.dispose();
     _outputController!.dispose();
-    _focusNode.dispose();
+    textFocusNode.dispose();
   }
 
   @override
@@ -214,8 +159,7 @@ class _ContactsPageState extends State<ContactsPage> {
         padding: EdgeInsets.only(top: 11.h, bottom: 11.h),
         child: GestureDetector(
           onTap: () {
-            _focusNode.unfocus();
-
+            textFocusNode.unfocus();
             _clearText();
             if (_contacts[index].userId == null) {
               gtm.push(GTMConstants.kcontactDetailsViewEvent,
@@ -429,7 +373,7 @@ class _ContactsPageState extends State<ContactsPage> {
       );
     }
 
-    Widget _buildSusWidget(String susTag) {
+    Widget buildSusWidget(String susTag) {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 15.w),
         height: susItemHeight,
@@ -457,13 +401,13 @@ class _ContactsPageState extends State<ContactsPage> {
       );
     }
 
-    Widget _buildListItem(AllContacts model, int index) {
+    Widget buildListItem(AllContacts model, int index) {
       String susTag = model.getSuspensionTag();
       return Column(
         children: <Widget>[
           Offstage(
             offstage: model.isShowSuspension != true,
-            child: _buildSusWidget(susTag),
+            child: buildSusWidget(susTag),
           ),
           contactListItem(index),
           Container(
@@ -479,9 +423,9 @@ class _ContactsPageState extends State<ContactsPage> {
           color: AppColor.primaryColor,
           backgroundColor: AppColor.whiteColor,
           onRefresh: () {
-            return Future.delayed(const Duration(milliseconds: 500), () async {
+            return Future.delayed(const Duration(milliseconds: 500), () {
               // BlocProvider.of<BottomNavigationBloc>(context).add(PageRefreshed(index: 0));
-              await _updateContact();
+              _updateContact();
             });
           },
           child: AzListView(
@@ -489,7 +433,7 @@ class _ContactsPageState extends State<ContactsPage> {
             itemCount: _contacts.length,
             itemBuilder: (BuildContext context, int index) {
               AllContacts model = _contacts[index];
-              return _buildListItem(model, index);
+              return buildListItem(model, index);
             },
             physics: const BouncingScrollPhysics(),
             indexHintBuilder: (context, hint) {
@@ -573,14 +517,11 @@ class _ContactsPageState extends State<ContactsPage> {
                           child: Container(
                             width: 17,
                             height: 17,
-                            decoration: BoxDecoration(
-                              color: AppColor.accentColor,
-                              shape: BoxShape.circle,
-                            ),
+                            decoration: const BoxDecoration(color: AppColor.accentColor, shape: BoxShape.circle),
                             child: Center(
                               child: Text(
                                 lengthofnotification != 0 ? lengthofnotification.toString() : "0",
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
@@ -590,276 +531,286 @@ class _ContactsPageState extends State<ContactsPage> {
               ),
             ),
           )
-          // IconButton(
-          //   icon: const Icon(
-          //     Icons.notifications,
-          //     color: AppColor.whiteColor,
-          //   ),
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => NotificationScreen(),
-          //       ),
-          //     ).then((value) {
-          //       print("value : $value");
-          //       if (value != null && value) _updateContact();
-          //     });
-          //   },
-          // )
         ],
       ),
-      body: LoadingOverlay(
-        isLoading: _loader,
-        opacity: 0.3,
-        progressIndicator: const CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-              color: AppColor.primaryColor,
-              child: Row(
-                children: <Widget>[
-                  Flexible(
-                    child: Container(
-                      height: 36.w,
-                      color: AppColor.primaryColor,
-                      child: TextField(
-                        controller: _textEditingController,
-                        onChanged: (value) {
-                          gtm.push(GTMConstants.kcontactSearchEvent,
-                              parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
-                          filterSearchResults(value);
+      body: BlocConsumer<ContactsOperationsBloc, ContactsOperationsState>(listener: (context, state) {
+        if (state is SyncContactsEventSuccess) {
+          _isContactsPageLoading = false;
+          _contacts = state.contactsDataList;
+          _loadedcontacts = state.loadedContactsDataList;
+          if (state.isUpdatingAfterContactsSync) {
+            Utils.displayToast("Successfully imported", context);
+          }
+          // if (mounted) setState(() {});
+        } else if (state is ContactsOperationsLoading) {
+          _isContactsPageLoading = true;
+          // if (mounted) setState(() {});
+        } else if (state is ContactsOperationsError) {
+          _isContactsPageLoading = false;
+          String errMsg = state.message;
+          if (errMsg == 'Token is Expired') {
+            _isContactsPageLoading = false;
+            tokenExpired(context);
+          } else {
+            Utils.displayToastBottomError(errMsg, context);
+          }
+          // if (mounted) setState(() {});
+        }
+      }, buildWhen: (previous, current) {
+        return true;
+      }, builder: (context, state) {
+        return LoadingOverlay(
+          isLoading: _isContactsPageLoading,
+          opacity: 0.3,
+          progressIndicator: const CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+                color: AppColor.primaryColor,
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: Container(
+                        height: 36.w,
+                        color: AppColor.primaryColor,
+                        child: TextField(
+                          controller: _textEditingController,
+                          onChanged: (value) {
+                            gtm.push(GTMConstants.kcontactSearchEvent,
+                                parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+                            filterSearchResults(value);
 
-                          setState(() {
-                            // _showCancelIcon = true;
-                            value.length > 1 ? _showCancelIcon = true : _showCancelIcon = false;
-                          });
-                        },
-                        focusNode: _focusNode,
-                        maxLines: 1,
-                        minLines: 1,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontFamily: kSfproDisplayFontFamily,
-                          color: AppColor.placeholder,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 18.sp,
-                        ),
-                        textInputAction: TextInputAction.search,
-                        textCapitalization: TextCapitalization.words,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(vertical: -5),
-                          isDense: true,
-                          hintText: "Search",
-                          fillColor: Colors.white,
-                          filled: true,
-                          hintStyle: TextStyle(
+                            setState(() {
+                              // _showCancelIcon = true;
+                              value.length > 1 ? _showCancelIcon = true : _showCancelIcon = false;
+                            });
+                          },
+                          focusNode: textFocusNode,
+                          maxLines: 1,
+                          minLines: 1,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
                             fontFamily: kSfproDisplayFontFamily,
-                            color: AppColor.gray30Color,
+                            color: AppColor.placeholder,
                             fontWeight: FontWeight.w400,
                             fontStyle: FontStyle.normal,
                             fontSize: 18.sp,
                           ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            borderSide: BorderSide.none,
-                          ),
-                          prefixIconConstraints: const BoxConstraints(maxHeight: 20),
-                          prefixIcon: InkWell(
-                            onTap: () {
-                              if (_showCancelIcon == true) {
-                                _clearText();
-                                restoreSearchResults();
-                              }
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 11.w, right: 11.w),
-                              child: Icon(
-                                _showCancelIcon ? Icons.close : Icons.search,
-                                color: AppColor.gray30Color.withOpacity(0.5),
-                                size: 20.w,
-                              ),
-                            ),
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              Icons.qr_code,
+                          textInputAction: TextInputAction.search,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(vertical: -5),
+                            isDense: true,
+                            hintText: "Search",
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintStyle: TextStyle(
+                              fontFamily: kSfproDisplayFontFamily,
                               color: AppColor.gray30Color,
-                              size: 20.w,
-                            ),
-                            onPressed: () {
-                              _checkQRPermission();
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Container(
-                    width: 36.w,
-                    height: 36.w,
-                    alignment: Alignment.center,
-                    child: FloatingActionButton(
-                      heroTag: null,
-                      elevation: 0,
-                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                      backgroundColor: AppColor.secondaryColor,
-                      child: Icon(
-                        Icons.add,
-                        size: 18.h,
-                        color: AppColor.whiteColor,
-                      ),
-                      onPressed: () {
-                        print("Cliked");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AddContact(),
-                          ),
-                        ).then((value) {
-                          if (value != null && value == true) {
-                            _updateContact();
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Container(
-                    width: 36.w,
-                    height: 36.w,
-                    alignment: Alignment.center,
-                    child: FloatingActionButton(
-                      heroTag: null,
-                      elevation: 0,
-                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                      backgroundColor: AppColor.accentColor,
-                      child: SvgPicture.asset("assets/icons/ic_businesscard.svg", height: 18.h),
-                      onPressed: () {
-                        print("Cliked");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) {
-                            return BussinessCard();
-                          }),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Visibility(
-              visible: recentCalls.isNotEmpty,
-              child: Container(
-                width: MediaQuery.of(context).size.width * 1.0,
-                constraints: BoxConstraints(maxHeight: 110.h, minHeight: 110.h),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0),
-                  ),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 20.0,
-                      offset: Offset(0.0, 1),
-                    )
-                  ],
-                ),
-                child: Card(
-                  elevation: 0,
-                  color: AppColor.whiteColor,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    addAutomaticKeepAlives: true,
-                    itemCount: recentCalls.length,
-                    itemBuilder: (BuildContext ctxt, int i) {
-                      return InkWell(
-                        onTap: () {
-                          gtm.push(GTMConstants.kCallEvent,
-                              parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
-                          recentPageRepository.insertDailedCall(recentCalls[i].number!, recentCalls[i].name);
-                          _callNumber(recentCalls[i].number!);
-                        },
-                        child: Container(
-                          width: 80.w,
-                          margin: EdgeInsets.only(top: 18.h),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: const AssetImage(
-                                  'assets/images/userprofile_border.png',
-                                ),
-                                backgroundColor: AppColor.whiteColor,
-                                child: Container(
-                                  margin: EdgeInsets.all(3.w),
-                                  child: Image(
-                                    height: 38.w,
-                                    image: const AssetImage(
-                                      'assets/images/profile_placeholder.png',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 3.h),
-                              Text(
-                                (recentCalls[i].name == "" || recentCalls[i].name == "null")
-                                    ? "Unknown"
-                                    : recentCalls[i].name!,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
-            _contacts.isNotEmpty
-                ? Expanded(
-                    child: azcontactsList(),
-                  )
-                : Expanded(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/no_data.svg",
-                            height: 130.h,
-                          ),
-                          SizedBox(height: 30.h),
-                          Text(
-                            "No Data",
-                            style: TextStyle(
-                              fontFamily: kSfproRoundedFontFamily,
-                              color: AppColor.black2,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.normal,
                               fontSize: 18.sp,
                             ),
-                          )
-                        ],
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              borderSide: BorderSide.none,
+                            ),
+                            prefixIconConstraints: const BoxConstraints(maxHeight: 20),
+                            prefixIcon: InkWell(
+                              onTap: () {
+                                if (_showCancelIcon == true) {
+                                  _clearText();
+                                  restoreSearchResults();
+                                }
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 11.w, right: 11.w),
+                                child: Icon(
+                                  _showCancelIcon ? Icons.close : Icons.search,
+                                  color: AppColor.gray30Color.withOpacity(0.5),
+                                  size: 20.w,
+                                ),
+                              ),
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                Icons.qr_code,
+                                color: AppColor.gray30Color,
+                                size: 20.w,
+                              ),
+                              onPressed: () {
+                                _checkQRPermission();
+                              },
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  )
-          ],
-        ),
-      ),
+                    SizedBox(width: 8.w),
+                    Container(
+                      width: 36.w,
+                      height: 36.w,
+                      alignment: Alignment.center,
+                      child: FloatingActionButton(
+                        heroTag: null,
+                        elevation: 0,
+                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                        backgroundColor: AppColor.secondaryColor,
+                        child: Icon(
+                          Icons.add,
+                          size: 18.h,
+                          color: AppColor.whiteColor,
+                        ),
+                        onPressed: () {
+                          print("Cliked");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AddContact(),
+                            ),
+                          ).then((value) {
+                            if (value != null && value == true) {
+                              _updateContact();
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Container(
+                      width: 36.w,
+                      height: 36.w,
+                      alignment: Alignment.center,
+                      child: FloatingActionButton(
+                        heroTag: null,
+                        elevation: 0,
+                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                        backgroundColor: AppColor.accentColor,
+                        child: SvgPicture.asset("assets/icons/ic_businesscard.svg", height: 18.h),
+                        onPressed: () {
+                          print("Cliked");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) {
+                              return BussinessCard();
+                            }),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: recentCalls.isNotEmpty,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 1.0,
+                  constraints: BoxConstraints(maxHeight: 110.h, minHeight: 110.h),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 20.0,
+                        offset: Offset(0.0, 1),
+                      )
+                    ],
+                  ),
+                  child: Card(
+                    elevation: 0,
+                    color: AppColor.whiteColor,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      addAutomaticKeepAlives: true,
+                      itemCount: recentCalls.length,
+                      itemBuilder: (BuildContext ctxt, int i) {
+                        return InkWell(
+                          onTap: () {
+                            gtm.push(GTMConstants.kCallEvent,
+                                parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+                            recentPageRepository.insertDailedCall(recentCalls[i].number!, recentCalls[i].name);
+                            _callNumber(recentCalls[i].number!);
+                          },
+                          child: Container(
+                            width: 80.w,
+                            margin: EdgeInsets.only(top: 18.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: const AssetImage(
+                                    'assets/images/userprofile_border.png',
+                                  ),
+                                  backgroundColor: AppColor.whiteColor,
+                                  child: Container(
+                                    margin: EdgeInsets.all(3.w),
+                                    child: Image(
+                                      height: 38.w,
+                                      image: const AssetImage(
+                                        'assets/images/profile_placeholder.png',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 3.h),
+                                Text(
+                                  (recentCalls[i].name == "" || recentCalls[i].name == "null")
+                                      ? "Unknown"
+                                      : recentCalls[i].name!,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              _contacts.isNotEmpty
+                  ? Expanded(
+                      child: azcontactsList(),
+                    )
+                  : Expanded(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/no_data.svg",
+                              height: 130.h,
+                            ),
+                            SizedBox(height: 30.h),
+                            Text(
+                              "No Data",
+                              style: TextStyle(
+                                fontFamily: kSfproRoundedFontFamily,
+                                color: AppColor.black2,
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 18.sp,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+            ],
+          ),
+        );
+      }),
     );
   }
 
@@ -919,42 +870,15 @@ class _ContactsPageState extends State<ContactsPage> {
     }
   }
 
-  _checkPermission() async {
+  _checkPermissionAndSyncContacts() async {
     try {
       if (!contactsOperationsBloc.getIsImportAndSyncInProgressValue()) {
-        // print('Checking sync issue number 4 on timestamp : ${DateTime.now().toString()}');
         SharedPreferences preferences = await SharedPreferences.getInstance();
 
         if (preferences.getBool('imported') == false) {
-          // print('Checking sync issue number 5 on timestamp : ${DateTime.now().toString()}');
-          var status = await Permission.contacts.status;
-          print(status);
-          if (status.isGranted) {
-            print(status.isGranted);
-            contactsOperationsBloc.setIsImportAndSyncInProgressValue(true);
-            await _importContacts();
-            contactsOperationsBloc.setIsImportAndSyncInProgressValue(false);
-
-            if (mounted) {
-              setState(() {});
-            }
-          } else {
-            var reqStatus = await Permission.contacts.request();
-            print(" reqstatus $reqStatus");
-
-            if (reqStatus.isGranted) {
-              await _importContacts();
-              if (mounted) {
-                setState(() {});
-              }
-            } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
-              preferences.setBool('imported', true);
-              Utils.displayToastBottomError("Permission Denied for Contact Imports", context);
-
-              // openAppSettings();
-            } else {
-              Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
-            }
+          if (await checkContactsPermissions()) {
+            contactsOperationsBloc.add(const SyncContactsEvent());
+            // _isContactsPageLoading = true;
           }
         }
       }
@@ -963,84 +887,22 @@ class _ContactsPageState extends State<ContactsPage> {
     }
   }
 
-  _importContacts() async {
-    try {
-      contactsOperationsBloc.setIsImportAndSyncInProgressValue(true);
-      print("import function call api");
-      Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
-
-      for (var item in contacts) {
-        if (item.phones!.toList().isNotEmpty) {
-          DeviceContactData data = DeviceContactData(item.displayName, item.phones!.toList()[0].value);
-          _importportcontacts.add(data);
-        }
-      }
-
-      await callImportApi();
-      contactsOperationsBloc.setIsImportAndSyncInProgressValue(false);
-    } catch (e) {
-      print("import function");
-      contactsOperationsBloc.setIsImportAndSyncInProgressValue(false);
-      print(e.toString());
-    }
-  }
-
-  callImportApi() async {
-    _loader = true;
-    if (mounted) setState(() {});
-    print("call import api");
-
-    try {
-      var response = await contactsOperationsBloc.importContacts(_importportcontacts);
-      if (response == null) {
-        _loader = false;
-        if (mounted) setState(() {});
-        Utils.displayToastBottomError("Connection Time Out\n Try Again", context);
-      } else if (response['status'] == true) {
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        preferences.setBool('imported', true);
-        _updateContact();
-        Utils.displayToast("Successfully imported", context);
-      } else if (response['status'] == "Token is Expired") {
-        tokenExpired(context);
-        _loader = false;
-        if (mounted) setState(() {});
+  Future<bool> checkContactsPermissions() async {
+    var status = await Permission.contacts.status;
+    if (status.isGranted) {
+      return true;
+    } else {
+      var reqStatus = await Permission.contacts.request();
+      if (reqStatus.isGranted || reqStatus.isLimited) {
+        return true;
+      } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
+        if (mounted) Utils.displayToastBottomError("Permission Denied for Contact Imports", context);
+        return false;
       } else {
-        _loader = false;
-        if (mounted) setState(() {});
-        Utils.displayToastBottomError("Something went wrong in Importing Contacts", context);
+        if (mounted) Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
+        return false;
       }
-    } catch (e) {
-      print(e.toString());
-      _loader = false;
-      if (mounted) setState(() {});
-      if (mounted) Utils.displayToastBottomError("Something went wrong contacts import", context);
     }
-  }
-
-  _updateContact() async {
-    if (_loader == false) {
-      setState(() {
-        _loader = true;
-      });
-    }
-    await contactPageRepository!.getallContacts();
-    if (mounted) {
-      _loader = false;
-      setState(() {});
-    }
-
-    var response = await contactPageRepository!.getData();
-
-    if (mounted) {
-      _contacts = [];
-      _loadedcontacts = [];
-      _contacts = response;
-      _loadedcontacts = _contacts;
-      setState(() {});
-    }
-
-    _handleList(_contacts);
   }
 
 //QRscanner Start
@@ -1073,7 +935,7 @@ class _ContactsPageState extends State<ContactsPage> {
         });
         if (_outputController!.text != '') {
           setState(() {
-            _loader = true;
+            _isContactsPageLoading = true;
           });
           _sendQrApi();
         }
@@ -1121,7 +983,7 @@ class _ContactsPageState extends State<ContactsPage> {
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
           setState(() {
-            _loader = false;
+            _isContactsPageLoading = false;
           });
 
           Navigator.push(
@@ -1137,14 +999,14 @@ class _ContactsPageState extends State<ContactsPage> {
           );
         } else {
           setState(() {
-            _loader = false;
+            _isContactsPageLoading = false;
           });
           Fluttertoast.cancel();
           Utils.displayToastBottomError(response["message"], context);
         }
       } catch (e) {
         setState(() {
-          _loader = false;
+          _isContactsPageLoading = false;
         });
         //Utils.displayToastBottomError("Something went wrong", context);
       }

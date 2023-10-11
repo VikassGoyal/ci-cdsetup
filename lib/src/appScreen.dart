@@ -23,9 +23,9 @@ class AppScreen extends StatefulWidget {
 class _AppScreenState extends State<AppScreen> {
   @override
   void initState() {
-    // TODO: implement initState
-    BlocProvider.of<BottomNavigationBloc>(context).add(AppStarted());
     super.initState();
+    // print('------------> adding AppStarted event in initState of AppScreen');
+    // BlocProvider.of<BottomNavigationBloc>(context).add(AppStarted());
   }
 
   @override
@@ -84,6 +84,7 @@ class _AppScreenState extends State<AppScreen> {
               onTap: (index) {
                 final currentIndex = context.read<BottomNavigationBloc>().currentIndex;
                 if (index != currentIndex) {
+                  print('------------> adding PageTapped event in onTap function of BottomNavigationBar');
                   context.read<BottomNavigationBloc>().add(PageTapped(index: index));
                 }
               },

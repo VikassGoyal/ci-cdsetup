@@ -21,16 +21,18 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
       required this.settingsPageRepository})
       : super(PageLoading()) {
     on<AppStarted>((event, emit) {
+      print('------------> adding PageTapped event on AppStarted event call in BottomNavigationBloc');
       add(PageTapped(index: currentIndex));
     });
 
     on<PageRefreshed>((event, emit) {
+      print('------------> adding PageTapped event on PageRefreshed event call in BottomNavigationBloc');
       add(PageTapped(index: currentIndex));
     });
 
     on<PageTapped>((event, emit) async {
       currentIndex = event.index;
-      emit(CurrentIndexChanged(currentIndex: currentIndex));
+      // emit(CurrentIndexChanged(currentIndex: currentIndex));
       emit(PageLoading());
 
       if (currentIndex == 0) {
@@ -63,22 +65,15 @@ class BottomNavigationBloc extends Bloc<BottomNavigationEvent, BottomNavigationS
   final CoNetWebPageRepository conetWebPageRepository;
   final SettingsPageRepository settingsPageRepository;
   int currentIndex = 0;
-  // bool isImportAndSyncInProgress = false;
+  bool isAppLifecycleStateIsPaused = false;
 
-  // @override
-  // Stream<BottomNavigationState> mapEventToState(
-  //     BottomNavigationEvent event) async* {
-  //   // if (event is AppStarted) {}
+  setIsAppLifecycleStateIsPausedValue(bool value) {
+    isAppLifecycleStateIsPaused = value;
+  }
 
-  //   // if (event is PageTapped) {}
-  // }
-  // setIsImportAndSyncInProgressValue(bool value) {
-  //   isImportAndSyncInProgress = value;
-  // }
-
-  // bool getIsImportAndSyncInProgressValue() {
-  //   return isImportAndSyncInProgress;
-  // }
+  bool getIsAppLifecycleStateIsPausedValue() {
+    return isAppLifecycleStateIsPaused;
+  }
 
   getRemoveContactData() async {
     await contactPageRepository.getRemoveData();

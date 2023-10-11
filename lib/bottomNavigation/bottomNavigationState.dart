@@ -7,14 +7,14 @@ abstract class BottomNavigationState extends Equatable {
   List<Object> get props => [];
 }
 
-class CurrentIndexChanged extends BottomNavigationState {
-  final int currentIndex;
+// class CurrentIndexChanged extends BottomNavigationState {
+//   final int currentIndex;
 
-  const CurrentIndexChanged({required this.currentIndex});
+//   const CurrentIndexChanged({required this.currentIndex});
 
-  @override
-  String toString() => 'CurrentIndexChanged to $currentIndex';
-}
+//   @override
+//   String toString() => 'CurrentIndexChanged to $currentIndex';
+// }
 
 class PageLoading extends BottomNavigationState {
   @override

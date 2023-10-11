@@ -73,6 +73,7 @@ class _ContactsPageState extends State<ContactsPage> {
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   late final ContactsOperationsBloc contactsOperationsBloc;
   bool _isContactsPageLoading = false;
+  bool _isLoadingForQrCode = false;
   bool _showCancelIcon = false;
   double susItemHeight = 40;
   final gtm = Gtm.instance;
@@ -541,10 +542,8 @@ class _ContactsPageState extends State<ContactsPage> {
           if (state.isUpdatingAfterContactsSync) {
             Utils.displayToast("Successfully imported", context);
           }
-          // if (mounted) setState(() {});
         } else if (state is ContactsOperationsLoading) {
           _isContactsPageLoading = true;
-          // if (mounted) setState(() {});
         } else if (state is ContactsOperationsError) {
           _isContactsPageLoading = false;
           String errMsg = state.message;
@@ -554,13 +553,17 @@ class _ContactsPageState extends State<ContactsPage> {
           } else {
             Utils.displayToastBottomError(errMsg, context);
           }
-          // if (mounted) setState(() {});
         }
       }, buildWhen: (previous, current) {
         return true;
       }, builder: (context, state) {
+        if (state is ContactsOperationsLoading) {
+          _isContactsPageLoading = true;
+        } else {
+          _isContactsPageLoading = false;
+        }
         return LoadingOverlay(
-          isLoading: _isContactsPageLoading,
+          isLoading: _isContactsPageLoading || _isLoadingForQrCode,
           opacity: 0.3,
           progressIndicator: const CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
@@ -578,16 +581,19 @@ class _ContactsPageState extends State<ContactsPage> {
                         height: 36.w,
                         color: AppColor.primaryColor,
                         child: TextField(
+                          onTapOutside: (_) {
+                            //unfocusing/hiding the soft keyboard when tapped outside of the textField
+                            textFocusNode.unfocus();
+                          },
                           controller: _textEditingController,
                           onChanged: (value) {
                             gtm.push(GTMConstants.kcontactSearchEvent,
                                 parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
                             filterSearchResults(value);
-
-                            setState(() {
-                              // _showCancelIcon = true;
-                              value.length > 1 ? _showCancelIcon = true : _showCancelIcon = false;
-                            });
+                            //
+                            // _showCancelIcon = true;
+                            _showCancelIcon = value.length > 1;
+                            if (mounted) setState(() {});
                           },
                           focusNode: textFocusNode,
                           maxLines: 1,
@@ -823,11 +829,10 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   void restoreSearchResults() {
-    setState(() {
-      _contacts = [];
-      _contacts = _loadedcontacts;
-      _searchResult = [];
-    });
+    _contacts = [];
+    _contacts = _loadedcontacts;
+    _searchResult = [];
+    if (mounted) setState(() {});
   }
 
   void filterSearchResults(String query) {
@@ -856,17 +861,15 @@ class _ContactsPageState extends State<ContactsPage> {
           }
         }
       }
-
-      setState(() {
-        _contacts = [];
-        _contacts = _searchResult;
-      });
+      //
+      _contacts = [];
+      _contacts = _searchResult;
+      if (mounted) setState(() {});
       return;
     } else {
-      setState(() {
-        _contacts = [];
-        _contacts = _loadedcontacts;
-      });
+      _contacts = [];
+      _contacts = _loadedcontacts;
+      if (mounted) setState(() {});
     }
   }
 
@@ -878,7 +881,6 @@ class _ContactsPageState extends State<ContactsPage> {
         if (preferences.getBool('imported') == false) {
           if (await checkContactsPermissions()) {
             contactsOperationsBloc.add(const SyncContactsEvent());
-            // _isContactsPageLoading = true;
           }
         }
       }
@@ -929,14 +931,12 @@ class _ContactsPageState extends State<ContactsPage> {
     ))
         .then((value) {
       if (value != null) {
-        setState(() {
-          _outputController!.clear();
-          _outputController!.text = value!;
-        });
+        _outputController!.clear();
+        _outputController!.text = value!;
+        if (mounted) setState(() {});
         if (_outputController!.text != '') {
-          setState(() {
-            _isContactsPageLoading = true;
-          });
+          _isLoadingForQrCode = true;
+          if (mounted) setState(() {});
           _sendQrApi();
         }
       }
@@ -982,9 +982,9 @@ class _ContactsPageState extends State<ContactsPage> {
             .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: qrResponse["contact"]["phone"]));
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
-          setState(() {
-            _isContactsPageLoading = false;
-          });
+          //
+          _isLoadingForQrCode = false;
+          if (mounted) setState(() {});
 
           Navigator.push(
             context,
@@ -998,23 +998,23 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
           );
         } else {
-          setState(() {
-            _isContactsPageLoading = false;
-          });
+          _isLoadingForQrCode = false;
+          if (mounted) setState(() {});
           Fluttertoast.cancel();
-          Utils.displayToastBottomError(response["message"], context);
+          if (mounted) Utils.displayToastBottomError(response["message"], context);
         }
       } catch (e) {
-        setState(() {
-          _isContactsPageLoading = false;
-        });
+        _isLoadingForQrCode = false;
+        if (mounted) setState(() {});
         //Utils.displayToastBottomError("Something went wrong", context);
       }
     } else if (qrResponse['status'] == "Token is Expired") {
-      Utils.displayToastBottomError('Token is Expired', context);
-      tokenExpired(context);
+      if (mounted) {
+        Utils.displayToastBottomError('Token is Expired', context);
+        tokenExpired(context);
+      }
     } else {
-      Utils.displayToastBottomError('Something went wrong for QR', context);
+      if (mounted) Utils.displayToastBottomError('Something went wrong for QR', context);
     }
   }
 
@@ -1023,21 +1023,21 @@ class _ContactsPageState extends State<ContactsPage> {
       var response = await contactsOperationsBloc.contactRequest();
 
       if (response == null) {
-        Utils.displayToastBottomError('Something went wrong in getting Notifications', context);
+        if (mounted) Utils.displayToastBottomError('Something went wrong in getting Notifications', context);
       } else if (response['status'] == true) {
-        // gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
         var responseData = response['data'];
-        print(responseData.length);
-        if (responseData != null)
+        print('notifications responseData length : ${responseData?.length ?? -1}');
+        if (responseData != null) {
           lengthofnotification = responseData.length;
-        else
+        } else {
           lengthofnotification = 0;
+        }
       } else {
-        Utils.displayToastBottomError(response["message"], context);
+        if (mounted) Utils.displayToastBottomError(response["message"], context);
       }
-      setState(() {});
+      if (mounted) setState(() {});
     } catch (e) {
-      setState(() {});
+      if (mounted) setState(() {});
       print(e);
     }
   }

@@ -87,7 +87,9 @@ class App extends StatelessWidget {
                       keypadPageRepository: KeypadPageRepository(),
                       conetWebPageRepository: CoNetWebPageRepository(),
                       settingsPageRepository: SettingsPageRepository(),
-                    )..add(AppStarted())),
+                    )
+                // ..add(AppStarted()),
+                ),
             BlocProvider<RecentCallsBloc>(
                 create: (context) => RecentCallsBloc(recentPageRepository: RecentPageRepository())),
             BlocProvider<ContactsOperationsBloc>(

@@ -1,3 +1,4 @@
+import 'package:conet/bottomNavigation/bottomNavigationBloc.dart';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/repositories/contactPageRepository.dart';
 import 'package:conet/src/ui/contact/contactProfile.dart';
@@ -6,6 +7,7 @@ import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -17,7 +19,7 @@ class NewConetUsers extends StatefulWidget {
 }
 
 class _NewConetUsersState extends State<NewConetUsers> {
-  ContactPageRepository? contactPageRepository;
+  late final ContactPageRepository contactPageRepository;
   List<AllContacts> _contacts = [];
   bool _loader = true;
 
@@ -25,7 +27,7 @@ class _NewConetUsersState extends State<NewConetUsers> {
   void initState() {
     super.initState();
     _contacts = [];
-    contactPageRepository = ContactPageRepository();
+    contactPageRepository = BlocProvider.of<BottomNavigationBloc>(context).contactPageRepository;
     getNewInConet();
   }
 

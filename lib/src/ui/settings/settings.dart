@@ -1,4 +1,4 @@
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
@@ -53,7 +53,8 @@ class _SettingsState extends State<Settings> {
   DatabaseHelper databaseHelper = DatabaseHelper.instance;
   TextEditingController? _outputController;
   final List<DeviceContactData> _importportcontacts = [];
-  late BottomNavigationBloc bottomNavigationBloc;
+  // late BottomNavigationBloc bottomNavigationBloc;
+  late final ContactsOperationsBloc contactsOperationsBloc;
   final gtm = Gtm.instance;
   bool _loader = false;
 
@@ -65,7 +66,8 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
-    bottomNavigationBloc = BlocProvider.of<BottomNavigationBloc>(context);
+    // bottomNavigationBloc = BlocProvider.of<BottomNavigationBloc>(context);
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
 
     setValue();
 
@@ -570,7 +572,7 @@ class _SettingsState extends State<Settings> {
 
   _sendQrApi() async {
     var contactDetail;
-    var Qrresponse = await ContactBloc().sendQrValue(QrValueRequestBody(
+    var Qrresponse = await contactsOperationsBloc.sendQrValue(QrValueRequestBody(
       value: _outputController?.text,
       qrcode: true,
     ));
@@ -580,7 +582,7 @@ class _SettingsState extends State<Settings> {
         // var requestBody = {
         //   "phone": _outputController!.text,
         // };
-        var response = await ContactBloc()
+        var response = await contactsOperationsBloc
             .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: Qrresponse["contact"]["phone"]));
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
@@ -730,7 +732,7 @@ class _SettingsState extends State<Settings> {
 
   _importContacts() async {
     try {
-      bottomNavigationBloc.setIsImportAndSyncInProgressValue(true);
+      contactsOperationsBloc.setIsImportAndSyncInProgressValue(true);
       Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
 
       for (var item in contacts) {
@@ -740,10 +742,10 @@ class _SettingsState extends State<Settings> {
         }
       }
       await callImportApi();
-      bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
+      contactsOperationsBloc.setIsImportAndSyncInProgressValue(false);
     } catch (e) {
       print("import contacts function");
-      bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
+      contactsOperationsBloc.setIsImportAndSyncInProgressValue(false);
       print(e.toString());
     }
   }
@@ -752,7 +754,7 @@ class _SettingsState extends State<Settings> {
     _loader = true;
     if (mounted) setState(() {});
     try {
-      var response = await ContactBloc().importContacts(_importportcontacts);
+      var response = await contactsOperationsBloc.importContacts(_importportcontacts);
       if (response != null && response['status'] == true) {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.setBool('imported', true);
@@ -776,19 +778,19 @@ class _SettingsState extends State<Settings> {
       print(e);
       _loader = false;
       if (mounted) setState(() {});
-      bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
+      contactsOperationsBloc.setIsImportAndSyncInProgressValue(false);
       Utils.displayToastBottomError("Something went wrong", context);
     }
   }
 
   _checkContactPermission() async {
-    if (!bottomNavigationBloc.getIsImportAndSyncInProgressValue()) {
+    if (!contactsOperationsBloc.getIsImportAndSyncInProgressValue()) {
       var status = await Permission.contacts.status;
       if (status.isGranted) {
         gtm.push(GTMConstants.kimportContactsEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
-        bottomNavigationBloc.setIsImportAndSyncInProgressValue(true);
+        contactsOperationsBloc.setIsImportAndSyncInProgressValue(true);
         await _importContacts();
-        bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
+        contactsOperationsBloc.setIsImportAndSyncInProgressValue(false);
       } else {
         var reqStatus = await Permission.contacts.request();
         print(" reqstatus $reqStatus");

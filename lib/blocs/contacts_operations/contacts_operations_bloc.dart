@@ -1,25 +1,36 @@
-import 'package:conet/repositories/repositories.dart';
-import 'package:path/path.dart';
+import 'package:conet/api_models/%20filterSearchResults_request_model/%20filterSearchResults_request_body.dart';
+import 'package:conet/api_models/addNewContact_request_model/addNewContact_request_body.dart';
+import 'package:conet/api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
+import 'package:conet/api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';
+import 'package:conet/api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
+import 'package:conet/api_models/konetwebpage_request_model/konetwebpage_request_body.dart';
+import 'package:conet/api_models/qrValue_request_model/qrValue_request_body.dart';
+import 'package:conet/api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
+import 'package:conet/api_models/updateProfileDetails_request_model/updateProfileDetails_request_body.dart';
+import 'package:conet/api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
+import 'package:conet/api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
+import 'package:conet/repositories/contactPageRepository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../api_models/ filterSearchResults_request_model/ filterSearchResults_request_body.dart';
-import '../api_models/addNewContact_request_model/addNewContact_request_body.dart';
-import '../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
-import '../api_models/deleteContact__request_model/deleteContact.dart';
-import '../api_models/getMutualsContacts__request_model/getMutualsContact_request_body.dart';
-import '../api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
-import '../api_models/konetwebpage_request_model/konetwebpage_request_body.dart';
-import '../api_models/qrValue_request_model/qrValue_request_body.dart';
-import '../api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
-import '../api_models/updateProfileDetails_request_model/updateProfileDetails_request_body.dart';
-import '../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
-import '../api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
-import '../src/ui/utils.dart';
+import 'contacts_operations_event.dart';
+import 'contacts_operations_state.dart';
 
-class ContactBloc {
-  ContactPageRepository? contactPageRepository;
+class ContactsOperationsBloc extends Bloc<ContactsOperationsEvent, ContactsOperationsState> {
+  final ContactPageRepository contactPageRepository;
+  bool isImportAndSyncInProgress = false;
 
-  ContactBloc() {
-    contactPageRepository = ContactPageRepository();
+  ContactsOperationsBloc({required this.contactPageRepository}) : super(const ContactsOperationsInitial()) {
+    on<SyncContactsEvent>((event, emit) async {
+      //
+    });
+  }
+
+  setIsImportAndSyncInProgressValue(bool value) {
+    isImportAndSyncInProgress = value;
+  }
+
+  bool getIsImportAndSyncInProgressValue() {
+    return isImportAndSyncInProgress;
   }
 
   contactRequest() async {

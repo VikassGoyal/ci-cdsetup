@@ -1,11 +1,12 @@
 import 'package:conet/api_models/requestContactResponse_request_model.dart/requestContactResponse_request_body.dart';
-import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/blocs/contactRequest.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/src/ui/utils.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -25,9 +26,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
   List<NotificationResponse> notification = [];
   bool _loader = true;
   final gtm = Gtm.instance;
+  late final ContactsOperationsBloc contactsOperationsBloc;
   @override
   void initState() {
     super.initState();
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kNotificationScreen});
     Future.delayed(Duration.zero, () {
       getNotificationData();
@@ -421,7 +424,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   getNotificationData() async {
     try {
-      var response = await ContactBloc().contactRequest();
+      var response = await contactsOperationsBloc.contactRequest();
 
       _loader = false;
       if (mounted) setState(() {});
@@ -454,7 +457,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       //   "responseid": requestContactId,
       // };
       print(type);
-      var response = await ContactBloc()
+      var response = await contactsOperationsBloc
           .contactRequestResponse(RequestContactResponseRequestBody(id: type, responseid: requestContactId));
       if (response["status"] == true) {
         setState(() {

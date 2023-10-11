@@ -4,7 +4,8 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:conet/api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
+import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/models/imageUploadModel.dart';
@@ -14,6 +15,7 @@ import 'package:conet/utils/switchContactToggle.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,11 +47,6 @@ class ContactProfile extends StatefulWidget {
 }
 
 class _ContactProfileState extends State<ContactProfile> {
-  @override
-  initstate() {
-    _updatepage = false;
-  }
-
   final _personalName = TextEditingController();
   final _personalNumber = TextEditingController();
   final _personalSecondaryNumber = TextEditingController();
@@ -79,7 +76,6 @@ class _ContactProfileState extends State<ContactProfile> {
   final _socialGpay = TextEditingController();
   final _socialPaytm = TextEditingController();
   final gtm = Gtm.instance;
-  RecentPageRepository recentPageRepository = RecentPageRepository();
 
   List<EntrepreneurData> entreprenerurList = [];
   List<ProfessionalList>? entreprenerurListJson = [];
@@ -104,10 +100,15 @@ class _ContactProfileState extends State<ContactProfile> {
   String userImage = '';
   List<String> _values = [];
   List<NetworkImage> popupImages = <NetworkImage>[];
+  late final RecentPageRepository recentPageRepository;
+  late final ContactsOperationsBloc contactsOperationsBloc;
 
   @override
   void initState() {
     super.initState();
+    _updatepage = false;
+    recentPageRepository = BlocProvider.of<RecentCallsBloc>(context).recentPageRepository;
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     Future.delayed(Duration.zero, () {
       getProfileDetails(widget.id.toString());
 
@@ -1495,7 +1496,7 @@ class _ContactProfileState extends State<ContactProfile> {
   getMutualContacts(int? id) async {
     if (id == null) return;
     try {
-      var response = await ContactBloc().getMutualContacts(GetMutualsContactRequestBody(to_id: widget.id));
+      var response = await contactsOperationsBloc.getMutualContacts(GetMutualsContactRequestBody(to_id: widget.id));
       if (response != null && response["status"] == true) {
         setState(() {
           _mutualcontact = response["data"].length;
@@ -1511,7 +1512,7 @@ class _ContactProfileState extends State<ContactProfile> {
       // var requestBody = {
       //   "phone": phoneNumber,
       // };
-      var response = await ContactBloc().getKonetUserdetail(KonetwebpageRequestBody(id: id));
+      var response = await contactsOperationsBloc.getKonetUserdetail(KonetwebpageRequestBody(id: id));
 
       if (response != null && response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);
@@ -1653,8 +1654,8 @@ class _ContactProfileState extends State<ContactProfile> {
       //   "type": typeStatus,
       // };
 
-      var response =
-          await ContactBloc().updateTypeStatus(UpdateTypeStatusRequestBody(id: widget.contactmetaid, type: typeStatus));
+      var response = await contactsOperationsBloc
+          .updateTypeStatus(UpdateTypeStatusRequestBody(id: widget.contactmetaid, type: typeStatus));
 
       setState(() {
         _loaderoverflow = false;

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/constants/enums.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
@@ -15,6 +15,7 @@ import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -85,10 +86,12 @@ class _MyProfileState extends State<MyProfile> {
   List<NetworkImage> popupImages = <NetworkImage>[];
   // bool _showPreview = false;
   final gtm = Gtm.instance;
+  late final ContactsOperationsBloc contactsOperationsBloc;
 
   @override
   void initState() {
     super.initState();
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kUserProfileScreen});
     Future.delayed(Duration.zero, () {
       print("my profile");
@@ -1384,7 +1387,7 @@ class _MyProfileState extends State<MyProfile> {
       //   "phone": phoneNumber,
       // };
 
-      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phoneNumber));
+      var response = await contactsOperationsBloc.getProfileDetails(GetProfileDetailsRequestBody(phone: phoneNumber));
 
       if (response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);

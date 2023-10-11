@@ -1,8 +1,9 @@
 import 'dart:io';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
+import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
 import 'package:conet/utils/gtm_constants.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:azlistview/azlistview.dart';
-import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/models/recentCalls.dart';
@@ -58,7 +59,7 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-  RecentPageRepository recentPageRepository = RecentPageRepository();
+  late final RecentPageRepository recentPageRepository;
   TextEditingController? _textEditingController;
   List<AllContacts> _loadedcontacts = [];
   List<RecentCalls> recentCalls = [];
@@ -68,13 +69,13 @@ class _ContactsPageState extends State<ContactsPage> {
   List<RecentCalls> _blanklistrecentCalls = [];
   final List<DeviceContactData> _importportcontacts = [];
   TextEditingController? _outputController;
-  ContactPageRepository? contactPageRepository;
+  late final ContactPageRepository contactPageRepository;
   FocusNode _focusNode = FocusNode();
   Barcode? result;
   // QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  late BottomNavigationBloc bottomNavigationBloc;
+  late final ContactsOperationsBloc contactsOperationsBloc;
   bool _loader = false;
   bool _showCancelIcon = false;
   double susItemHeight = 40;
@@ -85,8 +86,9 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   void initState() {
     super.initState();
-    contactPageRepository = ContactPageRepository();
-    bottomNavigationBloc = BlocProvider.of<BottomNavigationBloc>(context);
+    recentPageRepository = BlocProvider.of<RecentCallsBloc>(context).recentPageRepository;
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
+    contactPageRepository = contactsOperationsBloc.contactPageRepository;
     var responseData = widget.contactsData ?? _blanklistcontacts;
     _textEditingController = TextEditingController();
     _contacts = [];
@@ -98,19 +100,18 @@ class _ContactsPageState extends State<ContactsPage> {
 
     //_updateContact();
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kContactListScreen});
-    updatecheck = widget.updatebool ?? false;
-    if (updatecheck) {
-      updatecheck = false;
-      _updateContact();
-    }
-
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await _checkPermission();
-    });
+    // updatecheck = widget.updatebool ?? false;
+    // if (updatecheck) {
+    //   updatecheck = false;
+    //   _updateContact();
+    // }
     _outputController = TextEditingController();
 
     _handleList(_contacts);
     getNotificationData();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _checkPermission();
+    });
   }
 
   // //QR SCAN
@@ -920,7 +921,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
   _checkPermission() async {
     try {
-      if (!bottomNavigationBloc.getIsImportAndSyncInProgressValue()) {
+      if (!contactsOperationsBloc.getIsImportAndSyncInProgressValue()) {
         // print('Checking sync issue number 4 on timestamp : ${DateTime.now().toString()}');
         SharedPreferences preferences = await SharedPreferences.getInstance();
 
@@ -930,9 +931,9 @@ class _ContactsPageState extends State<ContactsPage> {
           print(status);
           if (status.isGranted) {
             print(status.isGranted);
-            bottomNavigationBloc.setIsImportAndSyncInProgressValue(true);
+            contactsOperationsBloc.setIsImportAndSyncInProgressValue(true);
             await _importContacts();
-            bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
+            contactsOperationsBloc.setIsImportAndSyncInProgressValue(false);
 
             if (mounted) {
               setState(() {});
@@ -942,12 +943,10 @@ class _ContactsPageState extends State<ContactsPage> {
             print(" reqstatus $reqStatus");
 
             if (reqStatus.isGranted) {
-              // await _importContacts();
+              await _importContacts();
               if (mounted) {
                 setState(() {});
               }
-
-              // await _importContacts();
             } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
               preferences.setBool('imported', true);
               Utils.displayToastBottomError("Permission Denied for Contact Imports", context);
@@ -960,108 +959,13 @@ class _ContactsPageState extends State<ContactsPage> {
         }
       }
     } catch (e) {
-      bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
+      contactsOperationsBloc.setIsImportAndSyncInProgressValue(false);
     }
   }
-  //  _checkShowDialog() async {
-  //   SharedPreferences preferences = await SharedPreferences.getInstance();
-
-  //   if (preferences.getBool('imported') == false) {
-  //     _showDialog();
-  //   }
-  // }
-
-  // _showDialog() async {
-  //   await Future.delayed(const Duration(milliseconds: 50));
-  //   // ignore: use_build_context_synchronously
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14.0))),
-  //         backgroundColor: AppColor.whiteColor,
-  //         title: Center(
-  //           child: Text(
-  //             'Confirmation',
-  //             style: TextStyle(
-  //                 color: AppColor.logoutcolor,
-  //                 fontFamily: kSfproDisplayFontFamily,
-  //                 fontSize: 18.sp,
-  //                 fontWeight: FontWeight.w500),
-  //           ),
-  //         ),
-  //         content: Text(
-  //           'This app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.',
-  //           style: TextStyle(
-  //               color: AppColor.logoutheadingcolor,
-  //               fontFamily: kSfproRoundedFontFamily,
-  //               fontSize: 15.sp,
-  //               fontWeight: FontWeight.w300),
-  //         ),
-  //         actions: <Widget>[
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             children: [
-  //               Container(
-  //                 constraints: BoxConstraints(minWidth: 100.0.w),
-  //                 child: ElevatedButton(
-  //                   style: ButtonStyle(
-  //                       backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
-  //                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-  //                         RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-  //                       )),
-  //                   onPressed: () => Navigator.pop(context, true),
-  //                   child: Text('Open Settings',
-  //                       style: TextStyle(
-  //                           color: Colors.white,
-  //                           fontFamily: kSfproRoundedFontFamily,
-  //                           fontSize: 18.sp,
-  //                           fontWeight: FontWeight.w500)),
-  //                 ),
-  //               ),
-  //               SizedBox(
-  //                 width: 30.w,
-  //               ),
-  //               Container(
-  //                 constraints: BoxConstraints(minWidth: 100.0.w),
-  //                 child: ElevatedButton(
-  //                   style: ButtonStyle(
-  //                       backgroundColor: MaterialStateProperty.all<Color>(AppColor.secondaryColor),
-  //                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-  //                         RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-  //                       )),
-  //                   onPressed: () => Navigator.pop(context, false),
-  //                   child: Text('Back',
-  //                       style: TextStyle(
-  //                           color: Colors.white,
-  //                           fontFamily: kSfproRoundedFontFamily,
-  //                           fontSize: 18.sp,
-  //                           fontWeight: FontWeight.w500)),
-  //                 ),
-  //               ),
-  //             ],
-  //           )
-  //         ],
-  //       );
-  //     },
-  //   ).then((value) async {
-  //     if (value == null) return;
-  //     if (value) {
-  //       print(value);
-  //       // SchedulerBinding.instance.addPostFrameCallback((_) => _checkPermission());
-  //       openAppSettings();
-  //     } else {
-  //       Utils.displayToastBottomError("Permission Denied Permanently", context);
-
-  //       //SharedPreferences preferences = await SharedPreferences.getInstance();
-  //       //preferences.setBool('imported', true);
-  //     }
-  //   });
-  // }
 
   _importContacts() async {
     try {
-      bottomNavigationBloc.setIsImportAndSyncInProgressValue(true);
+      contactsOperationsBloc.setIsImportAndSyncInProgressValue(true);
       print("import function call api");
       Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
 
@@ -1073,10 +977,10 @@ class _ContactsPageState extends State<ContactsPage> {
       }
 
       await callImportApi();
-      bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
+      contactsOperationsBloc.setIsImportAndSyncInProgressValue(false);
     } catch (e) {
       print("import function");
-      bottomNavigationBloc.setIsImportAndSyncInProgressValue(false);
+      contactsOperationsBloc.setIsImportAndSyncInProgressValue(false);
       print(e.toString());
     }
   }
@@ -1087,7 +991,7 @@ class _ContactsPageState extends State<ContactsPage> {
     print("call import api");
 
     try {
-      var response = await ContactBloc().importContacts(_importportcontacts);
+      var response = await contactsOperationsBloc.importContacts(_importportcontacts);
       if (response == null) {
         _loader = false;
         if (mounted) setState(() {});
@@ -1191,7 +1095,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
   _sendQrApi() async {
     //var requestBody = {"value": _outputController?.text, "qrcode": true};
-    var qrResponse = await ContactBloc().sendQrValue(QrValueRequestBody(
+    var qrResponse = await contactsOperationsBloc.sendQrValue(QrValueRequestBody(
       value: _outputController?.text,
       qrcode: true,
     ));
@@ -1212,7 +1116,7 @@ class _ContactsPageState extends State<ContactsPage> {
         // var requestBody = {
         //   "phone": _outputController!.text,
         // };
-        var response = await ContactBloc()
+        var response = await contactsOperationsBloc
             .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: qrResponse["contact"]["phone"]));
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
@@ -1254,7 +1158,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
   getNotificationData() async {
     try {
-      var response = await ContactBloc().contactRequest();
+      var response = await contactsOperationsBloc.contactRequest();
 
       if (response == null) {
         Utils.displayToastBottomError('Something went wrong in getting Notifications', context);

@@ -5,7 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:conet/api_models/konetwebpage_request_model/konetwebpage_request_body.dart';
 import 'package:conet/api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
+import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/models/imageUploadModel.dart';
@@ -16,6 +17,7 @@ import 'package:conet/utils/switchContactToggle.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -59,11 +61,6 @@ class KonetUserProfilePage extends StatefulWidget {
 }
 
 class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
-  @override
-  initstate() {
-    _updatepage = false;
-  }
-
   final _personalName = TextEditingController();
   final _personalNumber = TextEditingController();
   final _personalSecondaryNumber = TextEditingController();
@@ -94,7 +91,6 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
   final _socialPaytm = TextEditingController();
   final gtm = Gtm.instance;
   bool navigaterefresh = false;
-  RecentPageRepository recentPageRepository = RecentPageRepository();
 
   List<EntrepreneurData> entreprenerurList = [];
   List<ProfessionalList>? entreprenerurListJson = [];
@@ -119,10 +115,15 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
   String userImage = '';
   List<String> _values = [];
   List<NetworkImage> popupImages = <NetworkImage>[];
+  late final RecentPageRepository recentPageRepository;
+  late final ContactsOperationsBloc contactsOperationsBloc;
 
   @override
   void initState() {
     super.initState();
+    _updatepage = false;
+    recentPageRepository = BlocProvider.of<RecentCallsBloc>(context).recentPageRepository;
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     TextEditingController? _outputController;
     Future.delayed(Duration.zero, () {
       getProfileDetails(widget.id.toString());
@@ -1252,7 +1253,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
   getMutualContacts(int? id) async {
     if (id == null) return;
     try {
-      var response = await ContactBloc().getMutualContacts(GetMutualsContactRequestBody(to_id: widget.id));
+      var response = await contactsOperationsBloc.getMutualContacts(GetMutualsContactRequestBody(to_id: widget.id));
       if (response["status"]) {
         // _mutualcontact = response['data'].length;
 
@@ -1267,7 +1268,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
 
   getProfileDetails(String id) async {
     try {
-      var response = await ContactBloc().getKonetUserdetail(KonetwebpageRequestBody(id: id));
+      var response = await contactsOperationsBloc.getKonetUserdetail(KonetwebpageRequestBody(id: id));
 
       if (response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);
@@ -1469,7 +1470,7 @@ class _KonetUserProfilePageState extends State<KonetUserProfilePage> {
     //   "viaid": _searchResult[index].viaId
     // };
 
-    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+    var response = await contactsOperationsBloc.sendQrValue(QrValueRequestBody(
         value: widget.qrValue,
         qrcode: false,
         content: "${preferences.getString("name")} request to ${receivername}",

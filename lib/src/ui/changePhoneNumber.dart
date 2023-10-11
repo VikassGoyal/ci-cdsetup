@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/src/homeScreen.dart';
@@ -14,6 +14,7 @@ import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -55,12 +56,15 @@ class _ChangePhoneNumberState extends State<ChangePhoneNumber> {
   List<ProfessionalList>? entreprenerurListJson = [];
   bool _loader = false;
   final gtm = Gtm.instance;
+  late final ContactsOperationsBloc contactsOperationsBloc;
   @override
   void initState() {
     // TODO: implement initState
     // gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kAddContactScreen});
 
     super.initState();
+
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     // initcheckPermission();
   }
 
@@ -98,7 +102,7 @@ class _ChangePhoneNumberState extends State<ChangePhoneNumber> {
                 _loader = true;
               });
               try {
-                var response = await ContactBloc()
+                var response = await contactsOperationsBloc
                     .checkContactForchangeNumber(CheckContactForAddNewRequestBody(phone: _personalNumber.text));
 
                 if (response != null && response["status"] == true) {

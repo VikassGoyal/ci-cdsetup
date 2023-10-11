@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/src/homeScreen.dart';
@@ -12,6 +12,7 @@ import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gtm/gtm.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -69,12 +70,12 @@ class _AddContactState extends State<AddContact> {
   List<ProfessionalList>? entreprenerurListJson = [];
   bool _loader = false;
   final gtm = Gtm.instance;
+  late final ContactsOperationsBloc contactsOperationsBloc;
   @override
   void initState() {
-    // TODO: implement initState
-    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kAddContactScreen});
-
     super.initState();
+    gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kAddContactScreen});
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     initcheckPermission();
 
     if (widget.phoneNumber != null) {
@@ -230,8 +231,8 @@ class _AddContactState extends State<AddContact> {
       // var requestBody = {
       //   "phone": _personalNumber.text,
       // };
-      var response =
-          await ContactBloc().checkContactForAddNew(CheckContactForAddNewRequestBody(phone: _personalNumber.text));
+      var response = await contactsOperationsBloc
+          .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: _personalNumber.text));
 
       setState(() {
         _loader = false;
@@ -339,7 +340,7 @@ class _AddContactState extends State<AddContact> {
 
     Utils.hideKeyboard(context);
 
-    var response = await ContactBloc().addNewContact(AddNewContactRequestBody(
+    var response = await contactsOperationsBloc.addNewContact(AddNewContactRequestBody(
       personalName: _personalName.text,
       personalNumber: _personalNumber.text,
       personalEmail: _personalEmail.text,

@@ -1,5 +1,5 @@
 import 'package:conet/api_models/qrValue_request_model/qrValue_request_body.dart';
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/blocs/userBloc.dart';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/models/searchContacts.dart';
@@ -17,6 +17,7 @@ import 'package:conet/utils/get_it.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -67,9 +68,11 @@ class _ConetWebPageState extends State<ConetWebPage> {
   List<SearchContacts> _suggestionResult = [];
   final gtm = Gtm.instance;
   var lengthofnotification = 0;
+  late final ContactsOperationsBloc contactsOperationsBloc;
   @override
   void initState() {
     super.initState();
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     // var responseData = widget.contactsData;
     // _contacts = responseData;
     // _contacts = _contacts.where((item) => item.company == "yes").toList();
@@ -86,7 +89,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
     // Fetch suggestions.
     Future.delayed(const Duration(milliseconds: 500), () async {
       try {
-        final response = await ContactBloc().contactPageRepository?.getSearchSuggestions();
+        final response = await contactsOperationsBloc.contactPageRepository?.getSearchSuggestions();
         var responseData = response['data'];
 
         if (response['status'] == true) {
@@ -905,7 +908,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                       if (value == true) {
                         Future.delayed(const Duration(milliseconds: 500), () async {
                           try {
-                            final response = await ContactBloc().contactPageRepository?.getSearchSuggestions();
+                            final response = await contactsOperationsBloc.contactPageRepository?.getSearchSuggestions();
                             var responseData = response['data'];
 
                             if (response['status'] == true) {
@@ -960,7 +963,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
                       if (value) {
                         Future.delayed(const Duration(milliseconds: 500), () async {
                           try {
-                            final response = await ContactBloc().contactPageRepository?.getSearchSuggestions();
+                            final response = await contactsOperationsBloc.contactPageRepository?.getSearchSuggestions();
                             var responseData = response['data'];
 
                             if (response['status'] == true) {
@@ -1332,8 +1335,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
       //   "filter": _searchController!.text,
       // };
       keywordvalue;
-      var response =
-          await ContactBloc().searchConetwebContact(FilterSearchResultsRequestBody(filter: _searchController!.text));
+      var response = await contactsOperationsBloc
+          .searchConetwebContact(FilterSearchResultsRequestBody(filter: _searchController!.text));
       var responseData = response['data'];
 
       if (response != null && response['status'] == true) {
@@ -1366,7 +1369,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
     //   "viaid": _searchResult[index].viaId
     // };
 
-    var response = await ContactBloc().sendQrValue(QrValueRequestBody(
+    var response = await contactsOperationsBloc.sendQrValue(QrValueRequestBody(
         value: _outputController?.text,
         qrcode: false,
         content: "${preferences.getString("name")} request to ${receivername}",
@@ -1449,7 +1452,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
   _sendQrApi() async {
     //var requestBody = {"value": _outputController!.text, "qrcode": true};
-    var Qrresponse = await ContactBloc().sendQrValue(QrValueRequestBody(
+    var Qrresponse = await contactsOperationsBloc.sendQrValue(QrValueRequestBody(
       value: _outputController?.text,
       qrcode: false,
     ));
@@ -1467,7 +1470,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
         // var requestBody = {
         //   "phone": _outputController!.text,
         // };
-        var response = await ContactBloc()
+        var response = await contactsOperationsBloc
             .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: Qrresponse["contact"]["phone"]));
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
@@ -1513,7 +1516,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
 
   getNotificationData() async {
     try {
-      var response = await ContactBloc().contactRequest();
+      var response = await contactsOperationsBloc.contactRequest();
 
       if (response['status'] == true) {
         // gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});

@@ -1,9 +1,11 @@
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
+import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
 import 'package:conet/models/recentCalls.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,10 +37,13 @@ class _CallHistroyProfileState extends State<CallHistroyProfile> {
   final bool _loaderoverflow = false;
   bool personalTab = true;
   bool _recentpageupdate = false;
-  RecentPageRepository recentPageRepository = RecentPageRepository();
+  late final RecentPageRepository recentPageRepository;
+  late final ContactsOperationsBloc contactsOperationsBloc;
   @override
   void initState() {
     super.initState();
+    recentPageRepository = BlocProvider.of<RecentCallsBloc>(context).recentPageRepository;
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     try {
       _callHistory = widget.callLogs!;
       _recentpageupdate = false;
@@ -402,7 +407,7 @@ class _CallHistroyProfileState extends State<CallHistroyProfile> {
       // var requestBody = {
       //   "phone": phoneNumber,
       // };
-      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phoneNumber));
+      var response = await contactsOperationsBloc.getProfileDetails(GetProfileDetailsRequestBody(phone: phoneNumber));
 
       if (response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);

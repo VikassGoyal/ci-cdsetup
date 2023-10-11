@@ -1,9 +1,11 @@
+import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
 import 'package:conet/models/allContacts.dart';
 import 'package:conet/repositories/recentPageRepository.dart';
 import 'package:conet/src/common_widgets/konet_logo.dart';
 import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gtm/gtm.dart';
@@ -20,11 +22,12 @@ class KeypadPage extends StatefulWidget {
 }
 
 class _KeypadPageState extends State<KeypadPage> {
-  RecentPageRepository recentPageRepository = RecentPageRepository();
+  late final RecentPageRepository recentPageRepository;
   final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
+    recentPageRepository = BlocProvider.of<RecentCallsBloc>(context).recentPageRepository;
     print(widget.contactsData);
     print("_____________");
   }

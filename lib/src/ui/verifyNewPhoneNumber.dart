@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/blocs/userBloc.dart';
 import 'package:conet/src/ui/auth/login.dart';
 import 'package:conet/src/ui/auth/phoneScreenArguments.dart';
@@ -95,12 +95,26 @@ class _VerifyNewPhoneNumberState extends State<VerifyNewPhoneNumber> {
 
   String? otpNumber = "1";
   bool wait = false;
+  late final ContactsOperationsBloc contactsOperationsBloc;
 
   @override
   void initState() {
     super.initState();
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     _verifyPhone();
     startTimer();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pinPutFocusNode.dispose();
+    _pinPutController.dispose();
+    _code1Controller.dispose();
+    _code2Controller.dispose();
+    _code3Controller.dispose();
+    _code4Controller.dispose();
+    SMSCodeController.dispose();
   }
 
   @override
@@ -674,7 +688,7 @@ class _VerifyNewPhoneNumberState extends State<VerifyNewPhoneNumber> {
       print(widget.contactdetaill!.professional!.grade ?? "");
       print(widget.contactdetaill!.professionalList!.map((v) => v.toJson()).toList().runtimeType ?? []);
 
-      var response = await ContactBloc().updateProfileDetails(UpdateProfileDetailsRequestBody(
+      var response = await contactsOperationsBloc.updateProfileDetails(UpdateProfileDetailsRequestBody(
           fb: widget.contactdetaill!.social!.facebook ?? "",
           entreprenerur_list: (widget.entreprenerurList.map((e) => e.toJson()).toList()),
           per_add: widget.contactdetaill!.personal!.address1 ?? "",

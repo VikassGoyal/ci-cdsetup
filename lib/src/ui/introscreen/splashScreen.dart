@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:conet/api_models/getProfileDetails_request_model/getProfileDetails_request_body.dart';
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/bottomNavigation/bottomNavigationBloc.dart';
 import 'package:conet/constants/constants.dart';
 import 'package:conet/services/storage_service.dart';
@@ -32,9 +32,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late final ContactsOperationsBloc contactsOperationsBloc;
   @override
   void initState() {
     super.initState();
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
 
     // for only ios devices
     if (Platform.isIOS) {
@@ -145,7 +147,7 @@ class _SplashScreenState extends State<SplashScreen> {
       String phonenum = preferences.getString("phone") ?? "";
       bool hasInternet = await checkInternetConnection();
       if (hasInternet) {
-        var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phonenum));
+        var response = await contactsOperationsBloc.getProfileDetails(GetProfileDetailsRequestBody(phone: phonenum));
         // print('status : ${response['status']} and message : ${response['message']}');
         // if (response != null && response['status'] == false && response['message'] == "No User Available") {
         //   return false;

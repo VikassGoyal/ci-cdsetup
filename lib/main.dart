@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
 import 'package:conet/repositories/coNetWebPageRepository.dart';
 import 'package:conet/repositories/contactPageRepository.dart';
@@ -77,17 +78,20 @@ class App extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) {
+        ContactPageRepository contactPageRepository = ContactPageRepository();
         return MultiBlocProvider(
           providers: [
             BlocProvider<BottomNavigationBloc>(
                 create: (context) => BottomNavigationBloc(
-                      contactPageRepository: ContactPageRepository(),
+                      contactPageRepository: contactPageRepository,
                       keypadPageRepository: KeypadPageRepository(),
                       conetWebPageRepository: CoNetWebPageRepository(),
                       settingsPageRepository: SettingsPageRepository(),
                     )..add(AppStarted())),
             BlocProvider<RecentCallsBloc>(
                 create: (context) => RecentCallsBloc(recentPageRepository: RecentPageRepository())),
+            BlocProvider<ContactsOperationsBloc>(
+                create: (context) => ContactsOperationsBloc(contactPageRepository: contactPageRepository)),
           ],
           child: Builder(
             builder: (context) {

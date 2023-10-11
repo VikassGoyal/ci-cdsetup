@@ -53,8 +53,9 @@ class _SettingsState extends State<Settings> {
   DatabaseHelper databaseHelper = DatabaseHelper.instance;
   TextEditingController? _outputController;
   final List<DeviceContactData> _importportcontacts = [];
-  // late BottomNavigationBloc bottomNavigationBloc;
+  late BottomNavigationBloc bottomNavigationBloc;
   late final ContactsOperationsBloc contactsOperationsBloc;
+
   final gtm = Gtm.instance;
   bool _loader = false;
 
@@ -66,7 +67,7 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
-    // bottomNavigationBloc = BlocProvider.of<BottomNavigationBloc>(context);
+    bottomNavigationBloc = BlocProvider.of<BottomNavigationBloc>(context);
     contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
 
     setValue();
@@ -482,7 +483,7 @@ class _SettingsState extends State<Settings> {
                   SizedBox(height: 10.h),
                   Container(
                     padding: EdgeInsets.only(left: 33.w, right: 33.w),
-                    child: Text("With your $totalContact contacts, you have $totalConnection connections",
+                    child: Text("With our $totalContact contacts, you have $totalConnection connections",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: AppColor.accentColor,
@@ -784,43 +785,45 @@ class _SettingsState extends State<Settings> {
   }
 
   _checkContactPermission() async {
-    if (!contactsOperationsBloc.getIsImportAndSyncInProgressValue()) {
-      var status = await Permission.contacts.status;
-      if (status.isGranted) {
-        gtm.push(GTMConstants.kimportContactsEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
-        contactsOperationsBloc.setIsImportAndSyncInProgressValue(true);
-        await _importContacts();
-        contactsOperationsBloc.setIsImportAndSyncInProgressValue(false);
+    var status = await Permission.contacts.status;
+    if (status.isGranted) {
+      gtm.push(GTMConstants.kimportContactsEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
+
+      goToCotactsTabAndSyncContacts();
+    } else {
+      var reqStatus = await Permission.contacts.request();
+      print(" reqstatus $reqStatus");
+      if (reqStatus.isGranted) {
+        goToCotactsTabAndSyncContacts();
+        //await _importContacts();
+      } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.confirm,
+          width: 300,
+          title: reqStatus.isDenied ? "Permission Denied" : "Permission Denied Permanently",
+          text:
+              "This app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.",
+
+          confirmBtnText: "Settings",
+          cancelBtnText: "Back",
+
+          onConfirmBtnTap: () => openAppSettings(),
+
+          //autoCloseDuration: const Duration(seconds: 3),
+        );
+
+        // openAppSettings();
       } else {
-        var reqStatus = await Permission.contacts.request();
-        print(" reqstatus $reqStatus");
-        if (reqStatus.isGranted) {
-          _checkContactPermission();
-
-          //await _importContacts();
-        } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.confirm,
-            width: 300,
-            title: reqStatus.isDenied ? "Permission Denied" : "Permission Denied Permanently",
-            text:
-                "This app requires contacts access to sync contacts with user account on cloud so that user can view & manage it from anywhere.",
-
-            confirmBtnText: "Settings",
-            cancelBtnText: "Back",
-
-            onConfirmBtnTap: () => openAppSettings(),
-
-            //autoCloseDuration: const Duration(seconds: 3),
-          );
-
-          // openAppSettings();
-        } else {
-          Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
-        }
+        Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
       }
     }
+  }
+
+  goToCotactsTabAndSyncContacts() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool('imported', false);
+    bottomNavigationBloc.add(const PageTapped(index: 1));
   }
 
   Future<void> setValue() async {

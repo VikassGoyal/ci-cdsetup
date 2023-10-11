@@ -73,6 +73,7 @@ class _ContactsPageState extends State<ContactsPage> {
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   late final ContactsOperationsBloc contactsOperationsBloc;
   bool _isContactsPageLoading = false;
+  bool _isLoadingForQrCode = false;
   bool _showCancelIcon = false;
   double susItemHeight = 40;
   final gtm = Gtm.instance;
@@ -559,8 +560,13 @@ class _ContactsPageState extends State<ContactsPage> {
       }, buildWhen: (previous, current) {
         return true;
       }, builder: (context, state) {
+        if (state is ContactsOperationsLoading) {
+          _isContactsPageLoading = true;
+        } else {
+          _isContactsPageLoading = false;
+        }
         return LoadingOverlay(
-          isLoading: _isContactsPageLoading,
+          isLoading: _isContactsPageLoading || _isLoadingForQrCode,
           opacity: 0.3,
           progressIndicator: const CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(AppColor.primaryColor),
@@ -871,6 +877,7 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   _checkPermissionAndSyncContacts() async {
+    print("checkPermissionAndSyncContacts()");
     try {
       if (!contactsOperationsBloc.getIsImportAndSyncInProgressValue()) {
         SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -935,7 +942,7 @@ class _ContactsPageState extends State<ContactsPage> {
         });
         if (_outputController!.text != '') {
           setState(() {
-            _isContactsPageLoading = true;
+            _isLoadingForQrCode = true;
           });
           _sendQrApi();
         }
@@ -983,7 +990,7 @@ class _ContactsPageState extends State<ContactsPage> {
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
           setState(() {
-            _isContactsPageLoading = false;
+            _isLoadingForQrCode = false;
           });
 
           Navigator.push(
@@ -999,14 +1006,14 @@ class _ContactsPageState extends State<ContactsPage> {
           );
         } else {
           setState(() {
-            _isContactsPageLoading = false;
+            _isLoadingForQrCode = false;
           });
           Fluttertoast.cancel();
           Utils.displayToastBottomError(response["message"], context);
         }
       } catch (e) {
         setState(() {
-          _isContactsPageLoading = false;
+          _isLoadingForQrCode = false;
         });
         //Utils.displayToastBottomError("Something went wrong", context);
       }
@@ -1037,7 +1044,7 @@ class _ContactsPageState extends State<ContactsPage> {
       }
       setState(() {});
     } catch (e) {
-      setState(() {});
+      if (mounted) setState(() {});
       print(e);
     }
   }

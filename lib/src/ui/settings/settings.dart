@@ -1,4 +1,4 @@
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/deviceContactData.dart';
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
@@ -53,6 +53,8 @@ class _SettingsState extends State<Settings> {
   DatabaseHelper databaseHelper = DatabaseHelper.instance;
   TextEditingController? _outputController;
   final List<DeviceContactData> _importportcontacts = [];
+  late BottomNavigationBloc bottomNavigationBloc;
+  late final ContactsOperationsBloc contactsOperationsBloc;
   final gtm = Gtm.instance;
   bool _loader = false;
 
@@ -64,6 +66,8 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
+    bottomNavigationBloc = BlocProvider.of<BottomNavigationBloc>(context);
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
 
     setValue();
 
@@ -478,7 +482,7 @@ class _SettingsState extends State<Settings> {
                   SizedBox(height: 10.h),
                   Container(
                     padding: EdgeInsets.only(left: 33.w, right: 33.w),
-                    child: Text("With your $totalContact contacts, you have $totalConnection connections",
+                    child: Text("With our $totalContact contacts, you have $totalConnection connections",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: AppColor.accentColor,
@@ -568,7 +572,7 @@ class _SettingsState extends State<Settings> {
 
   _sendQrApi() async {
     var contactDetail;
-    var Qrresponse = await ContactBloc().sendQrValue(QrValueRequestBody(
+    var Qrresponse = await contactsOperationsBloc.sendQrValue(QrValueRequestBody(
       value: _outputController?.text,
       qrcode: true,
     ));
@@ -578,7 +582,7 @@ class _SettingsState extends State<Settings> {
         // var requestBody = {
         //   "phone": _outputController!.text,
         // };
-        var response = await ContactBloc()
+        var response = await contactsOperationsBloc
             .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: Qrresponse["contact"]["phone"]));
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
@@ -706,86 +710,16 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-  // _checkContactPermission() async {
-  //   var status = await Permission.contacts.status;
-  //   if (status.isGranted) {
-  //     gtm.push(GTMConstants.kimportContactsEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
-  //     _importContacts();
-  //   } else {
-  //     var reqStatus = await Permission.contacts.request();
-  //     if (reqStatus.isGranted) {
-  //       _importContacts();
-  //     } else if (reqStatus.isDenied) {
-  //       Utils.displayToastBottomError("Permission Denied", context);
-  //     } else if (reqStatus.isPermanentlyDenied) {
-  //       Utils.displayToastBottomError("Permission Denied Permanently", context);
-  //       openAppSettings();
-  //     } else {
-  //       Utils.displayToastBottomError("Something Went Wrong ", context);
-  //     }
-  //   }
-  // }
-
-  _importContacts() async {
-    Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
-
-    for (var item in contacts) {
-      if (item.phones!.toList().isNotEmpty) {
-        DeviceContactData data = DeviceContactData(item.displayName, item.phones!.toList()[0].value);
-        _importportcontacts.add(data);
-      }
-    }
-    callImportApi();
-  }
-
-  callImportApi() async {
-    setState(() {
-      _loader = true;
-    });
-    try {
-      var response = await ContactBloc().importContacts(_importportcontacts);
-      if (response != null && response['status'] == true) {
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        preferences.setBool('imported', true);
-        setState(() {
-          _loader = false;
-        });
-        Utils.displayToast("Successfully imported", context);
-      } else if (response != null && response['status'] == "Token is Expired") {
-        tokenExpired(context);
-        setState(() {
-          _loader = false;
-        });
-      } else if (response == null) {
-        setState(() {
-          _loader = false;
-        });
-        Utils.displayToastBottomError("Connection Time Out\n Try Again", context);
-      } else {
-        setState(() {
-          _loader = false;
-        });
-        Utils.displayToastBottomError("Something went wrong", context);
-      }
-    } catch (e) {
-      print(e);
-      setState(() {
-        _loader = false;
-      });
-      Utils.displayToastBottomError("Something went wrong", context);
-    }
-  }
-
   _checkContactPermission() async {
     var status = await Permission.contacts.status;
     if (status.isGranted) {
       gtm.push(GTMConstants.kimportContactsEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
-      _importContacts();
+      goToContactsTabAndSyncContacts();
     } else {
       var reqStatus = await Permission.contacts.request();
       print(" reqstatus $reqStatus");
       if (reqStatus.isGranted) {
-        _importContacts();
+        goToContactsTabAndSyncContacts();
       } else if (reqStatus.isDenied || reqStatus.isPermanentlyDenied) {
         QuickAlert.show(
           context: context,
@@ -805,9 +739,16 @@ class _SettingsState extends State<Settings> {
 
         // openAppSettings();
       } else {
-        Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
+        if (mounted) Utils.displayToastBottomError("Something Went Wrong in Contact Permissions", context);
       }
     }
+  }
+
+  goToContactsTabAndSyncContacts() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool('imported', false);
+    print('------------> adding PageTapped event in goToContactsTabAndSyncContacts function in settings');
+    bottomNavigationBloc.add(const PageTapped(index: 1));
   }
 
   Future<void> setValue() async {
@@ -816,9 +757,8 @@ class _SettingsState extends State<Settings> {
       totalConnection = widget.totalcount[0].totalConnection ?? 0;
       totalContact = widget.totalcount[0].totalContact ?? 0;
       PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-        setState(() {
-          version = packageInfo.version;
-        });
+        version = packageInfo.version;
+        if (mounted) setState(() {});
       });
     } catch (e) {}
   }

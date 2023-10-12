@@ -1,8 +1,9 @@
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,9 +31,11 @@ class _SocialContactState extends State<SocialContact> {
   var _socialSkypeText;
 
   bool _loader = false;
+  late final ContactsOperationsBloc contactsOperationsBloc;
   @override
   void initState() {
     super.initState();
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     Future.delayed(Duration.zero).then((value) => getProfileDetails());
   }
 
@@ -389,7 +392,7 @@ class _SocialContactState extends State<SocialContact> {
       // var requestBody = {
       //   "phone": phone,
       // };
-      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phonenum));
+      var response = await contactsOperationsBloc.getProfileDetails(GetProfileDetailsRequestBody(phone: phonenum));
       if (response['status'] == true) {
         contactDetail = ContactDetail.fromJson(response["user"]);
         setState(() {

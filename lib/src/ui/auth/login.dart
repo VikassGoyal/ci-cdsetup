@@ -34,12 +34,14 @@ class _LoginState extends State<Login> {
   //Focus
   final FocusNode _mobileEmailControllerFocus = FocusNode();
   final FocusNode _passwordControllerFocus = FocusNode();
+  late final BottomNavigationBloc bottomNavigationBloc;
   bool _loader = false;
   bool _showPassword = false;
   final gtm = Gtm.instance;
   @override
   void initState() {
     super.initState();
+    bottomNavigationBloc = BlocProvider.of<BottomNavigationBloc>(context);
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kLoginScreen});
     initlocaldb();
   }
@@ -153,7 +155,7 @@ class _LoginState extends State<Login> {
 
               if (response['message'] == 'success') {
                 gtm.push(GTMConstants.kLoginEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
-                context.read<BottomNavigationBloc>().currentIndex = 0;
+                bottomNavigationBloc.add(const PageTapped(index: 0));
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => HomeScreen()),

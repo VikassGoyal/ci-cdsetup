@@ -1,3 +1,4 @@
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/auth/login.dart';
 import 'package:conet/src/ui/utils.dart';
@@ -8,7 +9,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../blocs/contactBloc.dart';
 import '../../bottomNavigation/bottomNavigationBloc.dart';
 import '../../utils/check_internet_connection.dart';
 import '../../utils/custom_fonts.dart';
@@ -23,6 +23,14 @@ class DeleteAccount extends StatefulWidget {
 
 class _DeleteAccountState extends State<DeleteAccount> {
   DatabaseHelper databaseHelper = DatabaseHelper.instance;
+  late final ContactsOperationsBloc contactsOperationsBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,7 +173,7 @@ class _DeleteAccountState extends State<DeleteAccount> {
                           bool hasInternet = await checkInternetConnection();
 
                           if (hasInternet) {
-                            var response = await ContactBloc().deleteAccount();
+                            var response = await contactsOperationsBloc.deleteAccount();
                             if (response != null && response["status"] == true) {
                               SharedPreferences preferences = await SharedPreferences.getInstance();
                               await preferences.clear();

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'dart:io';
 import 'package:conet/api_models/uploadProfileImage_request_model/uploadProfileImage_request_body.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/constants/enums.dart';
 import 'package:conet/src/common_widgets/remove_scroll_glow.dart';
 import 'package:conet/src/ui/settings/myprofile.dart';
@@ -9,7 +10,6 @@ import 'package:conet/utils/gtm_constants.dart';
 import 'package:flutter/services.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:conet/blocs/contactBloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/models/entrepreneureRequest.dart';
@@ -21,6 +21,7 @@ import 'package:conet/utils/theme.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
@@ -116,10 +117,12 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController _textEditingController = TextEditingController();
   List<String>? _values = [];
   List<bool> _selected = [];
+  late final ContactsOperationsBloc contactsOperationsBloc;
 
   @override
   void initState() {
     super.initState();
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kEditContactScreen});
     selectedDate = DateTime.now();
 
@@ -1624,7 +1627,7 @@ class _EditProfileState extends State<EditProfile> {
       // var requestBody = {
       //   "phone": phone,
       // };
-      var response = await ContactBloc().getProfileDetails(GetProfileDetailsRequestBody(phone: phonenum));
+      var response = await contactsOperationsBloc.getProfileDetails(GetProfileDetailsRequestBody(phone: phonenum));
 
       setState(() {
         _loader = false;
@@ -2380,7 +2383,7 @@ class _EditProfileState extends State<EditProfile> {
       _loaderoverflow = true;
     });
 
-    var response = await ContactBloc().updateProfileDetails(UpdateProfileDetailsRequestBody(
+    var response = await contactsOperationsBloc.updateProfileDetails(UpdateProfileDetailsRequestBody(
       per_name: _personalName.text,
       per_num: _personalNumber.text,
       per_secondary_num: _personalSecondaryNumber.text ?? '',
@@ -2615,7 +2618,7 @@ class _EditProfileState extends State<EditProfile> {
       _loaderoverflow = true;
     });
 
-    var response = await ContactBloc().updateProfileImage(
+    var response = await contactsOperationsBloc.updateProfileImage(
         UploadProfileImageRequestBody(base64data_profile: "data:image/png;base64,$uploadedProfileImage"));
     print("response");
     print(response);

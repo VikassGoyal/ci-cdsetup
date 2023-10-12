@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:conet/utils/textTheme.dart';
 import 'package:conet/utils/theme.dart';
@@ -13,16 +12,26 @@ class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  late final BottomNavigationBloc bottomNavigationBloc;
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
     if (state == AppLifecycleState.resumed) {
-      BlocProvider.of<BottomNavigationBloc>(context).add(const PageRefreshed(index: 1));
+      if (bottomNavigationBloc.getIsAppLifecycleStateIsPausedValue()) {
+        print('------------> AppLifecycle changed after paused to : resumed');
+        bottomNavigationBloc.setIsAppLifecycleStateIsPausedValue(false);
+        print('------------> adding PageRefreshed event in didChangeAppLifecycleState of MyApp');
+        bottomNavigationBloc.add(const PageRefreshed(index: 0));
+      }
+    }
+    if (state == AppLifecycleState.paused) {
+      print('------------> AppLifecycle changed to : paused');
+      bottomNavigationBloc.setIsAppLifecycleStateIsPausedValue(true);
     }
   }
 
@@ -30,7 +39,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     super.initState();
-    BlocProvider.of<BottomNavigationBloc>(context).add(AppStarted());
+    bottomNavigationBloc = BlocProvider.of<BottomNavigationBloc>(context);
+    print('------------> adding AppStarted event in initState of MyApp');
+    bottomNavigationBloc.add(AppStarted());
   }
 
   @override

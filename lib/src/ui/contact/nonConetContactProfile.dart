@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
+import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/src/ui/contactsPage.dart';
 import 'package:conet/utils/custom_fonts.dart';
@@ -6,6 +8,7 @@ import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,7 +20,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../api_models/deleteContact__request_model/deleteContact.dart';
 import '../../../api_models/updatetypestatus_request_model/updateTypeStatus_request_body.dart';
-import '../../../blocs/contactBloc.dart';
 import '../../../repositories/recentPageRepository.dart';
 import '../utils.dart';
 
@@ -45,10 +47,13 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
   final bool _loaderoverflow = false;
   bool personalTab = true;
   final gtm = Gtm.instance;
-  RecentPageRepository recentPageRepository = RecentPageRepository();
+  late final RecentPageRepository recentPageRepository;
+  late final ContactsOperationsBloc contactsOperationsBloc;
   @override
   void initState() {
     super.initState();
+    recentPageRepository = BlocProvider.of<RecentCallsBloc>(context).recentPageRepository;
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     _personalName.text = widget.name!;
     _personalNumber.text = widget.phoneNumber!;
     _personalEmail.text = widget.email!;
@@ -339,7 +344,7 @@ class _NonConetContactProfileState extends State<NonConetContactProfile> {
                 if (value == 1) {
                   //   Add the delete contact  api call functionality . i have created updatepage bool by default value false . if contact delete successfully make it true else false
                   try {
-                    var response = await ContactBloc().deleteContact(widget.id ?? 0);
+                    var response = await contactsOperationsBloc.deleteContact(widget.id ?? 0);
                     if (response['success'] == true) {
                       gtm.push(GTMConstants.kcontactDeleteEvent,
                           parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/blocs/userBloc.dart';
 import 'package:conet/src/ui/auth/login.dart';
 import 'package:conet/src/ui/auth/phoneScreenArguments.dart';
@@ -95,12 +95,26 @@ class _VerifyNewPhoneNumberState extends State<VerifyNewPhoneNumber> {
 
   String? otpNumber = "1";
   bool wait = false;
+  late final ContactsOperationsBloc contactsOperationsBloc;
 
   @override
   void initState() {
     super.initState();
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     _verifyPhone();
     startTimer();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pinPutFocusNode.dispose();
+    _pinPutController.dispose();
+    _code1Controller.dispose();
+    _code2Controller.dispose();
+    _code3Controller.dispose();
+    _code4Controller.dispose();
+    SMSCodeController.dispose();
   }
 
   @override
@@ -149,60 +163,6 @@ class _VerifyNewPhoneNumberState extends State<VerifyNewPhoneNumber> {
                 _loader = false;
               });
             }
-
-            // try {
-            //   PhoneAuthCredential credential = PhoneAuthProvider.credential(
-            //       verificationId: widget.verificationId,
-            //       smsCode: SMSCodeController.text);
-
-            //   print("credential : $credential");
-
-            //   await auth.signInWithCredential(credential);
-            //   auth.signInWithCredential(credential).then((result) {
-            //     print("signInWithCredential success : $result");
-            //   }).catchError((e) {
-            //     print("signInWithCredential error : $e");
-            //     print(e);
-            //   });
-            // } catch (e) {
-            //   print("PhoneAuthCredential error : $e");
-            //   print(e);
-            // }
-            // var validate = _otpVerifyFormKey.currentState.validate();
-            // if (validate) {
-            //   Utils.hideKeyboard(context);
-            //   setState(() {
-            //     _loader = true;
-            //   });
-            //   var requestBody = {
-            //     "password": _code1Controller.text +
-            //         _code2Controller.text +
-            //         _code3Controller.text +
-            //         _code4Controller.text,
-            //     "email": widget.inputvalue
-            //   };
-
-            //   try {
-            //     var response = await UserBloc().otpVerification(requestBody);
-            //     setState(() {
-            //       _loader = false;
-            //     });
-
-            //     print("response - $response");
-            //     if (response['message'] == 'success') {
-            //       Navigator.pushReplacement(
-            //         context,
-            //         MaterialPageRoute(builder: (context) => HomeScreen()),
-            //       );
-            //     } else {
-            //       Utils.displayToast(response["message"]);
-            //     }
-            //   } catch (e) {
-            //     Utils.displayToast(
-            //         "Oops, something went wrong.Please try again later.");
-            //     print(e);
-            //   }
-            // }
           },
           child: Container(
             constraints: BoxConstraints(minHeight: 50.h),
@@ -674,7 +634,7 @@ class _VerifyNewPhoneNumberState extends State<VerifyNewPhoneNumber> {
       print(widget.contactdetaill!.professional!.grade ?? "");
       print(widget.contactdetaill!.professionalList!.map((v) => v.toJson()).toList().runtimeType ?? []);
 
-      var response = await ContactBloc().updateProfileDetails(UpdateProfileDetailsRequestBody(
+      var response = await contactsOperationsBloc.updateProfileDetails(UpdateProfileDetailsRequestBody(
           fb: widget.contactdetaill!.social!.facebook ?? "",
           entreprenerur_list: (widget.entreprenerurList.map((e) => e.toJson()).toList()),
           per_add: widget.contactdetaill!.personal!.address1 ?? "",

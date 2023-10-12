@@ -78,6 +78,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
   //Firebase
   final SMSCodeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late Timer timer;
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -137,60 +138,6 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
                 _loader = false;
               });
             }
-
-            // try {
-            //   PhoneAuthCredential credential = PhoneAuthProvider.credential(
-            //       verificationId: widget.verificationId,
-            //       smsCode: SMSCodeController.text);
-
-            //   print("credential : $credential");
-
-            //   await auth.signInWithCredential(credential);
-            //   auth.signInWithCredential(credential).then((result) {
-            //     print("signInWithCredential success : $result");
-            //   }).catchError((e) {
-            //     print("signInWithCredential error : $e");
-            //     print(e);
-            //   });
-            // } catch (e) {
-            //   print("PhoneAuthCredential error : $e");
-            //   print(e);
-            // }
-            // var validate = _otpVerifyFormKey.currentState.validate();
-            // if (validate) {
-            //   Utils.hideKeyboard(context);
-            //   setState(() {
-            //     _loader = true;
-            //   });
-            //   var requestBody = {
-            //     "password": _code1Controller.text +
-            //         _code2Controller.text +
-            //         _code3Controller.text +
-            //         _code4Controller.text,
-            //     "email": widget.inputvalue
-            //   };
-
-            //   try {
-            //     var response = await UserBloc().otpVerification(requestBody);
-            //     setState(() {
-            //       _loader = false;
-            //     });
-
-            //     print("response - $response");
-            //     if (response['message'] == 'success') {
-            //       Navigator.pushReplacement(
-            //         context,
-            //         MaterialPageRoute(builder: (context) => HomeScreen()),
-            //       );
-            //     } else {
-            //       Utils.displayToast(response["message"]);
-            //     }
-            //   } catch (e) {
-            //     Utils.displayToast(
-            //         "Oops, something went wrong.Please try again later.");
-            //     print(e);
-            //   }
-            // }
           },
           child: Container(
             constraints: BoxConstraints(minHeight: 50.h),
@@ -630,6 +577,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
           await FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
             if (value.user != null) {
               signupFunction();
+
               print("verificationCompleted : Sign up successfully...!");
             }
           });
@@ -692,6 +640,7 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
         );
         //Utils.displayToast(response["message"], context);
         context.read<BottomNavigationBloc>().currentIndex = 0;
+        stopTimer();
 
         Navigator.pushReplacement(
           context,
@@ -722,22 +671,25 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
 
   void startTimer() {
     const onsec = Duration(seconds: 1);
-    Timer timer = Timer.periodic(onsec, (timer) {
+    timer = Timer.periodic(onsec, (timer) {
       if (start == 0) {
+        timer.cancel();
+        wait = true;
         if (mounted) {
-          setState(() {
-            wait = true;
-            timer.cancel();
-          });
+          setState(() {});
         }
       } else {
+        wait = false;
+        start--;
         if (mounted) {
-          setState(() {
-            wait = false;
-            start--;
-          });
+          setState(() {});
         }
       }
     });
+  }
+
+  void stopTimer() {
+    timer.cancel();
+    print("stop timer cancel");
   }
 }

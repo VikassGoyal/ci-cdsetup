@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conet/api_models/uploadbusinesslogo_request_%20model/uploadebusinesslogo_request_body.dart';
+import 'package:conet/bottomNavigation/bottomNavigationBloc.dart';
 import 'package:conet/config/app_config.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/repositories/contactPageRepository.dart';
@@ -16,6 +17,7 @@ import 'package:conet/utils/theme.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,7 +37,7 @@ class BussinessCard extends StatefulWidget {
 class _BussinessCardState extends State<BussinessCard> {
   File? _image;
   final picker = ImagePicker();
-  final ContactPageRepository _contactPageRepository = ContactPageRepository();
+  late final ContactPageRepository _contactPageRepository;
 
   // List<Asset> businesslogo = <Asset>[];
   String _qrImage = "";
@@ -54,6 +56,7 @@ class _BussinessCardState extends State<BussinessCard> {
   @override
   void initState() {
     super.initState();
+    _contactPageRepository = BlocProvider.of<BottomNavigationBloc>(context).contactPageRepository;
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.kBusinessCardScreen});
     getQRImage();
     getProfileDetails();

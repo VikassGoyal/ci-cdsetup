@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/blocs/recent_calls/recent_calls_bloc.dart';
 import 'package:conet/blocs/recent_calls/recent_calls_event.dart';
 import 'package:conet/blocs/recent_calls/recent_calls_state.dart';
@@ -45,7 +45,8 @@ class _RecentPageState extends State<RecentPage> {
   bool _showCancelIcon = false;
   // final TextEditingController _textEditingController = TextEditingController();
   TextEditingController? _textEditingController;
-  late RecentCallsBloc recentCallsBloc;
+  late final RecentCallsBloc recentCallsBloc;
+  late final ContactsOperationsBloc contactsOperationsBloc;
   bool _isRecentCallsLoading = false;
 
   bool _isFetchedAllData = false;
@@ -54,6 +55,7 @@ class _RecentPageState extends State<RecentPage> {
   void initState() {
     super.initState();
     _textEditingController = TextEditingController();
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     try {
       recentCallsBloc = BlocProvider.of<RecentCallsBloc>(context);
       SchedulerBinding.instance.addPostFrameCallback((_) => checkPermissionAndFetchCallLogs());
@@ -680,7 +682,7 @@ class _RecentPageState extends State<RecentPage> {
 
   _sendQrApi() async {
     //var requestBody = {"value": _outputController!.text, "qrcode": true};
-    var Qrresponse = await ContactBloc().sendQrValue(QrValueRequestBody(
+    var Qrresponse = await contactsOperationsBloc.sendQrValue(QrValueRequestBody(
       value: _outputController?.text,
       qrcode: false,
     ));
@@ -691,7 +693,7 @@ class _RecentPageState extends State<RecentPage> {
         // var requestBody = {
         //   "phone": _outputController!.text,
         // };
-        var response = await ContactBloc()
+        var response = await contactsOperationsBloc
             .checkContactForAddNew(CheckContactForAddNewRequestBody(phone: Qrresponse["contact"]["phone"]));
         if (response["user"] != null) {
           contactDetail = ContactDetail.fromJson(response["user"]);
@@ -737,7 +739,7 @@ class _RecentPageState extends State<RecentPage> {
 
   getNotificationData() async {
     try {
-      var response = await ContactBloc().contactRequest();
+      var response = await contactsOperationsBloc.contactRequest();
 
       if (response['status'] == true) {
         // gtm.push(GTMConstants.knotificationreceivedEvent, parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});

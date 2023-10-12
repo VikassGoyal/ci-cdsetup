@@ -1,3 +1,4 @@
+import 'package:conet/bottomNavigation/bottomNavigationBloc.dart';
 import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/ui/auth/privacyPolicy.dart';
 import 'package:conet/src/ui/auth/termsofuse.dart';
@@ -5,6 +6,7 @@ import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:lottie/lottie.dart';
@@ -32,7 +34,8 @@ class _ValidateMobileNumberVerifiedState extends State<ValidateMobileNumberVerif
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
           ),
         ),
-        onPressed: () async {
+        onPressed: () {
+          BlocProvider.of<BottomNavigationBloc>(context).add(const PageTapped(index: 0));
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(

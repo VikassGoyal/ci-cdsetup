@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:conet/blocs/contactBloc.dart';
+import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
 import 'package:conet/src/appScreen.dart';
@@ -93,9 +93,11 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
   List<EntrepreneurData> entreprenerurList = [];
   List<ProfessionalList>? entreprenerurListJson = [];
   final gtm = Gtm.instance;
+  late final ContactsOperationsBloc contactsOperationsBloc;
   @override
   void initState() {
     _conetUser = widget.conetUser;
+    contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
     if (_conetUser) {
       initForConetUser();
     } else {
@@ -1310,7 +1312,7 @@ class _AddContactUserProfilePageState extends State<AddContactUserProfilePage> {
 
     Utils.hideKeyboard(context);
 
-    var response = await ContactBloc().addNewContact(AddNewContactRequestBody(
+    var response = await contactsOperationsBloc.addNewContact(AddNewContactRequestBody(
       personalName: _personalName.text,
       personalNumber: _personalNumber.text,
       personalEmail: _personalEmail.text,

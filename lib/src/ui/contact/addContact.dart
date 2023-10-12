@@ -1,16 +1,16 @@
-import 'dart:convert';
+// import 'dart:convert';
 
 import 'package:conet/blocs/contacts_operations/contacts_operations_bloc.dart';
 import 'package:conet/models/contactDetails.dart';
 import 'package:conet/models/entrepreneureData.dart';
-import 'package:conet/src/homeScreen.dart';
+// import 'package:conet/src/homeScreen.dart';
 import 'package:conet/src/ui/addContactUserProfilePage.dart';
 import 'package:conet/utils/constant.dart';
 import 'package:conet/utils/custom_fonts.dart';
 import 'package:conet/utils/gtm_constants.dart';
 import 'package:conet/utils/textFormContact.dart';
 import 'package:conet/utils/theme.dart';
-import 'package:contacts_service/contacts_service.dart';
+// import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +21,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../api_models/addNewContact_request_model/addNewContact_request_body.dart';
+// import '../../../api_models/addNewContact_request_model/addNewContact_request_body.dart';
 import '../../../api_models/checkContactForAddNew_request_model/checkContactForAddNew_request_body.dart';
 import '../utils.dart';
 
@@ -37,34 +37,34 @@ class _AddContactState extends State<AddContact> {
   final _checkContactKey = GlobalKey<FormState>();
   bool professionalTab = true;
 
-  bool _designationVisible = false;
+  // bool _designationVisible = false;
   bool switchTypeStatus = true;
   bool? _conetUser;
   String userImage = '';
 
   ContactDetail contactDetail = ContactDetail();
   DateTime? selectedDate;
-  String? _occupationValue;
+  // String? _occupationValue;
 
-  final _personalName = TextEditingController();
+  // final _personalName = TextEditingController();
   final _personalNumber = TextEditingController();
-  final _personalEmail = TextEditingController();
-  final _personalDob = TextEditingController();
-  final _personalAddress = TextEditingController();
-  final _personalLandline = TextEditingController();
-  final _professionalOccupation = TextEditingController();
-  final _professionalIndustry = TextEditingController();
-  final _professionalCompany = TextEditingController();
-  final _professionalCompanyWebsite = TextEditingController();
-  final _professionalSchool = TextEditingController();
-  final _professionalGrade = TextEditingController();
-  final _professionalWorkNature = TextEditingController();
-  final _professionalDesignation = TextEditingController();
+  // final _personalEmail = TextEditingController();
+  // final _personalDob = TextEditingController();
+  // final _personalAddress = TextEditingController();
+  // final _personalLandline = TextEditingController();
+  // final _professionalOccupation = TextEditingController();
+  // final _professionalIndustry = TextEditingController();
+  // final _professionalCompany = TextEditingController();
+  // final _professionalCompanyWebsite = TextEditingController();
+  // final _professionalSchool = TextEditingController();
+  // final _professionalGrade = TextEditingController();
+  // final _professionalWorkNature = TextEditingController();
+  // final _professionalDesignation = TextEditingController();
 
-  final _socialFacebook = TextEditingController();
-  final _socialInstagram = TextEditingController();
-  final _socialTwitter = TextEditingController();
-  final _socialSkype = TextEditingController();
+  // final _socialFacebook = TextEditingController();
+  // final _socialInstagram = TextEditingController();
+  // final _socialTwitter = TextEditingController();
+  // final _socialSkype = TextEditingController();
 
   List<EntrepreneurData> entreprenerurList = [];
   List<ProfessionalList>? entreprenerurListJson = [];
@@ -280,125 +280,99 @@ class _AddContactState extends State<AddContact> {
     }
   }
 
-  addNewContact() async {
-    setState(() {
-      _loader = true;
-      if (_occupationValue == 'Entrepreneur') {
-        _professionalCompany.clear();
-        _professionalCompanyWebsite.clear();
-        _professionalWorkNature.clear();
-        _professionalSchool.clear();
-        _professionalGrade.clear();
-        _professionalDesignation.clear();
-      } else if (_occupationValue == 'Employed') {
-        entreprenerurList = [];
-        _professionalSchool.clear();
-        _professionalGrade.clear();
-        _designationVisible = true;
-      } else if (_occupationValue == 'Home maker') {
-        entreprenerurList = [];
-        _professionalCompany.clear();
-        _professionalCompanyWebsite.clear();
-        _professionalWorkNature.clear();
-        _professionalSchool.clear();
-        _professionalGrade.clear();
-        _professionalDesignation.clear();
-      } else if (_occupationValue == 'Student') {
-        entreprenerurList = [];
-        _professionalCompany.clear();
-        _professionalCompanyWebsite.clear();
-        _professionalWorkNature.clear();
-        _professionalDesignation.clear();
-      }
-    });
+  // addNewContact() async {
+  //   setState(() {
+  //     _loader = true;
+  //     if (_occupationValue == 'Entrepreneur') {
+  //       _professionalCompany.clear();
+  //       _professionalCompanyWebsite.clear();
+  //       _professionalWorkNature.clear();
+  //       _professionalSchool.clear();
+  //       _professionalGrade.clear();
+  //       _professionalDesignation.clear();
+  //     } else if (_occupationValue == 'Employed') {
+  //       entreprenerurList = [];
+  //       _professionalSchool.clear();
+  //       _professionalGrade.clear();
+  //       _designationVisible = true;
+  //     } else if (_occupationValue == 'Home maker') {
+  //       entreprenerurList = [];
+  //       _professionalCompany.clear();
+  //       _professionalCompanyWebsite.clear();
+  //       _professionalWorkNature.clear();
+  //       _professionalSchool.clear();
+  //       _professionalGrade.clear();
+  //       _professionalDesignation.clear();
+  //     } else if (_occupationValue == 'Student') {
+  //       entreprenerurList = [];
+  //       _professionalCompany.clear();
+  //       _professionalCompanyWebsite.clear();
+  //       _professionalWorkNature.clear();
+  //       _professionalDesignation.clear();
+  //     }
+  //   });
 
-    // var requestBody = {
-    //   "per_name": _personalName.text,
-    //   "per_num": _personalNumber.text,
-    //   "per_email": _personalEmail.text,
-    //   "per_dob": _personalDob.text,
-    //   "per_add": _personalAddress.text,
-    //   "per_lan": _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
-    //   "pro_occ": _professionalOccupation.text,
-    //   "pro_ind": _professionalIndustry.text,
-    //   "pro_com": _professionalCompany.text,
-    //   "pro_com_website": _professionalCompanyWebsite.text,
-    //   "pro_wn": _professionalWorkNature.text,
-    //   "pro_des": _professionalDesignation.text,
-    //   "pro_sch": _professionalSchool.text,
-    //   "pro_gra": _professionalGrade.text,
-    //   "fb": _socialFacebook.text,
-    //   "in": _socialInstagram.text,
-    //   "tt": _socialTwitter.text,
-    //   "sk": _socialSkype.text,
-    //   // "gp": _socialFacebook.text,
-    //   // "pt": _socialFacebook.text,
-    //   "entreprenerur_list": (entreprenerurList.map((e) => e.toJson()).toList()),
-    // };
+  //   Utils.hideKeyboard(context);
 
-    // print(jsonEncode(requestBody));
+  //   var response = await contactsOperationsBloc.addNewContact(AddNewContactRequestBody(
+  //     personalName: _personalName.text,
+  //     personalNumber: _personalNumber.text,
+  //     personalEmail: _personalEmail.text,
+  //     personalDob: _personalDob.text,
+  //     personalAddress: _personalAddress.text,
+  //     personalLandline: _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
+  //     professionalWorkNature: _professionalWorkNature.text,
+  //     professionalDesignation: _professionalDesignation.text,
+  //     professionalSchool: _professionalSchool.text,
+  //     professionalGrade: _professionalGrade.text,
+  //     socialFacebook: _socialFacebook.text,
+  //     socialInstagram: _socialInstagram.text,
+  //     socialTwitter: _socialTwitter.text,
+  //     socialSkype: _socialSkype.text,
+  //     entreprenerur_list: entreprenerurList.map((e) => e.toJson()).toList(),
+  //     professionalCompany: _professionalCompany.text,
+  //     professionalCompanyWebsite: _professionalCompanyWebsite.text,
+  //     professionalOccupation: _professionalOccupation.text,
+  //     professionalIndustry: _professionalIndustry.text,
+  //   ));
+  //   setState(() {
+  //     _loader = false;
+  //   });
+  //   if (response['status'] == true) {
+  //     await checkPermission();
 
-    Utils.hideKeyboard(context);
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => HomeScreen()),
+  //     );
+  //   } else if (response['status'] == "Token is Expired") {
+  //     Utils.displayToastBottomError('Token is Expired', context);
+  //     tokenExpired(context);
+  //   } else {
+  //     Utils.displayToastBottomError('Something went wrong', context);
+  //   }
+  // }
 
-    var response = await contactsOperationsBloc.addNewContact(AddNewContactRequestBody(
-      personalName: _personalName.text,
-      personalNumber: _personalNumber.text,
-      personalEmail: _personalEmail.text,
-      personalDob: _personalDob.text,
-      personalAddress: _personalAddress.text,
-      personalLandline: _personalLandline.text == '' ? null : int.parse(_personalLandline.text),
-      professionalWorkNature: _professionalWorkNature.text,
-      professionalDesignation: _professionalDesignation.text,
-      professionalSchool: _professionalSchool.text,
-      professionalGrade: _professionalGrade.text,
-      socialFacebook: _socialFacebook.text,
-      socialInstagram: _socialInstagram.text,
-      socialTwitter: _socialTwitter.text,
-      socialSkype: _socialSkype.text,
-      entreprenerur_list: entreprenerurList.map((e) => e.toJson()).toList(),
-      professionalCompany: _professionalCompany.text,
-      professionalCompanyWebsite: _professionalCompanyWebsite.text,
-      professionalOccupation: _professionalOccupation.text,
-      professionalIndustry: _professionalIndustry.text,
-    ));
-    setState(() {
-      _loader = false;
-    });
-    if (response['status'] == true) {
-      await checkPermission();
+  // checkPermission() async {
+  //   try {
+  //     PermissionStatus permission = await Permission.contacts.status;
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
-    } else if (response['status'] == "Token is Expired") {
-      Utils.displayToastBottomError('Token is Expired', context);
-      tokenExpired(context);
-    } else {
-      Utils.displayToastBottomError('Something went wrong', context);
-    }
-  }
+  //     if (permission != PermissionStatus.granted) {
+  //       await Permission.contacts.request();
+  //       PermissionStatus permission = await Permission.contacts.status;
 
-  checkPermission() async {
-    try {
-      PermissionStatus permission = await Permission.contacts.status;
-
-      if (permission != PermissionStatus.granted) {
-        await Permission.contacts.request();
-        PermissionStatus permission = await Permission.contacts.status;
-
-        if (permission == PermissionStatus.granted) {
-          await addContactToLocal();
-        } else {
-          //_handleInvalidPermissions(context);
-        }
-      } else {
-        await addContactToLocal();
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  //       if (permission == PermissionStatus.granted) {
+  //         await addContactToLocal();
+  //       } else {
+  //         //_handleInvalidPermissions(context);
+  //       }
+  //     } else {
+  //       await addContactToLocal();
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   initcheckPermission() async {
     try {
@@ -421,11 +395,11 @@ class _AddContactState extends State<AddContact> {
     }
   }
 
-  addContactToLocal() async {
-    Contact newContact = Contact();
-    newContact.givenName = _personalName.text;
-    newContact.emails = [Item(label: "work", value: _personalNumber.text)];
-    newContact.phones = [Item(label: "mobile", value: _personalNumber.text)];
-    await ContactsService.addContact(newContact);
-  }
+  // addContactToLocal() async {
+  //   Contact newContact = Contact();
+  //   newContact.givenName = _personalName.text;
+  //   newContact.emails = [Item(label: "work", value: _personalNumber.text)];
+  //   newContact.phones = [Item(label: "mobile", value: _personalNumber.text)];
+  //   await ContactsService.addContact(newContact);
+  // }
 }

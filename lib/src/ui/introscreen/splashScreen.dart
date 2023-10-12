@@ -33,9 +33,11 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late final ContactsOperationsBloc contactsOperationsBloc;
+  late final BottomNavigationBloc bottomNavigationBloc;
   @override
   void initState() {
     super.initState();
+    bottomNavigationBloc = BlocProvider.of<BottomNavigationBloc>(context);
     contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
 
     // for only ios devices
@@ -176,6 +178,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> navigationPage() async {
     if (locator<StorageService>().getPrefs(kPrefAccessTokenKey) != null) {
       if (await doesUserExist()) {
+        bottomNavigationBloc.add(const PageTapped(index: 0));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),

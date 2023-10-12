@@ -138,60 +138,6 @@ class _VerifyMobileNumberState extends State<VerifyMobileNumber> {
                 _loader = false;
               });
             }
-
-            // try {
-            //   PhoneAuthCredential credential = PhoneAuthProvider.credential(
-            //       verificationId: widget.verificationId,
-            //       smsCode: SMSCodeController.text);
-
-            //   print("credential : $credential");
-
-            //   await auth.signInWithCredential(credential);
-            //   auth.signInWithCredential(credential).then((result) {
-            //     print("signInWithCredential success : $result");
-            //   }).catchError((e) {
-            //     print("signInWithCredential error : $e");
-            //     print(e);
-            //   });
-            // } catch (e) {
-            //   print("PhoneAuthCredential error : $e");
-            //   print(e);
-            // }
-            // var validate = _otpVerifyFormKey.currentState.validate();
-            // if (validate) {
-            //   Utils.hideKeyboard(context);
-            //   setState(() {
-            //     _loader = true;
-            //   });
-            //   var requestBody = {
-            //     "password": _code1Controller.text +
-            //         _code2Controller.text +
-            //         _code3Controller.text +
-            //         _code4Controller.text,
-            //     "email": widget.inputvalue
-            //   };
-
-            //   try {
-            //     var response = await UserBloc().otpVerification(requestBody);
-            //     setState(() {
-            //       _loader = false;
-            //     });
-
-            //     print("response - $response");
-            //     if (response['message'] == 'success') {
-            //       Navigator.pushReplacement(
-            //         context,
-            //         MaterialPageRoute(builder: (context) => HomeScreen()),
-            //       );
-            //     } else {
-            //       Utils.displayToast(response["message"]);
-            //     }
-            //   } catch (e) {
-            //     Utils.displayToast(
-            //         "Oops, something went wrong.Please try again later.");
-            //     print(e);
-            //   }
-            // }
           },
           child: Container(
             constraints: BoxConstraints(minHeight: 50.h),

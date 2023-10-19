@@ -41,6 +41,7 @@ class _RecentPageState extends State<RecentPage> {
   List<RecentCalls> _searchResult = [];
   List<RecentCalls> _callHistory = [];
   TextEditingController? _outputController;
+  late final FocusNode textFocusNode;
   bool _loader = false;
   bool _showCancelIcon = false;
   // final TextEditingController _textEditingController = TextEditingController();
@@ -56,6 +57,8 @@ class _RecentPageState extends State<RecentPage> {
     super.initState();
     _textEditingController = TextEditingController();
     contactsOperationsBloc = BlocProvider.of<ContactsOperationsBloc>(context);
+    textFocusNode = FocusNode();
+
     try {
       recentCallsBloc = BlocProvider.of<RecentCallsBloc>(context);
       SchedulerBinding.instance.addPostFrameCallback((_) => checkPermissionAndFetchCallLogs());
@@ -76,6 +79,7 @@ class _RecentPageState extends State<RecentPage> {
   void dispose() {
     super.dispose();
     _textEditingController!.dispose();
+    textFocusNode.dispose();
   }
 
   // Triggers fecth() and then add new items or change _hasMore flag
@@ -183,6 +187,7 @@ class _RecentPageState extends State<RecentPage> {
                   ),
                   onPressed: () {
                     print("Cliked");
+                    textFocusNode.unfocus();
 
                     List<RecentCalls> data =
                         _callHistory.where((element) => element.number == _callHistory[index].number).toList();
@@ -442,6 +447,11 @@ class _RecentPageState extends State<RecentPage> {
                     height: 36.h,
                     child: TextField(
                       controller: _textEditingController,
+                      focusNode: textFocusNode,
+                      onTapOutside: (_) {
+                        //unfocusing/hiding the soft keyboard when tapped outside of the textField
+                        textFocusNode.unfocus();
+                      },
                       onChanged: (value) {
                         setState(() {
                           value.length > 1 ? _showCancelIcon = true : _showCancelIcon = false;

@@ -50,7 +50,7 @@ class ConetWebPage extends StatefulWidget {
 }
 
 class _ConetWebPageState extends State<ConetWebPage> {
-  final FocusNode _focus = FocusNode();
+  //final FocusNode _focus = FocusNode();
 
   final List<AllContacts> _loadedcontacts = [];
   List<AllContacts> _contacts = [];
@@ -61,6 +61,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
   bool _searchEnabled = false;
   bool _loader = false;
   bool _showCancelIcon = false;
+  late final FocusNode textFocusNode;
   var keywordvalue;
   var searchvalue;
 
@@ -79,6 +80,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
     // _loadedcontacts = _contacts;
     _searchController = TextEditingController();
     _outputController = TextEditingController();
+    textFocusNode = FocusNode();
     _searchvisible = false;
     keywordvalue = null;
     gtm.push(GTMConstants.kScreenViewEvent, parameters: {GTMConstants.kpageName: GTMConstants.KkonetwebpageScreen});
@@ -128,6 +130,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
     super.dispose();
     _searchController!.dispose();
     _outputController!.dispose();
+    textFocusNode.dispose();
   }
 
   @override
@@ -195,7 +198,8 @@ class _ConetWebPageState extends State<ConetWebPage> {
                       ),
                     ),
                     onPressed: () {
-                      _focus.hasFocus.toString();
+                      textFocusNode.hasFocus.toString();
+                      // _focus.hasFocus.toString();
                       Navigator.of(context).pop();
                     },
                     child: Container(
@@ -891,6 +895,7 @@ class _ConetWebPageState extends State<ConetWebPage> {
           return _searchvisible!
               ? InkWell(
                   onTap: () {
+                    textFocusNode.unfocus();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -1178,7 +1183,11 @@ class _ConetWebPageState extends State<ConetWebPage> {
                                   filterSearchResults();
                                 }
                               },
-                              focusNode: _focus,
+                              onTapOutside: (_) {
+                                //unfocusing/hiding the soft keyboard when tapped outside of the textField
+                                textFocusNode.unfocus();
+                              },
+                              focusNode: textFocusNode,
                               maxLines: 1,
                               minLines: 1,
                               textAlign: TextAlign.left,

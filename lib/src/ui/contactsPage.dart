@@ -161,7 +161,7 @@ class _ContactsPageState extends State<ContactsPage> {
         child: GestureDetector(
           onTap: () {
             textFocusNode.unfocus();
-            _clearText();
+            //_clearText();
             if (_contacts[index].userId == null) {
               gtm.push(GTMConstants.kcontactDetailsViewEvent,
                   parameters: {GTMConstants.kstatus: GTMConstants.kstatusdone});
@@ -174,6 +174,8 @@ class _ContactsPageState extends State<ContactsPage> {
               ).then((value) {
                 print("value : $value");
                 if (value) {
+                  _clearText();
+                  if (mounted) setState(() {});
                   _updateContact();
                 } else
                   return null;
@@ -191,8 +193,10 @@ class _ContactsPageState extends State<ContactsPage> {
                       _contacts[index].fromContactMetaType ?? "",
                       _contacts[index].id ?? 0),
                 ),
-              ).then((value) {
+              ).then((value) async {
                 if (value != null && value) {
+                  _clearText();
+                  if (mounted) setState(() {});
                   _updateContact();
                 } else
                   return null;
